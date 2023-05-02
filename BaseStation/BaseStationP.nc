@@ -31,10 +31,10 @@ module BaseStationP @safe() {
 
     interface Leds;
 
-    uses interface Timer<TMilli> as Timer0;
-    uses interface Timer<TMilli> as Timer1;
-    uses interface Packet;
-    uses interface Receive;
+    interface Timer<TMilli> as Timer0;
+    interface Timer<TMilli> as Timer1;
+    interface Packet;
+    interface Receive;
   }
 }
 
@@ -217,8 +217,7 @@ implementation
       }
       tdma->periodo = TIMER_PERIOD_MILLI;
 
-      if (call RadioSend.send(AM_BROADCAST_ADDR,
-                  &pkt, sizeof(TDMAmsg)) == SUCCESS) {
+      if (call RadioSend.send(AM_BROADCAST_ADDR, &pkt, sizeof(TDMAmsg)) == SUCCESS) {
         busy = TRUE;
       }
 

@@ -36,13 +36,8 @@ implementation {
   App.Leds -> LedsC;
 
   // Sacado de MasterAppC.nc
-  App.Boot -> MainC; // (?)
+  //App.Boot -> MainC; // (?)
   App.Timer0 -> Timer0;
   App.Timer1 -> Timer1;
 
-  App.Packet -> AMSenderC;
-  App.AMPacket -> AMSenderC;
-  App.AMControl -> Radio;
-  App.AMSend -> AMSenderC;
-  App.Receive -> AMReceiverC;
 }
