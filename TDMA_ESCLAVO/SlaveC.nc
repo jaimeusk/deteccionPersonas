@@ -16,6 +16,7 @@ module SlaveC {
     uses interface AMSend;
     uses interface Receive;
     uses interface SplitControl as AMControl;
+    uses interface CC2420Packet;
 }
 
 implementation {
@@ -27,15 +28,16 @@ implementation {
     uint8_t arraySlaves[3];
 	uint16_t arrayRSSI[4];
     uint8_t idSlot;
-	uint8_t idSlot_1;
     float tiempoEspera = 0;
-	float tiempoEsperaDormir = 0;
+	float tiempoDormir = 0;
     bool busy = FALSE;
     message_t pkt;
     RespuestaMsg* respuestaPkt_tx;
-	BROADCASTmsg* respuestaNodo_tx;
     uint8_t i = 0;
 	bool espera = FALSE;
+
+    nx_uint8_t arrayNodos[NUM_MAX_NODOS];
+
 
 
 
@@ -85,7 +87,7 @@ implementation {
     //event void TimerMaster.fired() {}
 
     event void TimerLeds.fired(){
-        setLeds(0);
+        setLeds(2);
     }
 
     event void TimerMiSlot.fired() {
@@ -93,10 +95,7 @@ implementation {
             &pkt, sizeof(RespuestaMsg)) == SUCCESS) {
                 busy = TRUE;
             }
-		if (call AMSend.send(AM_BROADCAST_ADDR,
-            &pkt, sizeof(BROADCASTmsg)) == SUCCESS) {
-                busy = TRUE;
-            }
+
     }
 	
 	event void TimerDormir.fired(){
@@ -110,31 +109,38 @@ implementation {
         if (&pkt == msg) {
         busy = FALSE;
         }
+        //setLeds(2);
+        //call TimerLeds.startOneShot(200);
     }
 
 
     event message_t* Receive.receive(message_t* msg, void* payload, uint8_t len){
            
         if (len == sizeof(TDMAmsg)) {
+           
+
             TDMAmsg* TDMAmsg_rx = (TDMAmsg*)payload;
+
+            setLeds(1);
+            call TimerLeds.startOneShot(1000);
+            
             
             //arraySlaves = TDMAmsg_rx->tipoPeticion; 
             // 1º Calculo cuando es mi turno y configuro timers
-            for(i = 0; i < 4; i++){
+            for(i = 0; i < NUM_MAX_NODOS; i++){
+                arrayNodos[i] = TDMAmsg_rx->idS[i];
+                
                 if(TDMAmsg_rx->idS[i] == TOS_NODE_ID){
                     idSlot = TDMAmsg_rx->idS[i];
                 }
             }
 
-            tiempoEspera = (TDMAmsg_rx->periodo)/4 * idSlot;
-			idSlot_1 = idSlot + 1;
-			//Creo que me estoy liando el periodo que tiene que estar dormido es desde que termina de enviar 
-			//entonces es periodo que nos dice la basestation - el tiempo que acaba de transmitir/tiempo que empieza a transmitir o es el periodo de la basestation
-			//tiempoEsperaDormir = (TDMAmsg_rx->periodo)-(TDMAmsg_rx->periodo)/4 * idSlot_1;
+            tiempoEspera = (TDMAmsg_rx->tiempoTrama)/NUM_MAX_NODOS * idSlot;
+            tiempoDormir = (TDMAmsg_rx->periodo)-(TDMAmsg_rx->tiempoTrama);
 			
             // 2º Configuro timers
             call TimerMiSlot.startOneShot(tiempoEspera);	        //Configuro cuando debo enviar
-			setDelay(TDMAmsg_rx->periodo);							//Configuro cuando debo estar dormido
+			//setDelay(tiempoDormir); //Comprobar funcionamiento					        		//Configuro cuando debo estar dormido
             //call TimerMaster.startOneShot(TDMAmsg_rx->periodo);   //Configuro cuando debo volver a escuchar al master
             
             
@@ -150,41 +156,65 @@ implementation {
                 respuestaPkt_tx->idS = TOS_NODE_ID;
                 respuestaPkt_tx->idM = idMaster;
 				//esto creo que hay que cambiarlo por las tomas de medida 
-                respuestaPkt_tx->rssi = getRssi(TDMAmsg_rx);
+                
+                for(i=0; i<NUM_MAX_NODOS; i++){
+                    respuestaPkt_tx->rssi[i] = 0;
+                }
+                //respuestaPkt_tx->rssi = getRssi(TDMAmsg_rx);
             
             }
 
-            call TimerLeds.startOneShot(500); //Apago los leds
+            //call TimerLeds.startOneShot(500); //Apago los leds
 
         }
-		if(len == sizeof(BROADCASTmsg)){
-			BROADCASTmsg* BROADCASTmsg_rx = (BROADCASTmsg*)payload;
-			id_Tx = BROADCASTmsg_rx->idTx;
+
+        if(len == sizeof(RespuestaMsg)){
 			
-			if(id_Tx == 1){
-				arrayRSSI[0] = getRssi(BROADCASTmsg_rx);
-			}
-			if(id_Tx == 2){
-				arrayRSSI[1] = getRssi(BROADCASTmsg_rx);
-			}
-			if(id_Tx == 3){
-				arrayRSSI[2] = getRssi(BROADCASTmsg_rx);
-			}
-			if(id_Tx == 4){
-				arrayRSSI[3] = getRssi(BROADCASTmsg_rx);
-			}
-			if(!busy){
-				respuestaNodo_tx =
-                    (BROADCASTmsg*)(call Packet.getPayload(&pkt, sizeof(BROADCASTmsg)));
-                if (respuestaNodo_tx == NULL) 
-                    return NULL;
-                
-                respuestaNodo_tx->idTx = TOS_NODE_ID;
-                respuestaNodo_tx->idRx = id_Tx;
-                respuestaNodo_tx->mensaje = 1;
-			}
+            //setLeds(7);
+            //call TimerLeds.startOneShot(1000);            
 			
 		}
+
+        /*
+        typedef nx_struct RespuestaMsg{
+            nx_uint8_t idM;
+            nx_uint8_t idS;
+            nx_uint16_t rssi[NUM_MAX_NODOS];
+
+        }RespuestaMsg;
+        */
+        
+        /*
+        
+        idS[NUM_MAX_NODOS] = {7,17,23,0,0,0};
+
+        idM=MASTER
+        idS= 17
+        rssi[NUM_MAX_NODOS] = {0.1111, NULL, 0.3123123, 0,0,0}
+
+
+
+        */
+        /*
+		if(len == sizeof(RespuestaMsg)){
+			
+            
+            RespuestaMsg* pktRespuesta_rx = (RespuestaMsg*)payload;
+			
+            id_Tx = pktRespuesta_rx->idS;
+            
+			for(i=0; i<NUM_MAX_NODOS; i++){
+                if(arrayNodos[i] != TOS_NODE_ID){
+                    if(arrayNodos[i] == id_Tx){
+                        arrayRSSI[i] = getRssi(pktRespuesta_rx);
+                    }
+                } else {
+                    arrayRRSI[i] = 0;
+                }
+            }			
+			
+		}
+        */
         return msg;
 
     }

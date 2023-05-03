@@ -3,21 +3,22 @@
 #include <Timer.h>
 #include "Slave.h"
 
+
 configuration SlaveAppC {
 }
 implementation {
     components MainC;
     components LedsC;
     components SlaveC as App;
-    components new TimerMilliC() as TimerMaster;
+    //components new TimerMilliC() as TimerMaster;
     components new TimerMilliC() as TimerMiSlot;
     components new TimerMilliC() as TimerLeds;
 	components new TimerMilliC() as TimerDormir;
+    components CC2420ActiveMessageC;
     
     components ActiveMessageC;
     components new AMSenderC(AM_SLAVE);
     components new AMReceiverC(AM_SLAVE);
-    components CC2420ActiveMessageC;
 
 
 
@@ -33,5 +34,6 @@ implementation {
     App.AMControl -> ActiveMessageC;
     App.AMSend -> AMSenderC;
     App.Receive -> AMReceiverC;
+    App -> CC2420ActiveMessageC.CC2420Packet;
 
 }

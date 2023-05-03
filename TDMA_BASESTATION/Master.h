@@ -55,7 +55,7 @@ typedef nx_struct TDMAmsg{
 typedef nx_struct RespuestaMsg{
   nx_uint8_t idM;
   nx_uint8_t idS;
-  nx_uint16_t rssi;
+  nx_uint16_t rssi[NUM_MAX_NODOS];
 }RespuestaMsg;
 
 #endif

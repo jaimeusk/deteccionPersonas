@@ -78,13 +78,6 @@ implementation {
   }
 
 
-    /*
-  typedef nx_struct TDMAmsg{
-    nx_uint8_t idM;
-    nx_uint8_t idS[NUM_MAX_NODOS];
-    nx_uint16_t periodo;
-  }TDMAmsg;
-  */
   event void TimerTramaTDMA.fired() {
     if (!busy) {
       TDMAmsg* tdma = (TDMAmsg*)(call Packet.getPayload(&pkt, sizeof(TDMAmsg)));
@@ -93,69 +86,6 @@ implementation {
         return;
       }
 
-
-      
-      // Generamos un array de números aleatorios para ver a quién le toca enviar qué medida
-      /*
-      for (i = 0; i<3; i++){
-        orden_pet[i]=rand();
-      }
-      while(orden_pet[0]==orden_pet[1] || orden_pet[1]==orden_pet[2] || orden_pet[2]==orden_pet[0]){
-        if (orden_pet[0]==orden_pet[1]){
-          orden_pet[0]=rand();
-        }
-        if (orden_pet[1]==orden_pet[2]){
-          orden_pet[1]=rand();
-        }
-        if (orden_pet[2]==orden_pet[0]){
-          orden_pet[2]=rand();
-        }
-      }
-      
-      // Ordenamos en función de los números calculados
-      for (i=0; i<2; i++){
-        min_idx=i;
-        for (j=i+1; j<3;j++){
-          if (orden_pet[j]<orden_pet[min_idx])
-            min_idx=j;
-        }
-        swap(&tipoPet[min_idx], &tipoPet[i]);
-      }
-
-      // Generamos otro array de números aleatorios para ver el orden de envío
-      for (i = 0; i<3; i++){
-        orden[i]=rand();
-      }
-      while(orden[0]==orden[1] || orden[1]==orden[2] || orden[2]==orden[0]){
-        if (orden[0]==orden[1]){
-          orden[0]=rand();
-        }
-        if (orden[1]==orden[2]){
-          orden[1]=rand();
-        }
-        if (orden[2]==orden[0]){
-          orden[2]=rand();
-        }
-      }
-      // Ordenamos en función de los números calculados
-      for (i=0; i<2; i++){
-        min_idx=i;
-        for (j=i+1; j<3;j++){
-          if (orden[j]<orden[min_idx])
-            min_idx=j;
-        }
-        swap(&ids[min_idx], &ids[i]);
-      }
-
-      */
-/*
-typedef nx_struct TDMAmsg{
-  nx_uint8_t idM;
-  nx_uint8_t idS[NUM_MAX_NODOS];
-  nx_uint16_t periodo;
-  nx_uint16_t tiempoTrama;
-}TDMAmsg;
-*/
       
       // Rellenamos el mensaje tdma antes de enviarlo
       tdma->idM = TOS_NODE_ID;
@@ -208,6 +138,8 @@ typedef nx_struct RespuestaMsg{
       
       RespuestaMsg* rcvPkt = (RespuestaMsg*)payload;
       
+      setLeds(1);
+      call TimerLeds.startOneShot(1000);
       if ((rcvPkt -> idS == 1 || rcvPkt -> idS == 2 || rcvPkt -> idS == 3)  &&
                 rcvPkt -> idM == TOS_NODE_ID){
             
