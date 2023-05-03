@@ -10,7 +10,7 @@ public void imprimeTabla(int idNodoEsclavo_1,int idNodoEsclavo_2, int rssi)
     //El -15 y el -8 son la "anchura" que tendrá ese argumento y el "-" significa que estará alienado a la izquierda
     Console.WriteLine("| {0, -15} | {1, -15} | {2, -8}", idNodoEsclavo_1,idNodoEsclavo_2 rssi);
     
-    if( idNodoEsclavo <= 2)
+    if( idNodoEsclavo_1 <= 2 && idNodoEsclavo_2 <= 2)
     {
         //Esta linea me imprimiria la id del nodo en azul y el rssi en rojo. Podria hacer que segun los id, me imprimiera su valor de un color u otro.
         //Al final pongo "\u001b[0m" para que reestablezca el valor del color para que todo lo demas no se imprima de ese color.
