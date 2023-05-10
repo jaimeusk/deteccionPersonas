@@ -9,8 +9,7 @@
 
 #include "AM.h"
 #include "Serial.h"
-#include <Timer.h>
-#include "BaseStation.h"
+#include "Master.h"
 
 module BaseStationP @safe() {
   uses {
@@ -30,34 +29,22 @@ module BaseStationP @safe() {
     interface AMPacket as RadioAMPacket;
 
     interface Leds;
-
-    interface Timer<TMilli> as Timer0;
-    interface Timer<TMilli> as Timer1;
-    interface Packet;
-    interface Receive;
   }
 }
 
 implementation
 {
-  // ####################################################
-  //                    Variables
-  // ####################################################
-  uint16_t counter;
-  message_t pkt;
-  bool busy = FALSE;
-  int ids[3] = {1,2,3};
-  int tipoPet[3] = {TEMPERATURA, HUMEDAD, ILUMINANCIA};
-  int orden[3] = {0,0,0};
-  int orden_pet[3] = {0,0,0};
-  int i, j, min_idx;
-
   enum {
     UART_QUEUE_LEN = 12,
     RADIO_QUEUE_LEN = 12,
   };
 
-  uint8_t count = 0;
+  int16_t rssi_dbm [NUM_MAX_NODOS][NUM_MAX_NODOS]; // No es lo mismo que rssi_historico porque puede almacenar un valor que haya hecho saltar una alarma
+  bool strikes [NUM_MAX_NODOS][NUM_MAX_NODOS][PERIODO_CALIBRACION];
+  int16_t rssi_historico [NUM_MAX_NODOS][NUM_MAX_NODOS][PERIODO_CALIBRACION];
+  bool alarma [NUM_MAX_NODOS][NUM_MAX_NODOS]; // Enlace entre dos nodos que ha saltado la alarma
+  int posicion_medida[NUM_MAX_NODOS];
+  bool calibrado = FALSE; // Indicará si se han tomado las primeras medida de calibración
   
 
   message_t  uartQueueBufs[UART_QUEUE_LEN];
@@ -70,10 +57,6 @@ implementation
   uint8_t    radioIn, radioOut;
   bool       radioBusy, radioFull;
 
-  // ####################################################
-  //                    Funciones
-  // ####################################################
-
   task void uartSendTask();
   task void radioSendTask();
 
@@ -85,32 +68,10 @@ implementation
     call Leds.led2Toggle();
   }
 
-  void setLeds(uint16_t val) {
-    if (val & 0x01)
-      call Leds.led0On();
-    else
-      call Leds.led0Off();
-    if (val & 0x02)
-      call Leds.led1On();
-    else
-      call Leds.led1Off();
-    if (val & 0x04)
-      call Leds.led2On();
-    else
-      call Leds.led2Off();
-  }
-
-  void swap(int* xp, int* yp){
-      int temp = *xp;
-      *xp = *yp;
-      *yp = temp;
-  }
-
-  // ####################################################
-  //                    Eventos
-  // ####################################################
   event void Boot.booted() {
     uint8_t i;
+    for (i = 0; i<NUM_MAX_NODOS; i++)
+      posicion_medida[i] = 0;
 
     for (i = 0; i < UART_QUEUE_LEN; i++)
       uartQueue[i] = &uartQueueBufs[i];
@@ -133,10 +94,7 @@ implementation
   event void RadioControl.startDone(error_t error) {
     if (error == SUCCESS) {
       radioFull = FALSE;
-      call Timer0.startPeriodic(TIMER_PERIOD_MILLI);
     }
-    else
-      call RadioControl.start();
   }
 
   event void SerialControl.startDone(error_t error) {
@@ -148,81 +106,7 @@ implementation
   event void SerialControl.stopDone(error_t error) {}
   event void RadioControl.stopDone(error_t error) {}
 
-  event void Timer1.fired(){
-    setLeds(0);
-  }
-
-  event void Timer0.fired() {
-    if (!busy) {
-      TDMAmsg* tdma = (TDMAmsg*)(call Packet.getPayload(&pkt, sizeof(TDMAmsg)));
-
-      if (tdma == NULL) {
-        return;
-      }
-
-      // Generamos un array de números aleatorios para ver a quién le toca enviar qué medida
-      for (i = 0; i<3; i++){
-        orden_pet[i]=rand();
-      }
-      while(orden_pet[0]==orden_pet[1] || orden_pet[1]==orden_pet[2] || orden_pet[2]==orden_pet[0]){
-        if (orden_pet[0]==orden_pet[1]){
-          orden_pet[0]=rand();
-        }
-        if (orden_pet[1]==orden_pet[2]){
-          orden_pet[1]=rand();
-        }
-        if (orden_pet[2]==orden_pet[0]){
-          orden_pet[2]=rand();
-        }
-      }
-      // Ordenamos en función de los números calculados
-      for (i=0; i<2; i++){
-        min_idx=i;
-        for (j=i+1; j<3;j++){
-          if (orden_pet[j]<orden_pet[min_idx])
-            min_idx=j;
-        }
-        swap(&tipoPet[min_idx], &tipoPet[i]);
-      }
-
-      // Generamos otro array de números aleatorios para ver el orden de envío
-      for (i = 0; i<3; i++){
-        orden[i]=rand();
-      }
-      while(orden[0]==orden[1] || orden[1]==orden[2] || orden[2]==orden[0]){
-        if (orden[0]==orden[1]){
-          orden[0]=rand();
-        }
-        if (orden[1]==orden[2]){
-          orden[1]=rand();
-        }
-        if (orden[2]==orden[0]){
-          orden[2]=rand();
-        }
-      }
-      // Ordenamos en función de los números calculados
-      for (i=0; i<2; i++){
-        min_idx=i;
-        for (j=i+1; j<3;j++){
-          if (orden[j]<orden[min_idx])
-            min_idx=j;
-        }
-        swap(&ids[min_idx], &ids[i]);
-      }
-
-      tdma->idM = TOS_NODE_ID;
-      for (i=0; i<3; i++){
-        tdma->idS[i] = ids[i];
-        tdma->tipoPeticion[i] = tipoPet[i];
-      }
-      tdma->periodo = TIMER_PERIOD_MILLI;
-
-      if (call RadioSend.send(AM_BROADCAST_ADDR, &pkt, sizeof(TDMAmsg)) == SUCCESS) {
-        busy = TRUE;
-      }
-
-    }
-  }
+  uint8_t count = 0;
 
   message_t* ONE receive(message_t* ONE msg, void* payload, uint8_t len);
   
@@ -240,9 +124,70 @@ implementation
 
   message_t* receive(message_t *msg, void *payload, uint8_t len) {
     message_t *ret = msg;
+    // Tratamos los mensajes de respuesta
+    if (len == sizeof(RespuestaMsg)){
+      RespuestaMsg* rcvPkt = (RespuestaMsg*)payload;
+      int id = rcvPkt->idS;
+      int i;
+      int j;
+      int count_strikes = 0;
+      uint16_t rssi_temp;
+      int16_t sum_rssi;
+      int16_t rssi_medio;
 
+
+      // Introducimos el valor del los rssi medidos 
+      for (i = 0; i<NUM_MAX_NODOS; i++){
+        rssi_temp = rcvPkt->rssi[i];
+        if (rssi_temp>= 128)
+            rssi_dbm[id-1][i] = rssi_temp - 45 - 256;
+        else
+            rssi_dbm[id-1][i] = rssi_temp - 45;
+        
+
+        if (!calibrado){
+          //Añadimos la medida a rssi_histórico y un False a Strikes
+          rssi_historico[id-1][i][posicion_medida[id-1]] = rssi_dbm[id-1][i];
+          strikes[id-1][i][posicion_medida[id-1]] = FALSE;
+          alarma[id-1][i] = FALSE;
+        }else{
+          sum_rssi = 0;
+          for(j = 0;j<(PERIODO_CALIBRACION-1);j++){
+            sum_rssi += rssi_historico[id-1][i][j];
+          }
+          rssi_medio = sum_rssi/PERIODO_CALIBRACION;
+          if(rssi_dbm[id-1][i]<(0.8*rssi_medio)||rssi_dbm[id-1][i]>(1.2*rssi_medio)){
+            // Añadimos rssi_medio a rssi_histórico y un True a Strikes
+            rssi_historico[id-1][i][posicion_medida[id-1]] = rssi_medio;
+            strikes[id-1][i][posicion_medida[id-1]]=TRUE;
+          }else{
+            // Añadimos la medida a rssi_histórico y un False a Strikes
+            rssi_historico[id-1][i][posicion_medida[id-1]] = rssi_dbm[id-1][i];
+            strikes[id-1][i][posicion_medida[id-1]]=FALSE;
+          }
+          // Comprobamos si hay más de (ALARMA_STRIKES) alarmas en Strikes
+          count_strikes = 0;
+          for(j = 0; j<PERIODO_CALIBRACION; j++)
+            if (strikes[id-1][i][j])
+              count_strikes++;
+          if (count_strikes >= ALARMA_STRIKES)
+            alarma[id-1][i] = TRUE;
+          else
+            alarma[id-1][i] = FALSE;
+        }
+
+        }
+        //Aumentamos el valor de "posicion_medida" y, si es mayor de PERIODO_CALIBRACION, lo reseteamos
+        posicion_medida[id-1]++;
+        if (posicion_medida[id-1] >= PERIODO_CALIBRACION){
+          posicion_medida[id-1] = 0;
+          calibrado = TRUE;
+        }
+      
+    }
+
+    // Aquí se imprime el contenido del mensaje
     atomic {
-      // Se Imprime por pantalla
       if (!uartFull)
       {
         ret = uartQueue[uartIn];
@@ -260,26 +205,7 @@ implementation
           }
       }
       else
-        dropBlink();
-      
-      // Tratamiento del mensaje
-      if (len == sizeof(RespuestaMsg)) {
-        RespuestaMsg* rcvPkt = (RespuestaMsg*)payload;
-        
-        if ((rcvPkt -> idS == 0 || rcvPkt -> idS == 1 || rcvPkt -> idS == 2)  &&
-                  rcvPkt -> idM == TOS_NODE_ID){
-          if(rcvPkt -> tipo == TEMPERATURA){
-            setLeds(1);
-          } else if (rcvPkt -> tipo == HUMEDAD){
-            setLeds(2);
-          } else if (rcvPkt -> tipo == ILUMINANCIA){
-            setLeds(4);
-          }
-            
-          call Timer1.startOneShot(TIMER_ON_LEDS);
-
-        }
-      }
+	      dropBlink();
     }
     
     return ret;
@@ -314,8 +240,8 @@ implementation
       call Leds.led1Toggle();
     else
       {
-      failBlink();
-      post uartSendTask();
+        failBlink();
+        post uartSendTask();
       }
   }
 
@@ -358,11 +284,11 @@ implementation
           }
       }
       else
-	      dropBlink();
+        dropBlink();
 
-      if (reflectToken) {
-        //call UartTokenReceive.ReflectToken(Token);
-      }
+    if (reflectToken) {
+      //call UartTokenReceive.ReflectToken(Token);
+    }
     
     return ret;
   }
@@ -375,10 +301,10 @@ implementation
     
     atomic
       if (radioIn == radioOut && !radioFull)
-    {
-      radioBusy = FALSE;
-      return;
-    }
+      {
+        radioBusy = FALSE;
+        return;
+      }
 
     msg = radioQueue[radioOut];
     len = call UartPacket.payloadLength(msg);
@@ -393,8 +319,8 @@ implementation
       call Leds.led0Toggle();
     else
       {
-      failBlink();
-      post radioSendTask();
+        failBlink();
+        post radioSendTask();
       }
   }
 
@@ -403,15 +329,14 @@ implementation
       failBlink();
     else
       atomic
-	  if (msg == radioQueue[radioOut])
-	  {
-	    if (++radioOut >= RADIO_QUEUE_LEN)
-	      radioOut = 0;
-	    if (radioFull)
-	      radioFull = FALSE;
-	  }
+    if (msg == radioQueue[radioOut])
+      {
+        if (++radioOut >= RADIO_QUEUE_LEN)
+          radioOut = 0;
+        if (radioFull)
+          radioFull = FALSE;
+      }
     
     post radioSendTask();
   }
-
 }  
