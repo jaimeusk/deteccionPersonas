@@ -3,6 +3,7 @@
 
 #include <Timer.h>
 #include "Slave.h"
+#include <string.h>
 
 module SlaveC {
     uses interface Boot;
@@ -26,8 +27,10 @@ implementation {
     uint8_t idMaster = 0;
 	uint8_t id_Tx = 0;
     //uint8_t idSlave = 55;
-    uint8_t arraySlaves[3];
-	uint16_t arrayRSSI[4];
+	
+    uint16_t arrayRSSI_Actual[NUM_MAX_NODOS];
+    uint16_t arrayRSSI_Pasado[NUM_MAX_NODOS];
+
     uint8_t idSlot;
     float tiempoEspera = 0;
 	float tiempoDormir = 0;
@@ -38,7 +41,7 @@ implementation {
     RespuestaMsg* respuestaPkt_tx;
     uint8_t i = 0;
 	bool espera = FALSE;
-    uint8_t id = 2;
+    uint8_t id = 1;
     
     
 
@@ -83,6 +86,10 @@ implementation {
     }
 
     event void Boot.booted() {
+        for(i=0; i<NUM_MAX_NODOS; i++){
+            arrayRSSI_Actual[i]=0;
+            arrayRSSI_Pasado[i]=0;
+        }
         call AMControl.start();
     }
 
@@ -97,9 +104,33 @@ implementation {
     event void TimerLeds.fired(){
         setLeds(0);
     }
+   
+    /*void igualarArray(uint16_t *array1, uint16_t *array2, int tamanoArray) {
+        memcpy(array1, array2, tamanoArray * sizeof(uint16_t));
+    }
+    */
+
+    /*
+    void igualarArray(uint16_t arreglo1[], uint16_t arreglo2[], int tamano) {
+        for (i = 0; i < tamano; i++) {
+            arreglo1[i] = arreglo2[i];
+        }
+    }
+    */
 
     event void TimerComienzaDormir.fired(){
-        setDelay(tiempoDormir);
+        for(i=0;i<NUM_MAX_NODOS;i++){
+            arrayRSSI_Pasado[i] = arrayRSSI_Actual [i];
+        }
+        
+        //igualarArray(uint16_t *arrayRSSI_Pasado, uint16_t *arrayRSSI_Actual, NUM_MAX_NODOS);
+        
+            /*  
+                ESTA QUITADO YA QUE NOS METE EN UN BUCLE WHILE INFINITO
+                NUNCA LLEGA A EXPIRAR EL TEMPORIZADOR [TimerDormir.startOneShot(t)]
+                QUE SE LLAMA EN LA FUNCIÓN setDelay(tiempo)
+        */
+        //setDelay(tiempoDormir);
     }
 
     event void TimerMiSlot.fired() {
@@ -108,6 +139,7 @@ implementation {
                 busy = TRUE;
             }
 
+    /* SIRVEN PARA COMPROBAR TDMA
         if(id == 1){
             setLeds(1);
         } else if (id == 2){
@@ -117,7 +149,7 @@ implementation {
         }
         //setLeds(2);
         call TimerLeds.startOneShot(200);
-
+    */
     }
 	
 	event void TimerDormir.fired(){
@@ -136,6 +168,8 @@ implementation {
     }
 
 
+
+
     event message_t* Receive.receive(message_t* msg, void* payload, uint8_t len){
            
         if (len == sizeof(TDMAmsg)) {
@@ -143,21 +177,15 @@ implementation {
 
             TDMAmsg* TDMAmsg_rx = (TDMAmsg*)payload;
 
-            setLeds(7);
+            
+
+            //setLeds(7); //COMPRUEBA RECEPCION TDMA FROM MASTER
             call TimerLeds.startOneShot(1000);
             
-            /*
-            typedef nx_struct TDMAmsg{
-                nx_uint8_t idM;
-                nx_uint8_t idS[NUM_MAX_NODOS];
-                nx_uint16_t periodo;
-                nx_uint16_t tiempoTrama;
-                nx_uint16_t tiempoNodo;
-            }TDMAmsg;
-*/
+
             idMaster = TDMAmsg_rx->idM;
             
-            //arraySlaves = TDMAmsg_rx->tipoPeticion; 
+
             // 1º Calculo cuando es mi turno y configuro timers
             for(i = 0; i < NUM_MAX_NODOS; i++){
                 arrayNodos[i] = TDMAmsg_rx->idS[i];
@@ -166,57 +194,50 @@ implementation {
                     idSlot = i;
                 }
             }
+           
             //2º configuro los timers
-            //(TDMAmsg_rx->periodo)/NUM_MAX_NODOS = tiempoNodo??
+           
             tiempoEspera = (TDMAmsg_rx->tiempoNodo) * idSlot;
-            //tiempoEspera = (TDMAmsg_rx->periodo)/NUM_MAX_NODOS * idSlot; 
             tiempoDormir = (TDMAmsg_rx->periodo - tiempoGuarda)-(TDMAmsg_rx->tiempoTrama + tiempoGuarda);
-
             tiempoTrama = (TDMAmsg_rx -> tiempoTrama);
 			
-            //call TimerMaster.startOneShot(TDMAmsg_rx->periodo);   //Configuro cuando debo volver a escuchar al master
-	
-			
 
-
-            /*
-            typedef nx_struct RespuestaMsg{
-                nx_uint8_t idM;
-                nx_uint8_t idS;
-                nx_uint16_t rssi[NUM_MAX_NODOS];
-
-            }RespuestaMsg;
-            */
-
+            // CREAMOS MENSAJE DE RESPUESTA
             if (!busy) {
-                setLeds(5);
+                //setLeds(5);
                 respuestaPkt_tx = (RespuestaMsg*)(call Packet.getPayload(&pkt, sizeof(RespuestaMsg)));
                 if (respuestaPkt_tx == NULL) 
                     return NULL;
                 
-                    respuestaPkt_tx->idS = id;
-                    respuestaPkt_tx->idM = idMaster;
-				//esto creo que hay que cambiarlo por las tomas de medida
-                
-                /*    for(i=0; i<NUM_MAX_NODOS; i++){
-                        if(arrayNodos[i] != TOS_NODE_ID && idSlot < i){
-                            if(arrayNodos[i] == id_Tx){
-                                arrayRSSI[i] = getRssi(pktRespuesta_rx);
-                            }
-                        } else {
-                             arrayRRSI[i] = 0;
-                        }
-                    }   
-                */
-                respuestaPkt_tx->rssi[i] = 1;
+                respuestaPkt_tx->idS = id;
+                respuestaPkt_tx->idM = idMaster;
+				              
+                // ENVIO RSSI DEL PASADO CICLO
+                for(i=0; i<NUM_MAX_NODOS; i++){
+                    respuestaPkt_tx->rssi[i] = arrayRSSI_Pasado[i];
+                    setLeds(7);
+                }
+
             
             } //Corchete if(!busy)
-            //Llamamos a los timers para enviar la información a la basesatiton y mandamos a dormir a los nodos.
-            call TimerMiSlot.startOneShot(tiempoEspera);
-            call TimerLeds.startOneShot(500); //Apago los leds
             
-			call TimerComienzaDormir.startOneShot(tiempoTrama + tiempoGuarda);
-            //setDelay(tiempoDormir); 
+            //Llamamos a los timers para enviar la información al master y mandamos a dormir a los nodos.
+            call TimerMiSlot.startOneShot(tiempoEspera); // Espera tu slot para realizar el envío de datos.
+            call TimerLeds.startOneShot(1000); //Apago los leds
+            
+			
+            // Actualizacion de los array de RSSI al final de la trama TDMA completa
+            // (CUANDO FUNCIONE) Dormir y ahorrar energía con setDelay(tiempo)
+            call TimerComienzaDormir.startOneShot(tiempoTrama + tiempoGuarda);
+            
+         } else if (len == sizeof(RespuestaMsg)){
+
+            // Recibimos las respuestas de todos los demás nodos y actualizamos nuestro RSSI con ellos
+            RespuestaMsg* RespuestaMsg_rx = (RespuestaMsg*)payload;
+
+            rssi = (RespuestaMsg_rx->idS) -1 ;
+            arrayRSSI_Actual[rssi] = getRssi((message_t*)RespuestaMsg_rx);
+
          }
         return msg;
 

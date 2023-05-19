@@ -2,6 +2,7 @@
 
 #include <Timer.h>
 #include "Slave.h"
+#include <string.h>
 
 
 configuration SlaveAppC {
