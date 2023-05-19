@@ -156,20 +156,25 @@ implementation {
                 }
             }
             //2º configuro los timers
-            tiempoEspera = (TDMAmsg_rx->periodo)/NUM_MAX_NODOS * (idSlot+1);
+            //(TDMAmsg_rx->periodo)/NUM_MAX_NODOS = tiempoNodo??
+            tiempoEspera = (TDMAmsg_rx->tiempoNodo) * idSlot;
+            //tiempoEspera = (TDMAmsg_rx->periodo)/NUM_MAX_NODOS * idSlot; 
             tiempoDormir = (TDMAmsg_rx->periodo)-(TDMAmsg_rx->tiempoTrama);
-			call TimerMiSlot.startOneShot(tiempoEspera);
-            call TimerLeds.startOneShot(500); //Apago los leds
-            
-			//setDelay(tiempoDormir); //Comprobar funcionamiento					        		//Configuro cuando debo estar dormido
-            //call TimerMaster.startOneShot(TDMAmsg_rx->periodo);   //Configuro cuando debo volver a escuchar al master
-            
-            /*
-            
-            */
 			
+            //call TimerMaster.startOneShot(TDMAmsg_rx->periodo);   //Configuro cuando debo volver a escuchar al master
 	
 			
+
+
+            /*
+            typedef nx_struct RespuestaMsg{
+                nx_uint8_t idM;
+                nx_uint8_t idS;
+                nx_uint16_t rssi[NUM_MAX_NODOS];
+
+            }RespuestaMsg;
+            */
+
             if (!busy) {
                 setLeds(5);
                 respuestaPkt_tx = (RespuestaMsg*)(call Packet.getPayload(&pkt, sizeof(RespuestaMsg)));
@@ -180,70 +185,25 @@ implementation {
                     respuestaPkt_tx->idM = idMaster;
 				//esto creo que hay que cambiarlo por las tomas de medida
                 
-                    for(i=0; i<NUM_MAX_NODOS; i++){
+                /*    for(i=0; i<NUM_MAX_NODOS; i++){
                         if(arrayNodos[i] != TOS_NODE_ID && idSlot < i){
                             if(arrayNodos[i] == id_Tx){
                                 arrayRSSI[i] = getRssi(pktRespuesta_rx);
                             }
                         } else {
                              arrayRRSI[i] = 0;
-                        }   
-                        //respuestaPkt_tx->rssi[i] = 1;
-                    }
+                        }
+                    }   
+                */
+                respuestaPkt_tx->rssi[i] = 1;
             
             } //Corchete if(!busy)
-
-
-
-        }
-
-        //if(len == sizeof(RespuestaMsg)){
-			
-            //setLeds(7);
-            //call TimerLeds.startOneShot(1000);            
-			
-		//}
-
-        /*
-        typedef nx_struct RespuestaMsg{
-            nx_uint8_t idM;
-            nx_uint8_t idS;
-            nx_uint16_t rssi[NUM_MAX_NODOS];
-
-        }RespuestaMsg;
-        */
-        
-        /*
-        
-        idS[NUM_MAX_NODOS] = {7,17,23,0,0,0};
-
-        idM=MASTER
-        idS= 17
-        rssi[NUM_MAX_NODOS] = {0.1111, NULL, 0.3123123, 0,0,0}
-
-
-
-        */
-        /*
-		if(len == sizeof(RespuestaMsg)){
-			
+            //Llamamos a los timers para enviar la información a la basesatiton y mandamos a dormir a los nodos.
+            call TimerMiSlot.startOneShot(tiempoEspera);
+            call TimerLeds.startOneShot(500); //Apago los leds
             
-            RespuestaMsg* pktRespuesta_rx = (RespuestaMsg*)payload;
-			
-            id_Tx = pktRespuesta_rx->idS;
-            
-			for(i=0; i<NUM_MAX_NODOS; i++){
-                if(arrayNodos[i] != TOS_NODE_ID){
-                    if(arrayNodos[i] == id_Tx){
-                        arrayRSSI[i] = getRssi(pktRespuesta_rx);
-                    }
-                } else {
-                    arrayRRSI[i] = 0;
-                }
-            }			
-			
-		}
-        */
+			//setDelay(tiempoDormir); 
+         }
         return msg;
 
     }

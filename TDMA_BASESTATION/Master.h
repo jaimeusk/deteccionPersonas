@@ -48,6 +48,7 @@ typedef nx_struct TDMAmsg{
   nx_uint8_t idS[NUM_MAX_NODOS];
   nx_uint16_t periodo;
   nx_uint16_t tiempoTrama;
+  nx_uint16_t tiempoNodo;  // AGREGADO
 }TDMAmsg;
 
 
