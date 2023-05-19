@@ -138,17 +138,17 @@ typedef nx_struct RespuestaMsg{
       
       RespuestaMsg* rcvPkt = (RespuestaMsg*)payload;
       
-      setLeds(1);
+      //setLeds(1);
       call TimerLeds.startOneShot(1000);
       if ((rcvPkt -> idS == 1 || rcvPkt -> idS == 2 || rcvPkt -> idS == 3)  &&
                 rcvPkt -> idM == TOS_NODE_ID){
             
         if(rcvPkt -> idS == 1){
-          setLeds(1);
+          //setLeds(1);
         } else if (rcvPkt -> idS == 2){
           setLeds(2);
         } else if (rcvPkt -> idS == 3){
-          setLeds(4);
+          setLeds(3);
         }
           
         call TimerLeds.startOneShot(TIMER_ON_LEDS);

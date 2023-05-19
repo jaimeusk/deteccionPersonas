@@ -14,6 +14,7 @@ implementation {
     components new TimerMilliC() as TimerMiSlot;
     components new TimerMilliC() as TimerLeds;
 	components new TimerMilliC() as TimerDormir;
+    components new TimerMilliC() as TimerComienzaDormir;
     components CC2420ActiveMessageC;
     
     components ActiveMessageC;
@@ -29,6 +30,7 @@ implementation {
     App.TimerMiSlot -> TimerMiSlot;
     App.TimerLeds -> TimerLeds;
 	App.TimerDormir -> TimerDormir;
+    App.TimerComienzaDormir -> TimerComienzaDormir;
     App.Packet -> AMSenderC;
     App.AMPacket -> AMSenderC;
     App.AMControl -> ActiveMessageC;

@@ -11,6 +11,7 @@ module SlaveC {
     uses interface Timer<TMilli> as TimerMiSlot;
     uses interface Timer<TMilli> as TimerLeds;
 	uses interface Timer<TMilli> as TimerDormir;
+    uses interface Timer<TMilli> as TimerComienzaDormir;
     uses interface Packet;
     uses interface AMPacket;
     uses interface AMSend;
@@ -30,11 +31,15 @@ implementation {
     uint8_t idSlot;
     float tiempoEspera = 0;
 	float tiempoDormir = 0;
+    uint16_t tiempoTrama = 0;
+    uint16_t tiempoGuarda = 10;
     bool busy = FALSE;
     message_t pkt;
     RespuestaMsg* respuestaPkt_tx;
     uint8_t i = 0;
 	bool espera = FALSE;
+    uint8_t id = 2;
+    
     
 
     nx_uint8_t arrayNodos[NUM_MAX_NODOS];
@@ -67,7 +72,9 @@ implementation {
 		call TimerDormir.startOneShot(t);
 		espera = TRUE;
 		while(espera){
+            setLeds(2);
 		}
+        setLeds(0);
 	}
 
 
@@ -91,17 +98,21 @@ implementation {
         setLeds(0);
     }
 
+    event void TimerComienzaDormir.fired(){
+        setDelay(tiempoDormir);
+    }
+
     event void TimerMiSlot.fired() {
         if (call AMSend.send(AM_BROADCAST_ADDR,
             &pkt, sizeof(RespuestaMsg)) == SUCCESS) {
                 busy = TRUE;
             }
 
-        if(TOS_NODE_ID == 1){
+        if(id == 1){
             setLeds(1);
-        } else if (TOS_NODE_ID == 2){
+        } else if (id == 2){
             setLeds(2);
-        } else {
+        } else if(id == 3){
             setLeds(4);
         }
         //setLeds(2);
@@ -151,7 +162,7 @@ implementation {
             for(i = 0; i < NUM_MAX_NODOS; i++){
                 arrayNodos[i] = TDMAmsg_rx->idS[i];
                 
-                if(TDMAmsg_rx->idS[i] == TOS_NODE_ID){
+                if(TDMAmsg_rx->idS[i] == id){
                     idSlot = i;
                 }
             }
@@ -159,7 +170,9 @@ implementation {
             //(TDMAmsg_rx->periodo)/NUM_MAX_NODOS = tiempoNodo??
             tiempoEspera = (TDMAmsg_rx->tiempoNodo) * idSlot;
             //tiempoEspera = (TDMAmsg_rx->periodo)/NUM_MAX_NODOS * idSlot; 
-            tiempoDormir = (TDMAmsg_rx->periodo)-(TDMAmsg_rx->tiempoTrama);
+            tiempoDormir = (TDMAmsg_rx->periodo - tiempoGuarda)-(TDMAmsg_rx->tiempoTrama + tiempoGuarda);
+
+            tiempoTrama = (TDMAmsg_rx -> tiempoTrama);
 			
             //call TimerMaster.startOneShot(TDMAmsg_rx->periodo);   //Configuro cuando debo volver a escuchar al master
 	
@@ -181,7 +194,7 @@ implementation {
                 if (respuestaPkt_tx == NULL) 
                     return NULL;
                 
-                    respuestaPkt_tx->idS = TOS_NODE_ID;
+                    respuestaPkt_tx->idS = id;
                     respuestaPkt_tx->idM = idMaster;
 				//esto creo que hay que cambiarlo por las tomas de medida
                 
@@ -202,7 +215,8 @@ implementation {
             call TimerMiSlot.startOneShot(tiempoEspera);
             call TimerLeds.startOneShot(500); //Apago los leds
             
-			//setDelay(tiempoDormir); 
+			call TimerComienzaDormir.startOneShot(tiempoTrama + tiempoGuarda);
+            //setDelay(tiempoDormir); 
          }
         return msg;
 
