@@ -8,7 +8,7 @@ public void imprimeTabla(int idNodoEsclavo_1,int idNodoEsclavo_2, int rssi)
     // Imprimir valores de tabla
     //Los valores 0 y 1 se refieren al argumento que se imprimira en esa posición, idNodoEsclavo (0) y rssi(1)
     //El -15 y el -8 son la "anchura" que tendrá ese argumento y el "-" significa que estará alienado a la izquierda
-    Console.WriteLine("| {0, -15} | {1, -15} | {2, -8}", idNodoEsclavo_1,idNodoEsclavo_2 rssi);
+    Console.WriteLine("| {0, -15} | {1, -15} | {2, -8}", idNodoEsclavo_1,idNodoEsclavo_2, rssi);
     
     if( idNodoEsclavo_1 <= 2 && idNodoEsclavo_2 <= 2)
     {
