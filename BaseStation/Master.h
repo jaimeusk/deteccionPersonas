@@ -1,10 +1,6 @@
 #ifndef MASTER_H
 #define MASTER_H
 
-#define TEMPERATURA 0
-#define HUMEDAD 1
-#define ILUMINANCIA 2
-
 // Variable para definir el maximo numero de nodos permitidos en el TDMA (incluyendo al BaseStation)
 // No tienen que estar todos necesariamente
 #define NUM_MAX_NODOS 3
@@ -15,7 +11,7 @@ enum {
   TIMER_PERIODO_COMPLETO = 1000,    // Tiempo total entre el comienzo de dos tramas consecutivas
   TIMER_PERIODO_TRAMA = 300,        // Tiempo desde el comienzo de una trama hasta el final de su TDMA
   TIMER_PERIODO_NODO = TIMER_PERIODO_TRAMA/NUM_MAX_NODOS, // Tiempo que tiene cada nodo para transmitir en el TDMA 
-  TIMER_ON_LEDS = TIMER_PERIODO_TRAMA/(3*2),
+  TIMER_ON_LEDS = TIMER_PERIODO_TRAMA/(3),
   PERIODO_CALIBRACION = 15,
   ALARMA_STRIKES = 3
 };

@@ -22,7 +22,9 @@ module SlaveC {
 }
 
 implementation {
-
+    // CAMBIAR EL VALOR POR EL DEL ID DESEADO
+    uint8_t id = 1; // 👈
+    
     uint16_t rssi=1;
     uint8_t idMaster = 0;
 	uint8_t id_Tx = 0;
@@ -41,7 +43,7 @@ implementation {
     RespuestaMsg* respuestaPkt_tx;
     uint8_t i = 0;
 	bool espera = FALSE;
-    uint8_t id = 1;
+    
     
     
 
@@ -75,9 +77,10 @@ implementation {
 		call TimerDormir.startOneShot(t);
 		espera = TRUE;
 		while(espera){
-            setLeds(2);
+            //setLeds(2);
 		}
-        setLeds(0);
+        setLeds(1); //LED 1 cuando despierta
+        call TimerLeds.startOneShot(TIMER_ON_LEDS);
 	}
 
 
@@ -179,8 +182,8 @@ implementation {
 
             
 
-            //setLeds(7); //COMPRUEBA RECEPCION TDMA FROM MASTER
-            call TimerLeds.startOneShot(1000);
+            setLeds(2); //LED 2: COMPRUEBA RECEPCION TDMA FROM MASTER
+            call TimerLeds.startOneShot(TIMER_ON_LEDS);
             
 
             idMaster = TDMAmsg_rx->idM;
@@ -204,7 +207,6 @@ implementation {
 
             // CREAMOS MENSAJE DE RESPUESTA
             if (!busy) {
-                //setLeds(5);
                 respuestaPkt_tx = (RespuestaMsg*)(call Packet.getPayload(&pkt, sizeof(RespuestaMsg)));
                 if (respuestaPkt_tx == NULL) 
                     return NULL;
@@ -215,15 +217,14 @@ implementation {
                 // ENVIO RSSI DEL PASADO CICLO
                 for(i=0; i<NUM_MAX_NODOS; i++){
                     respuestaPkt_tx->rssi[i] = arrayRSSI_Pasado[i];
-                    setLeds(7);
+                    
                 }
-
-            
-            } //Corchete if(!busy)
+            }
             
             //Llamamos a los timers para enviar la información al master y mandamos a dormir a los nodos.
             call TimerMiSlot.startOneShot(tiempoEspera); // Espera tu slot para realizar el envío de datos.
-            call TimerLeds.startOneShot(1000); //Apago los leds
+            setLeds(4); // LED 3: he mandado el RSSI del pasado ciclo
+            call TimerLeds.startOneShot(TIMER_ON_LEDS); //Apago los leds
             
 			
             // Actualizacion de los array de RSSI al final de la trama TDMA completa

@@ -15,28 +15,35 @@ module BaseStationP @safe() {
   uses {
     interface Boot;
     interface SplitControl as SerialControl;
-    interface SplitControl as RadioControl;
+    interface SplitControl as AMControl;
 
     interface AMSend as UartSend[am_id_t id];
     interface Receive as UartReceive[am_id_t id];
     interface Packet as UartPacket;
     interface AMPacket as UartAMPacket;
     
-    interface AMSend as RadioSend[am_id_t id];
-    interface Receive as RadioReceive[am_id_t id];
-    interface Receive as RadioSnoop[am_id_t id];
-    interface Packet as RadioPacket;
-    interface AMPacket as RadioAMPacket;
+    //interface AMSend as RadioSend[am_id_t id];
+    //interface Receive as RadioReceive[am_id_t id];
+    //interface Receive as RadioSnoop[am_id_t id];
+    interface Packet;
+    interface AMPacket;
+    interface AMSend;
+    interface Receive;
 
+    interface Timer<TMilli> as TimerTramaTDMA;
+    interface Timer<TMilli> as TimerLeds;
     interface Leds;
   }
 }
 
 implementation
 {
+  // ############################
+  // #    VARIABLES GLOBALES    #
+  // ############################
   enum {
-    UART_QUEUE_LEN = 12,
-    RADIO_QUEUE_LEN = 12,
+    UART_QUEUE_LEN = (16+16*NUM_MAX_NODOS),
+    RADIO_QUEUE_LEN = (16+16*NUM_MAX_NODOS),
   };
 
   int16_t rssi_dbm [NUM_MAX_NODOS][NUM_MAX_NODOS]; // No es lo mismo que rssi_historico porque puede almacenar un valor que haya hecho saltar una alarma
@@ -57,8 +64,51 @@ implementation
   uint8_t    radioIn, radioOut;
   bool       radioBusy, radioFull;
 
+  uint8_t count = 0;
+  uint8_t tmpLen;
+
+  // ########## TDMA ############
+  uint16_t counter;
+  message_t pkt;
+  bool busy = FALSE;
+
+  // Ahora mismo es un ejemplo, los nodos esclavos son 1,2 y 3.
+  // En el futuro tendremos que obtenerlos dinamicamente.
+  int ids[3] = {1,2,3};
+  int orden[3] = {0,0,0};
+  int i, j, min_idx;
+
+  // ############################
+  // #         TAREAS           #
+  // ############################
+
   task void uartSendTask();
-  task void radioSendTask();
+  task void RadioSendTask();
+
+  // ############################
+  // #        FUNCIONES         #
+  // ############################
+
+  void setLeds(uint16_t val) {
+    if (val & 0x01)
+      call Leds.led0On();
+    else
+      call Leds.led0Off();
+    if (val & 0x02)
+      call Leds.led1On();
+    else
+      call Leds.led1Off();
+    if (val & 0x04)
+      call Leds.led2On();
+    else
+      call Leds.led2Off();
+  }
+
+  void swap(int* xp, int* yp){
+      int temp = *xp;
+      *xp = *yp;
+      *yp = temp;
+  }
 
   void dropBlink() {
     call Leds.led2Toggle();
@@ -68,8 +118,12 @@ implementation
     call Leds.led2Toggle();
   }
 
+  // ############################
+  // #          EVENTOS         #
+  // ############################
+
+
   event void Boot.booted() {
-    uint8_t i;
     for (i = 0; i<NUM_MAX_NODOS; i++)
       posicion_medida[i] = 0;
 
@@ -85,15 +139,19 @@ implementation
     radioBusy = FALSE;
     radioFull = TRUE;
 
-    if (call RadioControl.start() == EALREADY)
+    if (call AMControl.start() == EALREADY)
       radioFull = FALSE;
     if (call SerialControl.start() == EALREADY)
       uartFull = FALSE;
   }
 
-  event void RadioControl.startDone(error_t error) {
+  event void AMControl.startDone(error_t error) {
     if (error == SUCCESS) {
       radioFull = FALSE;
+      //Comienza a enviar tramas TDMA cada periodo
+      call TimerTramaTDMA.startPeriodic(TIMER_PERIODO_COMPLETO);
+    }else {
+      call AMControl.start();
     }
   }
 
@@ -103,38 +161,95 @@ implementation
     }
   }
 
-  event void SerialControl.stopDone(error_t error) {}
-  event void RadioControl.stopDone(error_t error) {}
-
-  uint8_t count = 0;
-
-  message_t* ONE receive(message_t* ONE msg, void* payload, uint8_t len);
-  
-  event message_t *RadioSnoop.receive[am_id_t id](message_t *msg,
-						    void *payload,
-						    uint8_t len) {
-    return receive(msg, payload, len);
-  }
-  
-  event message_t *RadioReceive.receive[am_id_t id](message_t *msg,
-						    void *payload,
-						    uint8_t len) {
-    return receive(msg, payload, len);
+  event void SerialControl.stopDone(error_t error) {
   }
 
-  message_t* receive(message_t *msg, void *payload, uint8_t len) {
+  event void AMControl.stopDone(error_t error) {
+  }
+
+  event void TimerLeds.fired(){
+    setLeds(0);
+  }
+
+  event void TimerTramaTDMA.fired() {
+    if (!busy) {
+      TDMAmsg* tdma = (TDMAmsg*)(call Packet.getPayload(&pkt, sizeof(TDMAmsg)));
+
+      if (tdma == NULL) {
+        return;
+      }
+
+      
+      // Rellenamos el mensaje tdma antes de enviarlo
+      tdma->idM = TOS_NODE_ID;
+
+      //El orden en el que pedimos las cosas a los nodos no es relevante.
+      //tdma->idS = ids;
+      
+      for (i=0; i<NUM_MAX_NODOS; i++){
+        tdma->idS[i] = ids[i];
+      }
+
+      tdma->tiempoTrama = TIMER_PERIODO_TRAMA;
+      tdma->periodo = TIMER_PERIODO_COMPLETO;
+      
+      
+      
+      if (call AMSend.send(AM_BROADCAST_ADDR,
+                  &pkt, sizeof(TDMAmsg)) == SUCCESS) {
+        busy = TRUE;
+      }
+
+    }
+  }
+
+  event void AMSend.sendDone(message_t* msg, error_t error) {
+    if (error != SUCCESS)
+      failBlink();
+    else
+      atomic
+    if (msg == radioQueue[radioOut])
+      {
+        if (++radioOut >= RADIO_QUEUE_LEN)
+          radioOut = 0;
+        if (radioFull)
+          radioFull = FALSE;
+      }
+    if (&pkt == msg) {
+      busy = FALSE;
+      setLeds(7);
+      call TimerLeds.startOneShot(100); //Breve parpadeo 3 leds-->TDMA ENVIADO
+    }
+    
+    post RadioSendTask();
+  }
+
+  event message_t* Receive.receive(message_t *msg,
+						    void *payload,
+						    uint8_t len) {
+    
     message_t *ret = msg;
     // Tratamos los mensajes de respuesta
     if (len == sizeof(RespuestaMsg)){
       RespuestaMsg* rcvPkt = (RespuestaMsg*)payload;
       int id = rcvPkt->idS;
-      int i;
-      int j;
       int count_strikes = 0;
       uint16_t rssi_temp;
       int16_t sum_rssi;
       int16_t rssi_medio;
 
+      // Debugueo con LEDs
+      //call TimerLeds.startOneShot(1000);
+      if ((rcvPkt -> idS == 1 || rcvPkt -> idS == 2 || rcvPkt -> idS == 3)  &&
+                rcvPkt -> idM == TOS_NODE_ID){
+        if(rcvPkt -> idS == 1){
+          setLeds(1);
+        } else if (rcvPkt -> idS == 2){
+          setLeds(2);
+        } else if (rcvPkt -> idS == 3){
+          setLeds(4);
+        call TimerLeds.startOneShot(TIMER_ON_LEDS);
+      }
 
       // Introducimos el valor del los rssi medidos 
       for (i = 0; i<NUM_MAX_NODOS; i++){
@@ -184,35 +299,33 @@ implementation
           calibrado = TRUE;
         }
       
-    }
-
-    // Aquí se imprime el contenido del mensaje
-    atomic {
-      if (!uartFull)
-      {
-        ret = uartQueue[uartIn];
-        uartQueue[uartIn] = msg;
-
-        uartIn = (uartIn + 1) % UART_QUEUE_LEN;
-      
-        if (uartIn == uartOut)
-          uartFull = TRUE;
-
-        if (!uartBusy)
-          {
-            post uartSendTask();
-            uartBusy = TRUE;
-          }
       }
-      else
-	      dropBlink();
+
+      // Aquí se imprime el contenido del mensaje
+      atomic {
+        if (!uartFull)
+        {
+          ret = uartQueue[uartIn];
+          uartQueue[uartIn] = msg;
+
+          uartIn = (uartIn + 1) % UART_QUEUE_LEN;
+        
+          if (uartIn == uartOut)
+            uartFull = TRUE;
+
+          if (!uartBusy)
+            {
+              post uartSendTask();
+              uartBusy = TRUE;
+            }
+        }
+        else
+          dropBlink();
+      }
     }
-    
     return ret;
   }
 
-  uint8_t tmpLen;
-  
   task void uartSendTask() {
     uint8_t len;
     am_id_t id;
@@ -227,11 +340,11 @@ implementation
       }
 
     msg = uartQueue[uartOut];
-    tmpLen = len = call RadioPacket.payloadLength(msg);
-    id = call RadioAMPacket.type(msg);
-    addr = call RadioAMPacket.destination(msg);
-    src = call RadioAMPacket.source(msg);
-    grp = call RadioAMPacket.group(msg);
+    tmpLen = len = call Packet.payloadLength(msg);
+    id = call AMPacket.type(msg);
+    addr = call AMPacket.destination(msg);
+    src = call AMPacket.source(msg);
+    grp = call AMPacket.group(msg);
     call UartPacket.clear(msg);
     call UartAMPacket.setSource(msg, src);
     call UartAMPacket.setGroup(msg, grp);
@@ -279,7 +392,7 @@ implementation
 
         if (!radioBusy)
           {
-            post radioSendTask();
+            post RadioSendTask();
             radioBusy = TRUE;
           }
       }
@@ -293,7 +406,7 @@ implementation
     return ret;
   }
 
-  task void radioSendTask() {
+  task void RadioSendTask() {
     uint8_t len;
     am_id_t id;
     am_addr_t addr,source;
@@ -312,31 +425,22 @@ implementation
     source = call UartAMPacket.source(msg);
     id = call UartAMPacket.type(msg);
 
-    call RadioPacket.clear(msg);
-    call RadioAMPacket.setSource(msg, source);
+    call Packet.clear(msg);
+    call AMPacket.setSource(msg, source);
     
-    if (call RadioSend.send[id](addr, msg, len) == SUCCESS)
+    if (call AMSend.send(addr, msg, len) == SUCCESS)
       call Leds.led0Toggle();
     else
       {
         failBlink();
-        post radioSendTask();
+        post RadioSendTask();
       }
   }
 
-  event void RadioSend.sendDone[am_id_t id](message_t* msg, error_t error) {
-    if (error != SUCCESS)
-      failBlink();
-    else
-      atomic
-    if (msg == radioQueue[radioOut])
-      {
-        if (++radioOut >= RADIO_QUEUE_LEN)
-          radioOut = 0;
-        if (radioFull)
-          radioFull = FALSE;
-      }
-    
-    post radioSendTask();
-  }
+  
+
+  
+
+
+
 }  
