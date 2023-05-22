@@ -20,6 +20,8 @@ enum {
   BUFFER_SIZE = 20
 };
 
+// Inicializar el módulo de puerto serial
+  Serial.init();
 
 // Función para enviar una cadena formateada a través del puerto serial
 //El ... indica que la función puede recibir un número variable de argumentos adicionales
@@ -69,7 +71,7 @@ void imprimeTabla(int tablaRssi [NUM_MAX_NODOS_FILAS][NUM_MAX_NODOS_COLUMNAS], b
   }
 
   sendSerial("--------+--------+--------+--------+---------+");
-}
+
 
 // Ejemplo de uso AUNQUE CREO QUE NO ME DEJARÁ en nesC
 //int main() {
@@ -81,14 +83,14 @@ void imprimeTabla(int tablaRssi [NUM_MAX_NODOS_FILAS][NUM_MAX_NODOS_COLUMNAS], b
     //}
  // }
 
-  // Inicializar el módulo de puerto serial
-  Serial.init();
 
   // Enviar la tabla a través del puerto serial
   //imprimeTabla();
+  // return 0;
+  //}
 
-  return 0;
-}
+
+
 
 
 
