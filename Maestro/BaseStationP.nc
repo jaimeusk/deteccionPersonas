@@ -53,6 +53,8 @@ implementation
   int posicion_medida[NUM_MAX_NODOS];
   bool calibrado = FALSE; // Indicará si se han tomado las primeras medida de calibración
   
+  uint16_t node_id_master;
+  
 
   message_t  uartQueueBufs[UART_QUEUE_LEN];
   message_t  * ONE_NOK uartQueue[UART_QUEUE_LEN];
@@ -124,6 +126,8 @@ implementation
 
 
   event void Boot.booted() {
+    node_id_master = TOS_NODE_ID;
+
     for (i = 0; i<NUM_MAX_NODOS; i++)
       posicion_medida[i] = 0;
 
@@ -181,7 +185,7 @@ implementation
 
       
       // Rellenamos el mensaje tdma antes de enviarlo
-      tdma->idM = TOS_NODE_ID;
+      tdma->idM = node_id_master;
 
       //El orden en el que pedimos las cosas a los nodos no es relevante.
       //tdma->idS = ids;
@@ -241,7 +245,7 @@ implementation
       // Debugueo con LEDs
       //call TimerLeds.startOneShot(1000);
       if ((rcvPkt -> idS == 1 || rcvPkt -> idS == 2 || rcvPkt -> idS == 3)  &&
-                rcvPkt -> idM == TOS_NODE_ID){
+                rcvPkt -> idM == node_id_master){
         if(rcvPkt -> idS == 1){
           setLeds(1);
         } else if (rcvPkt -> idS == 2){

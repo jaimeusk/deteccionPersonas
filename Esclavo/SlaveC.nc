@@ -43,6 +43,7 @@ implementation {
     RespuestaMsg* respuestaPkt_tx;
     uint8_t i = 0;
 	bool espera = FALSE;
+    bool PRUEBA = FALSE;
     
     
     
@@ -89,6 +90,7 @@ implementation {
     }
 
     event void Boot.booted() {
+        id = TOS_NODE_ID; // PARA QUE FUNCIONE HAY QUE COMPILARLO CON "make telosb install,id" (sin espacios entre la coma)
         for(i=0; i<NUM_MAX_NODOS; i++){
             arrayRSSI_Actual[i]=0;
             arrayRSSI_Pasado[i]=0;

@@ -246,12 +246,12 @@ typedef int32_t ufs_daddr_t;
 typedef int32_t ufs_time_t;
 typedef u_int32_t uid_t;
 # 41 "/usr/lib/gcc/msp430/4.6.3/../../../../msp430/include/string.h" 3
-extern int memcmp(const void *arg_0x7f540e6f9250, const void *arg_0x7f540e6f9550, size_t arg_0x7f540e6f9810);
-extern void *memcpy(void *arg_0x7f540e6f8110, const void *arg_0x7f540e6f8410, size_t arg_0x7f540e6f86d0);
+extern int memcmp(const void *arg_0x7f49d8327250, const void *arg_0x7f49d8327550, size_t arg_0x7f49d8327810);
+extern void *memcpy(void *arg_0x7f49d8326110, const void *arg_0x7f49d8326410, size_t arg_0x7f49d83266d0);
 
-extern void *memset(void *arg_0x7f540e6f5020, int arg_0x7f540e6f52a0, size_t arg_0x7f540e6f5560);
+extern void *memset(void *arg_0x7f49d8323020, int arg_0x7f49d83232a0, size_t arg_0x7f49d8323560);
 #line 65
-extern void *memset(void *arg_0x7f540e6dd060, int arg_0x7f540e6dd2e0, size_t arg_0x7f540e6dd5a0);
+extern void *memset(void *arg_0x7f49d830b060, int arg_0x7f49d830b2e0, size_t arg_0x7f49d830b5a0);
 # 62 "/usr/lib/gcc/msp430/4.6.3/../../../../msp430/include/stdlib.h" 3
 #line 59
 typedef struct __nesc_unnamed4243 {
@@ -406,7 +406,7 @@ struct _reent {
 
   int __sdidinit;
 
-  void (*__cleanup)(struct _reent *arg_0x7f540e69e170);
+  void (*__cleanup)(struct _reent *arg_0x7f49d82ce170);
 
 
   struct _Bigint *_result;
@@ -446,7 +446,7 @@ struct _reent {
   struct _atexit _atexit0;
 
 
-  void (**_sig_func)(int arg_0x7f540e699480);
+  void (**_sig_func)(int arg_0x7f49d82c9480);
 
 
 
@@ -491,7 +491,7 @@ enum __fdlibm_version {
 
 
 enum __fdlibm_version;
-# 25 "../../tos/system/tos.h"
+# 25 "../../../tos/system/tos.h"
 typedef uint8_t bool;
 enum __nesc_unnamed4248 {
 #line 26
@@ -513,7 +513,7 @@ struct __nesc_attr_atleastonce {
 #line 38
 struct __nesc_attr_exactlyonce {
 };
-# 68 "../../tos/types/TinyError.h"
+# 68 "../../../tos/types/TinyError.h"
 #line 51
 typedef enum __nesc_unnamed4242 {
   SUCCESS = 0, 
@@ -693,7 +693,7 @@ extern volatile unsigned char BCSCTL2 __asm ("__""BCSCTL2");
 extern volatile unsigned int ADC12CTL0 __asm ("__""ADC12CTL0");
 
 extern volatile unsigned int ADC12CTL1 __asm ("__""ADC12CTL1");
-# 555 "../../tos/chips/msp430/msp430hardware.h"
+# 555 "../../../tos/chips/msp430/msp430hardware.h"
 typedef uint8_t mcu_power_t  ;
 static inline mcu_power_t mcombine(mcu_power_t m1, mcu_power_t m2)  ;
 
@@ -744,7 +744,7 @@ enum __nesc_unnamed4251 {
   MSP430_PORT_DRIVE_STRENGTH_REDUCED, 
   MSP430_PORT_DRIVE_STRENGTH_FULL
 };
-# 8 "../../tos/platforms/telosb/hardware.h"
+# 8 "../../../tos/platforms/telosb/hardware.h"
 enum __nesc_unnamed4252 {
   TOS_SLEEP_NONE = MSP430_POWER_ACTIVE
 };
@@ -777,8 +777,40 @@ static inline void TOSH_MAKE_FLASH_CS_OUTPUT()  ;
 static inline void TOSH_SET_FLASH_HOLD_PIN()  ;
 #line 89
 static inline void TOSH_MAKE_FLASH_HOLD_OUTPUT()  ;
-# 42 "../../tos/chips/msp430/timer/Msp430Timer.h"
+# 9 "Master.h"
 enum __nesc_unnamed4254 {
+  AM_BLINKTORADIO = 17, 
+  TIMER_PERIODO_COMPLETO = 1000, 
+  TIMER_PERIODO_TRAMA = 300, 
+  TIMER_PERIODO_NODO = TIMER_PERIODO_TRAMA / 3, 
+  TIMER_ON_LEDS = TIMER_PERIODO_TRAMA / 3, 
+  PERIODO_CALIBRACION = 15, 
+  ALARMA_STRIKES = 3
+};
+#line 51
+#line 45
+typedef nx_struct TDMAmsg {
+  nx_uint8_t idM;
+  nx_uint8_t idS[3];
+  nx_uint16_t periodo;
+  nx_uint16_t tiempoTrama;
+  nx_uint16_t tiempoNodo;
+} __attribute__((packed)) TDMAmsg;
+
+
+
+
+
+
+
+#line 55
+typedef nx_struct RespuestaMsg {
+  nx_uint8_t idM;
+  nx_uint8_t idS;
+  nx_uint16_t rssi[3];
+} __attribute__((packed)) RespuestaMsg;
+# 42 "../../../tos/chips/msp430/timer/Msp430Timer.h"
+enum __nesc_unnamed4255 {
   MSP430TIMER_CM_NONE = 0, 
   MSP430TIMER_CM_RISING = 1, 
   MSP430TIMER_CM_FALLING = 2, 
@@ -807,7 +839,7 @@ enum __nesc_unnamed4254 {
 };
 #line 82
 #line 70
-typedef struct __nesc_unnamed4255 {
+typedef struct __nesc_unnamed4256 {
   int ccifg : 1;
   int cov : 1;
   int out : 1;
@@ -831,7 +863,7 @@ typedef struct __nesc_unnamed4255 {
 
 
 #line 84
-typedef struct __nesc_unnamed4256 {
+typedef struct __nesc_unnamed4257 {
   int taifg : 1;
   int taie : 1;
   int taclr : 1;
@@ -843,7 +875,7 @@ typedef struct __nesc_unnamed4256 {
 } msp430_timer_a_control_t;
 #line 107
 #line 95
-typedef struct __nesc_unnamed4257 {
+typedef struct __nesc_unnamed4258 {
   int tbifg : 1;
   int tbie : 1;
   int tbclr : 1;
@@ -856,7 +888,7 @@ typedef struct __nesc_unnamed4257 {
   int tbclgrp : 2;
   int _unused2 : 1;
 } msp430_timer_b_control_t;
-# 6 "../../tos/types/AM.h"
+# 6 "../../../tos/types/AM.h"
 typedef nx_uint8_t nx_am_id_t;
 typedef nx_uint8_t nx_am_group_t;
 typedef nx_uint16_t nx_am_addr_t;
@@ -865,7 +897,7 @@ typedef uint8_t am_id_t;
 typedef uint8_t am_group_t;
 typedef uint16_t am_addr_t;
 
-enum __nesc_unnamed4258 {
+enum __nesc_unnamed4259 {
   AM_BROADCAST_ADDR = 0xffff
 };
 
@@ -877,23 +909,23 @@ enum __nesc_unnamed4258 {
 
 
 
-enum __nesc_unnamed4259 {
+enum __nesc_unnamed4260 {
   TOS_AM_GROUP = 0x22, 
   TOS_AM_ADDRESS = 1
 };
-# 83 "../../tos/lib/serial/Serial.h"
+# 83 "../../../tos/lib/serial/Serial.h"
 typedef uint8_t uart_id_t;
 
 
 
-enum __nesc_unnamed4260 {
+enum __nesc_unnamed4261 {
   HDLC_FLAG_BYTE = 0x7e, 
   HDLC_CTLESC_BYTE = 0x7d
 };
 
 
 
-enum __nesc_unnamed4261 {
+enum __nesc_unnamed4262 {
   AM_SERIAL_PACKET = 0, 
   TOS_SERIAL_ACTIVE_MESSAGE_ID = 0, 
   TOS_SERIAL_CC1000_ID = 1, 
@@ -902,7 +934,7 @@ enum __nesc_unnamed4261 {
 };
 
 
-enum __nesc_unnamed4262 {
+enum __nesc_unnamed4263 {
   SERIAL_PROTO_ACK = 67, 
   SERIAL_PROTO_PACKET_ACK = 68, 
   SERIAL_PROTO_PACKET_NOACK = 69, 
@@ -954,7 +986,7 @@ typedef nx_struct serial_packet {
 typedef nx_struct serial_metadata {
   nx_uint8_t ack;
 } __attribute__((packed)) serial_metadata_t;
-# 39 "../../tos/chips/cc2420/CC2420.h"
+# 39 "../../../tos/chips/cc2420/CC2420.h"
 typedef uint8_t cc2420_status_t;
 #line 93
 #line 87
@@ -1024,7 +1056,7 @@ typedef nx_struct cc2420_packet {
   nx_uint8_t data[];
 } __attribute__((packed)) cc2420_packet_t;
 #line 174
-enum __nesc_unnamed4263 {
+enum __nesc_unnamed4264 {
 
   MAC_HEADER_SIZE = sizeof(cc2420_header_t ) - 1, 
 
@@ -1281,11 +1313,11 @@ enum cc2420_security_enums {
 };
 
 
-enum __nesc_unnamed4264 {
+enum __nesc_unnamed4265 {
 
   CC2420_INVALID_TIMESTAMP = 0x80000000L
 };
-# 59 "../../tos/platforms/telosa/platform_message.h"
+# 59 "../../../tos/platforms/telosa/platform_message.h"
 #line 56
 typedef union message_header {
   cc2420_header_t cc2420;
@@ -1311,7 +1343,7 @@ typedef struct message_metadata {
     serial_metadata_t serial_meta;
   } ;
 } message_metadata_t;
-# 19 "../../tos/types/message.h"
+# 19 "../../../tos/types/message.h"
 #line 14
 typedef nx_struct message_t {
   nx_uint8_t header[sizeof(message_header_t )];
@@ -1319,18 +1351,7 @@ typedef nx_struct message_t {
   nx_uint8_t footer[sizeof(message_footer_t )];
   nx_uint8_t metadata[sizeof(message_metadata_t )];
 } __attribute__((packed)) message_t;
-# 43 "../../tos/types/Leds.h"
-enum __nesc_unnamed4265 {
-  LEDS_LED0 = 1 << 0, 
-  LEDS_LED1 = 1 << 1, 
-  LEDS_LED2 = 1 << 2, 
-  LEDS_LED3 = 1 << 3, 
-  LEDS_LED4 = 1 << 4, 
-  LEDS_LED5 = 1 << 5, 
-  LEDS_LED6 = 1 << 6, 
-  LEDS_LED7 = 1 << 7
-};
-# 41 "../../tos/lib/timer/Timer.h"
+# 41 "../../../tos/lib/timer/Timer.h"
 typedef struct __nesc_unnamed4266 {
 #line 41
   int notUsed;
@@ -1355,8 +1376,19 @@ typedef struct __nesc_unnamed4269 {
 } 
 #line 44
 TMicro;
-# 40 "../../tos/types/IeeeEui64.h"
+# 43 "../../../tos/types/Leds.h"
 enum __nesc_unnamed4270 {
+  LEDS_LED0 = 1 << 0, 
+  LEDS_LED1 = 1 << 1, 
+  LEDS_LED2 = 1 << 2, 
+  LEDS_LED3 = 1 << 3, 
+  LEDS_LED4 = 1 << 4, 
+  LEDS_LED5 = 1 << 5, 
+  LEDS_LED6 = 1 << 6, 
+  LEDS_LED7 = 1 << 7
+};
+# 40 "../../../tos/types/IeeeEui64.h"
+enum __nesc_unnamed4271 {
 #line 40
   IEEE_EUI64_LENGTH = 8
 };
@@ -1366,7 +1398,7 @@ enum __nesc_unnamed4270 {
 typedef struct ieee_eui64 {
   uint8_t data[IEEE_EUI64_LENGTH];
 } ieee_eui64_t;
-# 49 "../../tos/types/Ieee154.h"
+# 49 "../../../tos/types/Ieee154.h"
 typedef uint16_t ieee154_panid_t;
 typedef uint16_t ieee154_saddr_t;
 typedef ieee_eui64_t ieee154_laddr_t;
@@ -1378,15 +1410,15 @@ typedef ieee_eui64_t ieee154_laddr_t;
 
 
 #line 53
-typedef struct __nesc_unnamed4271 {
+typedef struct __nesc_unnamed4272 {
   uint8_t ieee_mode : 2;
-  union __nesc_unnamed4272 {
+  union __nesc_unnamed4273 {
     ieee154_saddr_t saddr;
     ieee154_laddr_t laddr;
   } ieee_addr;
 } ieee154_addr_t;
 #line 100
-enum __nesc_unnamed4273 {
+enum __nesc_unnamed4274 {
   IEEE154_BROADCAST_ADDR = 0xffff, 
   IEEE154_BROADCAST_PAN = 0xffff, 
   IEEE154_LINK_MTU = 127
@@ -1398,7 +1430,7 @@ struct ieee154_frame_addr {
   ieee154_panid_t ieee_dstpan;
 };
 
-enum __nesc_unnamed4274 {
+enum __nesc_unnamed4275 {
   IEEE154_MIN_HDR_SZ = 6
 };
 #line 128
@@ -1427,13 +1459,13 @@ enum ieee154_fcf_addr_mode_enums {
   IEEE154_ADDR_MASK = 3
 };
 #line 163
-enum __nesc_unnamed4275 {
+enum __nesc_unnamed4276 {
   TOS_IEEE154_SHORT_ADDRESS = 1, 
   TOS_IEEE154_PAN_ID = 22
 };
-# 58 "../../tos/chips/msp430/usart/msp430usart.h"
+# 58 "../../../tos/chips/msp430/usart/msp430usart.h"
 #line 51
-typedef enum __nesc_unnamed4276 {
+typedef enum __nesc_unnamed4277 {
   USART_NONE = 0, 
   USART_UART = 1, 
   USART_UART_TX = 2, 
@@ -1452,7 +1484,7 @@ typedef enum __nesc_unnamed4276 {
 
 
 #line 60
-typedef struct __nesc_unnamed4277 {
+typedef struct __nesc_unnamed4278 {
   unsigned int swrst : 1;
   unsigned int mm : 1;
   unsigned int sync : 1;
@@ -1472,7 +1504,7 @@ typedef struct __nesc_unnamed4277 {
 
 
 #line 71
-typedef struct __nesc_unnamed4278 {
+typedef struct __nesc_unnamed4279 {
   unsigned int txept : 1;
   unsigned int stc : 1;
   unsigned int txwake : 1;
@@ -1492,7 +1524,7 @@ typedef struct __nesc_unnamed4278 {
 
 
 #line 81
-typedef struct __nesc_unnamed4279 {
+typedef struct __nesc_unnamed4280 {
   unsigned int rxerr : 1;
   unsigned int rxwake : 1;
   unsigned int urxwie : 1;
@@ -1504,7 +1536,7 @@ typedef struct __nesc_unnamed4279 {
 } __attribute((packed))  msp430_urctl_t;
 #line 119
 #line 101
-typedef struct __nesc_unnamed4280 {
+typedef struct __nesc_unnamed4281 {
   unsigned int ubr : 16;
 
 
@@ -1529,7 +1561,7 @@ typedef struct __nesc_unnamed4280 {
 
 
 #line 121
-typedef struct __nesc_unnamed4281 {
+typedef struct __nesc_unnamed4282 {
   uint16_t ubr;
   uint8_t uctl;
   uint8_t utctl;
@@ -1539,7 +1571,7 @@ typedef struct __nesc_unnamed4281 {
 
 
 #line 127
-typedef union __nesc_unnamed4282 {
+typedef union __nesc_unnamed4283 {
   msp430_spi_config_t spiConfig;
   msp430_spi_registers_t spiRegisters;
 } msp430_spi_union_config_t;
@@ -1559,7 +1591,7 @@ const msp430_spi_union_config_t msp430_spi_default_config = { {
 .stc = 1 } };
 #line 181
 #line 156
-typedef enum __nesc_unnamed4283 {
+typedef enum __nesc_unnamed4284 {
 
   UBR_32KIHZ_1200 = 0x001B, UMCTL_32KIHZ_1200 = 0x94, 
   UBR_32KIHZ_1800 = 0x0012, UMCTL_32KIHZ_1800 = 0x84, 
@@ -1587,7 +1619,7 @@ typedef enum __nesc_unnamed4283 {
 } msp430_uart_rate_t;
 #line 213
 #line 183
-typedef struct __nesc_unnamed4284 {
+typedef struct __nesc_unnamed4285 {
   unsigned int ubr : 16;
   unsigned int umctl : 8;
 
@@ -1627,7 +1659,7 @@ typedef struct __nesc_unnamed4284 {
 
 
 #line 215
-typedef struct __nesc_unnamed4285 {
+typedef struct __nesc_unnamed4286 {
   uint16_t ubr;
   uint8_t umctl;
   uint8_t uctl;
@@ -1640,7 +1672,7 @@ typedef struct __nesc_unnamed4285 {
 
 
 #line 224
-typedef union __nesc_unnamed4286 {
+typedef union __nesc_unnamed4287 {
   msp430_uart_config_t uartConfig;
   msp430_uart_registers_t uartRegisters;
 } msp430_uart_union_config_t;
@@ -1672,7 +1704,7 @@ const msp430_uart_union_config_t msp430_uart_default_config = { {
 
 
 #line 247
-typedef struct __nesc_unnamed4287 {
+typedef struct __nesc_unnamed4288 {
   unsigned int i2cstt : 1;
   unsigned int i2cstp : 1;
   unsigned int i2cstb : 1;
@@ -1683,7 +1715,7 @@ typedef struct __nesc_unnamed4287 {
 } __attribute((packed))  msp430_i2ctctl_t;
 #line 284
 #line 260
-typedef struct __nesc_unnamed4288 {
+typedef struct __nesc_unnamed4289 {
 
   unsigned int  : 1;
   unsigned int mst : 1;
@@ -1717,7 +1749,7 @@ typedef struct __nesc_unnamed4288 {
 
 
 #line 286
-typedef struct __nesc_unnamed4289 {
+typedef struct __nesc_unnamed4290 {
   uint8_t uctl;
   uint8_t i2ctctl;
   uint8_t i2cpsc;
@@ -1730,7 +1762,7 @@ typedef struct __nesc_unnamed4289 {
 
 
 #line 295
-typedef union __nesc_unnamed4290 {
+typedef union __nesc_unnamed4291 {
   msp430_i2c_config_t i2cConfig;
   msp430_i2c_registers_t i2cRegisters;
 } msp430_i2c_union_config_t;
@@ -1739,7 +1771,7 @@ typedef uint8_t uart_speed_t;
 typedef uint8_t uart_parity_t;
 typedef uint8_t uart_duplex_t;
 
-enum __nesc_unnamed4291 {
+enum __nesc_unnamed4292 {
   TOS_UART_1200 = 0, 
   TOS_UART_1800 = 1, 
   TOS_UART_2400 = 2, 
@@ -1753,30 +1785,30 @@ enum __nesc_unnamed4291 {
   TOS_UART_230400 = 10
 };
 
-enum __nesc_unnamed4292 {
+enum __nesc_unnamed4293 {
   TOS_UART_OFF, 
   TOS_UART_RONLY, 
   TOS_UART_TONLY, 
   TOS_UART_DUPLEX
 };
 
-enum __nesc_unnamed4293 {
+enum __nesc_unnamed4294 {
   TOS_UART_PARITY_NONE, 
   TOS_UART_PARITY_EVEN, 
   TOS_UART_PARITY_ODD
 };
-# 33 "../../tos/types/Resource.h"
+# 33 "../../../tos/types/Resource.h"
 typedef uint8_t resource_client_id_t;
-# 29 "../../tos/platforms/epic/chips/ds2411/PlatformIeeeEui64.h"
-enum __nesc_unnamed4294 {
+# 29 "../../../tos/platforms/epic/chips/ds2411/PlatformIeeeEui64.h"
+enum __nesc_unnamed4295 {
   IEEE_EUI64_COMPANY_ID_0 = 0x00, 
   IEEE_EUI64_COMPANY_ID_1 = 0x12, 
   IEEE_EUI64_COMPANY_ID_2 = 0x6d, 
   IEEE_EUI64_SERIAL_ID_0 = 'E', 
   IEEE_EUI64_SERIAL_ID_1 = 'P'
 };
-# 6 "../../tos/chips/ds2411/ds2411.h"
-enum __nesc_unnamed4295 {
+# 6 "../../../tos/chips/ds2411/ds2411.h"
+enum __nesc_unnamed4296 {
   DS2411_SERIAL_LENGTH = 6, 
   DS2411_DATA_LENGTH = 8
 };
@@ -1797,7 +1829,7 @@ typedef union ds241_serial_t {
     uint8_t crc;
   } ;
 } ds2411_serial_t;
-# 43 "../../tos/chips/cc2420/CC2420TimeSyncMessage.h"
+# 43 "../../../tos/chips/cc2420/CC2420TimeSyncMessage.h"
 typedef nx_uint32_t timesync_radio_t;
 
 
@@ -1810,15 +1842,17 @@ typedef nx_struct timesync_footer_t {
   nx_am_id_t type;
   timesync_radio_t timestamp;
 } __attribute__((packed)) timesync_footer_t;
-# 91 "../../tos/system/crc.h"
+# 91 "../../../tos/system/crc.h"
 static uint16_t crcByte(uint16_t crc, uint8_t b);
-enum CC2420ActiveMessageC____nesc_unnamed4296 {
+typedef TMilli BaseStationP__TimerTramaTDMA__precision_tag;
+typedef TMilli BaseStationP__TimerLeds__precision_tag;
+enum CC2420ActiveMessageC____nesc_unnamed4297 {
   CC2420ActiveMessageC__CC2420_AM_SEND_ID = 0U
 };
 typedef T32khz CC2420ControlP__StartupTimer__precision_tag;
 typedef uint32_t CC2420ControlP__StartupTimer__size_type;
 typedef uint16_t CC2420ControlP__ReadRssi__val_t;
-enum /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Timer*/Msp430Timer32khzC__0____nesc_unnamed4297 {
+enum /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Timer*/Msp430Timer32khzC__0____nesc_unnamed4298 {
   Msp430Timer32khzC__0__ALARM_ID = 0U
 };
 typedef T32khz /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__frequency_tag;
@@ -1846,19 +1880,19 @@ typedef /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__fro
 typedef /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__from_size_type /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__AlarmFrom__size_type;
 typedef /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__to_precision_tag /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Counter__precision_tag;
 typedef /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__to_size_type /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Counter__size_type;
-enum /*CC2420ControlC.Spi*/CC2420SpiC__0____nesc_unnamed4298 {
+enum /*CC2420ControlC.Spi*/CC2420SpiC__0____nesc_unnamed4299 {
   CC2420SpiC__0__CLIENT_ID = 0U
 };
-enum /*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0____nesc_unnamed4299 {
+enum /*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0____nesc_unnamed4300 {
   Msp430Spi0C__0__CLIENT_ID = 0U
 };
-enum /*CC2420SpiWireC.HplCC2420SpiC.SpiC.UsartC*/Msp430Usart0C__0____nesc_unnamed4300 {
+enum /*CC2420SpiWireC.HplCC2420SpiC.SpiC.UsartC*/Msp430Usart0C__0____nesc_unnamed4301 {
   Msp430Usart0C__0__CLIENT_ID = 0U
 };
-enum /*CC2420ControlC.SyncSpiC*/CC2420SpiC__1____nesc_unnamed4301 {
+enum /*CC2420ControlC.SyncSpiC*/CC2420SpiC__1____nesc_unnamed4302 {
   CC2420SpiC__1__CLIENT_ID = 1U
 };
-enum /*CC2420ControlC.RssiResource*/CC2420SpiC__2____nesc_unnamed4302 {
+enum /*CC2420ControlC.RssiResource*/CC2420SpiC__2____nesc_unnamed4303 {
   CC2420SpiC__2__CLIENT_ID = 2U
 };
 typedef TMicro OneWireMasterP__BusyWait__precision_tag;
@@ -1876,7 +1910,7 @@ typedef T32khz CC2420TransmitP__PacketTimeStamp__precision_tag;
 typedef uint32_t CC2420TransmitP__PacketTimeStamp__size_type;
 typedef T32khz CC2420TransmitP__BackoffTimer__precision_tag;
 typedef uint32_t CC2420TransmitP__BackoffTimer__size_type;
-enum /*CC2420TransmitC.Spi*/CC2420SpiC__3____nesc_unnamed4303 {
+enum /*CC2420TransmitC.Spi*/CC2420SpiC__3____nesc_unnamed4304 {
   CC2420SpiC__3__CLIENT_ID = 3U
 };
 typedef T32khz CC2420ReceiveP__PacketTimeStamp__precision_tag;
@@ -1891,7 +1925,7 @@ typedef T32khz /*CC2420PacketC.CounterToLocalTimeC*/CounterToLocalTimeC__0__prec
 typedef /*CC2420PacketC.CounterToLocalTimeC*/CounterToLocalTimeC__0__precision_tag /*CC2420PacketC.CounterToLocalTimeC*/CounterToLocalTimeC__0__LocalTime__precision_tag;
 typedef /*CC2420PacketC.CounterToLocalTimeC*/CounterToLocalTimeC__0__precision_tag /*CC2420PacketC.CounterToLocalTimeC*/CounterToLocalTimeC__0__Counter__precision_tag;
 typedef uint32_t /*CC2420PacketC.CounterToLocalTimeC*/CounterToLocalTimeC__0__Counter__size_type;
-enum /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Timer*/Msp430Timer32khzC__1____nesc_unnamed4304 {
+enum /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Timer*/Msp430Timer32khzC__1____nesc_unnamed4305 {
   Msp430Timer32khzC__1__ALARM_ID = 1U
 };
 typedef T32khz /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__frequency_tag;
@@ -1928,28 +1962,31 @@ typedef TMilli /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC__1__pre
 typedef /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC__1__precision_tag /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC__1__LocalTime__precision_tag;
 typedef /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC__1__precision_tag /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC__1__Counter__precision_tag;
 typedef uint32_t /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC__1__Counter__size_type;
-enum /*CC2420ReceiveC.Spi*/CC2420SpiC__4____nesc_unnamed4305 {
+enum /*CC2420ReceiveC.Spi*/CC2420SpiC__4____nesc_unnamed4306 {
   CC2420SpiC__4__CLIENT_ID = 4U
 };
 typedef uint16_t RandomMlcgC__SeedInit__parameter;
-enum CC2420TinyosNetworkC____nesc_unnamed4306 {
+enum CC2420TinyosNetworkC____nesc_unnamed4307 {
   CC2420TinyosNetworkC__TINYOS_N_NETWORKS = 1U
 };
-enum /*PlatformSerialC.UartC*/Msp430Uart1C__0____nesc_unnamed4307 {
+enum /*PlatformSerialC.UartC*/Msp430Uart1C__0____nesc_unnamed4308 {
   Msp430Uart1C__0__CLIENT_ID = 0U
 };
 typedef T32khz /*Msp430Uart1P.UartP*/Msp430UartP__0__Counter__precision_tag;
 typedef uint16_t /*Msp430Uart1P.UartP*/Msp430UartP__0__Counter__size_type;
-enum /*PlatformSerialC.UartC.UsartC*/Msp430Usart1C__0____nesc_unnamed4308 {
+enum /*PlatformSerialC.UartC.UsartC*/Msp430Usart1C__0____nesc_unnamed4309 {
   Msp430Usart1C__0__CLIENT_ID = 0U
 };
-# 62 "../../tos/interfaces/Init.nc"
+enum AMQueueP____nesc_unnamed4310 {
+  AMQueueP__NUM_CLIENTS = 1U
+};
+# 62 "../../../tos/interfaces/Init.nc"
 static error_t PlatformP__Init__init(void );
-# 78 "../../tos/interfaces/Platform.nc"
+# 78 "../../../tos/interfaces/Platform.nc"
 static uint32_t PlatformP__Platform__usecsRaw(void );
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 static error_t MotePlatformC__Init__init(void );
-# 46 "../../tos/chips/msp430/Msp430ClockInit.nc"
+# 46 "../../../tos/chips/msp430/Msp430ClockInit.nc"
 static void Msp430ClockP__Msp430ClockInit__defaultInitClocks(void );
 #line 43
 static void Msp430ClockP__Msp430ClockInit__default__initTimerB(void );
@@ -1970,33 +2007,39 @@ static void Msp430ClockP__Msp430ClockInit__defaultSetupDcoCalibrate(void );
 #line 40
 static void Msp430ClockP__Msp430ClockInit__default__setupDcoCalibrate(void );
 static void Msp430ClockP__Msp430ClockInit__default__initClocks(void );
-# 62 "../../tos/interfaces/McuPowerOverride.nc"
+# 62 "../../../tos/interfaces/McuPowerOverride.nc"
 static mcu_power_t Msp430ClockP__McuPowerOverride__lowestState(void );
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 static error_t Msp430ClockP__Init__init(void );
-# 79 "../../tos/interfaces/McuSleep.nc"
+# 79 "../../../tos/interfaces/McuSleep.nc"
 static void McuSleepC__McuSleep__sleep(void );
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 static error_t SchedulerBasicP__TaskBasic__postTask(
-# 55 "../../tos/system/SchedulerBasicP.nc"
-uint8_t arg_0x7f540e1ace60);
-# 75 "../../tos/interfaces/TaskBasic.nc"
+# 55 "../../../tos/system/SchedulerBasicP.nc"
+uint8_t arg_0x7f49d7ddce60);
+# 75 "../../../tos/interfaces/TaskBasic.nc"
 static void SchedulerBasicP__TaskBasic__default__runTask(
-# 55 "../../tos/system/SchedulerBasicP.nc"
-uint8_t arg_0x7f540e1ace60);
-# 57 "../../tos/interfaces/Scheduler.nc"
+# 55 "../../../tos/system/SchedulerBasicP.nc"
+uint8_t arg_0x7f49d7ddce60);
+# 57 "../../../tos/interfaces/Scheduler.nc"
 static void SchedulerBasicP__Scheduler__init(void );
 #line 72
 static void SchedulerBasicP__Scheduler__taskLoop(void );
 #line 65
 static bool SchedulerBasicP__Scheduler__runNextTask(void );
-# 60 "../../tos/interfaces/Boot.nc"
+# 113 "../../../tos/interfaces/SplitControl.nc"
+static void BaseStationP__AMControl__startDone(error_t error);
+#line 138
+static void BaseStationP__AMControl__stopDone(error_t error);
+# 75 "../../../tos/interfaces/TaskBasic.nc"
+static void BaseStationP__RadioSendTask__runTask(void );
+# 60 "../../../tos/interfaces/Boot.nc"
 static void BaseStationP__Boot__booted(void );
-# 113 "../../tos/interfaces/SplitControl.nc"
+# 113 "../../../tos/interfaces/SplitControl.nc"
 static void BaseStationP__SerialControl__startDone(error_t error);
 #line 138
 static void BaseStationP__SerialControl__stopDone(error_t error);
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 static 
 #line 74
 message_t * 
@@ -2004,9 +2047,9 @@ message_t *
 
 
 BaseStationP__UartReceive__receive(
-# 67 "BaseStationP.nc"
-am_id_t arg_0x7f540e055bf0, 
-# 71 "../../tos/interfaces/Receive.nc"
+# 21 "BaseStationP.nc"
+am_id_t arg_0x7f49d7c80c80, 
+# 71 "../../../tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
 
@@ -2015,23 +2058,30 @@ void * payload,
 
 
 uint8_t len);
-# 75 "../../tos/interfaces/TaskBasic.nc"
+# 110 "../../../tos/interfaces/AMSend.nc"
+static void BaseStationP__AMSend__sendDone(
+#line 103
+message_t * msg, 
+
+
+
+
+
+
+error_t error);
+# 83 "../../../tos/lib/timer/Timer.nc"
+static void BaseStationP__TimerTramaTDMA__fired(void );
+# 75 "../../../tos/interfaces/TaskBasic.nc"
 static void BaseStationP__uartSendTask__runTask(void );
-# 113 "../../tos/interfaces/SplitControl.nc"
-static void BaseStationP__RadioControl__startDone(error_t error);
-#line 138
-static void BaseStationP__RadioControl__stopDone(error_t error);
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 static 
 #line 74
 message_t * 
 
 
 
-BaseStationP__RadioReceive__receive(
-# 72 "BaseStationP.nc"
-am_id_t arg_0x7f540e03a8a0, 
-# 71 "../../tos/interfaces/Receive.nc"
+BaseStationP__Receive__receive(
+#line 71
 message_t * msg, 
 void * payload, 
 
@@ -2040,26 +2090,11 @@ void * payload,
 
 
 uint8_t len);
-# 75 "../../tos/interfaces/TaskBasic.nc"
-static void BaseStationP__radioSendTask__runTask(void );
-# 110 "../../tos/interfaces/AMSend.nc"
-static void BaseStationP__RadioSend__sendDone(
-# 71 "BaseStationP.nc"
-am_id_t arg_0x7f540e04d530, 
-# 103 "../../tos/interfaces/AMSend.nc"
-message_t * msg, 
-
-
-
-
-
-
-error_t error);
-#line 110
+# 110 "../../../tos/interfaces/AMSend.nc"
 static void BaseStationP__UartSend__sendDone(
-# 66 "BaseStationP.nc"
-am_id_t arg_0x7f540e05bd40, 
-# 103 "../../tos/interfaces/AMSend.nc"
+# 20 "BaseStationP.nc"
+am_id_t arg_0x7f49d7c85d40, 
+# 103 "../../../tos/interfaces/AMSend.nc"
 message_t * msg, 
 
 
@@ -2068,34 +2103,45 @@ message_t * msg,
 
 
 error_t error);
-# 78 "../../tos/interfaces/Receive.nc"
-static 
-#line 74
-message_t * 
-
-
-
-BaseStationP__RadioSnoop__receive(
-# 73 "BaseStationP.nc"
-am_id_t arg_0x7f540e039500, 
-# 71 "../../tos/interfaces/Receive.nc"
-message_t * msg, 
-void * payload, 
-
-
-
-
-
-uint8_t len);
-# 62 "../../tos/interfaces/Init.nc"
+# 83 "../../../tos/lib/timer/Timer.nc"
+static void BaseStationP__TimerLeds__fired(void );
+# 62 "../../../tos/interfaces/Init.nc"
 static error_t LedsP__Init__init(void );
-# 67 "../../tos/interfaces/Leds.nc"
+# 61 "../../../tos/interfaces/Leds.nc"
+static void LedsP__Leds__led0Off(void );
+
+
+
+
+
 static void LedsP__Leds__led0Toggle(void );
-#line 83
+
+
+
+
+static void LedsP__Leds__led1On(void );
+
+
+
+
+
+
+
+
+
+
 static void LedsP__Leds__led1Toggle(void );
 #line 100
 static void LedsP__Leds__led2Toggle(void );
-# 74 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+#line 77
+static void LedsP__Leds__led1Off(void );
+#line 94
+static void LedsP__Leds__led2Off(void );
+#line 56
+static void LedsP__Leds__led0On(void );
+#line 89
+static void LedsP__Leds__led2On(void );
+# 74 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 static bool /*HplMsp430GeneralIOC.P10*/HplMsp430GeneralIOP__0__IO__get(void );
 #line 67
 static uint8_t /*HplMsp430GeneralIOC.P10*/HplMsp430GeneralIOP__0__IO__getRaw(void );
@@ -2221,7 +2267,7 @@ static void /*HplMsp430GeneralIOC.P54*/HplMsp430GeneralIOP__36__IO__set(void );
 
 
 
-
+static void /*HplMsp430GeneralIOC.P54*/HplMsp430GeneralIOP__36__IO__clr(void );
 
 
 
@@ -2235,7 +2281,7 @@ static void /*HplMsp430GeneralIOC.P55*/HplMsp430GeneralIOP__37__IO__set(void );
 
 
 
-
+static void /*HplMsp430GeneralIOC.P55*/HplMsp430GeneralIOP__37__IO__clr(void );
 
 
 
@@ -2245,7 +2291,12 @@ static void /*HplMsp430GeneralIOC.P56*/HplMsp430GeneralIOP__38__IO__toggle(void 
 static void /*HplMsp430GeneralIOC.P56*/HplMsp430GeneralIOP__38__IO__makeOutput(void );
 #line 49
 static void /*HplMsp430GeneralIOC.P56*/HplMsp430GeneralIOP__38__IO__set(void );
-# 42 "../../tos/interfaces/GeneralIO.nc"
+
+
+
+
+static void /*HplMsp430GeneralIOC.P56*/HplMsp430GeneralIOP__38__IO__clr(void );
+# 42 "../../../tos/interfaces/GeneralIO.nc"
 static void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__toggle(void );
 
 
@@ -2253,7 +2304,7 @@ static void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__toggle(void );
 static void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__makeOutput(void );
 #line 40
 static void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__set(void );
-
+static void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__clr(void );
 static void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__toggle(void );
 
 
@@ -2261,7 +2312,7 @@ static void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__toggle(void );
 static void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__makeOutput(void );
 #line 40
 static void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__set(void );
-
+static void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__clr(void );
 static void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__toggle(void );
 
 
@@ -2269,9 +2320,10 @@ static void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__toggle(void );
 static void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__makeOutput(void );
 #line 40
 static void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__set(void );
-# 104 "../../tos/interfaces/SplitControl.nc"
+static void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__clr(void );
+# 104 "../../../tos/interfaces/SplitControl.nc"
 static error_t CC2420CsmaP__SplitControl__start(void );
-# 81 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+# 81 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
 static void CC2420CsmaP__SubBackoff__requestInitialBackoff(message_t * msg);
 
 
@@ -2280,9 +2332,9 @@ static void CC2420CsmaP__SubBackoff__requestInitialBackoff(message_t * msg);
 
 
 static void CC2420CsmaP__SubBackoff__requestCongestionBackoff(message_t * msg);
-# 73 "../../tos/chips/cc2420/interfaces/CC2420Transmit.nc"
+# 73 "../../../tos/chips/cc2420/interfaces/CC2420Transmit.nc"
 static void CC2420CsmaP__CC2420Transmit__sendDone(message_t * p_msg, error_t error);
-# 75 "../../tos/interfaces/Send.nc"
+# 75 "../../../tos/interfaces/Send.nc"
 static error_t CC2420CsmaP__Send__send(
 #line 67
 message_t * msg, 
@@ -2296,19 +2348,19 @@ message_t * msg,
 uint8_t len);
 #line 112
 static uint8_t CC2420CsmaP__Send__maxPayloadLength(void );
-# 76 "../../tos/chips/cc2420/interfaces/CC2420Power.nc"
+# 76 "../../../tos/chips/cc2420/interfaces/CC2420Power.nc"
 static void CC2420CsmaP__CC2420Power__startOscillatorDone(void );
 #line 56
 static void CC2420CsmaP__CC2420Power__startVRegDone(void );
-# 102 "../../tos/interfaces/Resource.nc"
+# 102 "../../../tos/interfaces/Resource.nc"
 static void CC2420CsmaP__Resource__granted(void );
-# 75 "../../tos/interfaces/TaskBasic.nc"
+# 75 "../../../tos/interfaces/TaskBasic.nc"
 static void CC2420CsmaP__sendDone_task__runTask(void );
 #line 75
 static void CC2420CsmaP__stopDone_task__runTask(void );
 #line 75
 static void CC2420CsmaP__startDone_task__runTask(void );
-# 93 "../../tos/chips/cc2420/interfaces/CC2420Config.nc"
+# 93 "../../../tos/chips/cc2420/interfaces/CC2420Config.nc"
 static bool CC2420ControlP__CC2420Config__isAddressRecognitionEnabled(void );
 #line 117
 static bool CC2420ControlP__CC2420Config__isAutoAckEnabled(void );
@@ -2325,19 +2377,19 @@ static uint16_t CC2420ControlP__CC2420Config__getShortAddr(void );
 static error_t CC2420ControlP__CC2420Config__sync(void );
 #line 77
 static uint16_t CC2420ControlP__CC2420Config__getPanAddr(void );
-# 78 "../../tos/lib/timer/Alarm.nc"
+# 78 "../../../tos/lib/timer/Alarm.nc"
 static void CC2420ControlP__StartupTimer__fired(void );
-# 63 "../../tos/interfaces/Read.nc"
+# 63 "../../../tos/interfaces/Read.nc"
 static void CC2420ControlP__ReadRssi__default__readDone(error_t result, CC2420ControlP__ReadRssi__val_t val);
-# 75 "../../tos/interfaces/TaskBasic.nc"
+# 75 "../../../tos/interfaces/TaskBasic.nc"
 static void CC2420ControlP__syncDone__runTask(void );
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 static error_t CC2420ControlP__Init__init(void );
-# 102 "../../tos/interfaces/Resource.nc"
+# 102 "../../../tos/interfaces/Resource.nc"
 static void CC2420ControlP__SpiResource__granted(void );
 #line 102
 static void CC2420ControlP__SyncResource__granted(void );
-# 71 "../../tos/chips/cc2420/interfaces/CC2420Power.nc"
+# 71 "../../../tos/chips/cc2420/interfaces/CC2420Power.nc"
 static error_t CC2420ControlP__CC2420Power__startOscillator(void );
 #line 90
 static error_t CC2420ControlP__CC2420Power__rxOn(void );
@@ -2345,17 +2397,17 @@ static error_t CC2420ControlP__CC2420Power__rxOn(void );
 static error_t CC2420ControlP__CC2420Power__startVReg(void );
 #line 63
 static error_t CC2420ControlP__CC2420Power__stopVReg(void );
-# 75 "../../tos/interfaces/TaskBasic.nc"
+# 75 "../../../tos/interfaces/TaskBasic.nc"
 static void CC2420ControlP__sync__runTask(void );
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 static error_t CC2420ControlP__Resource__release(void );
 #line 88
 static error_t CC2420ControlP__Resource__request(void );
-# 68 "../../tos/interfaces/GpioInterrupt.nc"
+# 68 "../../../tos/interfaces/GpioInterrupt.nc"
 static void CC2420ControlP__InterruptCCA__fired(void );
-# 102 "../../tos/interfaces/Resource.nc"
+# 102 "../../../tos/interfaces/Resource.nc"
 static void CC2420ControlP__RssiResource__granted(void );
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
 static void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__VectorTimerX0__fired(void );
 #line 39
 static void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Overflow__fired(void );
@@ -2363,11 +2415,11 @@ static void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Overflow__fired(void )
 static void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__VectorTimerX1__fired(void );
 #line 39
 static void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__default__fired(
-# 53 "../../tos/chips/msp430/timer/Msp430TimerP.nc"
-uint8_t arg_0x7f540dad48b0);
-# 45 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 53 "../../../tos/chips/msp430/timer/Msp430TimerP.nc"
+uint8_t arg_0x7f49d76bc8b0);
+# 45 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static uint16_t /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Timer__get(void );
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
 static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__VectorTimerX0__fired(void );
 #line 39
 static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Overflow__fired(void );
@@ -2375,52 +2427,52 @@ static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Overflow__fired(void )
 static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__VectorTimerX1__fired(void );
 #line 39
 static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Event__default__fired(
-# 53 "../../tos/chips/msp430/timer/Msp430TimerP.nc"
-uint8_t arg_0x7f540dad48b0);
-# 45 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 53 "../../../tos/chips/msp430/timer/Msp430TimerP.nc"
+uint8_t arg_0x7f49d76bc8b0);
+# 45 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static uint16_t /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Timer__get(void );
 static bool /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Timer__isOverflowPending(void );
-# 45 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static uint16_t /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__Capture__getEvent(void );
 #line 92
 static void /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__Capture__default__captured(uint16_t time);
-# 41 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 41 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 static msp430_compare_control_t /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__Control__getControl(void );
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
 static void /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__Event__fired(void );
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__Compare__default__fired(void );
-# 48 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 48 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static void /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__Timer__overflow(void );
-# 45 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static uint16_t /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__Capture__getEvent(void );
 #line 92
 static void /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__Capture__default__captured(uint16_t time);
-# 41 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 41 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 static msp430_compare_control_t /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__Control__getControl(void );
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
 static void /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__Event__fired(void );
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__Compare__default__fired(void );
-# 48 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 48 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static void /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__Timer__overflow(void );
-# 45 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static uint16_t /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__Capture__getEvent(void );
 #line 92
 static void /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__Capture__default__captured(uint16_t time);
-# 41 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 41 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 static msp430_compare_control_t /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__Control__getControl(void );
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
 static void /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__Event__fired(void );
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__Compare__default__fired(void );
-# 48 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 48 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static void /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__Timer__overflow(void );
-# 45 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static uint16_t /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Capture__getEvent(void );
 #line 92
 static void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Capture__default__captured(uint16_t time);
-# 41 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 41 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 static msp430_compare_control_t /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Control__getControl(void );
 #line 76
 static void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Control__enableEvents(void );
@@ -2430,19 +2482,19 @@ static void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Control__setCon
 static void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Control__disableEvents(void );
 #line 43
 static void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Control__clearPendingInterrupt(void );
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
 static void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Event__fired(void );
-# 42 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 42 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Compare__setEvent(uint16_t time);
 
 static void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Compare__setEventFromNow(uint16_t delta);
-# 48 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 48 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Timer__overflow(void );
-# 45 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static uint16_t /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Capture__getEvent(void );
 #line 74
 static void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Capture__clearOverflow(void );
-# 74 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 74 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 static void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Control__setControlAsCapture(uint8_t cm, uint8_t ccis);
 #line 41
 static msp430_compare_control_t /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Control__getControl(void );
@@ -2451,17 +2503,17 @@ static void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Control__enable
 static void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Control__disableEvents(void );
 #line 43
 static void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Control__clearPendingInterrupt(void );
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
 static void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Event__fired(void );
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Compare__default__fired(void );
-# 48 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 48 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Timer__overflow(void );
-# 45 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static uint16_t /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Capture__getEvent(void );
 #line 92
 static void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Capture__default__captured(uint16_t time);
-# 41 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 41 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 static msp430_compare_control_t /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Control__getControl(void );
 #line 76
 static void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Control__enableEvents(void );
@@ -2471,75 +2523,75 @@ static void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Control__setCon
 static void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Control__disableEvents(void );
 #line 43
 static void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Control__clearPendingInterrupt(void );
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
 static void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Event__fired(void );
-# 42 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 42 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Compare__setEvent(uint16_t time);
 
 static void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Compare__setEventFromNow(uint16_t delta);
-# 48 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 48 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Timer__overflow(void );
-# 45 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static uint16_t /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__Capture__getEvent(void );
 #line 92
 static void /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__Capture__default__captured(uint16_t time);
-# 41 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 41 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 static msp430_compare_control_t /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__Control__getControl(void );
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
 static void /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__Event__fired(void );
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__Compare__default__fired(void );
-# 48 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 48 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static void /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__Timer__overflow(void );
-# 45 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static uint16_t /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__Capture__getEvent(void );
 #line 92
 static void /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__Capture__default__captured(uint16_t time);
-# 41 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 41 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 static msp430_compare_control_t /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__Control__getControl(void );
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
 static void /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__Event__fired(void );
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__Compare__default__fired(void );
-# 48 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 48 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static void /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__Timer__overflow(void );
-# 45 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static uint16_t /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__Capture__getEvent(void );
 #line 92
 static void /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__Capture__default__captured(uint16_t time);
-# 41 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 41 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 static msp430_compare_control_t /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__Control__getControl(void );
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
 static void /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__Event__fired(void );
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__Compare__default__fired(void );
-# 48 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 48 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static void /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__Timer__overflow(void );
-# 45 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static uint16_t /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__Capture__getEvent(void );
 #line 92
 static void /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__Capture__default__captured(uint16_t time);
-# 41 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 41 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 static msp430_compare_control_t /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__Control__getControl(void );
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
 static void /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__Event__fired(void );
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__Compare__default__fired(void );
-# 48 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 48 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static void /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__Timer__overflow(void );
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430Compare__fired(void );
-# 48 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 48 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430Timer__overflow(void );
-# 103 "../../tos/lib/timer/Alarm.nc"
+# 103 "../../../tos/lib/timer/Alarm.nc"
 static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Alarm__startAt(/*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Alarm__size_type t0, /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Alarm__size_type dt);
 #line 73
 static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Alarm__stop(void );
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 static error_t /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Init__init(void );
-# 48 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 48 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static void /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Msp430Timer__overflow(void );
-# 64 "../../tos/lib/timer/Counter.nc"
+# 64 "../../../tos/lib/timer/Counter.nc"
 static /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Counter__size_type /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Counter__get(void );
 
 
@@ -2561,7 +2613,7 @@ static bool /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Counter__isOverflo
 static void /*Counter32khz32C.Transform*/TransformCounterC__0__CounterFrom__overflow(void );
 #line 64
 static /*Counter32khz32C.Transform*/TransformCounterC__0__Counter__size_type /*Counter32khz32C.Transform*/TransformCounterC__0__Counter__get(void );
-# 109 "../../tos/lib/timer/Alarm.nc"
+# 109 "../../../tos/lib/timer/Alarm.nc"
 static /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Alarm__size_type /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Alarm__getNow(void );
 #line 103
 static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Alarm__startAt(/*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Alarm__size_type t0, /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Alarm__size_type dt);
@@ -2579,9 +2631,9 @@ static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0_
 
 
 static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__AlarmFrom__fired(void );
-# 82 "../../tos/lib/timer/Counter.nc"
+# 82 "../../../tos/lib/timer/Counter.nc"
 static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Counter__overflow(void );
-# 44 "../../tos/interfaces/GeneralIO.nc"
+# 44 "../../../tos/interfaces/GeneralIO.nc"
 static void /*HplCC2420PinsC.CCAM*/Msp430GpioC__3__GeneralIO__makeInput(void );
 #line 43
 static bool /*HplCC2420PinsC.CCAM*/Msp430GpioC__3__GeneralIO__get(void );
@@ -2612,15 +2664,15 @@ static void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__GeneralIO__makeOutput(void )
 #line 40
 static void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__GeneralIO__set(void );
 static void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__GeneralIO__clr(void );
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Msp430Capture__captured(uint16_t time);
-# 54 "../../tos/interfaces/GpioCapture.nc"
+# 54 "../../../tos/interfaces/GpioCapture.nc"
 static error_t /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Capture__captureFallingEdge(void );
 #line 66
 static void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Capture__disable(void );
 #line 53
 static error_t /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Capture__captureRisingEdge(void );
-# 54 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 54 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 static void HplMsp430InterruptP__Port14__clear(void );
 #line 49
 static void HplMsp430InterruptP__Port14__disable(void );
@@ -2702,17 +2754,17 @@ static void HplMsp430InterruptP__Port23__clear(void );
 static void HplMsp430InterruptP__Port23__default__fired(void );
 #line 85
 static void /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__HplInterrupt__fired(void );
-# 61 "../../tos/interfaces/GpioInterrupt.nc"
+# 61 "../../../tos/interfaces/GpioInterrupt.nc"
 static error_t /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__Interrupt__disable(void );
 #line 53
 static error_t /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__Interrupt__enableRisingEdge(void );
-# 85 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 static void /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__HplInterrupt__fired(void );
-# 61 "../../tos/interfaces/GpioInterrupt.nc"
+# 61 "../../../tos/interfaces/GpioInterrupt.nc"
 static error_t /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__Interrupt__disable(void );
 #line 54
 static error_t /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__Interrupt__enableFallingEdge(void );
-# 88 "../../tos/interfaces/SpiPacket.nc"
+# 88 "../../../tos/interfaces/SpiPacket.nc"
 static void CC2420SpiP__SpiPacket__sendDone(
 #line 81
 uint8_t * txBuf, 
@@ -2724,37 +2776,37 @@ uint8_t * rxBuf,
 
 uint16_t len, 
 error_t error);
-# 62 "../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
+# 62 "../../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 static error_t CC2420SpiP__Fifo__continueRead(
-# 46 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x7f540d6f36e0, 
-# 62 "../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
+# 46 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+uint8_t arg_0x7f49d72dc6e0, 
+# 62 "../../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 uint8_t * data, uint8_t length);
 #line 91
 static void CC2420SpiP__Fifo__default__writeDone(
-# 46 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x7f540d6f36e0, 
-# 91 "../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
+# 46 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+uint8_t arg_0x7f49d72dc6e0, 
+# 91 "../../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 uint8_t * data, uint8_t length, error_t error);
 #line 82
 static cc2420_status_t CC2420SpiP__Fifo__write(
-# 46 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x7f540d6f36e0, 
-# 82 "../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
+# 46 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+uint8_t arg_0x7f49d72dc6e0, 
+# 82 "../../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 uint8_t * data, uint8_t length);
 #line 51
 static cc2420_status_t CC2420SpiP__Fifo__beginRead(
-# 46 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x7f540d6f36e0, 
-# 51 "../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
+# 46 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+uint8_t arg_0x7f49d72dc6e0, 
+# 51 "../../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 uint8_t * data, uint8_t length);
 #line 71
 static void CC2420SpiP__Fifo__default__readDone(
-# 46 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x7f540d6f36e0, 
-# 71 "../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
+# 46 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+uint8_t arg_0x7f49d72dc6e0, 
+# 71 "../../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 uint8_t * data, uint8_t length, error_t error);
-# 31 "../../tos/chips/cc2420/interfaces/ChipSpiResource.nc"
+# 31 "../../../tos/chips/cc2420/interfaces/ChipSpiResource.nc"
 static void CC2420SpiP__ChipSpiResource__abortRelease(void );
 
 
@@ -2764,19 +2816,19 @@ static void CC2420SpiP__ChipSpiResource__abortRelease(void );
 
 
 static error_t CC2420SpiP__ChipSpiResource__attemptRelease(void );
-# 102 "../../tos/interfaces/Resource.nc"
+# 102 "../../../tos/interfaces/Resource.nc"
 static void CC2420SpiP__SpiResource__granted(void );
-# 63 "../../tos/chips/cc2420/interfaces/CC2420Ram.nc"
+# 63 "../../../tos/chips/cc2420/interfaces/CC2420Ram.nc"
 static cc2420_status_t CC2420SpiP__Ram__write(
-# 47 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint16_t arg_0x7f540d6f29f0, 
-# 63 "../../tos/chips/cc2420/interfaces/CC2420Ram.nc"
+# 47 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+uint16_t arg_0x7f49d72db9f0, 
+# 63 "../../../tos/chips/cc2420/interfaces/CC2420Ram.nc"
 uint8_t offset, uint8_t * data, uint8_t length);
-# 55 "../../tos/chips/cc2420/interfaces/CC2420Register.nc"
+# 55 "../../../tos/chips/cc2420/interfaces/CC2420Register.nc"
 static cc2420_status_t CC2420SpiP__Reg__read(
-# 48 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x7f540d6f1880, 
-# 55 "../../tos/chips/cc2420/interfaces/CC2420Register.nc"
+# 48 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+uint8_t arg_0x7f49d72da880, 
+# 55 "../../../tos/chips/cc2420/interfaces/CC2420Register.nc"
 uint16_t *data);
 
 
@@ -2786,57 +2838,57 @@ uint16_t *data);
 
 
 static cc2420_status_t CC2420SpiP__Reg__write(
-# 48 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x7f540d6f1880, 
-# 63 "../../tos/chips/cc2420/interfaces/CC2420Register.nc"
+# 48 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+uint8_t arg_0x7f49d72da880, 
+# 63 "../../../tos/chips/cc2420/interfaces/CC2420Register.nc"
 uint16_t data);
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 static error_t CC2420SpiP__Resource__release(
-# 45 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x7f540d6f4360);
-# 97 "../../tos/interfaces/Resource.nc"
+# 45 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+uint8_t arg_0x7f49d72dd360);
+# 97 "../../../tos/interfaces/Resource.nc"
 static error_t CC2420SpiP__Resource__immediateRequest(
-# 45 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x7f540d6f4360);
-# 88 "../../tos/interfaces/Resource.nc"
+# 45 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+uint8_t arg_0x7f49d72dd360);
+# 88 "../../../tos/interfaces/Resource.nc"
 static error_t CC2420SpiP__Resource__request(
-# 45 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x7f540d6f4360);
-# 102 "../../tos/interfaces/Resource.nc"
+# 45 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+uint8_t arg_0x7f49d72dd360);
+# 102 "../../../tos/interfaces/Resource.nc"
 static void CC2420SpiP__Resource__default__granted(
-# 45 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x7f540d6f4360);
-# 128 "../../tos/interfaces/Resource.nc"
+# 45 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+uint8_t arg_0x7f49d72dd360);
+# 128 "../../../tos/interfaces/Resource.nc"
 static bool CC2420SpiP__Resource__isOwner(
-# 45 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x7f540d6f4360);
-# 75 "../../tos/interfaces/TaskBasic.nc"
+# 45 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+uint8_t arg_0x7f49d72dd360);
+# 75 "../../../tos/interfaces/TaskBasic.nc"
 static void CC2420SpiP__grant__runTask(void );
-# 53 "../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
 static cc2420_status_t CC2420SpiP__Strobe__strobe(
-# 49 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x7f540d6ef700);
-# 62 "../../tos/interfaces/Init.nc"
+# 49 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+uint8_t arg_0x7f49d72d9700);
+# 62 "../../../tos/interfaces/Init.nc"
 static error_t StateImplP__Init__init(void );
-# 56 "../../tos/interfaces/State.nc"
+# 56 "../../../tos/interfaces/State.nc"
 static void StateImplP__State__toIdle(
-# 67 "../../tos/system/StateImplP.nc"
-uint8_t arg_0x7f540d67b9c0);
-# 66 "../../tos/interfaces/State.nc"
+# 67 "../../../tos/system/StateImplP.nc"
+uint8_t arg_0x7f49d72639c0);
+# 66 "../../../tos/interfaces/State.nc"
 static bool StateImplP__State__isState(
-# 67 "../../tos/system/StateImplP.nc"
-uint8_t arg_0x7f540d67b9c0, 
-# 66 "../../tos/interfaces/State.nc"
+# 67 "../../../tos/system/StateImplP.nc"
+uint8_t arg_0x7f49d72639c0, 
+# 66 "../../../tos/interfaces/State.nc"
 uint8_t myState);
 #line 61
 static bool StateImplP__State__isIdle(
-# 67 "../../tos/system/StateImplP.nc"
-uint8_t arg_0x7f540d67b9c0);
-# 45 "../../tos/interfaces/State.nc"
+# 67 "../../../tos/system/StateImplP.nc"
+uint8_t arg_0x7f49d72639c0);
+# 45 "../../../tos/interfaces/State.nc"
 static error_t StateImplP__State__requestState(
-# 67 "../../tos/system/StateImplP.nc"
-uint8_t arg_0x7f540d67b9c0, 
-# 45 "../../tos/interfaces/State.nc"
+# 67 "../../../tos/system/StateImplP.nc"
+uint8_t arg_0x7f49d72639c0, 
+# 45 "../../../tos/interfaces/State.nc"
 uint8_t reqState);
 
 
@@ -2844,23 +2896,23 @@ uint8_t reqState);
 
 
 static void StateImplP__State__forceState(
-# 67 "../../tos/system/StateImplP.nc"
-uint8_t arg_0x7f540d67b9c0, 
-# 51 "../../tos/interfaces/State.nc"
+# 67 "../../../tos/system/StateImplP.nc"
+uint8_t arg_0x7f49d72639c0, 
+# 51 "../../../tos/interfaces/State.nc"
 uint8_t reqState);
-# 65 "../../tos/interfaces/ResourceConfigure.nc"
+# 65 "../../../tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__ResourceConfigure__unconfigure(
-# 76 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5ed6f0);
-# 59 "../../tos/interfaces/ResourceConfigure.nc"
+# 76 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d76f0);
+# 59 "../../../tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__ResourceConfigure__configure(
-# 76 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5ed6f0);
-# 76 "../../tos/interfaces/SpiPacket.nc"
+# 76 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d76f0);
+# 76 "../../../tos/interfaces/SpiPacket.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__send(
-# 79 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5eb6a0, 
-# 65 "../../tos/interfaces/SpiPacket.nc"
+# 79 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d46a0, 
+# 65 "../../../tos/interfaces/SpiPacket.nc"
 uint8_t * txBuf, 
 
 uint8_t * rxBuf, 
@@ -2875,9 +2927,9 @@ uint8_t * rxBuf,
 uint16_t len);
 #line 88
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__default__sendDone(
-# 79 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5eb6a0, 
-# 81 "../../tos/interfaces/SpiPacket.nc"
+# 79 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d46a0, 
+# 81 "../../../tos/interfaces/SpiPacket.nc"
 uint8_t * txBuf, 
 uint8_t * rxBuf, 
 
@@ -2887,59 +2939,59 @@ uint8_t * rxBuf,
 
 uint16_t len, 
 error_t error);
-# 39 "../../tos/chips/msp430/usart/Msp430SpiConfigure.nc"
+# 39 "../../../tos/chips/msp430/usart/Msp430SpiConfigure.nc"
 static const msp430_spi_union_config_t */*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Msp430SpiConfigure__default__getConfig(
-# 82 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5e9890);
-# 45 "../../tos/interfaces/SpiByte.nc"
+# 82 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d2890);
+# 45 "../../../tos/interfaces/SpiByte.nc"
 static uint8_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiByte__write(uint8_t tx);
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__release(
-# 81 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5ea4e0);
-# 97 "../../tos/interfaces/Resource.nc"
+# 81 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d34e0);
+# 97 "../../../tos/interfaces/Resource.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__immediateRequest(
-# 81 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5ea4e0);
-# 88 "../../tos/interfaces/Resource.nc"
+# 81 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d34e0);
+# 88 "../../../tos/interfaces/Resource.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__request(
-# 81 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5ea4e0);
-# 102 "../../tos/interfaces/Resource.nc"
+# 81 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d34e0);
+# 102 "../../../tos/interfaces/Resource.nc"
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__granted(
-# 81 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5ea4e0);
-# 128 "../../tos/interfaces/Resource.nc"
+# 81 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d34e0);
+# 128 "../../../tos/interfaces/Resource.nc"
 static bool /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__isOwner(
-# 81 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5ea4e0);
-# 120 "../../tos/interfaces/Resource.nc"
+# 81 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d34e0);
+# 120 "../../../tos/interfaces/Resource.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__release(
-# 75 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5ef410);
-# 97 "../../tos/interfaces/Resource.nc"
+# 75 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d8410);
+# 97 "../../../tos/interfaces/Resource.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__immediateRequest(
-# 75 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5ef410);
-# 88 "../../tos/interfaces/Resource.nc"
+# 75 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d8410);
+# 88 "../../../tos/interfaces/Resource.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__request(
-# 75 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5ef410);
-# 102 "../../tos/interfaces/Resource.nc"
+# 75 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d8410);
+# 102 "../../../tos/interfaces/Resource.nc"
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__default__granted(
-# 75 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5ef410);
-# 128 "../../tos/interfaces/Resource.nc"
+# 75 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d8410);
+# 128 "../../../tos/interfaces/Resource.nc"
 static bool /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__isOwner(
-# 75 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5ef410);
-# 54 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+# 75 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d8410);
+# 54 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartInterrupts__rxDone(uint8_t data);
 #line 49
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartInterrupts__txDone(void );
-# 75 "../../tos/interfaces/TaskBasic.nc"
+# 75 "../../../tos/interfaces/TaskBasic.nc"
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__signalDone_task__runTask(void );
-# 180 "../../tos/chips/msp430/usart/HplMsp430Usart.nc"
+# 180 "../../../tos/chips/msp430/usart/HplMsp430Usart.nc"
 static void HplMsp430Usart0P__Usart__enableRxIntr(void );
 #line 197
 static void HplMsp430Usart0P__Usart__clrRxIntr(void );
@@ -2969,29 +3021,29 @@ static uint8_t HplMsp430Usart0P__Usart__rx(void );
 static bool HplMsp430Usart0P__Usart__isRxIntrPending(void );
 #line 158
 static void HplMsp430Usart0P__Usart__disableSpi(void );
-# 54 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+# 54 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Interrupts__default__rxDone(
-# 39 "../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
-uint8_t arg_0x7f540d476600, 
-# 54 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+# 39 "../../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
+uint8_t arg_0x7f49d705e600, 
+# 54 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 uint8_t data);
 #line 49
 static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Interrupts__default__txDone(
-# 39 "../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
-uint8_t arg_0x7f540d476600);
-# 39 "../../tos/chips/msp430/usart/HplMsp430I2CInterrupts.nc"
+# 39 "../../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
+uint8_t arg_0x7f49d705e600);
+# 39 "../../../tos/chips/msp430/usart/HplMsp430I2CInterrupts.nc"
 static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__RawI2CInterrupts__fired(void );
 #line 39
 static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__I2CInterrupts__default__fired(
-# 40 "../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
-uint8_t arg_0x7f540d4754e0);
-# 54 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+# 40 "../../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
+uint8_t arg_0x7f49d705d4e0);
+# 54 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__RawInterrupts__rxDone(uint8_t data);
 #line 49
 static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__RawInterrupts__txDone(void );
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 static error_t /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__Init__init(void );
-# 79 "../../tos/interfaces/ResourceQueue.nc"
+# 79 "../../../tos/interfaces/ResourceQueue.nc"
 static error_t /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__FcfsQueue__enqueue(resource_client_id_t id);
 #line 53
 static bool /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__FcfsQueue__isEmpty(void );
@@ -3012,23 +3064,23 @@ static bool /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__FcfsQueu
 
 
 static resource_client_id_t /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__FcfsQueue__dequeue(void );
-# 53 "../../tos/interfaces/ResourceRequested.nc"
+# 53 "../../../tos/interfaces/ResourceRequested.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__default__requested(
-# 99 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d434cf0);
-# 61 "../../tos/interfaces/ResourceRequested.nc"
+# 99 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701dcf0);
+# 61 "../../../tos/interfaces/ResourceRequested.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__default__immediateRequested(
-# 99 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d434cf0);
-# 65 "../../tos/interfaces/ResourceConfigure.nc"
+# 99 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701dcf0);
+# 65 "../../../tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__default__unconfigure(
-# 105 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d431a30);
-# 59 "../../tos/interfaces/ResourceConfigure.nc"
+# 105 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701aa30);
+# 59 "../../../tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__default__configure(
-# 105 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d431a30);
-# 54 "../../tos/interfaces/ResourceDefaultOwner.nc"
+# 105 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701aa30);
+# 54 "../../../tos/interfaces/ResourceDefaultOwner.nc"
 static error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__release(void );
 #line 71
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__default__requested(void );
@@ -3036,29 +3088,29 @@ static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultO
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__default__granted(void );
 #line 79
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__default__immediateRequested(void );
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 static error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__release(
-# 98 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d435970);
-# 97 "../../tos/interfaces/Resource.nc"
+# 98 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701f970);
+# 97 "../../../tos/interfaces/Resource.nc"
 static error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__immediateRequest(
-# 98 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d435970);
-# 88 "../../tos/interfaces/Resource.nc"
+# 98 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701f970);
+# 88 "../../../tos/interfaces/Resource.nc"
 static error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__request(
-# 98 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d435970);
-# 102 "../../tos/interfaces/Resource.nc"
+# 98 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701f970);
+# 102 "../../../tos/interfaces/Resource.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__default__granted(
-# 98 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d435970);
-# 128 "../../tos/interfaces/Resource.nc"
+# 98 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701f970);
+# 128 "../../../tos/interfaces/Resource.nc"
 static bool /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__isOwner(
-# 98 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d435970);
-# 9 "../../tos/interfaces/ResourceDefaultOwnerInfo.nc"
+# 98 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701f970);
+# 9 "../../../tos/interfaces/ResourceDefaultOwnerInfo.nc"
 static bool /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwnerInfo__default__inUse(void );
-# 90 "../../tos/interfaces/ArbiterInfo.nc"
+# 90 "../../../tos/interfaces/ArbiterInfo.nc"
 static bool /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ArbiterInfo__inUse(void );
 
 
@@ -3068,36 +3120,36 @@ static bool /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ArbiterInfo__inU
 
 
 static uint8_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ArbiterInfo__userId(void );
-# 75 "../../tos/interfaces/TaskBasic.nc"
+# 75 "../../../tos/interfaces/TaskBasic.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__grantedTask__runTask(void );
-# 7 "../../tos/chips/msp430/usart/HplMsp430I2C.nc"
+# 7 "../../../tos/chips/msp430/usart/HplMsp430I2C.nc"
 static void HplMsp430I2C0P__HplI2C__clearModeI2C(void );
 #line 6
 static bool HplMsp430I2C0P__HplI2C__isI2C(void );
-# 55 "../../tos/system/ActiveMessageAddressC.nc"
+# 55 "../../../tos/system/ActiveMessageAddressC.nc"
 static am_addr_t ActiveMessageAddressC__amAddress(void );
-# 50 "../../tos/interfaces/ActiveMessageAddress.nc"
+# 50 "../../../tos/interfaces/ActiveMessageAddress.nc"
 static am_addr_t ActiveMessageAddressC__ActiveMessageAddress__amAddress(void );
 
 
 
 
 static am_group_t ActiveMessageAddressC__ActiveMessageAddress__amGroup(void );
-# 48 "../../tos/interfaces/LocalIeeeEui64.nc"
+# 48 "../../../tos/interfaces/LocalIeeeEui64.nc"
 static ieee_eui64_t LocalIeeeEui64P__LocalIeeeEui64__getId(void );
-# 13 "../../tos/chips/ds2411/ReadId48.nc"
+# 13 "../../../tos/chips/ds2411/ReadId48.nc"
 static error_t Ds2411P__ReadId48__read(uint8_t *id);
-# 10 "../../tos/lib/onewire/OneWireReadWrite.nc"
+# 10 "../../../tos/lib/onewire/OneWireReadWrite.nc"
 static error_t OneWireMasterP__OneWire__read(uint8_t cmd, uint8_t *buf, uint8_t len);
-# 66 "../../tos/lib/timer/BusyWait.nc"
+# 66 "../../../tos/lib/timer/BusyWait.nc"
 static void /*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0__BusyWait__wait(/*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0__BusyWait__size_type dt);
-# 82 "../../tos/lib/timer/Counter.nc"
+# 82 "../../../tos/lib/timer/Counter.nc"
 static void /*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0__Counter__overflow(void );
-# 48 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 48 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static void /*Msp430CounterMicroC.Counter*/Msp430CounterC__1__Msp430Timer__overflow(void );
-# 64 "../../tos/lib/timer/Counter.nc"
+# 64 "../../../tos/lib/timer/Counter.nc"
 static /*Msp430CounterMicroC.Counter*/Msp430CounterC__1__Counter__size_type /*Msp430CounterMicroC.Counter*/Msp430CounterC__1__Counter__get(void );
-# 44 "../../tos/interfaces/GeneralIO.nc"
+# 44 "../../../tos/interfaces/GeneralIO.nc"
 static void /*HplDs2411C.MspGpio*/Msp430GpioC__10__GeneralIO__makeInput(void );
 #line 43
 static bool /*HplDs2411C.MspGpio*/Msp430GpioC__10__GeneralIO__get(void );
@@ -3106,7 +3158,7 @@ static bool /*HplDs2411C.MspGpio*/Msp430GpioC__10__GeneralIO__get(void );
 static void /*HplDs2411C.MspGpio*/Msp430GpioC__10__GeneralIO__makeOutput(void );
 #line 41
 static void /*HplDs2411C.MspGpio*/Msp430GpioC__10__GeneralIO__clr(void );
-# 95 "../../tos/interfaces/StdControl.nc"
+# 95 "../../../tos/interfaces/StdControl.nc"
 static error_t Ds2411PowerControlC__StdControl__start(void );
 
 
@@ -3118,25 +3170,25 @@ static error_t Ds2411PowerControlC__StdControl__start(void );
 
 
 static error_t Ds2411PowerControlC__StdControl__stop(void );
-# 66 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+# 66 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
 static void CC2420TransmitP__RadioBackoff__setCongestionBackoff(uint16_t backoffTime);
 #line 60
 static void CC2420TransmitP__RadioBackoff__setInitialBackoff(uint16_t backoffTime);
-# 61 "../../tos/interfaces/GpioCapture.nc"
+# 61 "../../../tos/interfaces/GpioCapture.nc"
 static void CC2420TransmitP__CaptureSFD__captured(uint16_t time);
-# 78 "../../tos/lib/timer/Alarm.nc"
+# 78 "../../../tos/lib/timer/Alarm.nc"
 static void CC2420TransmitP__BackoffTimer__fired(void );
-# 63 "../../tos/chips/cc2420/interfaces/CC2420Receive.nc"
+# 63 "../../../tos/chips/cc2420/interfaces/CC2420Receive.nc"
 static void CC2420TransmitP__CC2420Receive__receive(uint8_t type, message_t * message);
-# 51 "../../tos/chips/cc2420/interfaces/CC2420Transmit.nc"
+# 51 "../../../tos/chips/cc2420/interfaces/CC2420Transmit.nc"
 static error_t CC2420TransmitP__Send__send(message_t * p_msg, bool useCca);
-# 24 "../../tos/chips/cc2420/interfaces/ChipSpiResource.nc"
+# 24 "../../../tos/chips/cc2420/interfaces/ChipSpiResource.nc"
 static void CC2420TransmitP__ChipSpiResource__releasing(void );
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 static error_t CC2420TransmitP__Init__init(void );
-# 102 "../../tos/interfaces/Resource.nc"
+# 102 "../../../tos/interfaces/Resource.nc"
 static void CC2420TransmitP__SpiResource__granted(void );
-# 95 "../../tos/interfaces/StdControl.nc"
+# 95 "../../../tos/interfaces/StdControl.nc"
 static error_t CC2420TransmitP__StdControl__start(void );
 
 
@@ -3148,29 +3200,29 @@ static error_t CC2420TransmitP__StdControl__start(void );
 
 
 static error_t CC2420TransmitP__StdControl__stop(void );
-# 91 "../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
+# 91 "../../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 static void CC2420TransmitP__TXFIFO__writeDone(uint8_t * data, uint8_t length, error_t error);
 #line 71
 static void CC2420TransmitP__TXFIFO__readDone(uint8_t * data, uint8_t length, error_t error);
-# 55 "../../tos/chips/cc2420/interfaces/CC2420Config.nc"
+# 55 "../../../tos/chips/cc2420/interfaces/CC2420Config.nc"
 static void CC2420ReceiveP__CC2420Config__syncDone(error_t error);
-# 75 "../../tos/interfaces/TaskBasic.nc"
+# 75 "../../../tos/interfaces/TaskBasic.nc"
 static void CC2420ReceiveP__receiveDone_task__runTask(void );
-# 55 "../../tos/chips/cc2420/interfaces/CC2420Receive.nc"
+# 55 "../../../tos/chips/cc2420/interfaces/CC2420Receive.nc"
 static void CC2420ReceiveP__CC2420Receive__sfd_dropped(void );
 #line 49
 static void CC2420ReceiveP__CC2420Receive__sfd(uint32_t time);
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 static error_t CC2420ReceiveP__Init__init(void );
-# 102 "../../tos/interfaces/Resource.nc"
+# 102 "../../../tos/interfaces/Resource.nc"
 static void CC2420ReceiveP__SpiResource__granted(void );
-# 91 "../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
+# 91 "../../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 static void CC2420ReceiveP__RXFIFO__writeDone(uint8_t * data, uint8_t length, error_t error);
 #line 71
 static void CC2420ReceiveP__RXFIFO__readDone(uint8_t * data, uint8_t length, error_t error);
-# 68 "../../tos/interfaces/GpioInterrupt.nc"
+# 68 "../../../tos/interfaces/GpioInterrupt.nc"
 static void CC2420ReceiveP__InterruptFIFOP__fired(void );
-# 95 "../../tos/interfaces/StdControl.nc"
+# 95 "../../../tos/interfaces/StdControl.nc"
 static error_t CC2420ReceiveP__StdControl__start(void );
 
 
@@ -3182,11 +3234,11 @@ static error_t CC2420ReceiveP__StdControl__start(void );
 
 
 static error_t CC2420ReceiveP__StdControl__stop(void );
-# 77 "../../tos/chips/cc2420/interfaces/CC2420Packet.nc"
+# 77 "../../../tos/chips/cc2420/interfaces/CC2420Packet.nc"
 static void CC2420PacketP__CC2420Packet__setNetwork(message_t * p_msg, uint8_t networkId);
 #line 75
 static uint8_t CC2420PacketP__CC2420Packet__getNetwork(message_t * p_msg);
-# 70 "../../tos/interfaces/PacketTimeStamp.nc"
+# 70 "../../../tos/interfaces/PacketTimeStamp.nc"
 static void CC2420PacketP__PacketTimeStamp32khz__clear(
 #line 66
 message_t * msg);
@@ -3199,7 +3251,7 @@ message_t * msg,
 
 
 CC2420PacketP__PacketTimeStamp32khz__size_type value);
-# 42 "../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
+# 42 "../../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
 static cc2420_header_t * CC2420PacketP__CC2420PacketBody__getHeader(message_t * msg);
 
 
@@ -3212,7 +3264,7 @@ static cc2420_header_t * CC2420PacketP__CC2420PacketBody__getHeader(message_t * 
 
 
 static cc2420_metadata_t * CC2420PacketP__CC2420PacketBody__getMetadata(message_t * msg);
-# 58 "../../tos/chips/cc2420/interfaces/PacketTimeSyncOffset.nc"
+# 58 "../../../tos/chips/cc2420/interfaces/PacketTimeSyncOffset.nc"
 static uint8_t CC2420PacketP__PacketTimeSyncOffset__get(
 #line 53
 message_t * msg);
@@ -3220,23 +3272,23 @@ message_t * msg);
 static bool CC2420PacketP__PacketTimeSyncOffset__isSet(
 #line 46
 message_t * msg);
-# 82 "../../tos/lib/timer/Counter.nc"
+# 82 "../../../tos/lib/timer/Counter.nc"
 static void /*CC2420PacketC.CounterToLocalTimeC*/CounterToLocalTimeC__0__Counter__overflow(void );
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430Compare__fired(void );
-# 48 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 48 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430Timer__overflow(void );
-# 103 "../../tos/lib/timer/Alarm.nc"
+# 103 "../../../tos/lib/timer/Alarm.nc"
 static void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Alarm__startAt(/*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Alarm__size_type t0, /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Alarm__size_type dt);
 #line 73
 static void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Alarm__stop(void );
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 static error_t /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Init__init(void );
-# 82 "../../tos/lib/timer/Counter.nc"
+# 82 "../../../tos/lib/timer/Counter.nc"
 static void /*CounterMilli32C.Transform*/TransformCounterC__1__CounterFrom__overflow(void );
 #line 64
 static /*CounterMilli32C.Transform*/TransformCounterC__1__Counter__size_type /*CounterMilli32C.Transform*/TransformCounterC__1__Counter__get(void );
-# 109 "../../tos/lib/timer/Alarm.nc"
+# 109 "../../../tos/lib/timer/Alarm.nc"
 static /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Alarm__size_type /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Alarm__getNow(void );
 #line 103
 static void /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Alarm__startAt(/*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Alarm__size_type t0, /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Alarm__size_type dt);
@@ -3249,35 +3301,54 @@ static void /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Alarm_
 
 
 static void /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__AlarmFrom__fired(void );
-# 82 "../../tos/lib/timer/Counter.nc"
+# 82 "../../../tos/lib/timer/Counter.nc"
 static void /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Counter__overflow(void );
-# 75 "../../tos/interfaces/TaskBasic.nc"
+# 75 "../../../tos/interfaces/TaskBasic.nc"
 static void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__fired__runTask(void );
-# 78 "../../tos/lib/timer/Alarm.nc"
+# 78 "../../../tos/lib/timer/Alarm.nc"
 static void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__fired(void );
-# 136 "../../tos/lib/timer/Timer.nc"
+# 136 "../../../tos/lib/timer/Timer.nc"
 static uint32_t /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Timer__getNow(void );
 #line 129
 static void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Timer__startOneShotAt(uint32_t t0, uint32_t dt);
 #line 78
 static void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Timer__stop(void );
-# 75 "../../tos/interfaces/TaskBasic.nc"
+# 75 "../../../tos/interfaces/TaskBasic.nc"
 static void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__updateFromTimer__runTask(void );
-# 83 "../../tos/lib/timer/Timer.nc"
+# 83 "../../../tos/lib/timer/Timer.nc"
 static void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__TimerFrom__fired(void );
 #line 83
 static void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Timer__default__fired(
-# 63 "../../tos/lib/timer/VirtualizeTimerImplP.nc"
-uint8_t arg_0x7f540cf2d850);
-# 82 "../../tos/lib/timer/Counter.nc"
+# 63 "../../../tos/lib/timer/VirtualizeTimerImplP.nc"
+uint8_t arg_0x7f49d6b1fb60);
+# 64 "../../../tos/lib/timer/Timer.nc"
+static void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Timer__startPeriodic(
+# 63 "../../../tos/lib/timer/VirtualizeTimerImplP.nc"
+uint8_t arg_0x7f49d6b1fb60, 
+# 64 "../../../tos/lib/timer/Timer.nc"
+uint32_t dt);
+
+
+
+
+
+
+
+
+static void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Timer__startOneShot(
+# 63 "../../../tos/lib/timer/VirtualizeTimerImplP.nc"
+uint8_t arg_0x7f49d6b1fb60, 
+# 73 "../../../tos/lib/timer/Timer.nc"
+uint32_t dt);
+# 82 "../../../tos/lib/timer/Counter.nc"
 static void /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC__1__Counter__overflow(void );
-# 52 "../../tos/interfaces/Random.nc"
+# 52 "../../../tos/interfaces/Random.nc"
 static uint16_t RandomMlcgC__Random__rand16(void );
 #line 46
 static uint32_t RandomMlcgC__Random__rand32(void );
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 static error_t RandomMlcgC__Init__init(void );
-# 100 "../../tos/interfaces/Send.nc"
+# 100 "../../../tos/interfaces/Send.nc"
 static void UniqueSendP__SubSend__sendDone(
 #line 96
 message_t * msg, 
@@ -3299,9 +3370,9 @@ message_t * msg,
 uint8_t len);
 #line 112
 static uint8_t UniqueSendP__Send__maxPayloadLength(void );
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 static error_t UniqueSendP__Init__init(void );
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 static 
 #line 74
 message_t * 
@@ -3318,9 +3389,9 @@ void * payload,
 
 
 uint8_t len);
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 static error_t UniqueReceiveP__Init__init(void );
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 static 
 #line 74
 message_t * 
@@ -3337,7 +3408,7 @@ void * payload,
 
 
 uint8_t len);
-# 100 "../../tos/interfaces/Send.nc"
+# 100 "../../../tos/interfaces/Send.nc"
 static void CC2420TinyosNetworkP__SubSend__sendDone(
 #line 96
 message_t * msg, 
@@ -3345,7 +3416,7 @@ message_t * msg,
 
 
 error_t error);
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 static 
 #line 74
 message_t * 
@@ -3362,9 +3433,9 @@ void * payload,
 
 
 uint8_t len);
-# 75 "../../tos/interfaces/TaskBasic.nc"
+# 75 "../../../tos/interfaces/TaskBasic.nc"
 static void CC2420TinyosNetworkP__grantTask__runTask(void );
-# 75 "../../tos/interfaces/Send.nc"
+# 75 "../../../tos/interfaces/Send.nc"
 static error_t CC2420TinyosNetworkP__ActiveSend__send(
 #line 67
 message_t * msg, 
@@ -3376,9 +3447,20 @@ message_t * msg,
 
 
 uint8_t len);
+#line 125
+static 
+#line 123
+void * 
+
+CC2420TinyosNetworkP__ActiveSend__getPayload(
+#line 122
+message_t * msg, 
+
+
+uint8_t len);
 #line 112
 static uint8_t CC2420TinyosNetworkP__ActiveSend__maxPayloadLength(void );
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 static 
 #line 74
 message_t * 
@@ -3395,23 +3477,23 @@ void * payload,
 
 
 uint8_t len);
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 static error_t CC2420TinyosNetworkP__Resource__release(
-# 46 "../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
-uint8_t arg_0x7f540cdd2600);
-# 97 "../../tos/interfaces/Resource.nc"
+# 46 "../../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
+uint8_t arg_0x7f49d69c5600);
+# 97 "../../../tos/interfaces/Resource.nc"
 static error_t CC2420TinyosNetworkP__Resource__immediateRequest(
-# 46 "../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
-uint8_t arg_0x7f540cdd2600);
-# 88 "../../tos/interfaces/Resource.nc"
+# 46 "../../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
+uint8_t arg_0x7f49d69c5600);
+# 88 "../../../tos/interfaces/Resource.nc"
 static error_t CC2420TinyosNetworkP__Resource__request(
-# 46 "../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
-uint8_t arg_0x7f540cdd2600);
-# 102 "../../tos/interfaces/Resource.nc"
+# 46 "../../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
+uint8_t arg_0x7f49d69c5600);
+# 102 "../../../tos/interfaces/Resource.nc"
 static void CC2420TinyosNetworkP__Resource__default__granted(
-# 46 "../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
-uint8_t arg_0x7f540cdd2600);
-# 125 "../../tos/interfaces/Send.nc"
+# 46 "../../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
+uint8_t arg_0x7f49d69c5600);
+# 125 "../../../tos/interfaces/Send.nc"
 static 
 #line 123
 void * 
@@ -3430,9 +3512,9 @@ message_t * msg,
 
 
 error_t error);
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 static error_t /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__Init__init(void );
-# 79 "../../tos/interfaces/ResourceQueue.nc"
+# 79 "../../../tos/interfaces/ResourceQueue.nc"
 static error_t /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__FcfsQueue__enqueue(resource_client_id_t id);
 #line 53
 static bool /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__FcfsQueue__isEmpty(void );
@@ -3453,7 +3535,7 @@ static bool /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__Fc
 
 
 static resource_client_id_t /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__FcfsQueue__dequeue(void );
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 static 
 #line 74
 message_t * 
@@ -3470,7 +3552,7 @@ void * payload,
 
 
 uint8_t len);
-# 100 "../../tos/interfaces/Send.nc"
+# 100 "../../../tos/interfaces/Send.nc"
 static void CC2420ActiveMessageP__SubSend__sendDone(
 #line 96
 message_t * msg, 
@@ -3478,19 +3560,19 @@ message_t * msg,
 
 
 error_t error);
-# 55 "../../tos/chips/cc2420/interfaces/CC2420Config.nc"
+# 55 "../../../tos/chips/cc2420/interfaces/CC2420Config.nc"
 static void CC2420ActiveMessageP__CC2420Config__syncDone(error_t error);
-# 95 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+# 95 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
 static void CC2420ActiveMessageP__RadioBackoff__default__requestCca(
-# 54 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x7f540cd3b700, 
-# 95 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+# 54 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+am_id_t arg_0x7f49d692e700, 
+# 95 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
 message_t * msg);
 #line 81
 static void CC2420ActiveMessageP__RadioBackoff__default__requestInitialBackoff(
-# 54 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x7f540cd3b700, 
-# 81 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+# 54 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+am_id_t arg_0x7f49d692e700, 
+# 81 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
 message_t * msg);
 
 
@@ -3499,19 +3581,19 @@ message_t * msg);
 
 
 static void CC2420ActiveMessageP__RadioBackoff__default__requestCongestionBackoff(
-# 54 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x7f540cd3b700, 
-# 88 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+# 54 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+am_id_t arg_0x7f49d692e700, 
+# 88 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
 message_t * msg);
-# 59 "../../tos/interfaces/SendNotifier.nc"
+# 59 "../../../tos/interfaces/SendNotifier.nc"
 static void CC2420ActiveMessageP__SendNotifier__default__aboutToSend(
-# 53 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x7f540cd3cb30, 
-# 59 "../../tos/interfaces/SendNotifier.nc"
+# 53 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+am_id_t arg_0x7f49d692fb30, 
+# 59 "../../../tos/interfaces/SendNotifier.nc"
 am_addr_t dest, 
 #line 57
 message_t * msg);
-# 95 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+# 95 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
 static void CC2420ActiveMessageP__SubBackoff__requestCca(message_t * msg);
 #line 81
 static void CC2420ActiveMessageP__SubBackoff__requestInitialBackoff(message_t * msg);
@@ -3522,7 +3604,7 @@ static void CC2420ActiveMessageP__SubBackoff__requestInitialBackoff(message_t * 
 
 
 static void CC2420ActiveMessageP__SubBackoff__requestCongestionBackoff(message_t * msg);
-# 65 "../../tos/interfaces/Packet.nc"
+# 65 "../../../tos/interfaces/Packet.nc"
 static void CC2420ActiveMessageP__Packet__clear(
 #line 62
 message_t * msg);
@@ -3530,13 +3612,35 @@ message_t * msg);
 static uint8_t CC2420ActiveMessageP__Packet__payloadLength(
 #line 74
 message_t * msg);
+#line 126
+static 
+#line 123
+void * 
+
+
+CC2420ActiveMessageP__Packet__getPayload(
+#line 121
+message_t * msg, 
+
+
+
+
+uint8_t len);
 #line 106
 static uint8_t CC2420ActiveMessageP__Packet__maxPayloadLength(void );
-# 80 "../../tos/interfaces/AMSend.nc"
+#line 94
+static void CC2420ActiveMessageP__Packet__setPayloadLength(
+#line 90
+message_t * msg, 
+
+
+
+uint8_t len);
+# 80 "../../../tos/interfaces/AMSend.nc"
 static error_t CC2420ActiveMessageP__AMSend__send(
-# 48 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x7f540cd44cd0, 
-# 80 "../../tos/interfaces/AMSend.nc"
+# 48 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+am_id_t arg_0x7f49d6936ce0, 
+# 80 "../../../tos/interfaces/AMSend.nc"
 am_addr_t addr, 
 #line 71
 message_t * msg, 
@@ -3549,7 +3653,45 @@ message_t * msg,
 
 
 uint8_t len);
-# 177 "../../tos/interfaces/AMPacket.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
+static 
+#line 74
+message_t * 
+
+
+
+CC2420ActiveMessageP__Snoop__default__receive(
+# 50 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+am_id_t arg_0x7f49d6932c40, 
+# 71 "../../../tos/interfaces/Receive.nc"
+message_t * msg, 
+void * payload, 
+
+
+
+
+
+uint8_t len);
+#line 78
+static 
+#line 74
+message_t * 
+
+
+
+CC2420ActiveMessageP__Receive__default__receive(
+# 49 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+am_id_t arg_0x7f49d6932060, 
+# 71 "../../../tos/interfaces/Receive.nc"
+message_t * msg, 
+void * payload, 
+
+
+
+
+
+uint8_t len);
+# 177 "../../../tos/interfaces/AMPacket.nc"
 static am_group_t CC2420ActiveMessageP__AMPacket__group(
 #line 173
 message_t * amsg);
@@ -3579,17 +3721,33 @@ message_t * amsg,
 
 
 am_addr_t addr);
+#line 103
+static void CC2420ActiveMessageP__AMPacket__setDestination(
+#line 99
+message_t * amsg, 
+
+
+
+am_addr_t addr);
 #line 147
 static am_id_t CC2420ActiveMessageP__AMPacket__type(
 #line 143
 message_t * amsg);
+#line 162
+static void CC2420ActiveMessageP__AMPacket__setType(
+#line 158
+message_t * amsg, 
+
+
+
+am_id_t t);
 #line 136
 static bool CC2420ActiveMessageP__AMPacket__isForMe(
 #line 133
 message_t * amsg);
-# 102 "../../tos/interfaces/Resource.nc"
+# 102 "../../../tos/interfaces/Resource.nc"
 static void CC2420ActiveMessageP__RadioResource__granted(void );
-# 100 "../../tos/interfaces/Send.nc"
+# 100 "../../../tos/interfaces/Send.nc"
 static void /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__SubSend__sendDone(
 #line 96
 message_t * msg, 
@@ -3597,7 +3755,7 @@ message_t * msg,
 
 
 error_t error);
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 static 
 #line 74
 message_t * 
@@ -3614,11 +3772,11 @@ void * payload,
 
 
 uint8_t len);
-# 80 "../../tos/interfaces/AMSend.nc"
+# 80 "../../../tos/interfaces/AMSend.nc"
 static error_t /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMSend__send(
-# 47 "../../tos/lib/serial/SerialActiveMessageP.nc"
-am_id_t arg_0x7f540cc9c320, 
-# 80 "../../tos/interfaces/AMSend.nc"
+# 47 "../../../tos/lib/serial/SerialActiveMessageP.nc"
+am_id_t arg_0x7f49d688f320, 
+# 80 "../../../tos/interfaces/AMSend.nc"
 am_addr_t addr, 
 #line 71
 message_t * msg, 
@@ -3631,7 +3789,7 @@ message_t * msg,
 
 
 uint8_t len);
-# 65 "../../tos/interfaces/Packet.nc"
+# 65 "../../../tos/interfaces/Packet.nc"
 static void /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__Packet__clear(
 #line 62
 message_t * msg);
@@ -3641,7 +3799,7 @@ static uint8_t /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__Packet__paylo
 message_t * msg);
 #line 106
 static uint8_t /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__Packet__maxPayloadLength(void );
-# 88 "../../tos/interfaces/AMPacket.nc"
+# 88 "../../../tos/interfaces/AMPacket.nc"
 static am_addr_t /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMPacket__source(
 #line 84
 message_t * amsg);
@@ -3668,21 +3826,21 @@ message_t * amsg,
 
 
 am_group_t grp);
-# 104 "../../tos/interfaces/SplitControl.nc"
+# 104 "../../../tos/interfaces/SplitControl.nc"
 static error_t SerialP__SplitControl__start(void );
-# 75 "../../tos/interfaces/TaskBasic.nc"
+# 75 "../../../tos/interfaces/TaskBasic.nc"
 static void SerialP__stopDoneTask__runTask(void );
 #line 75
 static void SerialP__RunTx__runTask(void );
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 static error_t SerialP__Init__init(void );
-# 54 "../../tos/lib/serial/SerialFlush.nc"
+# 54 "../../../tos/lib/serial/SerialFlush.nc"
 static void SerialP__SerialFlush__flushDone(void );
 #line 49
 static void SerialP__SerialFlush__default__flush(void );
-# 75 "../../tos/interfaces/TaskBasic.nc"
+# 75 "../../../tos/interfaces/TaskBasic.nc"
 static void SerialP__startDoneTask__runTask(void );
-# 94 "../../tos/lib/serial/SerialFrameComm.nc"
+# 94 "../../../tos/lib/serial/SerialFrameComm.nc"
 static void SerialP__SerialFrameComm__dataReceived(uint8_t data);
 
 
@@ -3692,19 +3850,19 @@ static void SerialP__SerialFrameComm__dataReceived(uint8_t data);
 static void SerialP__SerialFrameComm__putDone(void );
 #line 85
 static void SerialP__SerialFrameComm__delimiterReceived(void );
-# 75 "../../tos/interfaces/TaskBasic.nc"
+# 75 "../../../tos/interfaces/TaskBasic.nc"
 static void SerialP__defaultSerialFlushTask__runTask(void );
-# 71 "../../tos/lib/serial/SendBytePacket.nc"
+# 71 "../../../tos/lib/serial/SendBytePacket.nc"
 static error_t SerialP__SendBytePacket__completeSend(void );
 #line 62
 static error_t SerialP__SendBytePacket__startSend(uint8_t first_byte);
-# 75 "../../tos/interfaces/TaskBasic.nc"
+# 75 "../../../tos/interfaces/TaskBasic.nc"
 static void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__receiveTask__runTask(void );
-# 75 "../../tos/interfaces/Send.nc"
+# 75 "../../../tos/interfaces/Send.nc"
 static error_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Send__send(
-# 51 "../../tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x7f540cb62640, 
-# 67 "../../tos/interfaces/Send.nc"
+# 51 "../../../tos/lib/serial/SerialDispatcherP.nc"
+uart_id_t arg_0x7f49d6754640, 
+# 67 "../../../tos/interfaces/Send.nc"
 message_t * msg, 
 
 
@@ -3716,17 +3874,17 @@ message_t * msg,
 uint8_t len);
 #line 100
 static void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Send__default__sendDone(
-# 51 "../../tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x7f540cb62640, 
-# 96 "../../tos/interfaces/Send.nc"
+# 51 "../../../tos/lib/serial/SerialDispatcherP.nc"
+uart_id_t arg_0x7f49d6754640, 
+# 96 "../../../tos/interfaces/Send.nc"
 message_t * msg, 
 
 
 
 error_t error);
-# 75 "../../tos/interfaces/TaskBasic.nc"
+# 75 "../../../tos/interfaces/TaskBasic.nc"
 static void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__signalSendDone__runTask(void );
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 static 
 #line 74
 message_t * 
@@ -3734,9 +3892,9 @@ message_t *
 
 
 /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Receive__default__receive(
-# 50 "../../tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x7f540cb63960, 
-# 71 "../../tos/interfaces/Receive.nc"
+# 50 "../../../tos/lib/serial/SerialDispatcherP.nc"
+uart_id_t arg_0x7f49d6755960, 
+# 71 "../../../tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
 
@@ -3745,23 +3903,23 @@ void * payload,
 
 
 uint8_t len);
-# 31 "../../tos/lib/serial/SerialPacketInfo.nc"
+# 31 "../../../tos/lib/serial/SerialPacketInfo.nc"
 static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__upperLength(
-# 54 "../../tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x7f540cb61b10, 
-# 31 "../../tos/lib/serial/SerialPacketInfo.nc"
+# 54 "../../../tos/lib/serial/SerialDispatcherP.nc"
+uart_id_t arg_0x7f49d6753b10, 
+# 31 "../../../tos/lib/serial/SerialPacketInfo.nc"
 message_t *msg, uint8_t dataLinkLen);
 #line 15
 static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__offset(
-# 54 "../../tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x7f540cb61b10);
-# 23 "../../tos/lib/serial/SerialPacketInfo.nc"
+# 54 "../../../tos/lib/serial/SerialDispatcherP.nc"
+uart_id_t arg_0x7f49d6753b10);
+# 23 "../../../tos/lib/serial/SerialPacketInfo.nc"
 static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__dataLinkLength(
-# 54 "../../tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x7f540cb61b10, 
-# 23 "../../tos/lib/serial/SerialPacketInfo.nc"
+# 54 "../../../tos/lib/serial/SerialDispatcherP.nc"
+uart_id_t arg_0x7f49d6753b10, 
+# 23 "../../../tos/lib/serial/SerialPacketInfo.nc"
 message_t *msg, uint8_t upperLen);
-# 81 "../../tos/lib/serial/SendBytePacket.nc"
+# 81 "../../../tos/lib/serial/SendBytePacket.nc"
 static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__SendBytePacket__nextByte(void );
 
 
@@ -3773,7 +3931,7 @@ static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Send
 
 
 static void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__SendBytePacket__sendCompleted(error_t error);
-# 62 "../../tos/lib/serial/ReceiveBytePacket.nc"
+# 62 "../../../tos/lib/serial/ReceiveBytePacket.nc"
 static error_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__ReceiveBytePacket__startPacket(void );
 
 
@@ -3793,7 +3951,7 @@ static void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Receive
 
 
 static void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__ReceiveBytePacket__endPacket(error_t result);
-# 79 "../../tos/interfaces/UartStream.nc"
+# 79 "../../../tos/interfaces/UartStream.nc"
 static void HdlcTranslateC__UartStream__receivedByte(uint8_t byte);
 #line 99
 static void HdlcTranslateC__UartStream__receiveDone(
@@ -3811,29 +3969,29 @@ uint8_t * buf,
 
 
 uint16_t len, error_t error);
-# 56 "../../tos/lib/serial/SerialFrameComm.nc"
+# 56 "../../../tos/lib/serial/SerialFrameComm.nc"
 static error_t HdlcTranslateC__SerialFrameComm__putDelimiter(void );
 #line 79
 static void HdlcTranslateC__SerialFrameComm__resetReceive(void );
 #line 65
 static error_t HdlcTranslateC__SerialFrameComm__putData(uint8_t data);
-# 65 "../../tos/interfaces/ResourceConfigure.nc"
+# 65 "../../../tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__ResourceConfigure__unconfigure(
-# 47 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540caafba0);
-# 59 "../../tos/interfaces/ResourceConfigure.nc"
+# 47 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d66a1ba0);
+# 59 "../../../tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__ResourceConfigure__configure(
-# 47 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540caafba0);
-# 39 "../../tos/chips/msp430/usart/Msp430UartConfigure.nc"
+# 47 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d66a1ba0);
+# 39 "../../../tos/chips/msp430/usart/Msp430UartConfigure.nc"
 static const msp430_uart_union_config_t */*Msp430Uart1P.UartP*/Msp430UartP__0__Msp430UartConfigure__default__getConfig(
-# 52 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540caa92a0);
-# 48 "../../tos/interfaces/UartStream.nc"
+# 52 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d669a2a0);
+# 48 "../../../tos/interfaces/UartStream.nc"
 static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__send(
-# 48 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540caae920, 
-# 44 "../../tos/interfaces/UartStream.nc"
+# 48 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d669f920, 
+# 44 "../../../tos/interfaces/UartStream.nc"
 uint8_t * buf, 
 
 
@@ -3841,15 +3999,15 @@ uint8_t * buf,
 uint16_t len);
 #line 79
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__receivedByte(
-# 48 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540caae920, 
-# 79 "../../tos/interfaces/UartStream.nc"
+# 48 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d669f920, 
+# 79 "../../../tos/interfaces/UartStream.nc"
 uint8_t byte);
 #line 99
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__receiveDone(
-# 48 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540caae920, 
-# 95 "../../tos/interfaces/UartStream.nc"
+# 48 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d669f920, 
+# 95 "../../../tos/interfaces/UartStream.nc"
 uint8_t * buf, 
 
 
@@ -3857,55 +4015,55 @@ uint8_t * buf,
 uint16_t len, error_t error);
 #line 57
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__sendDone(
-# 48 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540caae920, 
-# 53 "../../tos/interfaces/UartStream.nc"
+# 48 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d669f920, 
+# 53 "../../../tos/interfaces/UartStream.nc"
 uint8_t * buf, 
 
 
 
 uint16_t len, error_t error);
-# 82 "../../tos/lib/timer/Counter.nc"
+# 82 "../../../tos/lib/timer/Counter.nc"
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Counter__overflow(void );
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__release(
-# 51 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540caaa020);
-# 97 "../../tos/interfaces/Resource.nc"
+# 51 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d669c020);
+# 97 "../../../tos/interfaces/Resource.nc"
 static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__immediateRequest(
-# 51 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540caaa020);
-# 102 "../../tos/interfaces/Resource.nc"
+# 51 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d669c020);
+# 102 "../../../tos/interfaces/Resource.nc"
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__granted(
-# 51 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540caaa020);
-# 128 "../../tos/interfaces/Resource.nc"
+# 51 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d669c020);
+# 128 "../../../tos/interfaces/Resource.nc"
 static bool /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__isOwner(
-# 51 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540caaa020);
-# 120 "../../tos/interfaces/Resource.nc"
+# 51 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d669c020);
+# 120 "../../../tos/interfaces/Resource.nc"
 static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__release(
-# 46 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540cab08f0);
-# 97 "../../tos/interfaces/Resource.nc"
+# 46 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d66a28f0);
+# 97 "../../../tos/interfaces/Resource.nc"
 static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__immediateRequest(
-# 46 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540cab08f0);
-# 102 "../../tos/interfaces/Resource.nc"
+# 46 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d66a28f0);
+# 102 "../../../tos/interfaces/Resource.nc"
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__default__granted(
-# 46 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540cab08f0);
-# 54 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+# 46 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d66a28f0);
+# 54 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartInterrupts__rxDone(
-# 54 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540caa3b40, 
-# 54 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+# 54 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d6695b40, 
+# 54 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 uint8_t data);
 #line 49
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartInterrupts__txDone(
-# 54 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540caa3b40);
-# 143 "../../tos/chips/msp430/usart/HplMsp430Usart.nc"
+# 54 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d6695b40);
+# 143 "../../../tos/chips/msp430/usart/HplMsp430Usart.nc"
 static void HplMsp430Usart1P__Usart__enableUartRx(void );
 #line 123
 static void HplMsp430Usart1P__Usart__enableUart(void );
@@ -3935,7 +4093,7 @@ static void HplMsp430Usart1P__Usart__setModeUart(const msp430_uart_union_config_
 static void HplMsp430Usart1P__Usart__disableSpi(void );
 #line 138
 static void HplMsp430Usart1P__Usart__disableUartTx(void );
-# 95 "../../tos/interfaces/AsyncStdControl.nc"
+# 95 "../../../tos/interfaces/AsyncStdControl.nc"
 static error_t HplMsp430Usart1P__AsyncStdControl__start(void );
 
 
@@ -3947,59 +4105,59 @@ static error_t HplMsp430Usart1P__AsyncStdControl__start(void );
 
 
 static error_t HplMsp430Usart1P__AsyncStdControl__stop(void );
-# 54 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+# 54 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Interrupts__default__rxDone(
-# 39 "../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
-uint8_t arg_0x7f540d476600, 
-# 54 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+# 39 "../../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
+uint8_t arg_0x7f49d705e600, 
+# 54 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 uint8_t data);
 #line 49
 static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Interrupts__default__txDone(
-# 39 "../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
-uint8_t arg_0x7f540d476600);
-# 54 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+# 39 "../../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
+uint8_t arg_0x7f49d705e600);
+# 54 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__RawInterrupts__rxDone(uint8_t data);
 #line 49
 static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__RawInterrupts__txDone(void );
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 static error_t /*Msp430UsartShare1P.ArbiterC.Queue*/FcfsResourceQueueC__2__Init__init(void );
-# 53 "../../tos/interfaces/ResourceQueue.nc"
+# 53 "../../../tos/interfaces/ResourceQueue.nc"
 static bool /*Msp430UsartShare1P.ArbiterC.Queue*/FcfsResourceQueueC__2__FcfsQueue__isEmpty(void );
 #line 70
 static resource_client_id_t /*Msp430UsartShare1P.ArbiterC.Queue*/FcfsResourceQueueC__2__FcfsQueue__dequeue(void );
-# 61 "../../tos/interfaces/ResourceRequested.nc"
+# 61 "../../../tos/interfaces/ResourceRequested.nc"
 static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceRequested__default__immediateRequested(
-# 99 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d434cf0);
-# 65 "../../tos/interfaces/ResourceConfigure.nc"
+# 99 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701dcf0);
+# 65 "../../../tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__default__unconfigure(
-# 105 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d431a30);
-# 59 "../../tos/interfaces/ResourceConfigure.nc"
+# 105 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701aa30);
+# 59 "../../../tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__default__configure(
-# 105 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d431a30);
-# 54 "../../tos/interfaces/ResourceDefaultOwner.nc"
+# 105 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701aa30);
+# 54 "../../../tos/interfaces/ResourceDefaultOwner.nc"
 static error_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceDefaultOwner__release(void );
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 static error_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Resource__release(
-# 98 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d435970);
-# 97 "../../tos/interfaces/Resource.nc"
+# 98 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701f970);
+# 97 "../../../tos/interfaces/Resource.nc"
 static error_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Resource__immediateRequest(
-# 98 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d435970);
-# 102 "../../tos/interfaces/Resource.nc"
+# 98 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701f970);
+# 102 "../../../tos/interfaces/Resource.nc"
 static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Resource__default__granted(
-# 98 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d435970);
-# 128 "../../tos/interfaces/Resource.nc"
+# 98 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701f970);
+# 128 "../../../tos/interfaces/Resource.nc"
 static bool /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Resource__isOwner(
-# 98 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d435970);
-# 9 "../../tos/interfaces/ResourceDefaultOwnerInfo.nc"
+# 98 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701f970);
+# 9 "../../../tos/interfaces/ResourceDefaultOwnerInfo.nc"
 static bool /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceDefaultOwnerInfo__default__inUse(void );
-# 90 "../../tos/interfaces/ArbiterInfo.nc"
+# 90 "../../../tos/interfaces/ArbiterInfo.nc"
 static bool /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ArbiterInfo__inUse(void );
 
 
@@ -4009,19 +4167,19 @@ static bool /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ArbiterInfo__inU
 
 
 static uint8_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ArbiterInfo__userId(void );
-# 75 "../../tos/interfaces/TaskBasic.nc"
+# 75 "../../../tos/interfaces/TaskBasic.nc"
 static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__grantedTask__runTask(void );
-# 62 "../../tos/lib/power/PowerDownCleanup.nc"
+# 62 "../../../tos/lib/power/PowerDownCleanup.nc"
 static void /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__PowerDownCleanup__default__cleanup(void );
-# 44 "../../tos/interfaces/ResourceDefaultOwner.nc"
+# 44 "../../../tos/interfaces/ResourceDefaultOwner.nc"
 static void /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__ResourceDefaultOwner__granted(void );
 #line 79
 static void /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__ResourceDefaultOwner__immediateRequested(void );
-# 39 "../../tos/chips/msp430/usart/Msp430UartConfigure.nc"
+# 39 "../../../tos/chips/msp430/usart/Msp430UartConfigure.nc"
 static const msp430_uart_union_config_t *TelosSerialP__Msp430UartConfigure__getConfig(void );
-# 102 "../../tos/interfaces/Resource.nc"
+# 102 "../../../tos/interfaces/Resource.nc"
 static void TelosSerialP__Resource__granted(void );
-# 95 "../../tos/interfaces/StdControl.nc"
+# 95 "../../../tos/interfaces/StdControl.nc"
 static error_t TelosSerialP__StdControl__start(void );
 
 
@@ -4033,7 +4191,7 @@ static error_t TelosSerialP__StdControl__start(void );
 
 
 static error_t TelosSerialP__StdControl__stop(void );
-# 31 "../../tos/lib/serial/SerialPacketInfo.nc"
+# 31 "../../../tos/lib/serial/SerialPacketInfo.nc"
 static uint8_t SerialPacketInfoActiveMessageP__Info__upperLength(message_t *msg, uint8_t dataLinkLen);
 #line 15
 static uint8_t SerialPacketInfoActiveMessageP__Info__offset(void );
@@ -4045,13 +4203,75 @@ static uint8_t SerialPacketInfoActiveMessageP__Info__offset(void );
 
 
 static uint8_t SerialPacketInfoActiveMessageP__Info__dataLinkLength(message_t *msg, uint8_t upperLen);
-# 62 "../../tos/interfaces/Init.nc"
+# 80 "../../../tos/interfaces/AMSend.nc"
+static error_t /*BaseStationC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__0__AMSend__send(am_addr_t addr, 
+#line 71
+message_t * msg, 
+
+
+
+
+
+
+
+
+uint8_t len);
+# 100 "../../../tos/interfaces/Send.nc"
+static void /*BaseStationC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__0__Send__sendDone(
+#line 96
+message_t * msg, 
+
+
+
+error_t error);
+# 110 "../../../tos/interfaces/AMSend.nc"
+static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__sendDone(
+# 51 "../../../tos/system/AMQueueImplP.nc"
+am_id_t arg_0x7f49d64c4510, 
+# 103 "../../../tos/interfaces/AMSend.nc"
+message_t * msg, 
+
+
+
+
+
+
+error_t error);
+# 75 "../../../tos/interfaces/Send.nc"
+static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__send(
+# 47 "../../../tos/system/AMQueueImplP.nc"
+uint8_t arg_0x7f49d64c6960, 
+# 67 "../../../tos/interfaces/Send.nc"
+message_t * msg, 
+
+
+
+
+
+
+
+uint8_t len);
+#line 100
+static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__default__sendDone(
+# 47 "../../../tos/system/AMQueueImplP.nc"
+uint8_t arg_0x7f49d64c6960, 
+# 96 "../../../tos/interfaces/Send.nc"
+message_t * msg, 
+
+
+
+error_t error);
+# 75 "../../../tos/interfaces/TaskBasic.nc"
+static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__errorTask__runTask(void );
+#line 75
+static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__CancelTask__runTask(void );
+# 62 "../../../tos/interfaces/Init.nc"
 static error_t PlatformP__MoteInit__init(void );
 #line 62
 static error_t PlatformP__MoteClockInit__init(void );
 #line 62
 static error_t PlatformP__LedsInit__init(void );
-# 11 "../../tos/platforms/telosa/PlatformP.nc"
+# 11 "../../../tos/platforms/telosa/PlatformP.nc"
 static inline error_t PlatformP__Init__init(void );
 
 
@@ -4062,7 +4282,7 @@ static inline error_t PlatformP__Init__init(void );
 
 
 static inline uint32_t PlatformP__Platform__usecsRaw(void );
-# 6 "../../tos/platforms/telosb/MotePlatformC.nc"
+# 6 "../../../tos/platforms/telosb/MotePlatformC.nc"
 static __inline void MotePlatformC__uwait(uint16_t u);
 
 
@@ -4087,14 +4307,14 @@ static void MotePlatformC__TOSH_FLASH_M25P_DP_bit(bool set);
 static inline void MotePlatformC__TOSH_FLASH_M25P_DP(void );
 #line 56
 static inline error_t MotePlatformC__Init__init(void );
-# 43 "../../tos/chips/msp430/Msp430ClockInit.nc"
+# 43 "../../../tos/chips/msp430/Msp430ClockInit.nc"
 static void Msp430ClockP__Msp430ClockInit__initTimerB(void );
 #line 42
 static void Msp430ClockP__Msp430ClockInit__initTimerA(void );
 #line 40
 static void Msp430ClockP__Msp430ClockInit__setupDcoCalibrate(void );
 static void Msp430ClockP__Msp430ClockInit__initClocks(void );
-# 209 "../../tos/chips/msp430/clock_bcs/Msp430ClockP.nc"
+# 209 "../../../tos/chips/msp430/clock_bcs/Msp430ClockP.nc"
 static volatile uint8_t Msp430ClockP__IE1 __asm ("0x0000");
 static volatile uint16_t Msp430ClockP__TACTL __asm ("0x0160");
 
@@ -4109,7 +4329,7 @@ static volatile uint16_t Msp430ClockP__TBCTL __asm ("0x0180");
 
 
 
-enum Msp430ClockP____nesc_unnamed4309 {
+enum Msp430ClockP____nesc_unnamed4311 {
   Msp430ClockP__ACLK_CALIB_PERIOD = 8, 
   Msp430ClockP__TARGET_DCO_DELTA = 4194304UL / 32768UL * Msp430ClockP__ACLK_CALIB_PERIOD
 };
@@ -4164,9 +4384,9 @@ static inline uint16_t Msp430ClockP__test_calib_busywait_delta(uint16_t calib);
 static inline void Msp430ClockP__busyCalibrateDco(void );
 #line 433
 static inline error_t Msp430ClockP__Init__init(void );
-# 62 "../../tos/interfaces/McuPowerOverride.nc"
+# 62 "../../../tos/interfaces/McuPowerOverride.nc"
 static mcu_power_t McuSleepC__McuPowerOverride__lowestState(void );
-# 60 "../../tos/chips/msp430/x1xxx/McuSleepC.nc"
+# 60 "../../../tos/chips/msp430/x1xxx/McuSleepC.nc"
 static volatile uint8_t McuSleepC__U0CTLnr __asm ("0x0070");
 static volatile uint8_t McuSleepC__I2CTCTLnr __asm ("0x0071");
 static volatile uint8_t McuSleepC__I2CDCTLnr __asm ("0x0072");
@@ -4194,29 +4414,29 @@ static inline void McuSleepC__computePowerState(void );
 
 
 static inline void McuSleepC__McuSleep__sleep(void );
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 static error_t RealMainP__SoftwareInit__init(void );
-# 60 "../../tos/interfaces/Boot.nc"
+# 60 "../../../tos/interfaces/Boot.nc"
 static void RealMainP__Boot__booted(void );
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 static error_t RealMainP__PlatformInit__init(void );
-# 57 "../../tos/interfaces/Scheduler.nc"
+# 57 "../../../tos/interfaces/Scheduler.nc"
 static void RealMainP__Scheduler__init(void );
 #line 72
 static void RealMainP__Scheduler__taskLoop(void );
 #line 65
 static bool RealMainP__Scheduler__runNextTask(void );
-# 72 "../../tos/system/RealMainP.nc"
+# 72 "../../../tos/system/RealMainP.nc"
 int main(void )   ;
-# 75 "../../tos/interfaces/TaskBasic.nc"
+# 75 "../../../tos/interfaces/TaskBasic.nc"
 static void SchedulerBasicP__TaskBasic__runTask(
-# 55 "../../tos/system/SchedulerBasicP.nc"
-uint8_t arg_0x7f540e1ace60);
-# 79 "../../tos/interfaces/McuSleep.nc"
+# 55 "../../../tos/system/SchedulerBasicP.nc"
+uint8_t arg_0x7f49d7ddce60);
+# 79 "../../../tos/interfaces/McuSleep.nc"
 static void SchedulerBasicP__McuSleep__sleep(void );
-# 59 "../../tos/system/SchedulerBasicP.nc"
-enum SchedulerBasicP____nesc_unnamed4310 {
-  SchedulerBasicP__NUM_TASKS = 21U, 
+# 59 "../../../tos/system/SchedulerBasicP.nc"
+enum SchedulerBasicP____nesc_unnamed4312 {
+  SchedulerBasicP__NUM_TASKS = 23U, 
   SchedulerBasicP__NO_TASK = 255
 };
 
@@ -4279,53 +4499,86 @@ static error_t SchedulerBasicP__TaskBasic__postTask(uint8_t id);
 
 
 static void SchedulerBasicP__TaskBasic__default__runTask(uint8_t id);
-# 104 "../../tos/interfaces/SplitControl.nc"
+# 104 "../../../tos/interfaces/SplitControl.nc"
+static error_t BaseStationP__AMControl__start(void );
+# 67 "../../../tos/interfaces/TaskBasic.nc"
+static error_t BaseStationP__RadioSendTask__postTask(void );
+# 104 "../../../tos/interfaces/SplitControl.nc"
 static error_t BaseStationP__SerialControl__start(void );
-# 177 "../../tos/interfaces/AMPacket.nc"
-static am_group_t BaseStationP__RadioAMPacket__group(
-#line 173
-message_t * amsg);
-#line 88
-static am_addr_t BaseStationP__RadioAMPacket__source(
-#line 84
-message_t * amsg);
-#line 78
-static am_addr_t BaseStationP__RadioAMPacket__destination(
-#line 74
-message_t * amsg);
-#line 121
-static void BaseStationP__RadioAMPacket__setSource(
-#line 117
-message_t * amsg, 
-
-
-
-am_addr_t addr);
-#line 147
-static am_id_t BaseStationP__RadioAMPacket__type(
-#line 143
-message_t * amsg);
-# 67 "../../tos/interfaces/TaskBasic.nc"
-static error_t BaseStationP__uartSendTask__postTask(void );
-# 104 "../../tos/interfaces/SplitControl.nc"
-static error_t BaseStationP__RadioControl__start(void );
-# 65 "../../tos/interfaces/Packet.nc"
-static void BaseStationP__RadioPacket__clear(
+# 65 "../../../tos/interfaces/Packet.nc"
+static void BaseStationP__Packet__clear(
 #line 62
 message_t * msg);
 #line 78
-static uint8_t BaseStationP__RadioPacket__payloadLength(
+static uint8_t BaseStationP__Packet__payloadLength(
 #line 74
 message_t * msg);
-# 67 "../../tos/interfaces/TaskBasic.nc"
-static error_t BaseStationP__radioSendTask__postTask(void );
-# 67 "../../tos/interfaces/Leds.nc"
+#line 126
+static 
+#line 123
+void * 
+
+
+BaseStationP__Packet__getPayload(
+#line 121
+message_t * msg, 
+
+
+
+
+uint8_t len);
+# 80 "../../../tos/interfaces/AMSend.nc"
+static error_t BaseStationP__AMSend__send(am_addr_t addr, 
+#line 71
+message_t * msg, 
+
+
+
+
+
+
+
+
+uint8_t len);
+# 64 "../../../tos/lib/timer/Timer.nc"
+static void BaseStationP__TimerTramaTDMA__startPeriodic(uint32_t dt);
+# 67 "../../../tos/interfaces/TaskBasic.nc"
+static error_t BaseStationP__uartSendTask__postTask(void );
+# 61 "../../../tos/interfaces/Leds.nc"
+static void BaseStationP__Leds__led0Off(void );
+
+
+
+
+
 static void BaseStationP__Leds__led0Toggle(void );
-#line 83
+
+
+
+
+static void BaseStationP__Leds__led1On(void );
+
+
+
+
+
+
+
+
+
+
 static void BaseStationP__Leds__led1Toggle(void );
 #line 100
 static void BaseStationP__Leds__led2Toggle(void );
-# 65 "../../tos/interfaces/Packet.nc"
+#line 77
+static void BaseStationP__Leds__led1Off(void );
+#line 94
+static void BaseStationP__Leds__led2Off(void );
+#line 56
+static void BaseStationP__Leds__led0On(void );
+#line 89
+static void BaseStationP__Leds__led2On(void );
+# 65 "../../../tos/interfaces/Packet.nc"
 static void BaseStationP__UartPacket__clear(
 #line 62
 message_t * msg);
@@ -4333,28 +4586,11 @@ message_t * msg);
 static uint8_t BaseStationP__UartPacket__payloadLength(
 #line 74
 message_t * msg);
-# 80 "../../tos/interfaces/AMSend.nc"
-static error_t BaseStationP__RadioSend__send(
-# 71 "BaseStationP.nc"
-am_id_t arg_0x7f540e04d530, 
-# 80 "../../tos/interfaces/AMSend.nc"
-am_addr_t addr, 
-#line 71
-message_t * msg, 
-
-
-
-
-
-
-
-
-uint8_t len);
-#line 80
+# 80 "../../../tos/interfaces/AMSend.nc"
 static error_t BaseStationP__UartSend__send(
-# 66 "BaseStationP.nc"
-am_id_t arg_0x7f540e05bd40, 
-# 80 "../../tos/interfaces/AMSend.nc"
+# 20 "BaseStationP.nc"
+am_id_t arg_0x7f49d7c85d40, 
+# 80 "../../../tos/interfaces/AMSend.nc"
 am_addr_t addr, 
 #line 71
 message_t * msg, 
@@ -4367,7 +4603,7 @@ message_t * msg,
 
 
 uint8_t len);
-# 88 "../../tos/interfaces/AMPacket.nc"
+# 88 "../../../tos/interfaces/AMPacket.nc"
 static am_addr_t BaseStationP__UartAMPacket__source(
 #line 84
 message_t * amsg);
@@ -4394,46 +4630,97 @@ message_t * amsg,
 
 
 am_group_t grp);
-# 98 "BaseStationP.nc"
-enum BaseStationP____nesc_unnamed4311 {
-#line 98
+#line 177
+static am_group_t BaseStationP__AMPacket__group(
+#line 173
+message_t * amsg);
+#line 88
+static am_addr_t BaseStationP__AMPacket__source(
+#line 84
+message_t * amsg);
+#line 78
+static am_addr_t BaseStationP__AMPacket__destination(
+#line 74
+message_t * amsg);
+#line 121
+static void BaseStationP__AMPacket__setSource(
+#line 117
+message_t * amsg, 
+
+
+
+am_addr_t addr);
+#line 147
+static am_id_t BaseStationP__AMPacket__type(
+#line 143
+message_t * amsg);
+# 73 "../../../tos/lib/timer/Timer.nc"
+static void BaseStationP__TimerLeds__startOneShot(uint32_t dt);
+# 87 "BaseStationP.nc"
+enum BaseStationP____nesc_unnamed4313 {
+#line 87
   BaseStationP__uartSendTask = 0U
 };
-#line 98
+#line 87
 typedef int BaseStationP____nesc_sillytask_uartSendTask[BaseStationP__uartSendTask];
-enum BaseStationP____nesc_unnamed4312 {
-#line 99
-  BaseStationP__radioSendTask = 1U
+enum BaseStationP____nesc_unnamed4314 {
+#line 88
+  BaseStationP__RadioSendTask = 1U
 };
-#line 99
-typedef int BaseStationP____nesc_sillytask_radioSendTask[BaseStationP__radioSendTask];
-#line 83
-enum BaseStationP____nesc_unnamed4313 {
-  BaseStationP__UART_QUEUE_LEN = 12, 
-  BaseStationP__RADIO_QUEUE_LEN = 12
+#line 88
+typedef int BaseStationP____nesc_sillytask_RadioSendTask[BaseStationP__RadioSendTask];
+#line 44
+enum BaseStationP____nesc_unnamed4315 {
+  BaseStationP__UART_QUEUE_LEN = 16 + 16 * 3, 
+  BaseStationP__RADIO_QUEUE_LEN = 16 + 16 * 3
 };
+
+int16_t BaseStationP__rssi_dbm[3][3];
+bool BaseStationP__strikes[3][3][PERIODO_CALIBRACION];
+int16_t BaseStationP__rssi_historico[3][3][PERIODO_CALIBRACION];
+bool BaseStationP__alarma[3][3];
+int BaseStationP__posicion_medida[3];
+bool BaseStationP__calibrado = FALSE;
+
+uint16_t BaseStationP__node_id_master;
+
 
 message_t BaseStationP__uartQueueBufs[BaseStationP__UART_QUEUE_LEN];
 message_t * BaseStationP__uartQueue[BaseStationP__UART_QUEUE_LEN];
 uint8_t BaseStationP__uartIn;
-#line 90
+#line 61
 uint8_t BaseStationP__uartOut;
 bool BaseStationP__uartBusy;
-#line 91
+#line 62
 bool BaseStationP__uartFull;
 
 message_t BaseStationP__radioQueueBufs[BaseStationP__RADIO_QUEUE_LEN];
 message_t * BaseStationP__radioQueue[BaseStationP__RADIO_QUEUE_LEN];
 uint8_t BaseStationP__radioIn;
-#line 95
+#line 66
 uint8_t BaseStationP__radioOut;
 bool BaseStationP__radioBusy;
-#line 96
+#line 67
 bool BaseStationP__radioFull;
 
 
+uint8_t BaseStationP__tmpLen;
 
 
+
+message_t BaseStationP__pkt;
+bool BaseStationP__busy = FALSE;
+
+
+
+int BaseStationP__ids[3] = { 1, 2, 3 };
+
+int BaseStationP__i;
+#line 81
+int BaseStationP__j;
+#line 94
+static void BaseStationP__setLeds(uint16_t val);
+#line 115
 static inline void BaseStationP__dropBlink(void );
 
 
@@ -4442,9 +4729,18 @@ static inline void BaseStationP__failBlink(void );
 
 
 
+
+
+
+
+
 static inline void BaseStationP__Boot__booted(void );
-#line 130
-static inline void BaseStationP__RadioControl__startDone(error_t error);
+#line 152
+static inline void BaseStationP__AMControl__startDone(error_t error);
+
+
+
+
 
 
 
@@ -4457,40 +4753,33 @@ static inline void BaseStationP__SerialControl__startDone(error_t error);
 
 
 static inline void BaseStationP__SerialControl__stopDone(error_t error);
-static inline void BaseStationP__RadioControl__stopDone(error_t error);
+
+
+static inline void BaseStationP__AMControl__stopDone(error_t error);
+
+
+static inline void BaseStationP__TimerLeds__fired(void );
 
 
 
-static message_t * BaseStationP__receive(message_t * msg, void *payload, uint8_t len);
-
-static inline message_t *BaseStationP__RadioSnoop__receive(am_id_t id, message_t *msg, 
+static inline void BaseStationP__TimerTramaTDMA__fired(void );
+#line 210
+static void BaseStationP__AMSend__sendDone(message_t *msg, error_t error);
+#line 231
+static inline message_t *BaseStationP__Receive__receive(message_t *msg, 
 void *payload, 
 uint8_t len);
-
-
-
-static inline message_t *BaseStationP__RadioReceive__receive(am_id_t id, message_t *msg, 
-void *payload, 
-uint8_t len);
-
-
-
-static message_t *BaseStationP__receive(message_t *msg, void *payload, uint8_t len);
-#line 188
-uint8_t BaseStationP__tmpLen;
-
+#line 333
 static inline void BaseStationP__uartSendTask__runTask(void );
-#line 222
+#line 365
 static inline void BaseStationP__UartSend__sendDone(am_id_t id, message_t *msg, error_t error);
-#line 237
+#line 380
 static inline message_t *BaseStationP__UartReceive__receive(am_id_t id, message_t *msg, 
 void *payload, 
 uint8_t len);
-#line 270
-static inline void BaseStationP__radioSendTask__runTask(void );
-#line 301
-static void BaseStationP__RadioSend__sendDone(am_id_t id, message_t *msg, error_t error);
-# 42 "../../tos/interfaces/GeneralIO.nc"
+#line 413
+static inline void BaseStationP__RadioSendTask__runTask(void );
+# 42 "../../../tos/interfaces/GeneralIO.nc"
 static void LedsP__Led0__toggle(void );
 
 
@@ -4498,7 +4787,7 @@ static void LedsP__Led0__toggle(void );
 static void LedsP__Led0__makeOutput(void );
 #line 40
 static void LedsP__Led0__set(void );
-
+static void LedsP__Led0__clr(void );
 static void LedsP__Led1__toggle(void );
 
 
@@ -4506,7 +4795,7 @@ static void LedsP__Led1__toggle(void );
 static void LedsP__Led1__makeOutput(void );
 #line 40
 static void LedsP__Led1__set(void );
-
+static void LedsP__Led1__clr(void );
 static void LedsP__Led2__toggle(void );
 
 
@@ -4514,15 +4803,52 @@ static void LedsP__Led2__toggle(void );
 static void LedsP__Led2__makeOutput(void );
 #line 40
 static void LedsP__Led2__set(void );
-# 56 "../../tos/system/LedsP.nc"
+static void LedsP__Led2__clr(void );
+# 56 "../../../tos/system/LedsP.nc"
 static inline error_t LedsP__Init__init(void );
-#line 84
+#line 74
+static inline void LedsP__Leds__led0On(void );
+
+
+
+
+static inline void LedsP__Leds__led0Off(void );
+
+
+
+
 static inline void LedsP__Leds__led0Toggle(void );
-#line 99
+
+
+
+
+static inline void LedsP__Leds__led1On(void );
+
+
+
+
+static inline void LedsP__Leds__led1Off(void );
+
+
+
+
 static inline void LedsP__Leds__led1Toggle(void );
-#line 114
+
+
+
+
+static inline void LedsP__Leds__led2On(void );
+
+
+
+
+static inline void LedsP__Leds__led2Off(void );
+
+
+
+
 static inline void LedsP__Leds__led2Toggle(void );
-# 98 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 98 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline uint8_t /*HplMsp430GeneralIOC.P10*/HplMsp430GeneralIOP__0__IO__getRaw(void );
 static inline bool /*HplMsp430GeneralIOC.P10*/HplMsp430GeneralIOP__0__IO__get(void );
 #line 98
@@ -4610,8 +4936,8 @@ static inline void /*HplMsp430GeneralIOC.P52*/HplMsp430GeneralIOP__34__IO__selec
 #line 106
 static inline void /*HplMsp430GeneralIOC.P53*/HplMsp430GeneralIOP__35__IO__selectIOFunc(void );
 #line 95
-static inline void /*HplMsp430GeneralIOC.P54*/HplMsp430GeneralIOP__36__IO__set(void );
-
+static void /*HplMsp430GeneralIOC.P54*/HplMsp430GeneralIOP__36__IO__set(void );
+static inline void /*HplMsp430GeneralIOC.P54*/HplMsp430GeneralIOP__36__IO__clr(void );
 static inline void /*HplMsp430GeneralIOC.P54*/HplMsp430GeneralIOP__36__IO__toggle(void );
 
 
@@ -4619,8 +4945,8 @@ static inline void /*HplMsp430GeneralIOC.P54*/HplMsp430GeneralIOP__36__IO__toggl
 
 static inline void /*HplMsp430GeneralIOC.P54*/HplMsp430GeneralIOP__36__IO__makeOutput(void );
 #line 95
-static inline void /*HplMsp430GeneralIOC.P55*/HplMsp430GeneralIOP__37__IO__set(void );
-
+static void /*HplMsp430GeneralIOC.P55*/HplMsp430GeneralIOP__37__IO__set(void );
+static inline void /*HplMsp430GeneralIOC.P55*/HplMsp430GeneralIOP__37__IO__clr(void );
 static inline void /*HplMsp430GeneralIOC.P55*/HplMsp430GeneralIOP__37__IO__toggle(void );
 
 
@@ -4628,61 +4954,76 @@ static inline void /*HplMsp430GeneralIOC.P55*/HplMsp430GeneralIOP__37__IO__toggl
 
 static inline void /*HplMsp430GeneralIOC.P55*/HplMsp430GeneralIOP__37__IO__makeOutput(void );
 #line 95
-static inline void /*HplMsp430GeneralIOC.P56*/HplMsp430GeneralIOP__38__IO__set(void );
-
+static void /*HplMsp430GeneralIOC.P56*/HplMsp430GeneralIOP__38__IO__set(void );
+static inline void /*HplMsp430GeneralIOC.P56*/HplMsp430GeneralIOP__38__IO__clr(void );
 static void /*HplMsp430GeneralIOC.P56*/HplMsp430GeneralIOP__38__IO__toggle(void );
 
 
 
 
 static inline void /*HplMsp430GeneralIOC.P56*/HplMsp430GeneralIOP__38__IO__makeOutput(void );
-# 59 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 59 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 static void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__HplGeneralIO__toggle(void );
 #line 85
 static void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__HplGeneralIO__makeOutput(void );
 #line 49
 static void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__HplGeneralIO__set(void );
-# 48 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
-static inline void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__set(void );
 
+
+
+
+static void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__HplGeneralIO__clr(void );
+# 48 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
+static inline void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__set(void );
+static inline void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__clr(void );
 static inline void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__toggle(void );
 
 
 
 static inline void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__makeOutput(void );
-# 59 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 59 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 static void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__HplGeneralIO__toggle(void );
 #line 85
 static void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__HplGeneralIO__makeOutput(void );
 #line 49
 static void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__HplGeneralIO__set(void );
-# 48 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
-static inline void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__set(void );
 
+
+
+
+static void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__HplGeneralIO__clr(void );
+# 48 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
+static inline void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__set(void );
+static inline void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__clr(void );
 static inline void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__toggle(void );
 
 
 
 static inline void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__makeOutput(void );
-# 59 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 59 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 static void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__HplGeneralIO__toggle(void );
 #line 85
 static void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__HplGeneralIO__makeOutput(void );
 #line 49
 static void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__HplGeneralIO__set(void );
-# 48 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
-static inline void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__set(void );
 
+
+
+
+static void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__HplGeneralIO__clr(void );
+# 48 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
+static inline void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__set(void );
+static inline void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__clr(void );
 static inline void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__toggle(void );
 
 
 
 static inline void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__makeOutput(void );
-# 113 "../../tos/interfaces/SplitControl.nc"
+# 113 "../../../tos/interfaces/SplitControl.nc"
 static void CC2420CsmaP__SplitControl__startDone(error_t error);
 #line 138
 static void CC2420CsmaP__SplitControl__stopDone(error_t error);
-# 95 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+# 95 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
 static void CC2420CsmaP__RadioBackoff__requestCca(message_t * msg);
 #line 81
 static void CC2420CsmaP__RadioBackoff__requestInitialBackoff(message_t * msg);
@@ -4697,9 +5038,9 @@ static void CC2420CsmaP__RadioBackoff__requestCongestionBackoff(message_t * msg)
 static void CC2420CsmaP__SubBackoff__setCongestionBackoff(uint16_t backoffTime);
 #line 60
 static void CC2420CsmaP__SubBackoff__setInitialBackoff(uint16_t backoffTime);
-# 51 "../../tos/chips/cc2420/interfaces/CC2420Transmit.nc"
+# 51 "../../../tos/chips/cc2420/interfaces/CC2420Transmit.nc"
 static error_t CC2420CsmaP__CC2420Transmit__send(message_t * p_msg, bool useCca);
-# 100 "../../tos/interfaces/Send.nc"
+# 100 "../../../tos/interfaces/Send.nc"
 static void CC2420CsmaP__Send__sendDone(
 #line 96
 message_t * msg, 
@@ -4707,9 +5048,9 @@ message_t * msg,
 
 
 error_t error);
-# 52 "../../tos/interfaces/Random.nc"
+# 52 "../../../tos/interfaces/Random.nc"
 static uint16_t CC2420CsmaP__Random__rand16(void );
-# 95 "../../tos/interfaces/StdControl.nc"
+# 95 "../../../tos/interfaces/StdControl.nc"
 static error_t CC2420CsmaP__SubControl__start(void );
 
 
@@ -4721,7 +5062,7 @@ static error_t CC2420CsmaP__SubControl__start(void );
 
 
 static error_t CC2420CsmaP__SubControl__stop(void );
-# 42 "../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
+# 42 "../../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
 static cc2420_header_t * CC2420CsmaP__CC2420PacketBody__getHeader(message_t * msg);
 
 
@@ -4734,7 +5075,7 @@ static cc2420_header_t * CC2420CsmaP__CC2420PacketBody__getHeader(message_t * ms
 
 
 static cc2420_metadata_t * CC2420CsmaP__CC2420PacketBody__getMetadata(message_t * msg);
-# 71 "../../tos/chips/cc2420/interfaces/CC2420Power.nc"
+# 71 "../../../tos/chips/cc2420/interfaces/CC2420Power.nc"
 static error_t CC2420CsmaP__CC2420Power__startOscillator(void );
 #line 90
 static error_t CC2420CsmaP__CC2420Power__rxOn(void );
@@ -4742,11 +5083,11 @@ static error_t CC2420CsmaP__CC2420Power__rxOn(void );
 static error_t CC2420CsmaP__CC2420Power__startVReg(void );
 #line 63
 static error_t CC2420CsmaP__CC2420Power__stopVReg(void );
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 static error_t CC2420CsmaP__Resource__release(void );
 #line 88
 static error_t CC2420CsmaP__Resource__request(void );
-# 66 "../../tos/interfaces/State.nc"
+# 66 "../../../tos/interfaces/State.nc"
 static bool CC2420CsmaP__SplitControlState__isState(uint8_t myState);
 #line 45
 static error_t CC2420CsmaP__SplitControlState__requestState(uint8_t reqState);
@@ -4756,33 +5097,33 @@ static error_t CC2420CsmaP__SplitControlState__requestState(uint8_t reqState);
 
 
 static void CC2420CsmaP__SplitControlState__forceState(uint8_t reqState);
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 static error_t CC2420CsmaP__sendDone_task__postTask(void );
 #line 67
 static error_t CC2420CsmaP__stopDone_task__postTask(void );
 #line 67
 static error_t CC2420CsmaP__startDone_task__postTask(void );
-# 74 "../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
-enum CC2420CsmaP____nesc_unnamed4314 {
+# 74 "../../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
+enum CC2420CsmaP____nesc_unnamed4316 {
 #line 74
   CC2420CsmaP__startDone_task = 2U
 };
 #line 74
 typedef int CC2420CsmaP____nesc_sillytask_startDone_task[CC2420CsmaP__startDone_task];
-enum CC2420CsmaP____nesc_unnamed4315 {
+enum CC2420CsmaP____nesc_unnamed4317 {
 #line 75
   CC2420CsmaP__stopDone_task = 3U
 };
 #line 75
 typedef int CC2420CsmaP____nesc_sillytask_stopDone_task[CC2420CsmaP__stopDone_task];
-enum CC2420CsmaP____nesc_unnamed4316 {
+enum CC2420CsmaP____nesc_unnamed4318 {
 #line 76
   CC2420CsmaP__sendDone_task = 4U
 };
 #line 76
 typedef int CC2420CsmaP____nesc_sillytask_sendDone_task[CC2420CsmaP__sendDone_task];
 #line 58
-enum CC2420CsmaP____nesc_unnamed4317 {
+enum CC2420CsmaP____nesc_unnamed4319 {
   CC2420CsmaP__S_STOPPED, 
   CC2420CsmaP__S_STARTING, 
   CC2420CsmaP__S_STARTED, 
@@ -4805,7 +5146,7 @@ bool CC2420CsmaP__ccaOn;
 static inline void CC2420CsmaP__shutdown(void );
 
 
-static inline error_t CC2420CsmaP__SplitControl__start(void );
+static error_t CC2420CsmaP__SplitControl__start(void );
 #line 122
 static inline error_t CC2420CsmaP__Send__send(message_t *p_msg, uint8_t len);
 #line 173
@@ -4859,26 +5200,26 @@ static inline void CC2420CsmaP__stopDone_task__runTask(void );
 
 
 static inline void CC2420CsmaP__shutdown(void );
-# 55 "../../tos/chips/cc2420/interfaces/CC2420Config.nc"
+# 55 "../../../tos/chips/cc2420/interfaces/CC2420Config.nc"
 static void CC2420ControlP__CC2420Config__syncDone(error_t error);
-# 63 "../../tos/chips/cc2420/interfaces/CC2420Register.nc"
+# 63 "../../../tos/chips/cc2420/interfaces/CC2420Register.nc"
 static cc2420_status_t CC2420ControlP__RXCTRL1__write(uint16_t data);
-# 48 "../../tos/interfaces/LocalIeeeEui64.nc"
+# 48 "../../../tos/interfaces/LocalIeeeEui64.nc"
 static ieee_eui64_t CC2420ControlP__LocalIeeeEui64__getId(void );
-# 66 "../../tos/lib/timer/Alarm.nc"
+# 66 "../../../tos/lib/timer/Alarm.nc"
 static void CC2420ControlP__StartupTimer__start(CC2420ControlP__StartupTimer__size_type dt);
-# 63 "../../tos/chips/cc2420/interfaces/CC2420Register.nc"
+# 63 "../../../tos/chips/cc2420/interfaces/CC2420Register.nc"
 static cc2420_status_t CC2420ControlP__MDMCTRL0__write(uint16_t data);
-# 46 "../../tos/interfaces/GeneralIO.nc"
+# 46 "../../../tos/interfaces/GeneralIO.nc"
 static void CC2420ControlP__RSTN__makeOutput(void );
 #line 40
 static void CC2420ControlP__RSTN__set(void );
 static void CC2420ControlP__RSTN__clr(void );
-# 63 "../../tos/interfaces/Read.nc"
+# 63 "../../../tos/interfaces/Read.nc"
 static void CC2420ControlP__ReadRssi__readDone(error_t result, CC2420ControlP__ReadRssi__val_t val);
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 static error_t CC2420ControlP__syncDone__postTask(void );
-# 55 "../../tos/chips/cc2420/interfaces/CC2420Register.nc"
+# 55 "../../../tos/chips/cc2420/interfaces/CC2420Register.nc"
 static cc2420_status_t CC2420ControlP__RSSI__read(uint16_t *data);
 
 
@@ -4890,14 +5231,14 @@ static cc2420_status_t CC2420ControlP__RSSI__read(uint16_t *data);
 static cc2420_status_t CC2420ControlP__TXCTRL__write(uint16_t data);
 #line 63
 static cc2420_status_t CC2420ControlP__IOCFG0__write(uint16_t data);
-# 50 "../../tos/interfaces/ActiveMessageAddress.nc"
+# 50 "../../../tos/interfaces/ActiveMessageAddress.nc"
 static am_addr_t CC2420ControlP__ActiveMessageAddress__amAddress(void );
 
 
 
 
 static am_group_t CC2420ControlP__ActiveMessageAddress__amGroup(void );
-# 46 "../../tos/interfaces/GeneralIO.nc"
+# 46 "../../../tos/interfaces/GeneralIO.nc"
 static void CC2420ControlP__CSN__makeOutput(void );
 #line 40
 static void CC2420ControlP__CSN__set(void );
@@ -4910,9 +5251,9 @@ static void CC2420ControlP__VREN__makeOutput(void );
 #line 40
 static void CC2420ControlP__VREN__set(void );
 static void CC2420ControlP__VREN__clr(void );
-# 53 "../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
 static cc2420_status_t CC2420ControlP__SXOSCON__strobe(void );
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 static error_t CC2420ControlP__SpiResource__release(void );
 #line 88
 static error_t CC2420ControlP__SpiResource__request(void );
@@ -4920,36 +5261,36 @@ static error_t CC2420ControlP__SpiResource__request(void );
 static error_t CC2420ControlP__SyncResource__release(void );
 #line 88
 static error_t CC2420ControlP__SyncResource__request(void );
-# 76 "../../tos/chips/cc2420/interfaces/CC2420Power.nc"
+# 76 "../../../tos/chips/cc2420/interfaces/CC2420Power.nc"
 static void CC2420ControlP__CC2420Power__startOscillatorDone(void );
 #line 56
 static void CC2420ControlP__CC2420Power__startVRegDone(void );
-# 63 "../../tos/chips/cc2420/interfaces/CC2420Register.nc"
+# 63 "../../../tos/chips/cc2420/interfaces/CC2420Register.nc"
 static cc2420_status_t CC2420ControlP__IOCFG1__write(uint16_t data);
 #line 63
 static cc2420_status_t CC2420ControlP__FSCTRL__write(uint16_t data);
-# 53 "../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
 static cc2420_status_t CC2420ControlP__SRXON__strobe(void );
-# 102 "../../tos/interfaces/Resource.nc"
+# 102 "../../../tos/interfaces/Resource.nc"
 static void CC2420ControlP__Resource__granted(void );
-# 63 "../../tos/chips/cc2420/interfaces/CC2420Ram.nc"
+# 63 "../../../tos/chips/cc2420/interfaces/CC2420Ram.nc"
 static cc2420_status_t CC2420ControlP__IEEEADR__write(uint8_t offset, uint8_t * data, uint8_t length);
-# 61 "../../tos/interfaces/GpioInterrupt.nc"
+# 61 "../../../tos/interfaces/GpioInterrupt.nc"
 static error_t CC2420ControlP__InterruptCCA__disable(void );
 #line 53
 static error_t CC2420ControlP__InterruptCCA__enableRisingEdge(void );
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 static error_t CC2420ControlP__RssiResource__release(void );
-# 53 "../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
 static cc2420_status_t CC2420ControlP__SRFOFF__strobe(void );
-# 125 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
-enum CC2420ControlP____nesc_unnamed4318 {
+# 125 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
+enum CC2420ControlP____nesc_unnamed4320 {
 #line 125
   CC2420ControlP__sync = 5U
 };
 #line 125
 typedef int CC2420ControlP____nesc_sillytask_sync[CC2420ControlP__sync];
-enum CC2420ControlP____nesc_unnamed4319 {
+enum CC2420ControlP____nesc_unnamed4321 {
 #line 126
   CC2420ControlP__syncDone = 6U
 };
@@ -4957,7 +5298,7 @@ enum CC2420ControlP____nesc_unnamed4319 {
 typedef int CC2420ControlP____nesc_sillytask_syncDone[CC2420ControlP__syncDone];
 #line 90
 #line 84
-typedef enum CC2420ControlP____nesc_unnamed4320 {
+typedef enum CC2420ControlP____nesc_unnamed4322 {
   CC2420ControlP__S_VREG_STOPPED, 
   CC2420ControlP__S_VREG_STARTING, 
   CC2420ControlP__S_VREG_STARTED, 
@@ -5113,13 +5454,13 @@ static void CC2420ControlP__writeId(void );
 static inline void CC2420ControlP__writeTxctrl(void );
 #line 545
 static inline void CC2420ControlP__ReadRssi__default__readDone(error_t error, uint16_t data);
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
 static void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__fired(
-# 53 "../../tos/chips/msp430/timer/Msp430TimerP.nc"
-uint8_t arg_0x7f540dad48b0);
-# 48 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 53 "../../../tos/chips/msp430/timer/Msp430TimerP.nc"
+uint8_t arg_0x7f49d76bc8b0);
+# 48 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Timer__overflow(void );
-# 64 "../../tos/chips/msp430/timer/Msp430TimerP.nc"
+# 64 "../../../tos/chips/msp430/timer/Msp430TimerP.nc"
 static inline uint16_t /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Timer__get(void );
 #line 144
 static inline void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__VectorTimerX0__fired(void );
@@ -5136,13 +5477,13 @@ static inline void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Overflow__fired
 
 
 static inline void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__default__fired(uint8_t n);
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
 static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Event__fired(
-# 53 "../../tos/chips/msp430/timer/Msp430TimerP.nc"
-uint8_t arg_0x7f540dad48b0);
-# 48 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 53 "../../../tos/chips/msp430/timer/Msp430TimerP.nc"
+uint8_t arg_0x7f49d76bc8b0);
+# 48 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Timer__overflow(void );
-# 64 "../../tos/chips/msp430/timer/Msp430TimerP.nc"
+# 64 "../../../tos/chips/msp430/timer/Msp430TimerP.nc"
 static uint16_t /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Timer__get(void );
 #line 91
 static inline bool /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Timer__isOverflowPending(void );
@@ -5161,11 +5502,11 @@ static inline void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Overflow__fired
 
 
 static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Event__default__fired(uint8_t n);
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static void /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__Capture__captured(uint16_t time);
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__Compare__fired(void );
-# 56 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 56 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 typedef msp430_compare_control_t /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__cc_t;
 
 
@@ -5187,11 +5528,11 @@ static inline void /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__Capture_
 static inline void /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__Compare__default__fired(void );
 
 static inline void /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__Timer__overflow(void );
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static void /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__Capture__captured(uint16_t time);
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__Compare__fired(void );
-# 56 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 56 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 typedef msp430_compare_control_t /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__cc_t;
 
 
@@ -5213,11 +5554,11 @@ static inline void /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__Capture_
 static inline void /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__Compare__default__fired(void );
 
 static inline void /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__Timer__overflow(void );
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static void /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__Capture__captured(uint16_t time);
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__Compare__fired(void );
-# 56 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 56 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 typedef msp430_compare_control_t /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__cc_t;
 
 
@@ -5239,13 +5580,13 @@ static inline void /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__Capture_
 static inline void /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__Compare__default__fired(void );
 
 static inline void /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__Timer__overflow(void );
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Capture__captured(uint16_t time);
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Compare__fired(void );
-# 45 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static uint16_t /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Timer__get(void );
-# 56 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 56 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 typedef msp430_compare_control_t /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__cc_t;
 
 static inline uint16_t /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__CC2int(/*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__cc_t x)  ;
@@ -5310,11 +5651,11 @@ static inline void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Capture_
 
 
 static inline void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Timer__overflow(void );
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Capture__captured(uint16_t time);
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Compare__fired(void );
-# 56 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 56 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 typedef msp430_compare_control_t /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__cc_t;
 
 static inline uint16_t /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__CC2int(/*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__cc_t x)  ;
@@ -5360,13 +5701,13 @@ static inline void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Event__f
 static inline void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Compare__default__fired(void );
 
 static inline void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Timer__overflow(void );
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Capture__captured(uint16_t time);
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Compare__fired(void );
-# 45 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static uint16_t /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Timer__get(void );
-# 56 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 56 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 typedef msp430_compare_control_t /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__cc_t;
 
 static inline uint16_t /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__CC2int(/*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__cc_t x)  ;
@@ -5431,11 +5772,11 @@ static inline void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Capture_
 
 
 static inline void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Timer__overflow(void );
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static void /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__Capture__captured(uint16_t time);
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__Compare__fired(void );
-# 56 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 56 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 typedef msp430_compare_control_t /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__cc_t;
 
 
@@ -5457,11 +5798,11 @@ static inline void /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__Capture_
 static inline void /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__Compare__default__fired(void );
 
 static inline void /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__Timer__overflow(void );
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static void /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__Capture__captured(uint16_t time);
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__Compare__fired(void );
-# 56 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 56 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 typedef msp430_compare_control_t /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__cc_t;
 
 
@@ -5483,11 +5824,11 @@ static inline void /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__Capture_
 static inline void /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__Compare__default__fired(void );
 
 static inline void /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__Timer__overflow(void );
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static void /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__Capture__captured(uint16_t time);
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__Compare__fired(void );
-# 56 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 56 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 typedef msp430_compare_control_t /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__cc_t;
 
 
@@ -5509,11 +5850,11 @@ static inline void /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__Capture_
 static inline void /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__Compare__default__fired(void );
 
 static inline void /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__Timer__overflow(void );
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static void /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__Capture__captured(uint16_t time);
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__Compare__fired(void );
-# 56 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 56 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 typedef msp430_compare_control_t /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__cc_t;
 
 
@@ -5535,7 +5876,7 @@ static inline void /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__Capture_
 static inline void /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__Compare__default__fired(void );
 
 static inline void /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__Timer__overflow(void );
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
 static void Msp430TimerCommonP__VectorTimerB1__fired(void );
 #line 39
 static void Msp430TimerCommonP__VectorTimerA0__fired(void );
@@ -5543,20 +5884,20 @@ static void Msp430TimerCommonP__VectorTimerA0__fired(void );
 static void Msp430TimerCommonP__VectorTimerA1__fired(void );
 #line 39
 static void Msp430TimerCommonP__VectorTimerB0__fired(void );
-# 11 "../../tos/chips/msp430/x1x2/timer/Msp430TimerCommonP.nc"
+# 11 "../../../tos/chips/msp430/x1x2/timer/Msp430TimerCommonP.nc"
 void sig_TIMERA0_VECTOR(void ) __attribute((wakeup)) __attribute((interrupt(0x000C)))  ;
 void sig_TIMERA1_VECTOR(void ) __attribute((wakeup)) __attribute((interrupt(0x000A)))  ;
 void sig_TIMERB0_VECTOR(void ) __attribute((wakeup)) __attribute((interrupt(0x001A)))  ;
 void sig_TIMERB1_VECTOR(void ) __attribute((wakeup)) __attribute((interrupt(0x0018)))  ;
-# 42 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 42 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430Compare__setEvent(uint16_t time);
 
 static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430Compare__setEventFromNow(uint16_t delta);
-# 45 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static uint16_t /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430Timer__get(void );
-# 78 "../../tos/lib/timer/Alarm.nc"
+# 78 "../../../tos/lib/timer/Alarm.nc"
 static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Alarm__fired(void );
-# 76 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 76 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430TimerControl__enableEvents(void );
 #line 56
 static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430TimerControl__setControlAsCompare(void );
@@ -5564,7 +5905,7 @@ static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430Alar
 static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430TimerControl__disableEvents(void );
 #line 43
 static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430TimerControl__clearPendingInterrupt(void );
-# 53 "../../tos/chips/msp430/timer/Msp430AlarmC.nc"
+# 53 "../../../tos/chips/msp430/timer/Msp430AlarmC.nc"
 static inline error_t /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Init__init(void );
 #line 65
 static inline void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Alarm__stop(void );
@@ -5586,12 +5927,12 @@ static inline void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp
 static inline void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Alarm__startAt(uint16_t t0, uint16_t dt);
 #line 114
 static inline void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430Timer__overflow(void );
-# 45 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static uint16_t /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Msp430Timer__get(void );
 static bool /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Msp430Timer__isOverflowPending(void );
-# 82 "../../tos/lib/timer/Counter.nc"
+# 82 "../../../tos/lib/timer/Counter.nc"
 static void /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Counter__overflow(void );
-# 49 "../../tos/chips/msp430/timer/Msp430CounterC.nc"
+# 49 "../../../tos/chips/msp430/timer/Msp430CounterC.nc"
 static inline uint16_t /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Counter__get(void );
 
 
@@ -5608,7 +5949,7 @@ static inline bool /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Counter__is
 
 
 static inline void /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Msp430Timer__overflow(void );
-# 64 "../../tos/lib/timer/Counter.nc"
+# 64 "../../../tos/lib/timer/Counter.nc"
 static /*Counter32khz32C.Transform*/TransformCounterC__0__CounterFrom__size_type /*Counter32khz32C.Transform*/TransformCounterC__0__CounterFrom__get(void );
 
 
@@ -5628,10 +5969,10 @@ static bool /*Counter32khz32C.Transform*/TransformCounterC__0__CounterFrom__isOv
 
 
 static void /*Counter32khz32C.Transform*/TransformCounterC__0__Counter__overflow(void );
-# 67 "../../tos/lib/timer/TransformCounterC.nc"
+# 67 "../../../tos/lib/timer/TransformCounterC.nc"
 /*Counter32khz32C.Transform*/TransformCounterC__0__upper_count_type /*Counter32khz32C.Transform*/TransformCounterC__0__m_upper;
 
-enum /*Counter32khz32C.Transform*/TransformCounterC__0____nesc_unnamed4321 {
+enum /*Counter32khz32C.Transform*/TransformCounterC__0____nesc_unnamed4323 {
 
   TransformCounterC__0__LOW_SHIFT_RIGHT = 0, 
   TransformCounterC__0__HIGH_SHIFT_LEFT = 8 * sizeof(/*Counter32khz32C.Transform*/TransformCounterC__0__from_size_type ) - /*Counter32khz32C.Transform*/TransformCounterC__0__LOW_SHIFT_RIGHT, 
@@ -5645,19 +5986,19 @@ enum /*Counter32khz32C.Transform*/TransformCounterC__0____nesc_unnamed4321 {
 static /*Counter32khz32C.Transform*/TransformCounterC__0__to_size_type /*Counter32khz32C.Transform*/TransformCounterC__0__Counter__get(void );
 #line 133
 static inline void /*Counter32khz32C.Transform*/TransformCounterC__0__CounterFrom__overflow(void );
-# 78 "../../tos/lib/timer/Alarm.nc"
+# 78 "../../../tos/lib/timer/Alarm.nc"
 static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Alarm__fired(void );
 #line 103
 static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__AlarmFrom__startAt(/*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__AlarmFrom__size_type t0, /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__AlarmFrom__size_type dt);
 #line 73
 static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__AlarmFrom__stop(void );
-# 64 "../../tos/lib/timer/Counter.nc"
+# 64 "../../../tos/lib/timer/Counter.nc"
 static /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Counter__size_type /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Counter__get(void );
-# 77 "../../tos/lib/timer/TransformAlarmC.nc"
+# 77 "../../../tos/lib/timer/TransformAlarmC.nc"
 /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__to_size_type /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__m_t0;
 /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__to_size_type /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__m_dt;
 
-enum /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0____nesc_unnamed4322 {
+enum /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0____nesc_unnamed4324 {
 
   TransformAlarmC__0__MAX_DELAY_LOG2 = 8 * sizeof(/*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__from_size_type ) - 1 - 0, 
   TransformAlarmC__0__MAX_DELAY = (/*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__to_size_type )1 << /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__MAX_DELAY_LOG2
@@ -5690,14 +6031,14 @@ static inline void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAla
 static inline void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__AlarmFrom__fired(void );
 #line 177
 static inline void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Counter__overflow(void );
-# 79 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 79 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 static void /*HplCC2420PinsC.CCAM*/Msp430GpioC__3__HplGeneralIO__makeInput(void );
 #line 74
 static bool /*HplCC2420PinsC.CCAM*/Msp430GpioC__3__HplGeneralIO__get(void );
-# 51 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 51 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline bool /*HplCC2420PinsC.CCAM*/Msp430GpioC__3__GeneralIO__get(void );
 static inline void /*HplCC2420PinsC.CCAM*/Msp430GpioC__3__GeneralIO__makeInput(void );
-# 85 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 static void /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__HplGeneralIO__makeOutput(void );
 #line 49
 static void /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__HplGeneralIO__set(void );
@@ -5706,7 +6047,7 @@ static void /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__HplGeneralIO__set(void );
 
 
 static void /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__HplGeneralIO__clr(void );
-# 48 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 48 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__GeneralIO__set(void );
 static inline void /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__GeneralIO__clr(void );
 
@@ -5714,15 +6055,15 @@ static inline void /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__GeneralIO__clr(void );
 
 
 static inline void /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__GeneralIO__makeOutput(void );
-# 74 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 74 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 static bool /*HplCC2420PinsC.FIFOM*/Msp430GpioC__5__HplGeneralIO__get(void );
-# 51 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 51 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline bool /*HplCC2420PinsC.FIFOM*/Msp430GpioC__5__GeneralIO__get(void );
-# 74 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 74 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 static bool /*HplCC2420PinsC.FIFOPM*/Msp430GpioC__6__HplGeneralIO__get(void );
-# 51 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 51 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline bool /*HplCC2420PinsC.FIFOPM*/Msp430GpioC__6__GeneralIO__get(void );
-# 85 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 static void /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__HplGeneralIO__makeOutput(void );
 #line 49
 static void /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__HplGeneralIO__set(void );
@@ -5731,7 +6072,7 @@ static void /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__HplGeneralIO__set(void );
 
 
 static void /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__HplGeneralIO__clr(void );
-# 48 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 48 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__GeneralIO__set(void );
 static inline void /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__GeneralIO__clr(void );
 
@@ -5739,14 +6080,14 @@ static inline void /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__GeneralIO__clr(void )
 
 
 static inline void /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__GeneralIO__makeOutput(void );
-# 79 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 79 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 static void /*HplCC2420PinsC.SFDM*/Msp430GpioC__8__HplGeneralIO__makeInput(void );
 #line 74
 static bool /*HplCC2420PinsC.SFDM*/Msp430GpioC__8__HplGeneralIO__get(void );
-# 51 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 51 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline bool /*HplCC2420PinsC.SFDM*/Msp430GpioC__8__GeneralIO__get(void );
 static inline void /*HplCC2420PinsC.SFDM*/Msp430GpioC__8__GeneralIO__makeInput(void );
-# 85 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 static void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__HplGeneralIO__makeOutput(void );
 #line 49
 static void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__HplGeneralIO__set(void );
@@ -5755,7 +6096,7 @@ static void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__HplGeneralIO__set(void );
 
 
 static void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__HplGeneralIO__clr(void );
-# 48 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 48 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__GeneralIO__set(void );
 static inline void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__GeneralIO__clr(void );
 
@@ -5763,24 +6104,24 @@ static inline void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__GeneralIO__clr(void )
 
 
 static inline void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__GeneralIO__makeOutput(void );
-# 74 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 74 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 static void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Msp430Capture__clearOverflow(void );
-# 61 "../../tos/interfaces/GpioCapture.nc"
+# 61 "../../../tos/interfaces/GpioCapture.nc"
 static void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Capture__captured(uint16_t time);
-# 74 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 74 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 static void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Msp430TimerControl__setControlAsCapture(uint8_t cm, uint8_t ccis);
 
 static void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Msp430TimerControl__enableEvents(void );
 static void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Msp430TimerControl__disableEvents(void );
 #line 43
 static void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Msp430TimerControl__clearPendingInterrupt(void );
-# 79 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 79 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 static void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__GeneralIO__makeInput(void );
 #line 97
 static void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__GeneralIO__selectIOFunc(void );
 #line 91
 static void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__GeneralIO__selectModuleFunc(void );
-# 56 "../../tos/chips/msp430/timer/GpioCaptureC.nc"
+# 56 "../../../tos/chips/msp430/timer/GpioCaptureC.nc"
 static error_t /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__enableCapture(uint8_t mode);
 #line 74
 static inline error_t /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Capture__captureRisingEdge(void );
@@ -5799,7 +6140,7 @@ static inline void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Capture_
 
 
 static inline void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Msp430Capture__captured(uint16_t time);
-# 85 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 static void HplMsp430InterruptP__Port14__fired(void );
 #line 85
 static void HplMsp430InterruptP__Port26__fired(void );
@@ -5831,7 +6172,7 @@ static void HplMsp430InterruptP__Port20__fired(void );
 static void HplMsp430InterruptP__Port11__fired(void );
 #line 85
 static void HplMsp430InterruptP__Port23__fired(void );
-# 78 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 78 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 void sig_PORT1_VECTOR(void ) __attribute((wakeup)) __attribute((interrupt(0x0008)))  ;
 #line 107
 static inline void HplMsp430InterruptP__Port11__default__fired(void );
@@ -5895,7 +6236,7 @@ static inline void HplMsp430InterruptP__Port24__clear(void );
 static inline void HplMsp430InterruptP__Port25__clear(void );
 static inline void HplMsp430InterruptP__Port26__clear(void );
 static inline void HplMsp430InterruptP__Port27__clear(void );
-# 54 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 54 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 static void /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__HplInterrupt__clear(void );
 #line 49
 static void /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__HplInterrupt__disable(void );
@@ -5903,15 +6244,15 @@ static void /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__HplInterr
 static void /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__HplInterrupt__enable(void );
 #line 66
 static void /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__HplInterrupt__edgeRising(void );
-# 68 "../../tos/interfaces/GpioInterrupt.nc"
+# 68 "../../../tos/interfaces/GpioInterrupt.nc"
 static void /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__Interrupt__fired(void );
-# 56 "../../tos/chips/msp430/x1x2/pins/Msp430InterruptC.nc"
+# 56 "../../../tos/chips/msp430/x1x2/pins/Msp430InterruptC.nc"
 static inline error_t /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__Interrupt__enableRisingEdge(void );
 #line 76
 static inline error_t /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__Interrupt__disable(void );
 #line 93
 static inline void /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__HplInterrupt__fired(void );
-# 54 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 54 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 static void /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__HplInterrupt__clear(void );
 #line 49
 static void /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__HplInterrupt__disable(void );
@@ -5919,9 +6260,9 @@ static void /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__HplInte
 static void /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__HplInterrupt__edgeFalling(void );
 #line 44
 static void /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__HplInterrupt__enable(void );
-# 68 "../../tos/interfaces/GpioInterrupt.nc"
+# 68 "../../../tos/interfaces/GpioInterrupt.nc"
 static void /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__Interrupt__fired(void );
-# 66 "../../tos/chips/msp430/x1x2/pins/Msp430InterruptC.nc"
+# 66 "../../../tos/chips/msp430/x1x2/pins/Msp430InterruptC.nc"
 static inline error_t /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__Interrupt__enableFallingEdge(void );
 
 
@@ -5935,7 +6276,7 @@ static inline error_t /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__
 static inline error_t /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__Interrupt__disable(void );
 #line 93
 static inline void /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__HplInterrupt__fired(void );
-# 76 "../../tos/interfaces/SpiPacket.nc"
+# 76 "../../../tos/interfaces/SpiPacket.nc"
 static error_t CC2420SpiP__SpiPacket__send(
 #line 65
 uint8_t * txBuf, 
@@ -5950,23 +6291,23 @@ uint8_t * rxBuf,
 
 
 uint16_t len);
-# 91 "../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
+# 91 "../../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 static void CC2420SpiP__Fifo__writeDone(
-# 46 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x7f540d6f36e0, 
-# 91 "../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
+# 46 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+uint8_t arg_0x7f49d72dc6e0, 
+# 91 "../../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 uint8_t * data, uint8_t length, error_t error);
 #line 71
 static void CC2420SpiP__Fifo__readDone(
-# 46 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x7f540d6f36e0, 
-# 71 "../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
+# 46 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+uint8_t arg_0x7f49d72dc6e0, 
+# 71 "../../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 uint8_t * data, uint8_t length, error_t error);
-# 24 "../../tos/chips/cc2420/interfaces/ChipSpiResource.nc"
+# 24 "../../../tos/chips/cc2420/interfaces/ChipSpiResource.nc"
 static void CC2420SpiP__ChipSpiResource__releasing(void );
-# 45 "../../tos/interfaces/SpiByte.nc"
+# 45 "../../../tos/interfaces/SpiByte.nc"
 static uint8_t CC2420SpiP__SpiByte__write(uint8_t tx);
-# 56 "../../tos/interfaces/State.nc"
+# 56 "../../../tos/interfaces/State.nc"
 static void CC2420SpiP__WorkingState__toIdle(void );
 
 
@@ -5975,7 +6316,7 @@ static void CC2420SpiP__WorkingState__toIdle(void );
 static bool CC2420SpiP__WorkingState__isIdle(void );
 #line 45
 static error_t CC2420SpiP__WorkingState__requestState(uint8_t reqState);
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 static error_t CC2420SpiP__SpiResource__release(void );
 #line 97
 static error_t CC2420SpiP__SpiResource__immediateRequest(void );
@@ -5985,25 +6326,25 @@ static error_t CC2420SpiP__SpiResource__request(void );
 static bool CC2420SpiP__SpiResource__isOwner(void );
 #line 102
 static void CC2420SpiP__Resource__granted(
-# 45 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
-uint8_t arg_0x7f540d6f4360);
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 45 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+uint8_t arg_0x7f49d72dd360);
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 static error_t CC2420SpiP__grant__postTask(void );
-# 88 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
-enum CC2420SpiP____nesc_unnamed4323 {
+# 88 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+enum CC2420SpiP____nesc_unnamed4325 {
 #line 88
   CC2420SpiP__grant = 7U
 };
 #line 88
 typedef int CC2420SpiP____nesc_sillytask_grant[CC2420SpiP__grant];
 #line 63
-enum CC2420SpiP____nesc_unnamed4324 {
+enum CC2420SpiP____nesc_unnamed4326 {
   CC2420SpiP__RESOURCE_COUNT = 5U, 
   CC2420SpiP__NO_HOLDER = 0xFF
 };
 
 
-enum CC2420SpiP____nesc_unnamed4325 {
+enum CC2420SpiP____nesc_unnamed4327 {
   CC2420SpiP__S_IDLE, 
   CC2420SpiP__S_BUSY
 };
@@ -6116,10 +6457,10 @@ static inline void CC2420SpiP__Fifo__default__readDone(uint8_t addr, uint8_t *rx
 
 
 static inline void CC2420SpiP__Fifo__default__writeDone(uint8_t addr, uint8_t *tx_buf, uint8_t tx_len, error_t error);
-# 74 "../../tos/system/StateImplP.nc"
+# 74 "../../../tos/system/StateImplP.nc"
 uint8_t StateImplP__state[4U];
 
-enum StateImplP____nesc_unnamed4326 {
+enum StateImplP____nesc_unnamed4328 {
   StateImplP__S_IDLE = 0
 };
 
@@ -6151,11 +6492,11 @@ static inline bool StateImplP__State__isIdle(uint8_t id);
 
 
 static bool StateImplP__State__isState(uint8_t id, uint8_t myState);
-# 88 "../../tos/interfaces/SpiPacket.nc"
+# 88 "../../../tos/interfaces/SpiPacket.nc"
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__sendDone(
-# 79 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5eb6a0, 
-# 81 "../../tos/interfaces/SpiPacket.nc"
+# 79 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d46a0, 
+# 81 "../../../tos/interfaces/SpiPacket.nc"
 uint8_t * txBuf, 
 uint8_t * rxBuf, 
 
@@ -6165,11 +6506,11 @@ uint8_t * rxBuf,
 
 uint16_t len, 
 error_t error);
-# 39 "../../tos/chips/msp430/usart/Msp430SpiConfigure.nc"
+# 39 "../../../tos/chips/msp430/usart/Msp430SpiConfigure.nc"
 static const msp430_spi_union_config_t */*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Msp430SpiConfigure__getConfig(
-# 82 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5e9890);
-# 180 "../../tos/chips/msp430/usart/HplMsp430Usart.nc"
+# 82 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d2890);
+# 180 "../../../tos/chips/msp430/usart/HplMsp430Usart.nc"
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__enableRxIntr(void );
 #line 197
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__clrRxIntr(void );
@@ -6187,37 +6528,37 @@ static uint8_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__rx(void );
 static bool /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__isRxIntrPending(void );
 #line 158
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__disableSpi(void );
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__release(
-# 81 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5ea4e0);
-# 97 "../../tos/interfaces/Resource.nc"
+# 81 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d34e0);
+# 97 "../../../tos/interfaces/Resource.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__immediateRequest(
-# 81 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5ea4e0);
-# 88 "../../tos/interfaces/Resource.nc"
+# 81 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d34e0);
+# 88 "../../../tos/interfaces/Resource.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__request(
-# 81 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5ea4e0);
-# 128 "../../tos/interfaces/Resource.nc"
+# 81 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d34e0);
+# 128 "../../../tos/interfaces/Resource.nc"
 static bool /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__isOwner(
-# 81 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5ea4e0);
-# 102 "../../tos/interfaces/Resource.nc"
+# 81 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d34e0);
+# 102 "../../../tos/interfaces/Resource.nc"
 static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__granted(
-# 75 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-uint8_t arg_0x7f540d5ef410);
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 75 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+uint8_t arg_0x7f49d71d8410);
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__signalDone_task__postTask(void );
-# 102 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-enum /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0____nesc_unnamed4327 {
+# 102 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+enum /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0____nesc_unnamed4329 {
 #line 102
   Msp430SpiNoDmaP__0__signalDone_task = 8U
 };
 #line 102
 typedef int /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0____nesc_sillytask_signalDone_task[/*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__signalDone_task];
 #line 91
-enum /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0____nesc_unnamed4328 {
+enum /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0____nesc_unnamed4330 {
   Msp430SpiNoDmaP__0__SPI_ATOMIC_SIZE = 2
 };
 
@@ -6292,33 +6633,33 @@ static inline void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__signalDone(void 
 static inline void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartInterrupts__txDone(void );
 
 static inline void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__default__sendDone(uint8_t id, uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len, error_t error);
-# 97 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 97 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 static void HplMsp430Usart0P__UCLK__selectIOFunc(void );
 #line 91
 static void HplMsp430Usart0P__UCLK__selectModuleFunc(void );
-# 54 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+# 54 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 static void HplMsp430Usart0P__Interrupts__rxDone(uint8_t data);
 #line 49
 static void HplMsp430Usart0P__Interrupts__txDone(void );
-# 97 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 97 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 static void HplMsp430Usart0P__URXD__selectIOFunc(void );
 #line 97
 static void HplMsp430Usart0P__UTXD__selectIOFunc(void );
-# 7 "../../tos/chips/msp430/usart/HplMsp430I2C.nc"
+# 7 "../../../tos/chips/msp430/usart/HplMsp430I2C.nc"
 static void HplMsp430Usart0P__HplI2C__clearModeI2C(void );
 #line 6
 static bool HplMsp430Usart0P__HplI2C__isI2C(void );
-# 97 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 97 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 static void HplMsp430Usart0P__SOMI__selectIOFunc(void );
 #line 91
 static void HplMsp430Usart0P__SOMI__selectModuleFunc(void );
-# 39 "../../tos/chips/msp430/usart/HplMsp430I2CInterrupts.nc"
+# 39 "../../../tos/chips/msp430/usart/HplMsp430I2CInterrupts.nc"
 static void HplMsp430Usart0P__I2CInterrupts__fired(void );
-# 97 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 97 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 static void HplMsp430Usart0P__SIMO__selectIOFunc(void );
 #line 91
 static void HplMsp430Usart0P__SIMO__selectModuleFunc(void );
-# 74 "../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
+# 74 "../../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
 static volatile uint8_t HplMsp430Usart0P__IE1 __asm ("0x0000");
 static volatile uint8_t HplMsp430Usart0P__ME1 __asm ("0x0004");
 static volatile uint8_t HplMsp430Usart0P__IFG1 __asm ("0x0002");
@@ -6424,7 +6765,7 @@ static inline void HplMsp430Usart0P__Usart__tx(uint8_t data);
 
 
 static inline uint8_t HplMsp430Usart0P__Usart__rx(void );
-# 90 "../../tos/interfaces/ArbiterInfo.nc"
+# 90 "../../../tos/interfaces/ArbiterInfo.nc"
 static bool /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__ArbiterInfo__inUse(void );
 
 
@@ -6434,20 +6775,20 @@ static bool /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__ArbiterInfo_
 
 
 static uint8_t /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__ArbiterInfo__userId(void );
-# 54 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+# 54 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Interrupts__rxDone(
-# 39 "../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
-uint8_t arg_0x7f540d476600, 
-# 54 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+# 39 "../../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
+uint8_t arg_0x7f49d705e600, 
+# 54 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 uint8_t data);
 #line 49
 static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Interrupts__txDone(
-# 39 "../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
-uint8_t arg_0x7f540d476600);
-# 39 "../../tos/chips/msp430/usart/HplMsp430I2CInterrupts.nc"
+# 39 "../../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
+uint8_t arg_0x7f49d705e600);
+# 39 "../../../tos/chips/msp430/usart/HplMsp430I2CInterrupts.nc"
 static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__I2CInterrupts__fired(
-# 40 "../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
-uint8_t arg_0x7f540d4754e0);
+# 40 "../../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
+uint8_t arg_0x7f49d705d4e0);
 
 
 
@@ -6474,8 +6815,8 @@ static inline void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__RawI2
 static inline void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Interrupts__default__txDone(uint8_t id);
 static inline void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Interrupts__default__rxDone(uint8_t id, uint8_t data);
 static inline void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__I2CInterrupts__default__fired(uint8_t id);
-# 49 "../../tos/system/FcfsResourceQueueC.nc"
-enum /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1____nesc_unnamed4329 {
+# 49 "../../../tos/system/FcfsResourceQueueC.nc"
+enum /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1____nesc_unnamed4331 {
 #line 49
   FcfsResourceQueueC__1__NO_ENTRY = 0xFF
 };
@@ -6499,44 +6840,44 @@ static inline bool /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__F
 static resource_client_id_t /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__FcfsQueue__dequeue(void );
 #line 82
 static inline error_t /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__FcfsQueue__enqueue(resource_client_id_t id);
-# 53 "../../tos/interfaces/ResourceRequested.nc"
+# 53 "../../../tos/interfaces/ResourceRequested.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__requested(
-# 99 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d434cf0);
-# 61 "../../tos/interfaces/ResourceRequested.nc"
+# 99 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701dcf0);
+# 61 "../../../tos/interfaces/ResourceRequested.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__immediateRequested(
-# 99 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d434cf0);
-# 65 "../../tos/interfaces/ResourceConfigure.nc"
+# 99 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701dcf0);
+# 65 "../../../tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__unconfigure(
-# 105 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d431a30);
-# 59 "../../tos/interfaces/ResourceConfigure.nc"
+# 105 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701aa30);
+# 59 "../../../tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__configure(
-# 105 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d431a30);
-# 79 "../../tos/interfaces/ResourceQueue.nc"
+# 105 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701aa30);
+# 79 "../../../tos/interfaces/ResourceQueue.nc"
 static error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Queue__enqueue(resource_client_id_t id);
 #line 53
 static bool /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Queue__isEmpty(void );
 #line 70
 static resource_client_id_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Queue__dequeue(void );
-# 71 "../../tos/interfaces/ResourceDefaultOwner.nc"
+# 71 "../../../tos/interfaces/ResourceDefaultOwner.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__requested(void );
 #line 44
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__granted(void );
 #line 79
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__immediateRequested(void );
-# 102 "../../tos/interfaces/Resource.nc"
+# 102 "../../../tos/interfaces/Resource.nc"
 static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__granted(
-# 98 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d435970);
-# 9 "../../tos/interfaces/ResourceDefaultOwnerInfo.nc"
+# 98 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701f970);
+# 9 "../../../tos/interfaces/ResourceDefaultOwnerInfo.nc"
 static bool /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwnerInfo__inUse(void );
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 static error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__grantedTask__postTask(void );
-# 155 "../../tos/system/ArbiterP.nc"
-enum /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0____nesc_unnamed4330 {
+# 155 "../../../tos/system/ArbiterP.nc"
+enum /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0____nesc_unnamed4332 {
 #line 155
   ArbiterP__0__grantedTask = 9U
 };
@@ -6544,23 +6885,23 @@ enum /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0____nesc_unnamed4330 {
 typedef int /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0____nesc_sillytask_grantedTask[/*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__grantedTask];
 #line 145
 #line 143
-typedef enum /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0____nesc_unnamed4331 {
+typedef enum /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0____nesc_unnamed4333 {
 #line 143
   ArbiterP__0__RES_DEF_OWNED = 0, ArbiterP__0__RES_PREGRANT, ArbiterP__0__RES_GRANTING, 
   ArbiterP__0__RES_IMM_GRANTING, ArbiterP__0__RES_BUSY
 } /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__arb_state_t;
 
-enum /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0____nesc_unnamed4332 {
+enum /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0____nesc_unnamed4334 {
 #line 147
   ArbiterP__0__default_owner_id = 1U
 };
 #line 148
-enum /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0____nesc_unnamed4333 {
+enum /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0____nesc_unnamed4335 {
 #line 148
   ArbiterP__0__NO_RES = 0xFF
 };
 #line 149
-enum /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0____nesc_unnamed4334 {
+enum /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0____nesc_unnamed4336 {
 #line 149
   ArbiterP__0__arbiter_id = 0U
 };
@@ -6613,9 +6954,9 @@ static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceD
 
 
 static inline bool /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwnerInfo__default__inUse(void );
-# 97 "../../tos/chips/msp430/usart/HplMsp430Usart.nc"
+# 97 "../../../tos/chips/msp430/usart/HplMsp430Usart.nc"
 static void HplMsp430I2C0P__HplUsart__resetUsart(bool reset);
-# 58 "../../tos/chips/msp430/usart/HplMsp430I2C0P.nc"
+# 58 "../../../tos/chips/msp430/usart/HplMsp430I2C0P.nc"
 static volatile uint8_t HplMsp430I2C0P__U0CTL __asm ("0x0070");
 
 
@@ -6627,7 +6968,7 @@ static inline bool HplMsp430I2C0P__HplI2C__isI2C(void );
 
 
 static inline void HplMsp430I2C0P__HplI2C__clearModeI2C(void );
-# 63 "../../tos/system/ActiveMessageAddressC.nc"
+# 63 "../../../tos/system/ActiveMessageAddressC.nc"
 am_addr_t ActiveMessageAddressC__addr = TOS_AM_ADDRESS;
 
 
@@ -6643,17 +6984,17 @@ static inline am_addr_t ActiveMessageAddressC__ActiveMessageAddress__amAddress(v
 static inline am_group_t ActiveMessageAddressC__ActiveMessageAddress__amGroup(void );
 #line 120
 static am_addr_t ActiveMessageAddressC__amAddress(void );
-# 13 "../../tos/chips/ds2411/ReadId48.nc"
+# 13 "../../../tos/chips/ds2411/ReadId48.nc"
 static error_t LocalIeeeEui64P__ReadId48__read(uint8_t *id);
-# 13 "../../tos/chips/ds2411/LocalIeeeEui64P.nc"
+# 13 "../../../tos/chips/ds2411/LocalIeeeEui64P.nc"
 ieee_eui64_t LocalIeeeEui64P__eui = { { 0x00 } };
 
 bool LocalIeeeEui64P__have_id = FALSE;
 
 static ieee_eui64_t LocalIeeeEui64P__LocalIeeeEui64__getId(void );
-# 10 "../../tos/lib/onewire/OneWireReadWrite.nc"
+# 10 "../../../tos/lib/onewire/OneWireReadWrite.nc"
 static error_t Ds2411P__OneWire__read(uint8_t cmd, uint8_t *buf, uint8_t len);
-# 95 "../../tos/interfaces/StdControl.nc"
+# 95 "../../../tos/interfaces/StdControl.nc"
 static error_t Ds2411P__PowerControl__start(void );
 
 
@@ -6665,7 +7006,7 @@ static error_t Ds2411P__PowerControl__start(void );
 
 
 static error_t Ds2411P__PowerControl__stop(void );
-# 19 "../../tos/chips/ds2411/Ds2411P.nc"
+# 19 "../../../tos/chips/ds2411/Ds2411P.nc"
 bool Ds2411P__haveId = FALSE;
 ds2411_serial_t Ds2411P__ds2411id;
 
@@ -6676,9 +7017,9 @@ static inline bool Ds2411P__ds2411_check_crc(const ds2411_serial_t *id);
 static inline error_t Ds2411P__readId(void );
 #line 62
 static inline error_t Ds2411P__ReadId48__read(uint8_t *id);
-# 66 "../../tos/lib/timer/BusyWait.nc"
+# 66 "../../../tos/lib/timer/BusyWait.nc"
 static void OneWireMasterP__BusyWait__wait(OneWireMasterP__BusyWait__size_type dt);
-# 44 "../../tos/interfaces/GeneralIO.nc"
+# 44 "../../../tos/interfaces/GeneralIO.nc"
 static void OneWireMasterP__Pin__makeInput(void );
 #line 43
 static bool OneWireMasterP__Pin__get(void );
@@ -6687,9 +7028,9 @@ static bool OneWireMasterP__Pin__get(void );
 static void OneWireMasterP__Pin__makeOutput(void );
 #line 41
 static void OneWireMasterP__Pin__clr(void );
-# 27 "../../tos/lib/onewire/OneWireMasterP.nc"
+# 27 "../../../tos/lib/onewire/OneWireMasterP.nc"
 #line 20
-typedef enum OneWireMasterP____nesc_unnamed4335 {
+typedef enum OneWireMasterP____nesc_unnamed4337 {
   OneWireMasterP__DELAY_5US = 5, 
   OneWireMasterP__RESET_LOW_TIME = 560, 
   OneWireMasterP__DELAY_60US = 60, 
@@ -6744,10 +7085,10 @@ static inline uint8_t OneWireMasterP__readByte(void );
 
 
 static inline error_t OneWireMasterP__OneWire__read(uint8_t cmd, uint8_t *buf, uint8_t len);
-# 64 "../../tos/lib/timer/Counter.nc"
+# 64 "../../../tos/lib/timer/Counter.nc"
 static /*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0__Counter__size_type /*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0__Counter__get(void );
-# 59 "../../tos/lib/timer/BusyWaitCounterC.nc"
-enum /*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0____nesc_unnamed4336 {
+# 59 "../../../tos/lib/timer/BusyWaitCounterC.nc"
+enum /*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0____nesc_unnamed4338 {
 
   BusyWaitCounterC__0__HALF_MAX_SIZE_TYPE = (/*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0__size_type )1 << (8 * sizeof(/*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0__size_type ) - 1)
 };
@@ -6755,15 +7096,15 @@ enum /*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0____nesc_unnamed4336 
 static void /*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0__BusyWait__wait(/*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0__size_type dt);
 #line 85
 static inline void /*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0__Counter__overflow(void );
-# 45 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static uint16_t /*Msp430CounterMicroC.Counter*/Msp430CounterC__1__Msp430Timer__get(void );
-# 82 "../../tos/lib/timer/Counter.nc"
+# 82 "../../../tos/lib/timer/Counter.nc"
 static void /*Msp430CounterMicroC.Counter*/Msp430CounterC__1__Counter__overflow(void );
-# 49 "../../tos/chips/msp430/timer/Msp430CounterC.nc"
+# 49 "../../../tos/chips/msp430/timer/Msp430CounterC.nc"
 static inline uint16_t /*Msp430CounterMicroC.Counter*/Msp430CounterC__1__Counter__get(void );
 #line 64
 static inline void /*Msp430CounterMicroC.Counter*/Msp430CounterC__1__Msp430Timer__overflow(void );
-# 79 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 79 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 static void /*HplDs2411C.MspGpio*/Msp430GpioC__10__HplGeneralIO__makeInput(void );
 
 
@@ -6775,20 +7116,20 @@ static void /*HplDs2411C.MspGpio*/Msp430GpioC__10__HplGeneralIO__makeOutput(void
 static bool /*HplDs2411C.MspGpio*/Msp430GpioC__10__HplGeneralIO__get(void );
 #line 54
 static void /*HplDs2411C.MspGpio*/Msp430GpioC__10__HplGeneralIO__clr(void );
-# 49 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 49 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*HplDs2411C.MspGpio*/Msp430GpioC__10__GeneralIO__clr(void );
 
 static inline bool /*HplDs2411C.MspGpio*/Msp430GpioC__10__GeneralIO__get(void );
 static inline void /*HplDs2411C.MspGpio*/Msp430GpioC__10__GeneralIO__makeInput(void );
 
 static inline void /*HplDs2411C.MspGpio*/Msp430GpioC__10__GeneralIO__makeOutput(void );
-# 19 "../../tos/chips/ds2411/Ds2411PowerControlC.nc"
+# 19 "../../../tos/chips/ds2411/Ds2411PowerControlC.nc"
 static inline error_t Ds2411PowerControlC__StdControl__start(void );
 
 
 
 static inline error_t Ds2411PowerControlC__StdControl__stop(void );
-# 81 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+# 81 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
 static void CC2420TransmitP__RadioBackoff__requestInitialBackoff(message_t * msg);
 
 
@@ -6797,7 +7138,7 @@ static void CC2420TransmitP__RadioBackoff__requestInitialBackoff(message_t * msg
 
 
 static void CC2420TransmitP__RadioBackoff__requestCongestionBackoff(message_t * msg);
-# 70 "../../tos/interfaces/PacketTimeStamp.nc"
+# 70 "../../../tos/interfaces/PacketTimeStamp.nc"
 static void CC2420TransmitP__PacketTimeStamp__clear(
 #line 66
 message_t * msg);
@@ -6810,15 +7151,15 @@ message_t * msg,
 
 
 CC2420TransmitP__PacketTimeStamp__size_type value);
-# 53 "../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
 static cc2420_status_t CC2420TransmitP__STXONCCA__strobe(void );
-# 54 "../../tos/interfaces/GpioCapture.nc"
+# 54 "../../../tos/interfaces/GpioCapture.nc"
 static error_t CC2420TransmitP__CaptureSFD__captureFallingEdge(void );
 #line 66
 static void CC2420TransmitP__CaptureSFD__disable(void );
 #line 53
 static error_t CC2420TransmitP__CaptureSFD__captureRisingEdge(void );
-# 109 "../../tos/lib/timer/Alarm.nc"
+# 109 "../../../tos/lib/timer/Alarm.nc"
 static CC2420TransmitP__BackoffTimer__size_type CC2420TransmitP__BackoffTimer__getNow(void );
 #line 66
 static void CC2420TransmitP__BackoffTimer__start(CC2420TransmitP__BackoffTimer__size_type dt);
@@ -6829,17 +7170,17 @@ static void CC2420TransmitP__BackoffTimer__start(CC2420TransmitP__BackoffTimer__
 
 
 static void CC2420TransmitP__BackoffTimer__stop(void );
-# 63 "../../tos/chips/cc2420/interfaces/CC2420Ram.nc"
+# 63 "../../../tos/chips/cc2420/interfaces/CC2420Ram.nc"
 static cc2420_status_t CC2420TransmitP__TXFIFO_RAM__write(uint8_t offset, uint8_t * data, uint8_t length);
-# 63 "../../tos/chips/cc2420/interfaces/CC2420Register.nc"
+# 63 "../../../tos/chips/cc2420/interfaces/CC2420Register.nc"
 static cc2420_status_t CC2420TransmitP__TXCTRL__write(uint16_t data);
-# 55 "../../tos/chips/cc2420/interfaces/CC2420Receive.nc"
+# 55 "../../../tos/chips/cc2420/interfaces/CC2420Receive.nc"
 static void CC2420TransmitP__CC2420Receive__sfd_dropped(void );
 #line 49
 static void CC2420TransmitP__CC2420Receive__sfd(uint32_t time);
-# 73 "../../tos/chips/cc2420/interfaces/CC2420Transmit.nc"
+# 73 "../../../tos/chips/cc2420/interfaces/CC2420Transmit.nc"
 static void CC2420TransmitP__Send__sendDone(message_t * p_msg, error_t error);
-# 31 "../../tos/chips/cc2420/interfaces/ChipSpiResource.nc"
+# 31 "../../../tos/chips/cc2420/interfaces/ChipSpiResource.nc"
 static void CC2420TransmitP__ChipSpiResource__abortRelease(void );
 
 
@@ -6849,14 +7190,14 @@ static void CC2420TransmitP__ChipSpiResource__abortRelease(void );
 
 
 static error_t CC2420TransmitP__ChipSpiResource__attemptRelease(void );
-# 53 "../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
 static cc2420_status_t CC2420TransmitP__SFLUSHTX__strobe(void );
-# 46 "../../tos/interfaces/GeneralIO.nc"
+# 46 "../../../tos/interfaces/GeneralIO.nc"
 static void CC2420TransmitP__CSN__makeOutput(void );
 #line 40
 static void CC2420TransmitP__CSN__set(void );
 static void CC2420TransmitP__CSN__clr(void );
-# 42 "../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
+# 42 "../../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
 static cc2420_header_t * CC2420TransmitP__CC2420PacketBody__getHeader(message_t * msg);
 
 
@@ -6869,7 +7210,7 @@ static cc2420_header_t * CC2420TransmitP__CC2420PacketBody__getHeader(message_t 
 
 
 static cc2420_metadata_t * CC2420TransmitP__CC2420PacketBody__getMetadata(message_t * msg);
-# 58 "../../tos/chips/cc2420/interfaces/PacketTimeSyncOffset.nc"
+# 58 "../../../tos/chips/cc2420/interfaces/PacketTimeSyncOffset.nc"
 static uint8_t CC2420TransmitP__PacketTimeSyncOffset__get(
 #line 53
 message_t * msg);
@@ -6877,29 +7218,29 @@ message_t * msg);
 static bool CC2420TransmitP__PacketTimeSyncOffset__isSet(
 #line 46
 message_t * msg);
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 static error_t CC2420TransmitP__SpiResource__release(void );
 #line 97
 static error_t CC2420TransmitP__SpiResource__immediateRequest(void );
 #line 88
 static error_t CC2420TransmitP__SpiResource__request(void );
-# 44 "../../tos/interfaces/GeneralIO.nc"
+# 44 "../../../tos/interfaces/GeneralIO.nc"
 static void CC2420TransmitP__CCA__makeInput(void );
 #line 43
 static bool CC2420TransmitP__CCA__get(void );
-# 53 "../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
 static cc2420_status_t CC2420TransmitP__SNOP__strobe(void );
-# 44 "../../tos/interfaces/GeneralIO.nc"
+# 44 "../../../tos/interfaces/GeneralIO.nc"
 static void CC2420TransmitP__SFD__makeInput(void );
 #line 43
 static bool CC2420TransmitP__SFD__get(void );
-# 82 "../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
+# 82 "../../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 static cc2420_status_t CC2420TransmitP__TXFIFO__write(uint8_t * data, uint8_t length);
-# 53 "../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
 static cc2420_status_t CC2420TransmitP__STXON__strobe(void );
-# 99 "../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
+# 99 "../../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
 #line 89
-typedef enum CC2420TransmitP____nesc_unnamed4337 {
+typedef enum CC2420TransmitP____nesc_unnamed4339 {
   CC2420TransmitP__S_STOPPED, 
   CC2420TransmitP__S_STARTED, 
   CC2420TransmitP__S_LOAD, 
@@ -6915,7 +7256,7 @@ typedef enum CC2420TransmitP____nesc_unnamed4337 {
 
 
 
-enum CC2420TransmitP____nesc_unnamed4338 {
+enum CC2420TransmitP____nesc_unnamed4340 {
   CC2420TransmitP__CC2420_ABORT_PERIOD = 320
 };
 #line 120
@@ -7049,9 +7390,9 @@ static inline error_t CC2420TransmitP__releaseSpiResource(void );
 static void CC2420TransmitP__loadTXFIFO(void );
 #line 850
 static void CC2420TransmitP__signalDone(error_t err);
-# 43 "../../tos/interfaces/GeneralIO.nc"
+# 43 "../../../tos/interfaces/GeneralIO.nc"
 static bool CC2420ReceiveP__FIFO__get(void );
-# 93 "../../tos/chips/cc2420/interfaces/CC2420Config.nc"
+# 93 "../../../tos/chips/cc2420/interfaces/CC2420Config.nc"
 static bool CC2420ReceiveP__CC2420Config__isAddressRecognitionEnabled(void );
 #line 117
 static bool CC2420ReceiveP__CC2420Config__isAutoAckEnabled(void );
@@ -7064,9 +7405,9 @@ static ieee_eui64_t CC2420ReceiveP__CC2420Config__getExtAddr(void );
 
 
 static uint16_t CC2420ReceiveP__CC2420Config__getShortAddr(void );
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 static error_t CC2420ReceiveP__receiveDone_task__postTask(void );
-# 70 "../../tos/interfaces/PacketTimeStamp.nc"
+# 70 "../../../tos/interfaces/PacketTimeStamp.nc"
 static void CC2420ReceiveP__PacketTimeStamp__clear(
 #line 66
 message_t * msg);
@@ -7079,16 +7420,16 @@ message_t * msg,
 
 
 CC2420ReceiveP__PacketTimeStamp__size_type value);
-# 43 "../../tos/interfaces/GeneralIO.nc"
+# 43 "../../../tos/interfaces/GeneralIO.nc"
 static bool CC2420ReceiveP__FIFOP__get(void );
-# 63 "../../tos/chips/cc2420/interfaces/CC2420Receive.nc"
+# 63 "../../../tos/chips/cc2420/interfaces/CC2420Receive.nc"
 static void CC2420ReceiveP__CC2420Receive__receive(uint8_t type, message_t * message);
-# 53 "../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
 static cc2420_status_t CC2420ReceiveP__SACK__strobe(void );
-# 40 "../../tos/interfaces/GeneralIO.nc"
+# 40 "../../../tos/interfaces/GeneralIO.nc"
 static void CC2420ReceiveP__CSN__set(void );
 static void CC2420ReceiveP__CSN__clr(void );
-# 42 "../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
+# 42 "../../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
 static cc2420_header_t * CC2420ReceiveP__CC2420PacketBody__getHeader(message_t * msg);
 
 
@@ -7101,7 +7442,7 @@ static cc2420_header_t * CC2420ReceiveP__CC2420PacketBody__getHeader(message_t *
 
 
 static cc2420_metadata_t * CC2420ReceiveP__CC2420PacketBody__getMetadata(message_t * msg);
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 static 
 #line 74
 message_t * 
@@ -7118,7 +7459,7 @@ void * payload,
 
 
 uint8_t len);
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 static error_t CC2420ReceiveP__SpiResource__release(void );
 #line 97
 static error_t CC2420ReceiveP__SpiResource__immediateRequest(void );
@@ -7126,18 +7467,18 @@ static error_t CC2420ReceiveP__SpiResource__immediateRequest(void );
 static error_t CC2420ReceiveP__SpiResource__request(void );
 #line 128
 static bool CC2420ReceiveP__SpiResource__isOwner(void );
-# 62 "../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
+# 62 "../../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 static error_t CC2420ReceiveP__RXFIFO__continueRead(uint8_t * data, uint8_t length);
 #line 51
 static cc2420_status_t CC2420ReceiveP__RXFIFO__beginRead(uint8_t * data, uint8_t length);
-# 61 "../../tos/interfaces/GpioInterrupt.nc"
+# 61 "../../../tos/interfaces/GpioInterrupt.nc"
 static error_t CC2420ReceiveP__InterruptFIFOP__disable(void );
 #line 54
 static error_t CC2420ReceiveP__InterruptFIFOP__enableFallingEdge(void );
-# 53 "../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
 static cc2420_status_t CC2420ReceiveP__SFLUSHRX__strobe(void );
-# 148 "../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
-enum CC2420ReceiveP____nesc_unnamed4339 {
+# 148 "../../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
+enum CC2420ReceiveP____nesc_unnamed4341 {
 #line 148
   CC2420ReceiveP__receiveDone_task = 10U
 };
@@ -7145,7 +7486,7 @@ enum CC2420ReceiveP____nesc_unnamed4339 {
 typedef int CC2420ReceiveP____nesc_sillytask_receiveDone_task[CC2420ReceiveP__receiveDone_task];
 #line 89
 #line 81
-typedef enum CC2420ReceiveP____nesc_unnamed4340 {
+typedef enum CC2420ReceiveP____nesc_unnamed4342 {
   CC2420ReceiveP__S_STOPPED, 
   CC2420ReceiveP__S_STARTED, 
   CC2420ReceiveP__S_RX_LENGTH, 
@@ -7155,7 +7496,7 @@ typedef enum CC2420ReceiveP____nesc_unnamed4340 {
   CC2420ReceiveP__S_RX_PAYLOAD
 } CC2420ReceiveP__cc2420_receive_state_t;
 
-enum CC2420ReceiveP____nesc_unnamed4341 {
+enum CC2420ReceiveP____nesc_unnamed4343 {
   CC2420ReceiveP__RXFIFO_SIZE = 128, 
   CC2420ReceiveP__TIMESTAMP_QUEUE_SIZE = 8, 
   CC2420ReceiveP__SACK_HEADER_LENGTH = 7
@@ -7273,7 +7614,7 @@ static void CC2420ReceiveP__reset_state(void );
 
 
 static inline bool CC2420ReceiveP__passesAddressCheck(message_t *msg);
-# 81 "../../tos/chips/cc2420/packet/CC2420PacketP.nc"
+# 81 "../../../tos/chips/cc2420/packet/CC2420PacketP.nc"
 static inline int CC2420PacketP__getAddressLength(int type);
 
 
@@ -7325,17 +7666,17 @@ static inline bool CC2420PacketP__PacketTimeSyncOffset__isSet(message_t *msg);
 
 
 static inline uint8_t CC2420PacketP__PacketTimeSyncOffset__get(message_t *msg);
-# 58 "../../tos/lib/timer/CounterToLocalTimeC.nc"
+# 58 "../../../tos/lib/timer/CounterToLocalTimeC.nc"
 static inline void /*CC2420PacketC.CounterToLocalTimeC*/CounterToLocalTimeC__0__Counter__overflow(void );
-# 42 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 42 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 static void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430Compare__setEvent(uint16_t time);
 
 static void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430Compare__setEventFromNow(uint16_t delta);
-# 45 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 static uint16_t /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430Timer__get(void );
-# 78 "../../tos/lib/timer/Alarm.nc"
+# 78 "../../../tos/lib/timer/Alarm.nc"
 static void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Alarm__fired(void );
-# 76 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 76 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 static void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430TimerControl__enableEvents(void );
 #line 56
 static void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430TimerControl__setControlAsCompare(void );
@@ -7343,7 +7684,7 @@ static void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__
 static void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430TimerControl__disableEvents(void );
 #line 43
 static void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430TimerControl__clearPendingInterrupt(void );
-# 53 "../../tos/chips/msp430/timer/Msp430AlarmC.nc"
+# 53 "../../../tos/chips/msp430/timer/Msp430AlarmC.nc"
 static inline error_t /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Init__init(void );
 #line 65
 static inline void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Alarm__stop(void );
@@ -7365,7 +7706,7 @@ static inline void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430A
 static inline void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Alarm__startAt(uint16_t t0, uint16_t dt);
 #line 114
 static inline void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430Timer__overflow(void );
-# 64 "../../tos/lib/timer/Counter.nc"
+# 64 "../../../tos/lib/timer/Counter.nc"
 static /*CounterMilli32C.Transform*/TransformCounterC__1__CounterFrom__size_type /*CounterMilli32C.Transform*/TransformCounterC__1__CounterFrom__get(void );
 
 
@@ -7385,10 +7726,10 @@ static bool /*CounterMilli32C.Transform*/TransformCounterC__1__CounterFrom__isOv
 
 
 static void /*CounterMilli32C.Transform*/TransformCounterC__1__Counter__overflow(void );
-# 67 "../../tos/lib/timer/TransformCounterC.nc"
+# 67 "../../../tos/lib/timer/TransformCounterC.nc"
 /*CounterMilli32C.Transform*/TransformCounterC__1__upper_count_type /*CounterMilli32C.Transform*/TransformCounterC__1__m_upper;
 
-enum /*CounterMilli32C.Transform*/TransformCounterC__1____nesc_unnamed4342 {
+enum /*CounterMilli32C.Transform*/TransformCounterC__1____nesc_unnamed4344 {
 
   TransformCounterC__1__LOW_SHIFT_RIGHT = 5, 
   TransformCounterC__1__HIGH_SHIFT_LEFT = 8 * sizeof(/*CounterMilli32C.Transform*/TransformCounterC__1__from_size_type ) - /*CounterMilli32C.Transform*/TransformCounterC__1__LOW_SHIFT_RIGHT, 
@@ -7402,19 +7743,19 @@ enum /*CounterMilli32C.Transform*/TransformCounterC__1____nesc_unnamed4342 {
 static /*CounterMilli32C.Transform*/TransformCounterC__1__to_size_type /*CounterMilli32C.Transform*/TransformCounterC__1__Counter__get(void );
 #line 133
 static inline void /*CounterMilli32C.Transform*/TransformCounterC__1__CounterFrom__overflow(void );
-# 78 "../../tos/lib/timer/Alarm.nc"
+# 78 "../../../tos/lib/timer/Alarm.nc"
 static void /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Alarm__fired(void );
 #line 103
 static void /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__AlarmFrom__startAt(/*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__AlarmFrom__size_type t0, /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__AlarmFrom__size_type dt);
 #line 73
 static void /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__AlarmFrom__stop(void );
-# 64 "../../tos/lib/timer/Counter.nc"
+# 64 "../../../tos/lib/timer/Counter.nc"
 static /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Counter__size_type /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Counter__get(void );
-# 77 "../../tos/lib/timer/TransformAlarmC.nc"
+# 77 "../../../tos/lib/timer/TransformAlarmC.nc"
 /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__to_size_type /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__m_t0;
 /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__to_size_type /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__m_dt;
 
-enum /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1____nesc_unnamed4343 {
+enum /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1____nesc_unnamed4345 {
 
   TransformAlarmC__1__MAX_DELAY_LOG2 = 8 * sizeof(/*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__from_size_type ) - 1 - 5, 
   TransformAlarmC__1__MAX_DELAY = (/*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__to_size_type )1 << /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__MAX_DELAY_LOG2
@@ -7448,9 +7789,9 @@ static void /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Alarm_
 static inline void /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__AlarmFrom__fired(void );
 #line 177
 static inline void /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Counter__overflow(void );
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 static error_t /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__fired__postTask(void );
-# 109 "../../tos/lib/timer/Alarm.nc"
+# 109 "../../../tos/lib/timer/Alarm.nc"
 static /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__size_type /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__getNow(void );
 #line 103
 static void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__startAt(/*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__size_type t0, /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__size_type dt);
@@ -7458,10 +7799,10 @@ static void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__startAt(/*H
 static /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__size_type /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__getAlarm(void );
 #line 73
 static void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__stop(void );
-# 83 "../../tos/lib/timer/Timer.nc"
+# 83 "../../../tos/lib/timer/Timer.nc"
 static void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Timer__fired(void );
-# 74 "../../tos/lib/timer/AlarmToTimerC.nc"
-enum /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0____nesc_unnamed4344 {
+# 74 "../../../tos/lib/timer/AlarmToTimerC.nc"
+enum /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0____nesc_unnamed4346 {
 #line 74
   AlarmToTimerC__0__fired = 11U
 };
@@ -7489,30 +7830,30 @@ static inline void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Timer__star
 
 
 static inline uint32_t /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Timer__getNow(void );
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 static error_t /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__updateFromTimer__postTask(void );
-# 136 "../../tos/lib/timer/Timer.nc"
+# 136 "../../../tos/lib/timer/Timer.nc"
 static uint32_t /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__TimerFrom__getNow(void );
 #line 129
 static void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__TimerFrom__startOneShotAt(uint32_t t0, uint32_t dt);
 #line 78
 static void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__TimerFrom__stop(void );
-# 78 "../../tos/interfaces/Platform.nc"
+# 78 "../../../tos/interfaces/Platform.nc"
 static uint32_t /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Platform__usecsRaw(void );
-# 83 "../../tos/lib/timer/Timer.nc"
+# 83 "../../../tos/lib/timer/Timer.nc"
 static void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Timer__fired(
-# 63 "../../tos/lib/timer/VirtualizeTimerImplP.nc"
-uint8_t arg_0x7f540cf2d850);
+# 63 "../../../tos/lib/timer/VirtualizeTimerImplP.nc"
+uint8_t arg_0x7f49d6b1fb60);
 #line 153
-enum /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0____nesc_unnamed4345 {
+enum /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0____nesc_unnamed4347 {
 #line 153
   VirtualizeTimerImplP__0__updateFromTimer = 12U
 };
 #line 153
 typedef int /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0____nesc_sillytask_updateFromTimer[/*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__updateFromTimer];
 #line 72
-enum /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0____nesc_unnamed4346 {
-  VirtualizeTimerImplP__0__NUM_TIMERS = 1U, 
+enum /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0____nesc_unnamed4348 {
+  VirtualizeTimerImplP__0__NUM_TIMERS = 3U, 
   VirtualizeTimerImplP__0__END_OF_LIST = 255
 };
 
@@ -7524,7 +7865,7 @@ enum /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0____nesc_unnam
 
 
 #line 77
-typedef struct /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0____nesc_unnamed4347 {
+typedef struct /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0____nesc_unnamed4349 {
   uint32_t t0;
   uint32_t dt;
   uint32_t fired_max_us;
@@ -7534,7 +7875,8 @@ typedef struct /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0____
 } /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Timer_t;
 
 /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Timer_t /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__m_timers[/*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__NUM_TIMERS];
-#line 143
+#line 142
+static inline void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__trace_start_timer(uint16_t num);
 static inline void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__trace_timer_fired(uint16_t num);
 
 
@@ -7552,11 +7894,30 @@ static void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__fireT
 static inline void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__updateFromTimer__runTask(void );
 #line 227
 static inline void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__TimerFrom__fired(void );
+
+
+
+static void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__startTimer(uint8_t num, uint32_t t0, uint32_t dt, bool isoneshot);
+
+
+
+
+
+
+
+
+
+
+static inline void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Timer__startPeriodic(uint8_t num, uint32_t dt);
+
+
+
+static inline void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Timer__startOneShot(uint8_t num, uint32_t dt);
 #line 283
 static inline void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Timer__default__fired(uint8_t num);
-# 58 "../../tos/lib/timer/CounterToLocalTimeC.nc"
+# 58 "../../../tos/lib/timer/CounterToLocalTimeC.nc"
 static inline void /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC__1__Counter__overflow(void );
-# 52 "../../tos/system/RandomMlcgC.nc"
+# 52 "../../../tos/system/RandomMlcgC.nc"
 uint32_t RandomMlcgC__seed;
 
 
@@ -7565,7 +7926,7 @@ static inline error_t RandomMlcgC__Init__init(void );
 static uint32_t RandomMlcgC__Random__rand32(void );
 #line 89
 static inline uint16_t RandomMlcgC__Random__rand16(void );
-# 75 "../../tos/interfaces/Send.nc"
+# 75 "../../../tos/interfaces/Send.nc"
 static error_t UniqueSendP__SubSend__send(
 #line 67
 message_t * msg, 
@@ -7587,18 +7948,18 @@ message_t * msg,
 
 
 error_t error);
-# 52 "../../tos/interfaces/Random.nc"
+# 52 "../../../tos/interfaces/Random.nc"
 static uint16_t UniqueSendP__Random__rand16(void );
-# 42 "../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
+# 42 "../../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
 static cc2420_header_t * UniqueSendP__CC2420PacketBody__getHeader(message_t * msg);
-# 56 "../../tos/interfaces/State.nc"
+# 56 "../../../tos/interfaces/State.nc"
 static void UniqueSendP__State__toIdle(void );
 #line 45
 static error_t UniqueSendP__State__requestState(uint8_t reqState);
-# 54 "../../tos/chips/cc2420/unique/UniqueSendP.nc"
+# 54 "../../../tos/chips/cc2420/unique/UniqueSendP.nc"
 uint8_t UniqueSendP__localSendId;
 
-enum UniqueSendP____nesc_unnamed4348 {
+enum UniqueSendP____nesc_unnamed4350 {
   UniqueSendP__S_IDLE, 
   UniqueSendP__S_SENDING
 };
@@ -7618,7 +7979,7 @@ static inline uint8_t UniqueSendP__Send__maxPayloadLength(void );
 
 
 static inline void UniqueSendP__SubSend__sendDone(message_t *msg, error_t error);
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 static 
 #line 74
 message_t * 
@@ -7635,9 +7996,9 @@ void * payload,
 
 
 uint8_t len);
-# 42 "../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
+# 42 "../../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
 static cc2420_header_t * UniqueReceiveP__CC2420PacketBody__getHeader(message_t * msg);
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 static 
 #line 74
 message_t * 
@@ -7654,9 +8015,9 @@ void * payload,
 
 
 uint8_t len);
-# 59 "../../tos/chips/cc2420/unique/UniqueReceiveP.nc"
+# 59 "../../../tos/chips/cc2420/unique/UniqueReceiveP.nc"
 #line 56
-struct UniqueReceiveP____nesc_unnamed4349 {
+struct UniqueReceiveP____nesc_unnamed4351 {
   uint16_t source;
   uint8_t dsn;
 } UniqueReceiveP__receivedMessages[4];
@@ -7666,7 +8027,7 @@ uint8_t UniqueReceiveP__writeIndex = 0;
 
 uint8_t UniqueReceiveP__recycleSourceElement;
 
-enum UniqueReceiveP____nesc_unnamed4350 {
+enum UniqueReceiveP____nesc_unnamed4352 {
   UniqueReceiveP__INVALID_ELEMENT = 0xFF
 };
 
@@ -7696,7 +8057,7 @@ static inline void UniqueReceiveP__insert(uint16_t msgSource, uint8_t msgDsn);
 static inline uint16_t UniqueReceiveP__getSourceKey(message_t * msg);
 #line 192
 static inline message_t *UniqueReceiveP__DuplicateReceive__default__receive(message_t *msg, void *payload, uint8_t len);
-# 75 "../../tos/interfaces/Send.nc"
+# 75 "../../../tos/interfaces/Send.nc"
 static error_t CC2420TinyosNetworkP__SubSend__send(
 #line 67
 message_t * msg, 
@@ -7710,13 +8071,13 @@ message_t * msg,
 uint8_t len);
 #line 112
 static uint8_t CC2420TinyosNetworkP__SubSend__maxPayloadLength(void );
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 static error_t CC2420TinyosNetworkP__grantTask__postTask(void );
-# 77 "../../tos/chips/cc2420/interfaces/CC2420Packet.nc"
+# 77 "../../../tos/chips/cc2420/interfaces/CC2420Packet.nc"
 static void CC2420TinyosNetworkP__CC2420Packet__setNetwork(message_t * p_msg, uint8_t networkId);
 #line 75
 static uint8_t CC2420TinyosNetworkP__CC2420Packet__getNetwork(message_t * p_msg);
-# 100 "../../tos/interfaces/Send.nc"
+# 100 "../../../tos/interfaces/Send.nc"
 static void CC2420TinyosNetworkP__ActiveSend__sendDone(
 #line 96
 message_t * msg, 
@@ -7724,13 +8085,13 @@ message_t * msg,
 
 
 error_t error);
-# 79 "../../tos/interfaces/ResourceQueue.nc"
+# 79 "../../../tos/interfaces/ResourceQueue.nc"
 static error_t CC2420TinyosNetworkP__Queue__enqueue(resource_client_id_t id);
 #line 53
 static bool CC2420TinyosNetworkP__Queue__isEmpty(void );
 #line 70
 static resource_client_id_t CC2420TinyosNetworkP__Queue__dequeue(void );
-# 42 "../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
+# 42 "../../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
 static cc2420_header_t * CC2420TinyosNetworkP__CC2420PacketBody__getHeader(message_t * msg);
 
 
@@ -7743,7 +8104,7 @@ static cc2420_header_t * CC2420TinyosNetworkP__CC2420PacketBody__getHeader(messa
 
 
 static cc2420_metadata_t * CC2420TinyosNetworkP__CC2420PacketBody__getMetadata(message_t * msg);
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 static 
 #line 74
 message_t * 
@@ -7760,11 +8121,11 @@ void * payload,
 
 
 uint8_t len);
-# 102 "../../tos/interfaces/Resource.nc"
+# 102 "../../../tos/interfaces/Resource.nc"
 static void CC2420TinyosNetworkP__Resource__granted(
-# 46 "../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
-uint8_t arg_0x7f540cdd2600);
-# 100 "../../tos/interfaces/Send.nc"
+# 46 "../../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
+uint8_t arg_0x7f49d69c5600);
+# 100 "../../../tos/interfaces/Send.nc"
 static void CC2420TinyosNetworkP__BareSend__sendDone(
 #line 96
 message_t * msg, 
@@ -7772,7 +8133,7 @@ message_t * msg,
 
 
 error_t error);
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 static 
 #line 74
 message_t * 
@@ -7789,15 +8150,15 @@ void * payload,
 
 
 uint8_t len);
-# 184 "../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
-enum CC2420TinyosNetworkP____nesc_unnamed4351 {
+# 184 "../../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
+enum CC2420TinyosNetworkP____nesc_unnamed4353 {
 #line 184
   CC2420TinyosNetworkP__grantTask = 13U
 };
 #line 184
 typedef int CC2420TinyosNetworkP____nesc_sillytask_grantTask[CC2420TinyosNetworkP__grantTask];
 #line 68
-enum CC2420TinyosNetworkP____nesc_unnamed4352 {
+enum CC2420TinyosNetworkP____nesc_unnamed4354 {
   CC2420TinyosNetworkP__OWNER_NONE = 0xff, 
   CC2420TinyosNetworkP__TINYOS_N_NETWORKS = 1U
 };
@@ -7806,7 +8167,7 @@ enum CC2420TinyosNetworkP____nesc_unnamed4352 {
 
 
 #line 73
-enum CC2420TinyosNetworkP____nesc_unnamed4353 {
+enum CC2420TinyosNetworkP____nesc_unnamed4355 {
   CC2420TinyosNetworkP__CLIENT_AM, 
   CC2420TinyosNetworkP__CLIENT_BARE
 } CC2420TinyosNetworkP__m_busy_client;
@@ -7826,6 +8187,10 @@ static error_t CC2420TinyosNetworkP__ActiveSend__send(message_t *msg, uint8_t le
 
 
 static inline uint8_t CC2420TinyosNetworkP__ActiveSend__maxPayloadLength(void );
+
+
+
+static void *CC2420TinyosNetworkP__ActiveSend__getPayload(message_t *msg, uint8_t len);
 #line 139
 static inline void *CC2420TinyosNetworkP__BareSend__getPayload(message_t *msg, uint8_t len);
 
@@ -7869,8 +8234,8 @@ static inline void CC2420TinyosNetworkP__BareSend__default__sendDone(message_t *
 
 
 static inline void CC2420TinyosNetworkP__Resource__default__granted(uint8_t client);
-# 49 "../../tos/system/FcfsResourceQueueC.nc"
-enum /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0____nesc_unnamed4354 {
+# 49 "../../../tos/system/FcfsResourceQueueC.nc"
+enum /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0____nesc_unnamed4356 {
 #line 49
   FcfsResourceQueueC__0__NO_ENTRY = 0xFF
 };
@@ -7894,7 +8259,7 @@ static inline bool /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC
 static inline resource_client_id_t /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__FcfsQueue__dequeue(void );
 #line 82
 static inline error_t /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__FcfsQueue__enqueue(resource_client_id_t id);
-# 75 "../../tos/interfaces/Send.nc"
+# 75 "../../../tos/interfaces/Send.nc"
 static error_t CC2420ActiveMessageP__SubSend__send(
 #line 67
 message_t * msg, 
@@ -7906,21 +8271,32 @@ message_t * msg,
 
 
 uint8_t len);
+#line 125
+static 
+#line 123
+void * 
+
+CC2420ActiveMessageP__SubSend__getPayload(
+#line 122
+message_t * msg, 
+
+
+uint8_t len);
 #line 112
 static uint8_t CC2420ActiveMessageP__SubSend__maxPayloadLength(void );
-# 77 "../../tos/chips/cc2420/interfaces/CC2420Config.nc"
+# 77 "../../../tos/chips/cc2420/interfaces/CC2420Config.nc"
 static uint16_t CC2420ActiveMessageP__CC2420Config__getPanAddr(void );
-# 95 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+# 95 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
 static void CC2420ActiveMessageP__RadioBackoff__requestCca(
-# 54 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x7f540cd3b700, 
-# 95 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+# 54 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+am_id_t arg_0x7f49d692e700, 
+# 95 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
 message_t * msg);
 #line 81
 static void CC2420ActiveMessageP__RadioBackoff__requestInitialBackoff(
-# 54 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x7f540cd3b700, 
-# 81 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+# 54 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+am_id_t arg_0x7f49d692e700, 
+# 81 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
 message_t * msg);
 
 
@@ -7929,23 +8305,23 @@ message_t * msg);
 
 
 static void CC2420ActiveMessageP__RadioBackoff__requestCongestionBackoff(
-# 54 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x7f540cd3b700, 
-# 88 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+# 54 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+am_id_t arg_0x7f49d692e700, 
+# 88 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
 message_t * msg);
-# 59 "../../tos/interfaces/SendNotifier.nc"
+# 59 "../../../tos/interfaces/SendNotifier.nc"
 static void CC2420ActiveMessageP__SendNotifier__aboutToSend(
-# 53 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x7f540cd3cb30, 
-# 59 "../../tos/interfaces/SendNotifier.nc"
+# 53 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+am_id_t arg_0x7f49d692fb30, 
+# 59 "../../../tos/interfaces/SendNotifier.nc"
 am_addr_t dest, 
 #line 57
 message_t * msg);
-# 110 "../../tos/interfaces/AMSend.nc"
+# 110 "../../../tos/interfaces/AMSend.nc"
 static void CC2420ActiveMessageP__AMSend__sendDone(
-# 48 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x7f540cd44cd0, 
-# 103 "../../tos/interfaces/AMSend.nc"
+# 48 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+am_id_t arg_0x7f49d6936ce0, 
+# 103 "../../../tos/interfaces/AMSend.nc"
 message_t * msg, 
 
 
@@ -7954,7 +8330,7 @@ message_t * msg,
 
 
 error_t error);
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 static 
 #line 74
 message_t * 
@@ -7962,9 +8338,9 @@ message_t *
 
 
 CC2420ActiveMessageP__Snoop__receive(
-# 50 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x7f540cd3fc00, 
-# 71 "../../tos/interfaces/Receive.nc"
+# 50 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+am_id_t arg_0x7f49d6932c40, 
+# 71 "../../../tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
 
@@ -7973,9 +8349,9 @@ void * payload,
 
 
 uint8_t len);
-# 50 "../../tos/interfaces/ActiveMessageAddress.nc"
+# 50 "../../../tos/interfaces/ActiveMessageAddress.nc"
 static am_addr_t CC2420ActiveMessageP__ActiveMessageAddress__amAddress(void );
-# 42 "../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
+# 42 "../../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
 static cc2420_header_t * CC2420ActiveMessageP__CC2420PacketBody__getHeader(message_t * msg);
 
 
@@ -7988,7 +8364,7 @@ static cc2420_header_t * CC2420ActiveMessageP__CC2420PacketBody__getHeader(messa
 
 
 static cc2420_metadata_t * CC2420ActiveMessageP__CC2420PacketBody__getMetadata(message_t * msg);
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 static 
 #line 74
 message_t * 
@@ -7996,9 +8372,9 @@ message_t *
 
 
 CC2420ActiveMessageP__Receive__receive(
-# 49 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-am_id_t arg_0x7f540cd3f020, 
-# 71 "../../tos/interfaces/Receive.nc"
+# 49 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+am_id_t arg_0x7f49d6932060, 
+# 71 "../../../tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
 
@@ -8007,19 +8383,19 @@ void * payload,
 
 
 uint8_t len);
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 static error_t CC2420ActiveMessageP__RadioResource__release(void );
 #line 97
 static error_t CC2420ActiveMessageP__RadioResource__immediateRequest(void );
 #line 88
 static error_t CC2420ActiveMessageP__RadioResource__request(void );
-# 71 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+# 71 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
 uint16_t CC2420ActiveMessageP__pending_length;
 message_t * CC2420ActiveMessageP__pending_message = (void *)0;
 
 static void CC2420ActiveMessageP__RadioResource__granted(void );
 #line 87
-static inline error_t CC2420ActiveMessageP__AMSend__send(am_id_t id, am_addr_t addr, 
+static error_t CC2420ActiveMessageP__AMSend__send(am_id_t id, am_addr_t addr, 
 message_t *msg, 
 uint8_t len);
 #line 135
@@ -8037,7 +8413,7 @@ static inline am_addr_t CC2420ActiveMessageP__AMPacket__source(message_t *amsg);
 
 
 
-
+static inline void CC2420ActiveMessageP__AMPacket__setDestination(message_t *amsg, am_addr_t addr);
 
 
 
@@ -8052,12 +8428,12 @@ static inline bool CC2420ActiveMessageP__AMPacket__isForMe(message_t *amsg);
 
 
 
-static am_id_t CC2420ActiveMessageP__AMPacket__type(message_t *amsg);
+static inline am_id_t CC2420ActiveMessageP__AMPacket__type(message_t *amsg);
 
 
 
 
-
+static inline void CC2420ActiveMessageP__AMPacket__setType(message_t *amsg, am_id_t type);
 
 
 
@@ -8069,11 +8445,11 @@ static inline void CC2420ActiveMessageP__Packet__clear(message_t *msg);
 
 
 
-static inline uint8_t CC2420ActiveMessageP__Packet__payloadLength(message_t *msg);
+static uint8_t CC2420ActiveMessageP__Packet__payloadLength(message_t *msg);
 
 
 
-
+static inline void CC2420ActiveMessageP__Packet__setPayloadLength(message_t *msg, uint8_t len);
 
 
 
@@ -8081,7 +8457,7 @@ static inline uint8_t CC2420ActiveMessageP__Packet__maxPayloadLength(void );
 
 
 
-
+static inline void *CC2420ActiveMessageP__Packet__getPayload(message_t *msg, uint8_t len);
 
 
 
@@ -8112,7 +8488,19 @@ static inline void CC2420ActiveMessageP__SubBackoff__requestCongestionBackoff(me
 
 
 static inline void CC2420ActiveMessageP__SubBackoff__requestCca(message_t *msg);
-#line 291
+#line 279
+static inline message_t *CC2420ActiveMessageP__Receive__default__receive(am_id_t id, message_t *msg, void *payload, uint8_t len);
+
+
+
+static inline message_t *CC2420ActiveMessageP__Snoop__default__receive(am_id_t id, message_t *msg, void *payload, uint8_t len);
+
+
+
+
+
+
+
 static inline void CC2420ActiveMessageP__SendNotifier__default__aboutToSend(am_id_t amId, am_addr_t addr, message_t *msg);
 
 static inline void CC2420ActiveMessageP__RadioBackoff__default__requestInitialBackoff(am_id_t id, 
@@ -8125,7 +8513,7 @@ message_t *msg);
 
 static inline void CC2420ActiveMessageP__RadioBackoff__default__requestCca(am_id_t id, 
 message_t *msg);
-# 75 "../../tos/interfaces/Send.nc"
+# 75 "../../../tos/interfaces/Send.nc"
 static error_t /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__SubSend__send(
 #line 67
 message_t * msg, 
@@ -8137,11 +8525,11 @@ message_t * msg,
 
 
 uint8_t len);
-# 110 "../../tos/interfaces/AMSend.nc"
+# 110 "../../../tos/interfaces/AMSend.nc"
 static void /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMSend__sendDone(
-# 47 "../../tos/lib/serial/SerialActiveMessageP.nc"
-am_id_t arg_0x7f540cc9c320, 
-# 103 "../../tos/interfaces/AMSend.nc"
+# 47 "../../../tos/lib/serial/SerialActiveMessageP.nc"
+am_id_t arg_0x7f49d688f320, 
+# 103 "../../../tos/interfaces/AMSend.nc"
 message_t * msg, 
 
 
@@ -8150,7 +8538,7 @@ message_t * msg,
 
 
 error_t error);
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 static 
 #line 74
 message_t * 
@@ -8158,9 +8546,9 @@ message_t *
 
 
 /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__Receive__receive(
-# 48 "../../tos/lib/serial/SerialActiveMessageP.nc"
-am_id_t arg_0x7f540cc9b650, 
-# 71 "../../tos/interfaces/Receive.nc"
+# 48 "../../../tos/lib/serial/SerialActiveMessageP.nc"
+am_id_t arg_0x7f49d688d650, 
+# 71 "../../../tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
 
@@ -8169,7 +8557,7 @@ void * payload,
 
 
 uint8_t len);
-# 60 "../../tos/lib/serial/SerialActiveMessageP.nc"
+# 60 "../../../tos/lib/serial/SerialActiveMessageP.nc"
 static inline serial_header_t * /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__getHeader(message_t * msg);
 
 
@@ -8233,13 +8621,13 @@ static inline void /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMPacket_
 static inline am_id_t /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMPacket__type(message_t *amsg);
 #line 191
 static inline void /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMPacket__setGroup(message_t *msg, am_group_t group);
-# 113 "../../tos/interfaces/SplitControl.nc"
+# 113 "../../../tos/interfaces/SplitControl.nc"
 static void SerialP__SplitControl__startDone(error_t error);
 #line 138
 static void SerialP__SplitControl__stopDone(error_t error);
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 static error_t SerialP__stopDoneTask__postTask(void );
-# 95 "../../tos/interfaces/StdControl.nc"
+# 95 "../../../tos/interfaces/StdControl.nc"
 static error_t SerialP__SerialControl__start(void );
 
 
@@ -8251,21 +8639,21 @@ static error_t SerialP__SerialControl__start(void );
 
 
 static error_t SerialP__SerialControl__stop(void );
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 static error_t SerialP__RunTx__postTask(void );
-# 49 "../../tos/lib/serial/SerialFlush.nc"
+# 49 "../../../tos/lib/serial/SerialFlush.nc"
 static void SerialP__SerialFlush__flush(void );
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 static error_t SerialP__startDoneTask__postTask(void );
-# 56 "../../tos/lib/serial/SerialFrameComm.nc"
+# 56 "../../../tos/lib/serial/SerialFrameComm.nc"
 static error_t SerialP__SerialFrameComm__putDelimiter(void );
 #line 79
 static void SerialP__SerialFrameComm__resetReceive(void );
 #line 65
 static error_t SerialP__SerialFrameComm__putData(uint8_t data);
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 static error_t SerialP__defaultSerialFlushTask__postTask(void );
-# 81 "../../tos/lib/serial/SendBytePacket.nc"
+# 81 "../../../tos/lib/serial/SendBytePacket.nc"
 static uint8_t SerialP__SendBytePacket__nextByte(void );
 
 
@@ -8277,7 +8665,7 @@ static uint8_t SerialP__SendBytePacket__nextByte(void );
 
 
 static void SerialP__SendBytePacket__sendCompleted(error_t error);
-# 62 "../../tos/lib/serial/ReceiveBytePacket.nc"
+# 62 "../../../tos/lib/serial/ReceiveBytePacket.nc"
 static error_t SerialP__ReceiveBytePacket__startPacket(void );
 
 
@@ -8297,15 +8685,15 @@ static void SerialP__ReceiveBytePacket__byteReceived(uint8_t data);
 
 
 static void SerialP__ReceiveBytePacket__endPacket(error_t result);
-# 191 "../../tos/lib/serial/SerialP.nc"
-enum SerialP____nesc_unnamed4355 {
+# 191 "../../../tos/lib/serial/SerialP.nc"
+enum SerialP____nesc_unnamed4357 {
 #line 191
   SerialP__RunTx = 14U
 };
 #line 191
 typedef int SerialP____nesc_sillytask_RunTx[SerialP__RunTx];
 #line 322
-enum SerialP____nesc_unnamed4356 {
+enum SerialP____nesc_unnamed4358 {
 #line 322
   SerialP__startDoneTask = 15U
 };
@@ -8320,7 +8708,7 @@ typedef int SerialP____nesc_sillytask_startDoneTask[SerialP__startDoneTask];
 
 
 
-enum SerialP____nesc_unnamed4357 {
+enum SerialP____nesc_unnamed4359 {
 #line 332
   SerialP__stopDoneTask = 16U
 };
@@ -8334,14 +8722,14 @@ typedef int SerialP____nesc_sillytask_stopDoneTask[SerialP__stopDoneTask];
 
 
 
-enum SerialP____nesc_unnamed4358 {
+enum SerialP____nesc_unnamed4360 {
 #line 341
   SerialP__defaultSerialFlushTask = 17U
 };
 #line 341
 typedef int SerialP____nesc_sillytask_defaultSerialFlushTask[SerialP__defaultSerialFlushTask];
 #line 81
-enum SerialP____nesc_unnamed4359 {
+enum SerialP____nesc_unnamed4361 {
   SerialP__RX_DATA_BUFFER_SIZE = 2, 
   SerialP__TX_DATA_BUFFER_SIZE = 4, 
   SerialP__SERIAL_MTU = 255, 
@@ -8349,7 +8737,7 @@ enum SerialP____nesc_unnamed4359 {
   SerialP__ACK_QUEUE_SIZE = 5
 };
 
-enum SerialP____nesc_unnamed4360 {
+enum SerialP____nesc_unnamed4362 {
   SerialP__RXSTATE_NOSYNC, 
   SerialP__RXSTATE_PROTO, 
   SerialP__RXSTATE_TOKEN, 
@@ -8357,7 +8745,7 @@ enum SerialP____nesc_unnamed4360 {
   SerialP__RXSTATE_INACTIVE
 };
 
-enum SerialP____nesc_unnamed4361 {
+enum SerialP____nesc_unnamed4363 {
   SerialP__TXSTATE_IDLE, 
   SerialP__TXSTATE_PROTO, 
   SerialP__TXSTATE_SEQNO, 
@@ -8376,13 +8764,13 @@ enum SerialP____nesc_unnamed4361 {
 
 
 #line 111
-typedef enum SerialP____nesc_unnamed4362 {
+typedef enum SerialP____nesc_unnamed4364 {
   SerialP__BUFFER_AVAILABLE, 
   SerialP__BUFFER_FILLING, 
   SerialP__BUFFER_COMPLETE
 } SerialP__tx_data_buffer_states_t;
 
-enum SerialP____nesc_unnamed4363 {
+enum SerialP____nesc_unnamed4365 {
   SerialP__TX_ACK_INDEX = 0, 
   SerialP__TX_DATA_INDEX = 1, 
   SerialP__TX_BUFFER_COUNT = 2
@@ -8394,7 +8782,7 @@ enum SerialP____nesc_unnamed4363 {
 
 
 #line 124
-typedef struct SerialP____nesc_unnamed4364 {
+typedef struct SerialP____nesc_unnamed4366 {
   uint8_t writePtr;
   uint8_t readPtr;
   uint8_t buf[SerialP__RX_DATA_BUFFER_SIZE + 1];
@@ -8404,7 +8792,7 @@ typedef struct SerialP____nesc_unnamed4364 {
 
 
 #line 130
-typedef struct SerialP____nesc_unnamed4365 {
+typedef struct SerialP____nesc_unnamed4367 {
   uint8_t state;
   uint8_t buf;
 } SerialP__tx_buf_t;
@@ -8414,7 +8802,7 @@ typedef struct SerialP____nesc_unnamed4365 {
 
 
 #line 135
-typedef struct SerialP____nesc_unnamed4366 {
+typedef struct SerialP____nesc_unnamed4368 {
   uint8_t writePtr;
   uint8_t readPtr;
   uint8_t buf[SerialP__ACK_QUEUE_SIZE + 1];
@@ -8636,21 +9024,21 @@ static inline error_t SerialP__SendBytePacket__startSend(uint8_t b);
 static inline void SerialP__RunTx__runTask(void );
 #line 669
 static inline void SerialP__SerialFrameComm__putDone(void );
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 static error_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__receiveTask__postTask(void );
-# 100 "../../tos/interfaces/Send.nc"
+# 100 "../../../tos/interfaces/Send.nc"
 static void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Send__sendDone(
-# 51 "../../tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x7f540cb62640, 
-# 96 "../../tos/interfaces/Send.nc"
+# 51 "../../../tos/lib/serial/SerialDispatcherP.nc"
+uart_id_t arg_0x7f49d6754640, 
+# 96 "../../../tos/interfaces/Send.nc"
 message_t * msg, 
 
 
 
 error_t error);
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 static error_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__signalSendDone__postTask(void );
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 static 
 #line 74
 message_t * 
@@ -8658,9 +9046,9 @@ message_t *
 
 
 /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Receive__receive(
-# 50 "../../tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x7f540cb63960, 
-# 71 "../../tos/interfaces/Receive.nc"
+# 50 "../../../tos/lib/serial/SerialDispatcherP.nc"
+uart_id_t arg_0x7f49d6755960, 
+# 71 "../../../tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
 
@@ -8669,35 +9057,35 @@ void * payload,
 
 
 uint8_t len);
-# 31 "../../tos/lib/serial/SerialPacketInfo.nc"
+# 31 "../../../tos/lib/serial/SerialPacketInfo.nc"
 static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__upperLength(
-# 54 "../../tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x7f540cb61b10, 
-# 31 "../../tos/lib/serial/SerialPacketInfo.nc"
+# 54 "../../../tos/lib/serial/SerialDispatcherP.nc"
+uart_id_t arg_0x7f49d6753b10, 
+# 31 "../../../tos/lib/serial/SerialPacketInfo.nc"
 message_t *msg, uint8_t dataLinkLen);
 #line 15
 static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__offset(
-# 54 "../../tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x7f540cb61b10);
-# 23 "../../tos/lib/serial/SerialPacketInfo.nc"
+# 54 "../../../tos/lib/serial/SerialDispatcherP.nc"
+uart_id_t arg_0x7f49d6753b10);
+# 23 "../../../tos/lib/serial/SerialPacketInfo.nc"
 static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__dataLinkLength(
-# 54 "../../tos/lib/serial/SerialDispatcherP.nc"
-uart_id_t arg_0x7f540cb61b10, 
-# 23 "../../tos/lib/serial/SerialPacketInfo.nc"
+# 54 "../../../tos/lib/serial/SerialDispatcherP.nc"
+uart_id_t arg_0x7f49d6753b10, 
+# 23 "../../../tos/lib/serial/SerialPacketInfo.nc"
 message_t *msg, uint8_t upperLen);
-# 71 "../../tos/lib/serial/SendBytePacket.nc"
+# 71 "../../../tos/lib/serial/SendBytePacket.nc"
 static error_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__SendBytePacket__completeSend(void );
 #line 62
 static error_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__SendBytePacket__startSend(uint8_t first_byte);
-# 158 "../../tos/lib/serial/SerialDispatcherP.nc"
-enum /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0____nesc_unnamed4367 {
+# 158 "../../../tos/lib/serial/SerialDispatcherP.nc"
+enum /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0____nesc_unnamed4369 {
 #line 158
   SerialDispatcherP__0__signalSendDone = 18U
 };
 #line 158
 typedef int /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0____nesc_sillytask_signalSendDone[/*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__signalSendDone];
 #line 275
-enum /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0____nesc_unnamed4368 {
+enum /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0____nesc_unnamed4370 {
 #line 275
   SerialDispatcherP__0__receiveTask = 19U
 };
@@ -8705,13 +9093,13 @@ enum /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0____nesc_unnamed
 typedef int /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0____nesc_sillytask_receiveTask[/*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__receiveTask];
 #line 66
 #line 62
-typedef enum /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0____nesc_unnamed4369 {
+typedef enum /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0____nesc_unnamed4371 {
   SerialDispatcherP__0__SEND_STATE_IDLE = 0, 
   SerialDispatcherP__0__SEND_STATE_BEGIN = 1, 
   SerialDispatcherP__0__SEND_STATE_DATA = 2
 } /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__send_state_t;
 
-enum /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0____nesc_unnamed4370 {
+enum /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0____nesc_unnamed4372 {
   SerialDispatcherP__0__RECV_STATE_IDLE = 0, 
   SerialDispatcherP__0__RECV_STATE_BEGIN = 1, 
   SerialDispatcherP__0__RECV_STATE_DATA = 2
@@ -8723,7 +9111,7 @@ enum /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0____nesc_unnamed
 
 
 #line 74
-typedef struct /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0____nesc_unnamed4371 {
+typedef struct /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0____nesc_unnamed4373 {
   uint8_t which : 1;
   uint8_t bufZeroLocked : 1;
   uint8_t bufOneLocked : 1;
@@ -8825,7 +9213,7 @@ uint8_t len);
 
 
 static inline void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Send__default__sendDone(uart_id_t idxxx, message_t *msg, error_t error);
-# 48 "../../tos/interfaces/UartStream.nc"
+# 48 "../../../tos/interfaces/UartStream.nc"
 static error_t HdlcTranslateC__UartStream__send(
 #line 44
 uint8_t * buf, 
@@ -8833,7 +9221,7 @@ uint8_t * buf,
 
 
 uint16_t len);
-# 94 "../../tos/lib/serial/SerialFrameComm.nc"
+# 94 "../../../tos/lib/serial/SerialFrameComm.nc"
 static void HdlcTranslateC__SerialFrameComm__dataReceived(uint8_t data);
 
 
@@ -8843,9 +9231,9 @@ static void HdlcTranslateC__SerialFrameComm__dataReceived(uint8_t data);
 static void HdlcTranslateC__SerialFrameComm__putDone(void );
 #line 85
 static void HdlcTranslateC__SerialFrameComm__delimiterReceived(void );
-# 59 "../../tos/lib/serial/HdlcTranslateC.nc"
+# 59 "../../../tos/lib/serial/HdlcTranslateC.nc"
 #line 56
-typedef struct HdlcTranslateC____nesc_unnamed4372 {
+typedef struct HdlcTranslateC____nesc_unnamed4374 {
   uint8_t sendEscape : 1;
   uint8_t receiveEscape : 1;
 } HdlcTranslateC__HdlcState;
@@ -8878,11 +9266,11 @@ static void HdlcTranslateC__UartStream__sendDone(uint8_t *buf, uint16_t len,
 error_t error);
 #line 132
 static inline void HdlcTranslateC__UartStream__receiveDone(uint8_t *buf, uint16_t len, error_t error);
-# 39 "../../tos/chips/msp430/usart/Msp430UartConfigure.nc"
+# 39 "../../../tos/chips/msp430/usart/Msp430UartConfigure.nc"
 static const msp430_uart_union_config_t */*Msp430Uart1P.UartP*/Msp430UartP__0__Msp430UartConfigure__getConfig(
-# 52 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540caa92a0);
-# 97 "../../tos/chips/msp430/usart/HplMsp430Usart.nc"
+# 52 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d669a2a0);
+# 97 "../../../tos/chips/msp430/usart/HplMsp430Usart.nc"
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Usart__resetUsart(bool reset);
 #line 182
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Usart__enableIntr(void );
@@ -8892,17 +9280,17 @@ static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Usart__tx(uint8_t data);
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Usart__disableUart(void );
 #line 174
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Usart__setModeUart(const msp430_uart_union_config_t *config);
-# 79 "../../tos/interfaces/UartStream.nc"
+# 79 "../../../tos/interfaces/UartStream.nc"
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__receivedByte(
-# 48 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540caae920, 
-# 79 "../../tos/interfaces/UartStream.nc"
+# 48 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d669f920, 
+# 79 "../../../tos/interfaces/UartStream.nc"
 uint8_t byte);
 #line 99
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__receiveDone(
-# 48 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540caae920, 
-# 95 "../../tos/interfaces/UartStream.nc"
+# 48 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d669f920, 
+# 95 "../../../tos/interfaces/UartStream.nc"
 uint8_t * buf, 
 
 
@@ -8910,30 +9298,30 @@ uint8_t * buf,
 uint16_t len, error_t error);
 #line 57
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__sendDone(
-# 48 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540caae920, 
-# 53 "../../tos/interfaces/UartStream.nc"
+# 48 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d669f920, 
+# 53 "../../../tos/interfaces/UartStream.nc"
 uint8_t * buf, 
 
 
 
 uint16_t len, error_t error);
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__release(
-# 51 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540caaa020);
-# 97 "../../tos/interfaces/Resource.nc"
+# 51 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d669c020);
+# 97 "../../../tos/interfaces/Resource.nc"
 static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__immediateRequest(
-# 51 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540caaa020);
-# 128 "../../tos/interfaces/Resource.nc"
+# 51 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d669c020);
+# 128 "../../../tos/interfaces/Resource.nc"
 static bool /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__isOwner(
-# 51 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540caaa020);
-# 102 "../../tos/interfaces/Resource.nc"
+# 51 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d669c020);
+# 102 "../../../tos/interfaces/Resource.nc"
 static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__granted(
-# 46 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-uint8_t arg_0x7f540cab08f0);
+# 46 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+uint8_t arg_0x7f49d66a28f0);
 #line 62
 uint16_t /*Msp430Uart1P.UartP*/Msp430UartP__0__m_tx_len;
 #line 62
@@ -8995,13 +9383,13 @@ static inline void /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__default__gran
 static inline void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__sendDone(uint8_t id, uint8_t *buf, uint16_t len, error_t error);
 static inline void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__receivedByte(uint8_t id, uint8_t byte);
 static inline void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__receiveDone(uint8_t id, uint8_t *buf, uint16_t len, error_t error);
-# 97 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 97 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 static void HplMsp430Usart1P__UCLK__selectIOFunc(void );
-# 54 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+# 54 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 static void HplMsp430Usart1P__Interrupts__rxDone(uint8_t data);
 #line 49
 static void HplMsp430Usart1P__Interrupts__txDone(void );
-# 97 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 97 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 static void HplMsp430Usart1P__URXD__selectIOFunc(void );
 #line 91
 static void HplMsp430Usart1P__URXD__selectModuleFunc(void );
@@ -9021,7 +9409,7 @@ static void HplMsp430Usart1P__UTXD__selectModuleFunc(void );
 static void HplMsp430Usart1P__SOMI__selectIOFunc(void );
 #line 97
 static void HplMsp430Usart1P__SIMO__selectIOFunc(void );
-# 73 "../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
+# 73 "../../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
 static volatile uint8_t HplMsp430Usart1P__IE2 __asm ("0x0001");
 static volatile uint8_t HplMsp430Usart1P__ME2 __asm ("0x0005");
 static volatile uint8_t HplMsp430Usart1P__IFG2 __asm ("0x0003");
@@ -9128,7 +9516,7 @@ static inline void HplMsp430Usart1P__Usart__enableIntr(void );
 
 
 static inline void HplMsp430Usart1P__Usart__tx(uint8_t data);
-# 90 "../../tos/interfaces/ArbiterInfo.nc"
+# 90 "../../../tos/interfaces/ArbiterInfo.nc"
 static bool /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__ArbiterInfo__inUse(void );
 
 
@@ -9138,16 +9526,16 @@ static bool /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__ArbiterInfo_
 
 
 static uint8_t /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__ArbiterInfo__userId(void );
-# 54 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+# 54 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Interrupts__rxDone(
-# 39 "../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
-uint8_t arg_0x7f540d476600, 
-# 54 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+# 39 "../../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
+uint8_t arg_0x7f49d705e600, 
+# 54 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 uint8_t data);
 #line 49
 static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Interrupts__txDone(
-# 39 "../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
-uint8_t arg_0x7f540d476600);
+# 39 "../../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
+uint8_t arg_0x7f49d705e600);
 
 
 
@@ -9174,8 +9562,8 @@ static inline void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__RawIn
 
 static inline void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Interrupts__default__txDone(uint8_t id);
 static inline void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Interrupts__default__rxDone(uint8_t id, uint8_t data);
-# 49 "../../tos/system/FcfsResourceQueueC.nc"
-enum /*Msp430UsartShare1P.ArbiterC.Queue*/FcfsResourceQueueC__2____nesc_unnamed4373 {
+# 49 "../../../tos/system/FcfsResourceQueueC.nc"
+enum /*Msp430UsartShare1P.ArbiterC.Queue*/FcfsResourceQueueC__2____nesc_unnamed4375 {
 #line 49
   FcfsResourceQueueC__2__NO_ENTRY = 0xFF
 };
@@ -9197,36 +9585,36 @@ static inline bool /*Msp430UsartShare1P.ArbiterC.Queue*/FcfsResourceQueueC__2__F
 
 
 static inline resource_client_id_t /*Msp430UsartShare1P.ArbiterC.Queue*/FcfsResourceQueueC__2__FcfsQueue__dequeue(void );
-# 61 "../../tos/interfaces/ResourceRequested.nc"
+# 61 "../../../tos/interfaces/ResourceRequested.nc"
 static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceRequested__immediateRequested(
-# 99 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d434cf0);
-# 65 "../../tos/interfaces/ResourceConfigure.nc"
+# 99 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701dcf0);
+# 65 "../../../tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__unconfigure(
-# 105 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d431a30);
-# 59 "../../tos/interfaces/ResourceConfigure.nc"
+# 105 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701aa30);
+# 59 "../../../tos/interfaces/ResourceConfigure.nc"
 static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__configure(
-# 105 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d431a30);
-# 53 "../../tos/interfaces/ResourceQueue.nc"
+# 105 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701aa30);
+# 53 "../../../tos/interfaces/ResourceQueue.nc"
 static bool /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Queue__isEmpty(void );
 #line 70
 static resource_client_id_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Queue__dequeue(void );
-# 44 "../../tos/interfaces/ResourceDefaultOwner.nc"
+# 44 "../../../tos/interfaces/ResourceDefaultOwner.nc"
 static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceDefaultOwner__granted(void );
 #line 79
 static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceDefaultOwner__immediateRequested(void );
-# 102 "../../tos/interfaces/Resource.nc"
+# 102 "../../../tos/interfaces/Resource.nc"
 static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Resource__granted(
-# 98 "../../tos/system/ArbiterP.nc"
-uint8_t arg_0x7f540d435970);
-# 9 "../../tos/interfaces/ResourceDefaultOwnerInfo.nc"
+# 98 "../../../tos/system/ArbiterP.nc"
+uint8_t arg_0x7f49d701f970);
+# 9 "../../../tos/interfaces/ResourceDefaultOwnerInfo.nc"
 static bool /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceDefaultOwnerInfo__inUse(void );
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 static error_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__grantedTask__postTask(void );
-# 155 "../../tos/system/ArbiterP.nc"
-enum /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1____nesc_unnamed4374 {
+# 155 "../../../tos/system/ArbiterP.nc"
+enum /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1____nesc_unnamed4376 {
 #line 155
   ArbiterP__1__grantedTask = 20U
 };
@@ -9234,23 +9622,23 @@ enum /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1____nesc_unnamed4374 {
 typedef int /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1____nesc_sillytask_grantedTask[/*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__grantedTask];
 #line 145
 #line 143
-typedef enum /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1____nesc_unnamed4375 {
+typedef enum /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1____nesc_unnamed4377 {
 #line 143
   ArbiterP__1__RES_DEF_OWNED = 0, ArbiterP__1__RES_PREGRANT, ArbiterP__1__RES_GRANTING, 
   ArbiterP__1__RES_IMM_GRANTING, ArbiterP__1__RES_BUSY
 } /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__arb_state_t;
 
-enum /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1____nesc_unnamed4376 {
+enum /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1____nesc_unnamed4378 {
 #line 147
   ArbiterP__1__default_owner_id = 1U
 };
 #line 148
-enum /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1____nesc_unnamed4377 {
+enum /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1____nesc_unnamed4379 {
 #line 148
   ArbiterP__1__NO_RES = 0xFF
 };
 #line 149
-enum /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1____nesc_unnamed4378 {
+enum /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1____nesc_unnamed4380 {
 #line 149
   ArbiterP__1__arbiter_id = 1U
 };
@@ -9299,11 +9687,11 @@ static inline void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceC
 
 
 static inline bool /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceDefaultOwnerInfo__default__inUse(void );
-# 62 "../../tos/lib/power/PowerDownCleanup.nc"
+# 62 "../../../tos/lib/power/PowerDownCleanup.nc"
 static void /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__PowerDownCleanup__cleanup(void );
-# 54 "../../tos/interfaces/ResourceDefaultOwner.nc"
+# 54 "../../../tos/interfaces/ResourceDefaultOwner.nc"
 static error_t /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__ResourceDefaultOwner__release(void );
-# 95 "../../tos/interfaces/AsyncStdControl.nc"
+# 95 "../../../tos/interfaces/AsyncStdControl.nc"
 static error_t /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__AsyncStdControl__start(void );
 
 
@@ -9315,7 +9703,7 @@ static error_t /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManage
 
 
 static error_t /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__AsyncStdControl__stop(void );
-# 74 "../../tos/lib/power/AsyncPowerManagerP.nc"
+# 74 "../../../tos/lib/power/AsyncPowerManagerP.nc"
 static inline void /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__ResourceDefaultOwner__immediateRequested(void );
 
 
@@ -9327,11 +9715,11 @@ static inline void /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerMa
 
 
 static inline void /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__PowerDownCleanup__default__cleanup(void );
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 static error_t TelosSerialP__Resource__release(void );
 #line 97
 static error_t TelosSerialP__Resource__immediateRequest(void );
-# 8 "../../tos/platforms/telosa/TelosSerialP.nc"
+# 8 "../../../tos/platforms/telosa/TelosSerialP.nc"
 const msp430_uart_union_config_t TelosSerialP__msp430_uart_telos_config = { { 
 .ubr = UBR_1MIHZ_115200, 
 .umctl = UMCTL_1MIHZ_115200, 
@@ -9351,7 +9739,7 @@ static inline error_t TelosSerialP__StdControl__stop(void );
 static inline void TelosSerialP__Resource__granted(void );
 
 static inline const msp430_uart_union_config_t *TelosSerialP__Msp430UartConfigure__getConfig(void );
-# 51 "../../tos/lib/serial/SerialPacketInfoActiveMessageP.nc"
+# 51 "../../../tos/lib/serial/SerialPacketInfoActiveMessageP.nc"
 static inline uint8_t SerialPacketInfoActiveMessageP__Info__offset(void );
 
 
@@ -9359,7 +9747,164 @@ static inline uint8_t SerialPacketInfoActiveMessageP__Info__dataLinkLength(messa
 
 
 static inline uint8_t SerialPacketInfoActiveMessageP__Info__upperLength(message_t *msg, uint8_t dataLinkLen);
-# 624 "../../tos/chips/msp430/msp430hardware.h"
+# 110 "../../../tos/interfaces/AMSend.nc"
+static void /*BaseStationC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__0__AMSend__sendDone(
+#line 103
+message_t * msg, 
+
+
+
+
+
+
+error_t error);
+# 75 "../../../tos/interfaces/Send.nc"
+static error_t /*BaseStationC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__0__Send__send(
+#line 67
+message_t * msg, 
+
+
+
+
+
+
+
+uint8_t len);
+# 103 "../../../tos/interfaces/AMPacket.nc"
+static void /*BaseStationC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__0__AMPacket__setDestination(
+#line 99
+message_t * amsg, 
+
+
+
+am_addr_t addr);
+#line 162
+static void /*BaseStationC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__0__AMPacket__setType(
+#line 158
+message_t * amsg, 
+
+
+
+am_id_t t);
+# 53 "../../../tos/system/AMQueueEntryP.nc"
+static error_t /*BaseStationC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__0__AMSend__send(am_addr_t dest, 
+message_t *msg, 
+uint8_t len);
+
+
+
+
+
+
+
+
+
+static inline void /*BaseStationC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__0__Send__sendDone(message_t *m, error_t err);
+# 80 "../../../tos/interfaces/AMSend.nc"
+static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__send(
+# 51 "../../../tos/system/AMQueueImplP.nc"
+am_id_t arg_0x7f49d64c4510, 
+# 80 "../../../tos/interfaces/AMSend.nc"
+am_addr_t addr, 
+#line 71
+message_t * msg, 
+
+
+
+
+
+
+
+
+uint8_t len);
+# 100 "../../../tos/interfaces/Send.nc"
+static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__sendDone(
+# 47 "../../../tos/system/AMQueueImplP.nc"
+uint8_t arg_0x7f49d64c6960, 
+# 96 "../../../tos/interfaces/Send.nc"
+message_t * msg, 
+
+
+
+error_t error);
+# 78 "../../../tos/interfaces/Packet.nc"
+static uint8_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Packet__payloadLength(
+#line 74
+message_t * msg);
+#line 94
+static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Packet__setPayloadLength(
+#line 90
+message_t * msg, 
+
+
+
+uint8_t len);
+# 67 "../../../tos/interfaces/TaskBasic.nc"
+static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__errorTask__postTask(void );
+# 78 "../../../tos/interfaces/AMPacket.nc"
+static am_addr_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMPacket__destination(
+#line 74
+message_t * amsg);
+#line 147
+static am_id_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMPacket__type(
+#line 143
+message_t * amsg);
+# 140 "../../../tos/system/AMQueueImplP.nc"
+enum /*AMQueueP.AMQueueImplP*/AMQueueImplP__0____nesc_unnamed4381 {
+#line 140
+  AMQueueImplP__0__CancelTask = 21U
+};
+#line 140
+typedef int /*AMQueueP.AMQueueImplP*/AMQueueImplP__0____nesc_sillytask_CancelTask[/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__CancelTask];
+#line 184
+enum /*AMQueueP.AMQueueImplP*/AMQueueImplP__0____nesc_unnamed4382 {
+#line 184
+  AMQueueImplP__0__errorTask = 22U
+};
+#line 184
+typedef int /*AMQueueP.AMQueueImplP*/AMQueueImplP__0____nesc_sillytask_errorTask[/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__errorTask];
+#line 60
+#line 58
+typedef struct /*AMQueueP.AMQueueImplP*/AMQueueImplP__0____nesc_unnamed4383 {
+  message_t * msg;
+} /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__queue_entry_t;
+
+uint8_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current = 1;
+/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__queue_entry_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__queue[1];
+uint8_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__cancelMask[1 / 8 + 1];
+
+
+
+
+
+
+
+static inline void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__tryToSend(void );
+
+static inline void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__nextPacket(void );
+#line 105
+static inline error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__send(uint8_t clientId, message_t *msg, 
+uint8_t len);
+#line 140
+static inline void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__CancelTask__runTask(void );
+#line 178
+static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__sendDone(uint8_t last, message_t * msg, error_t err);
+
+
+
+
+
+static inline void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__errorTask__runTask(void );
+
+
+
+
+static inline void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__tryToSend(void );
+#line 204
+static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__sendDone(am_id_t id, message_t *msg, error_t err);
+#line 230
+static inline void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__default__sendDone(uint8_t id, message_t *msg, error_t err);
+# 624 "../../../tos/chips/msp430/msp430hardware.h"
 __inline  __attribute((always_inline))  __nesc_atomic_t __nesc_atomic_start(void )
 #line 624
 {
@@ -9385,7 +9930,7 @@ __inline  __attribute((always_inline))  void __nesc_atomic_end(__nesc_atomic_t r
     }
 }
 
-# 194 "../../tos/system/SchedulerBasicP.nc"
+# 194 "../../../tos/system/SchedulerBasicP.nc"
 static inline void SchedulerBasicP__Scheduler__init(void )
 #line 194
 {
@@ -9398,30 +9943,21 @@ static inline void SchedulerBasicP__Scheduler__init(void )
   }
 }
 
-# 57 "../../tos/interfaces/Scheduler.nc"
+# 57 "../../../tos/interfaces/Scheduler.nc"
 inline static void RealMainP__Scheduler__init(void ){
 #line 57
   SchedulerBasicP__Scheduler__init();
 #line 57
 }
 #line 57
-# 95 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
-static inline void /*HplMsp430GeneralIOC.P56*/HplMsp430GeneralIOP__38__IO__set(void )
-#line 95
-{
-  /* atomic removed: atomic calls only */
-#line 95
-  * (volatile uint8_t * )49U |= 0x01 << 6;
-}
-
-# 49 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 49 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__HplGeneralIO__set(void ){
 #line 49
   /*HplMsp430GeneralIOC.P56*/HplMsp430GeneralIOP__38__IO__set();
 #line 49
 }
 #line 49
-# 48 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 48 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__set(void )
 #line 48
 {
@@ -9429,30 +9965,21 @@ static inline void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__set(void
   /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__HplGeneralIO__set();
 }
 
-# 40 "../../tos/interfaces/GeneralIO.nc"
+# 40 "../../../tos/interfaces/GeneralIO.nc"
 inline static void LedsP__Led2__set(void ){
 #line 40
   /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__set();
 #line 40
 }
 #line 40
-# 95 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
-static inline void /*HplMsp430GeneralIOC.P55*/HplMsp430GeneralIOP__37__IO__set(void )
-#line 95
-{
-  /* atomic removed: atomic calls only */
-#line 95
-  * (volatile uint8_t * )49U |= 0x01 << 5;
-}
-
-# 49 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 49 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__HplGeneralIO__set(void ){
 #line 49
   /*HplMsp430GeneralIOC.P55*/HplMsp430GeneralIOP__37__IO__set();
 #line 49
 }
 #line 49
-# 48 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 48 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__set(void )
 #line 48
 {
@@ -9460,30 +9987,21 @@ static inline void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__set(void
   /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__HplGeneralIO__set();
 }
 
-# 40 "../../tos/interfaces/GeneralIO.nc"
+# 40 "../../../tos/interfaces/GeneralIO.nc"
 inline static void LedsP__Led1__set(void ){
 #line 40
   /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__set();
 #line 40
 }
 #line 40
-# 95 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
-static inline void /*HplMsp430GeneralIOC.P54*/HplMsp430GeneralIOP__36__IO__set(void )
-#line 95
-{
-  /* atomic removed: atomic calls only */
-#line 95
-  * (volatile uint8_t * )49U |= 0x01 << 4;
-}
-
-# 49 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 49 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__HplGeneralIO__set(void ){
 #line 49
   /*HplMsp430GeneralIOC.P54*/HplMsp430GeneralIOP__36__IO__set();
 #line 49
 }
 #line 49
-# 48 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 48 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__set(void )
 #line 48
 {
@@ -9491,14 +10009,14 @@ static inline void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__set(void
   /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__HplGeneralIO__set();
 }
 
-# 40 "../../tos/interfaces/GeneralIO.nc"
+# 40 "../../../tos/interfaces/GeneralIO.nc"
 inline static void LedsP__Led0__set(void ){
 #line 40
   /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__set();
 #line 40
 }
 #line 40
-# 102 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 102 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P56*/HplMsp430GeneralIOP__38__IO__makeOutput(void )
 #line 102
 {
@@ -9507,14 +10025,14 @@ static inline void /*HplMsp430GeneralIOC.P56*/HplMsp430GeneralIOP__38__IO__makeO
   * (volatile uint8_t * )50U |= 0x01 << 6;
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__HplGeneralIO__makeOutput(void ){
 #line 85
   /*HplMsp430GeneralIOC.P56*/HplMsp430GeneralIOP__38__IO__makeOutput();
 #line 85
 }
 #line 85
-# 54 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 54 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__makeOutput(void )
 #line 54
 {
@@ -9522,14 +10040,14 @@ static inline void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__makeOutp
   /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__HplGeneralIO__makeOutput();
 }
 
-# 46 "../../tos/interfaces/GeneralIO.nc"
+# 46 "../../../tos/interfaces/GeneralIO.nc"
 inline static void LedsP__Led2__makeOutput(void ){
 #line 46
   /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__makeOutput();
 #line 46
 }
 #line 46
-# 102 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 102 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P55*/HplMsp430GeneralIOP__37__IO__makeOutput(void )
 #line 102
 {
@@ -9538,14 +10056,14 @@ static inline void /*HplMsp430GeneralIOC.P55*/HplMsp430GeneralIOP__37__IO__makeO
   * (volatile uint8_t * )50U |= 0x01 << 5;
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__HplGeneralIO__makeOutput(void ){
 #line 85
   /*HplMsp430GeneralIOC.P55*/HplMsp430GeneralIOP__37__IO__makeOutput();
 #line 85
 }
 #line 85
-# 54 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 54 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__makeOutput(void )
 #line 54
 {
@@ -9553,14 +10071,14 @@ static inline void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__makeOutp
   /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__HplGeneralIO__makeOutput();
 }
 
-# 46 "../../tos/interfaces/GeneralIO.nc"
+# 46 "../../../tos/interfaces/GeneralIO.nc"
 inline static void LedsP__Led1__makeOutput(void ){
 #line 46
   /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__makeOutput();
 #line 46
 }
 #line 46
-# 102 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 102 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P54*/HplMsp430GeneralIOP__36__IO__makeOutput(void )
 #line 102
 {
@@ -9569,14 +10087,14 @@ static inline void /*HplMsp430GeneralIOC.P54*/HplMsp430GeneralIOP__36__IO__makeO
   * (volatile uint8_t * )50U |= 0x01 << 4;
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__HplGeneralIO__makeOutput(void ){
 #line 85
   /*HplMsp430GeneralIOC.P54*/HplMsp430GeneralIOP__36__IO__makeOutput();
 #line 85
 }
 #line 85
-# 54 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 54 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__makeOutput(void )
 #line 54
 {
@@ -9584,14 +10102,14 @@ static inline void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__makeOutp
   /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__HplGeneralIO__makeOutput();
 }
 
-# 46 "../../tos/interfaces/GeneralIO.nc"
+# 46 "../../../tos/interfaces/GeneralIO.nc"
 inline static void LedsP__Led0__makeOutput(void ){
 #line 46
   /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__makeOutput();
 #line 46
 }
 #line 46
-# 56 "../../tos/system/LedsP.nc"
+# 56 "../../../tos/system/LedsP.nc"
 static inline error_t LedsP__Init__init(void )
 #line 56
 {
@@ -9609,7 +10127,7 @@ static inline error_t LedsP__Init__init(void )
   return SUCCESS;
 }
 
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 inline static error_t PlatformP__LedsInit__init(void ){
 #line 62
   enum __nesc_unnamed4242 __nesc_result;
@@ -9624,7 +10142,7 @@ inline static error_t PlatformP__LedsInit__init(void ){
 #line 62
 }
 #line 62
-# 36 "../../tos/platforms/telosb/hardware.h"
+# 36 "../../../tos/platforms/telosb/hardware.h"
 static inline  void TOSH_SET_SIMO0_PIN()
 #line 36
 {
@@ -9679,7 +10197,7 @@ static inline  void TOSH_CLR_FLASH_CS_PIN()
   r &= ~(1 << 4);
 }
 
-# 11 "../../tos/platforms/telosb/MotePlatformC.nc"
+# 11 "../../../tos/platforms/telosb/MotePlatformC.nc"
 static __inline void MotePlatformC__TOSH_wait(void )
 #line 11
 {
@@ -9688,7 +10206,7 @@ static __inline void MotePlatformC__TOSH_wait(void )
   __nop();
 }
 
-# 89 "../../tos/platforms/telosb/hardware.h"
+# 89 "../../../tos/platforms/telosb/hardware.h"
 static inline  void TOSH_SET_FLASH_HOLD_PIN()
 #line 89
 {
@@ -9743,7 +10261,7 @@ static inline  void TOSH_MAKE_SIMO0_OUTPUT()
   r |= 1 << 1;
 }
 
-# 27 "../../tos/platforms/telosb/MotePlatformC.nc"
+# 27 "../../../tos/platforms/telosb/MotePlatformC.nc"
 static inline void MotePlatformC__TOSH_FLASH_M25P_DP(void )
 #line 27
 {
@@ -9833,7 +10351,7 @@ static inline error_t MotePlatformC__Init__init(void )
   return SUCCESS;
 }
 
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 inline static error_t PlatformP__MoteInit__init(void ){
 #line 62
   enum __nesc_unnamed4242 __nesc_result;
@@ -9848,7 +10366,7 @@ inline static error_t PlatformP__MoteInit__init(void ){
 #line 62
 }
 #line 62
-# 327 "../../tos/chips/msp430/clock_bcs/Msp430ClockP.nc"
+# 327 "../../../tos/chips/msp430/clock_bcs/Msp430ClockP.nc"
 static inline void Msp430ClockP__startTimerB(void )
 #line 327
 {
@@ -9888,14 +10406,14 @@ static inline void Msp430ClockP__Msp430ClockInit__default__initTimerB(void )
   Msp430ClockP__Msp430ClockInit__defaultInitTimerB();
 }
 
-# 43 "../../tos/chips/msp430/Msp430ClockInit.nc"
+# 43 "../../../tos/chips/msp430/Msp430ClockInit.nc"
 inline static void Msp430ClockP__Msp430ClockInit__initTimerB(void ){
 #line 43
   Msp430ClockP__Msp430ClockInit__default__initTimerB();
 #line 43
 }
 #line 43
-# 275 "../../tos/chips/msp430/clock_bcs/Msp430ClockP.nc"
+# 275 "../../../tos/chips/msp430/clock_bcs/Msp430ClockP.nc"
 static inline void Msp430ClockP__Msp430ClockInit__defaultInitTimerA(void )
 #line 275
 {
@@ -9917,14 +10435,14 @@ static inline void Msp430ClockP__Msp430ClockInit__default__initTimerA(void )
   Msp430ClockP__Msp430ClockInit__defaultInitTimerA();
 }
 
-# 42 "../../tos/chips/msp430/Msp430ClockInit.nc"
+# 42 "../../../tos/chips/msp430/Msp430ClockInit.nc"
 inline static void Msp430ClockP__Msp430ClockInit__initTimerA(void ){
 #line 42
   Msp430ClockP__Msp430ClockInit__default__initTimerA();
 #line 42
 }
 #line 42
-# 253 "../../tos/chips/msp430/clock_bcs/Msp430ClockP.nc"
+# 253 "../../../tos/chips/msp430/clock_bcs/Msp430ClockP.nc"
 static inline void Msp430ClockP__Msp430ClockInit__defaultInitClocks(void )
 #line 253
 {
@@ -9956,14 +10474,14 @@ static inline void Msp430ClockP__Msp430ClockInit__default__initClocks(void )
   Msp430ClockP__Msp430ClockInit__defaultInitClocks();
 }
 
-# 41 "../../tos/chips/msp430/Msp430ClockInit.nc"
+# 41 "../../../tos/chips/msp430/Msp430ClockInit.nc"
 inline static void Msp430ClockP__Msp430ClockInit__initClocks(void ){
 #line 41
   Msp430ClockP__Msp430ClockInit__default__initClocks();
 #line 41
 }
 #line 41
-# 372 "../../tos/chips/msp430/clock_bcs/Msp430ClockP.nc"
+# 372 "../../../tos/chips/msp430/clock_bcs/Msp430ClockP.nc"
 static inline uint16_t Msp430ClockP__test_calib_busywait_delta(uint16_t calib)
 #line 372
 {
@@ -10044,14 +10562,14 @@ static inline void Msp430ClockP__Msp430ClockInit__default__setupDcoCalibrate(voi
   Msp430ClockP__Msp430ClockInit__defaultSetupDcoCalibrate();
 }
 
-# 40 "../../tos/chips/msp430/Msp430ClockInit.nc"
+# 40 "../../../tos/chips/msp430/Msp430ClockInit.nc"
 inline static void Msp430ClockP__Msp430ClockInit__setupDcoCalibrate(void ){
 #line 40
   Msp430ClockP__Msp430ClockInit__default__setupDcoCalibrate();
 #line 40
 }
 #line 40
-# 433 "../../tos/chips/msp430/clock_bcs/Msp430ClockP.nc"
+# 433 "../../../tos/chips/msp430/clock_bcs/Msp430ClockP.nc"
 static inline error_t Msp430ClockP__Init__init(void )
 #line 433
 {
@@ -10070,7 +10588,7 @@ static inline error_t Msp430ClockP__Init__init(void )
   return SUCCESS;
 }
 
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 inline static error_t PlatformP__MoteClockInit__init(void ){
 #line 62
   enum __nesc_unnamed4242 __nesc_result;
@@ -10085,7 +10603,7 @@ inline static error_t PlatformP__MoteClockInit__init(void ){
 #line 62
 }
 #line 62
-# 11 "../../tos/platforms/telosa/PlatformP.nc"
+# 11 "../../../tos/platforms/telosa/PlatformP.nc"
 static inline error_t PlatformP__Init__init(void )
 #line 11
 {
@@ -10096,7 +10614,7 @@ static inline error_t PlatformP__Init__init(void )
   return SUCCESS;
 }
 
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 inline static error_t RealMainP__PlatformInit__init(void ){
 #line 62
   enum __nesc_unnamed4242 __nesc_result;
@@ -10111,7 +10629,7 @@ inline static error_t RealMainP__PlatformInit__init(void ){
 #line 62
 }
 #line 62
-# 36 "../../tos/platforms/telosb/hardware.h"
+# 36 "../../../tos/platforms/telosb/hardware.h"
 static inline  void TOSH_CLR_SIMO0_PIN()
 #line 36
 {
@@ -10122,7 +10640,7 @@ static inline  void TOSH_CLR_SIMO0_PIN()
   r &= ~(1 << 1);
 }
 
-# 65 "../../tos/interfaces/Scheduler.nc"
+# 65 "../../../tos/interfaces/Scheduler.nc"
 inline static bool RealMainP__Scheduler__runNextTask(void ){
 #line 65
   unsigned char __nesc_result;
@@ -10137,22 +10655,2341 @@ inline static bool RealMainP__Scheduler__runNextTask(void ){
 #line 65
 }
 #line 65
-# 24 "../../tos/platforms/telosa/TelosSerialP.nc"
+# 110 "../../../tos/interfaces/AMSend.nc"
+inline static void /*BaseStationC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__0__AMSend__sendDone(message_t * msg, error_t error){
+#line 110
+  BaseStationP__AMSend__sendDone(msg, error);
+#line 110
+}
+#line 110
+# 65 "../../../tos/system/AMQueueEntryP.nc"
+static inline void /*BaseStationC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__0__Send__sendDone(message_t *m, error_t err)
+#line 65
+{
+  /*BaseStationC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__0__AMSend__sendDone(m, err);
+}
+
+# 230 "../../../tos/system/AMQueueImplP.nc"
+static inline void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__default__sendDone(uint8_t id, message_t *msg, error_t err)
+#line 230
+{
+}
+
+# 100 "../../../tos/interfaces/Send.nc"
+inline static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__sendDone(uint8_t arg_0x7f49d64c6960, message_t * msg, error_t error){
+#line 100
+  switch (arg_0x7f49d64c6960) {
+#line 100
+    case 0U:
+#line 100
+      /*BaseStationC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__0__Send__sendDone(msg, error);
+#line 100
+      break;
+#line 100
+    default:
+#line 100
+      /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__default__sendDone(arg_0x7f49d64c6960, msg, error);
+#line 100
+      break;
+#line 100
+    }
+#line 100
+}
+#line 100
+# 140 "../../../tos/system/AMQueueImplP.nc"
+static inline void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__CancelTask__runTask(void )
+#line 140
+{
+  uint8_t i;
+#line 141
+  uint8_t j;
+#line 141
+  uint8_t mask;
+#line 141
+  uint8_t last;
+  message_t *msg;
+
+  for (i = 0; i < 1 / 8 + 1; i++) {
+      if (/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__cancelMask[i]) {
+          for (mask = 1, j = 0; j < 8; j++) {
+              if (/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__cancelMask[i] & mask) {
+                  last = i * 8 + j;
+                  msg = /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__queue[last].msg;
+                  /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__queue[last].msg = (void *)0;
+                  /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__cancelMask[i] &= ~mask;
+                  /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__sendDone(last, msg, ECANCEL);
+                }
+              mask <<= 1;
+            }
+        }
+    }
+}
+
+# 96 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+static inline void /*HplMsp430GeneralIOC.P54*/HplMsp430GeneralIOP__36__IO__clr(void )
+#line 96
+{
+#line 96
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 96
+    * (volatile uint8_t * )49U &= ~(0x01 << 4);
+#line 96
+    __nesc_atomic_end(__nesc_atomic); }
+}
+
+# 54 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+inline static void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__HplGeneralIO__clr(void ){
+#line 54
+  /*HplMsp430GeneralIOC.P54*/HplMsp430GeneralIOP__36__IO__clr();
+#line 54
+}
+#line 54
+# 49 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
+static inline void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__clr(void )
+#line 49
+{
+#line 49
+  /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__HplGeneralIO__clr();
+}
+
+# 41 "../../../tos/interfaces/GeneralIO.nc"
+inline static void LedsP__Led0__clr(void ){
+#line 41
+  /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__clr();
+#line 41
+}
+#line 41
+# 74 "../../../tos/system/LedsP.nc"
+static inline void LedsP__Leds__led0On(void )
+#line 74
+{
+  LedsP__Led0__clr();
+  ;
+#line 76
+  ;
+}
+
+# 56 "../../../tos/interfaces/Leds.nc"
+inline static void BaseStationP__Leds__led0On(void ){
+#line 56
+  LedsP__Leds__led0On();
+#line 56
+}
+#line 56
+# 79 "../../../tos/system/LedsP.nc"
+static inline void LedsP__Leds__led0Off(void )
+#line 79
+{
+  LedsP__Led0__set();
+  ;
+#line 81
+  ;
+}
+
+# 61 "../../../tos/interfaces/Leds.nc"
+inline static void BaseStationP__Leds__led0Off(void ){
+#line 61
+  LedsP__Leds__led0Off();
+#line 61
+}
+#line 61
+# 96 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+static inline void /*HplMsp430GeneralIOC.P55*/HplMsp430GeneralIOP__37__IO__clr(void )
+#line 96
+{
+#line 96
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 96
+    * (volatile uint8_t * )49U &= ~(0x01 << 5);
+#line 96
+    __nesc_atomic_end(__nesc_atomic); }
+}
+
+# 54 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+inline static void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__HplGeneralIO__clr(void ){
+#line 54
+  /*HplMsp430GeneralIOC.P55*/HplMsp430GeneralIOP__37__IO__clr();
+#line 54
+}
+#line 54
+# 49 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
+static inline void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__clr(void )
+#line 49
+{
+#line 49
+  /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__HplGeneralIO__clr();
+}
+
+# 41 "../../../tos/interfaces/GeneralIO.nc"
+inline static void LedsP__Led1__clr(void ){
+#line 41
+  /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__clr();
+#line 41
+}
+#line 41
+# 89 "../../../tos/system/LedsP.nc"
+static inline void LedsP__Leds__led1On(void )
+#line 89
+{
+  LedsP__Led1__clr();
+  ;
+#line 91
+  ;
+}
+
+# 72 "../../../tos/interfaces/Leds.nc"
+inline static void BaseStationP__Leds__led1On(void ){
+#line 72
+  LedsP__Leds__led1On();
+#line 72
+}
+#line 72
+# 94 "../../../tos/system/LedsP.nc"
+static inline void LedsP__Leds__led1Off(void )
+#line 94
+{
+  LedsP__Led1__set();
+  ;
+#line 96
+  ;
+}
+
+# 77 "../../../tos/interfaces/Leds.nc"
+inline static void BaseStationP__Leds__led1Off(void ){
+#line 77
+  LedsP__Leds__led1Off();
+#line 77
+}
+#line 77
+# 96 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+static inline void /*HplMsp430GeneralIOC.P56*/HplMsp430GeneralIOP__38__IO__clr(void )
+#line 96
+{
+#line 96
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 96
+    * (volatile uint8_t * )49U &= ~(0x01 << 6);
+#line 96
+    __nesc_atomic_end(__nesc_atomic); }
+}
+
+# 54 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+inline static void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__HplGeneralIO__clr(void ){
+#line 54
+  /*HplMsp430GeneralIOC.P56*/HplMsp430GeneralIOP__38__IO__clr();
+#line 54
+}
+#line 54
+# 49 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
+static inline void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__clr(void )
+#line 49
+{
+#line 49
+  /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__HplGeneralIO__clr();
+}
+
+# 41 "../../../tos/interfaces/GeneralIO.nc"
+inline static void LedsP__Led2__clr(void ){
+#line 41
+  /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__clr();
+#line 41
+}
+#line 41
+# 104 "../../../tos/system/LedsP.nc"
+static inline void LedsP__Leds__led2On(void )
+#line 104
+{
+  LedsP__Led2__clr();
+  ;
+#line 106
+  ;
+}
+
+# 89 "../../../tos/interfaces/Leds.nc"
+inline static void BaseStationP__Leds__led2On(void ){
+#line 89
+  LedsP__Leds__led2On();
+#line 89
+}
+#line 89
+# 109 "../../../tos/system/LedsP.nc"
+static inline void LedsP__Leds__led2Off(void )
+#line 109
+{
+  LedsP__Led2__set();
+  ;
+#line 111
+  ;
+}
+
+# 94 "../../../tos/interfaces/Leds.nc"
+inline static void BaseStationP__Leds__led2Off(void ){
+#line 94
+  LedsP__Leds__led2Off();
+#line 94
+}
+#line 94
+# 142 "../../../tos/lib/timer/VirtualizeTimerImplP.nc"
+static inline void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__trace_start_timer(uint16_t num)
+#line 142
+{
+}
+
+# 67 "../../../tos/interfaces/TaskBasic.nc"
+inline static error_t /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__updateFromTimer__postTask(void ){
+#line 67
+  enum __nesc_unnamed4242 __nesc_result;
+#line 67
+
+#line 67
+  __nesc_result = SchedulerBasicP__TaskBasic__postTask(/*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__updateFromTimer);
+#line 67
+
+#line 67
+  return __nesc_result;
+#line 67
+}
+#line 67
+# 175 "../../../tos/system/SchedulerBasicP.nc"
+static inline bool SchedulerBasicP__isWaiting(uint8_t id)
+#line 175
+{
+  return SchedulerBasicP__m_next[id] != SchedulerBasicP__NO_TASK || SchedulerBasicP__m_tail == id;
+}
+
+static inline bool SchedulerBasicP__pushTask(uint8_t id)
+#line 179
+{
+  if (!SchedulerBasicP__isWaiting(id)) {
+      if (SchedulerBasicP__m_head == SchedulerBasicP__NO_TASK) {
+          SchedulerBasicP__m_head = id;
+          SchedulerBasicP__m_tail = id;
+        }
+      else 
+#line 184
+        {
+          SchedulerBasicP__m_next[SchedulerBasicP__m_tail] = id;
+          SchedulerBasicP__m_tail = id;
+        }
+      return TRUE;
+    }
+  else 
+#line 189
+    {
+      return FALSE;
+    }
+}
+
+#line 148
+static inline void SchedulerBasicP__trace_post_task(uint16_t num)
+#line 148
+{
+}
+
+# 45 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
+inline static uint16_t /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Msp430Timer__get(void ){
+#line 45
+  unsigned int __nesc_result;
+#line 45
+
+#line 45
+  __nesc_result = /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Timer__get();
+#line 45
+
+#line 45
+  return __nesc_result;
+#line 45
+}
+#line 45
+# 49 "../../../tos/chips/msp430/timer/Msp430CounterC.nc"
+static inline uint16_t /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Counter__get(void )
+{
+  return /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Msp430Timer__get();
+}
+
+# 64 "../../../tos/lib/timer/Counter.nc"
+inline static /*CounterMilli32C.Transform*/TransformCounterC__1__CounterFrom__size_type /*CounterMilli32C.Transform*/TransformCounterC__1__CounterFrom__get(void ){
+#line 64
+  unsigned int __nesc_result;
+#line 64
+
+#line 64
+  __nesc_result = /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Counter__get();
+#line 64
+
+#line 64
+  return __nesc_result;
+#line 64
+}
+#line 64
+# 91 "../../../tos/chips/msp430/timer/Msp430TimerP.nc"
+static inline bool /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Timer__isOverflowPending(void )
+#line 91
+{
+  return * (volatile uint16_t * )384U & 1U;
+}
+
+# 46 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
+inline static bool /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Msp430Timer__isOverflowPending(void ){
+#line 46
+  unsigned char __nesc_result;
+#line 46
+
+#line 46
+  __nesc_result = /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Timer__isOverflowPending();
+#line 46
+
+#line 46
+  return __nesc_result;
+#line 46
+}
+#line 46
+# 54 "../../../tos/chips/msp430/timer/Msp430CounterC.nc"
+static inline bool /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Counter__isOverflowPending(void )
+{
+  return /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Msp430Timer__isOverflowPending();
+}
+
+# 71 "../../../tos/lib/timer/Counter.nc"
+inline static bool /*CounterMilli32C.Transform*/TransformCounterC__1__CounterFrom__isOverflowPending(void ){
+#line 71
+  unsigned char __nesc_result;
+#line 71
+
+#line 71
+  __nesc_result = /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Counter__isOverflowPending();
+#line 71
+
+#line 71
+  return __nesc_result;
+#line 71
+}
+#line 71
+# 184 "../../../tos/system/AMQueueImplP.nc"
+static inline void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__errorTask__runTask(void )
+#line 184
+{
+  /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__sendDone(/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current, /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__queue[/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current].msg, FAIL);
+}
+
+# 67 "../../../tos/interfaces/TaskBasic.nc"
+inline static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__errorTask__postTask(void ){
+#line 67
+  enum __nesc_unnamed4242 __nesc_result;
+#line 67
+
+#line 67
+  __nesc_result = SchedulerBasicP__TaskBasic__postTask(/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__errorTask);
+#line 67
+
+#line 67
+  return __nesc_result;
+#line 67
+}
+#line 67
+# 80 "../../../tos/interfaces/AMSend.nc"
+inline static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__send(am_id_t arg_0x7f49d64c4510, am_addr_t addr, message_t * msg, uint8_t len){
+#line 80
+  enum __nesc_unnamed4242 __nesc_result;
+#line 80
+
+#line 80
+  __nesc_result = CC2420ActiveMessageP__AMSend__send(arg_0x7f49d64c4510, addr, msg, len);
+#line 80
+
+#line 80
+  return __nesc_result;
+#line 80
+}
+#line 80
+# 78 "../../../tos/interfaces/Packet.nc"
+inline static uint8_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Packet__payloadLength(message_t * msg){
+#line 78
+  unsigned char __nesc_result;
+#line 78
+
+#line 78
+  __nesc_result = CC2420ActiveMessageP__Packet__payloadLength(msg);
+#line 78
+
+#line 78
+  return __nesc_result;
+#line 78
+}
+#line 78
+# 78 "../../../tos/interfaces/AMPacket.nc"
+inline static am_addr_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMPacket__destination(message_t * amsg){
+#line 78
+  unsigned int __nesc_result;
+#line 78
+
+#line 78
+  __nesc_result = CC2420ActiveMessageP__AMPacket__destination(amsg);
+#line 78
+
+#line 78
+  return __nesc_result;
+#line 78
+}
+#line 78
+# 292 "/usr/local/lib/ncc/nesc_nx.h"
+static __inline  uint8_t __nesc_ntoh_leuint8(const void * source)
+#line 292
+{
+  const uint8_t *base = source;
+
+#line 294
+  return base[0];
+}
+
+# 137 "../../../tos/chips/cc2420/packet/CC2420PacketP.nc"
+static inline cc2420_header_t * CC2420PacketP__CC2420PacketBody__getHeader(message_t * msg)
+#line 137
+{
+  return (cc2420_header_t * )((uint8_t *)msg + (unsigned short )& ((message_t *)0)->data - sizeof(cc2420_header_t ));
+}
+
+# 42 "../../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
+inline static cc2420_header_t * CC2420ActiveMessageP__CC2420PacketBody__getHeader(message_t * msg){
+#line 42
+  nx_struct cc2420_header *__nesc_result;
+#line 42
+
+#line 42
+  __nesc_result = CC2420PacketP__CC2420PacketBody__getHeader(msg);
+#line 42
+
+#line 42
+  return __nesc_result;
+#line 42
+}
+#line 42
+# 164 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+static inline am_id_t CC2420ActiveMessageP__AMPacket__type(message_t *amsg)
+#line 164
+{
+  cc2420_header_t *header = CC2420ActiveMessageP__CC2420PacketBody__getHeader(amsg);
+
+#line 166
+  return __nesc_ntoh_leuint8(header->type.nxdata);
+}
+
+# 147 "../../../tos/interfaces/AMPacket.nc"
+inline static am_id_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMPacket__type(message_t * amsg){
+#line 147
+  unsigned char __nesc_result;
+#line 147
+
+#line 147
+  __nesc_result = CC2420ActiveMessageP__AMPacket__type(amsg);
+#line 147
+
+#line 147
+  return __nesc_result;
+#line 147
+}
+#line 147
+# 74 "../../../tos/system/AMQueueImplP.nc"
+static inline void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__nextPacket(void )
+#line 74
+{
+  uint8_t i;
+
+
+
+
+
+  /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current++;
+  if (/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current >= 1) {
+    /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current = 0;
+    }
+#line 84
+  for (i = 0; i < 1; i++) {
+      if (/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__queue[/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current].msg == (void *)0 || 
+      /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__cancelMask[/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current / 8] & (1 << /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current % 8)) {
+          /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current++;
+          if (/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current >= 1) {
+            /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current = 0;
+            }
+        }
+      else {
+#line 91
+        break;
+        }
+    }
+#line 93
+  if (i >= 1) {
+#line 93
+    /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current = 1;
+    }
+}
+
+#line 189
+static inline void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__tryToSend(void )
+#line 189
+{
+  /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__nextPacket();
+  if (/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current < 1) {
+      error_t nextErr;
+      message_t *nextMsg = /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__queue[/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current].msg;
+      am_id_t nextId = /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMPacket__type(nextMsg);
+      am_addr_t nextDest = /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMPacket__destination(nextMsg);
+      uint8_t len = /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Packet__payloadLength(nextMsg);
+
+#line 197
+      nextErr = /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__send(nextId, nextDest, nextMsg, len);
+      if (nextErr != SUCCESS) {
+          /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__errorTask__postTask();
+        }
+    }
+}
+
+# 173 "../../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
+static inline uint8_t CC2420CsmaP__Send__maxPayloadLength(void )
+#line 173
+{
+  return 28;
+}
+
+# 112 "../../../tos/interfaces/Send.nc"
+inline static uint8_t UniqueSendP__SubSend__maxPayloadLength(void ){
+#line 112
+  unsigned char __nesc_result;
+#line 112
+
+#line 112
+  __nesc_result = CC2420CsmaP__Send__maxPayloadLength();
+#line 112
+
+#line 112
+  return __nesc_result;
+#line 112
+}
+#line 112
+# 95 "../../../tos/chips/cc2420/unique/UniqueSendP.nc"
+static inline uint8_t UniqueSendP__Send__maxPayloadLength(void )
+#line 95
+{
+  return UniqueSendP__SubSend__maxPayloadLength();
+}
+
+# 112 "../../../tos/interfaces/Send.nc"
+inline static uint8_t CC2420TinyosNetworkP__SubSend__maxPayloadLength(void ){
+#line 112
+  unsigned char __nesc_result;
+#line 112
+
+#line 112
+  __nesc_result = UniqueSendP__Send__maxPayloadLength();
+#line 112
+
+#line 112
+  return __nesc_result;
+#line 112
+}
+#line 112
+# 90 "../../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
+static inline uint8_t CC2420TinyosNetworkP__ActiveSend__maxPayloadLength(void )
+#line 90
+{
+  return CC2420TinyosNetworkP__SubSend__maxPayloadLength();
+}
+
+# 112 "../../../tos/interfaces/Send.nc"
+inline static uint8_t CC2420ActiveMessageP__SubSend__maxPayloadLength(void ){
+#line 112
+  unsigned char __nesc_result;
+#line 112
+
+#line 112
+  __nesc_result = CC2420TinyosNetworkP__ActiveSend__maxPayloadLength();
+#line 112
+
+#line 112
+  return __nesc_result;
+#line 112
+}
+#line 112
+# 202 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+static inline uint8_t CC2420ActiveMessageP__Packet__maxPayloadLength(void )
+#line 202
+{
+  return CC2420ActiveMessageP__SubSend__maxPayloadLength();
+}
+
+# 310 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
+static inline uint16_t CC2420ControlP__CC2420Config__getPanAddr(void )
+#line 310
+{
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 311
+    {
+      unsigned int __nesc_temp = 
+#line 311
+      CC2420ControlP__m_pan;
+
+      {
+#line 311
+        __nesc_atomic_end(__nesc_atomic); 
+#line 311
+        return __nesc_temp;
+      }
+    }
+#line 313
+    __nesc_atomic_end(__nesc_atomic); }
+}
+
+# 77 "../../../tos/chips/cc2420/interfaces/CC2420Config.nc"
+inline static uint16_t CC2420ActiveMessageP__CC2420Config__getPanAddr(void ){
+#line 77
+  unsigned int __nesc_result;
+#line 77
+
+#line 77
+  __nesc_result = CC2420ControlP__CC2420Config__getPanAddr();
+#line 77
+
+#line 77
+  return __nesc_result;
+#line 77
+}
+#line 77
+# 53 "../../../tos/interfaces/ResourceQueue.nc"
+inline static bool CC2420TinyosNetworkP__Queue__isEmpty(void ){
+#line 53
+  unsigned char __nesc_result;
+#line 53
+
+#line 53
+  __nesc_result = /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__FcfsQueue__isEmpty();
+#line 53
+
+#line 53
+  return __nesc_result;
+#line 53
+}
+#line 53
+# 219 "../../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
+static inline error_t CC2420TinyosNetworkP__Resource__immediateRequest(uint8_t id)
+#line 219
+{
+  if (CC2420TinyosNetworkP__resource_owner == id) {
+#line 220
+    return EALREADY;
+    }
+  if (CC2420TinyosNetworkP__TINYOS_N_NETWORKS > 1) {
+      if (CC2420TinyosNetworkP__resource_owner == CC2420TinyosNetworkP__OWNER_NONE && CC2420TinyosNetworkP__Queue__isEmpty()) {
+          CC2420TinyosNetworkP__resource_owner = id;
+          return SUCCESS;
+        }
+      return FAIL;
+    }
+  else 
+#line 228
+    {
+      CC2420TinyosNetworkP__resource_owner = id;
+      return SUCCESS;
+    }
+}
+
+# 97 "../../../tos/interfaces/Resource.nc"
+inline static error_t CC2420ActiveMessageP__RadioResource__immediateRequest(void ){
+#line 97
+  enum __nesc_unnamed4242 __nesc_result;
+#line 97
+
+#line 97
+  __nesc_result = CC2420TinyosNetworkP__Resource__immediateRequest(CC2420ActiveMessageC__CC2420_AM_SEND_ID);
+#line 97
+
+#line 97
+  return __nesc_result;
+#line 97
+}
+#line 97
+# 291 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+static inline void CC2420ActiveMessageP__SendNotifier__default__aboutToSend(am_id_t amId, am_addr_t addr, message_t *msg)
+#line 291
+{
+}
+
+# 59 "../../../tos/interfaces/SendNotifier.nc"
+inline static void CC2420ActiveMessageP__SendNotifier__aboutToSend(am_id_t arg_0x7f49d692fb30, am_addr_t dest, message_t * msg){
+#line 59
+    CC2420ActiveMessageP__SendNotifier__default__aboutToSend(arg_0x7f49d692fb30, dest, msg);
+#line 59
+}
+#line 59
+# 75 "../../../tos/interfaces/Send.nc"
+inline static error_t CC2420ActiveMessageP__SubSend__send(message_t * msg, uint8_t len){
+#line 75
+  enum __nesc_unnamed4242 __nesc_result;
+#line 75
+
+#line 75
+  __nesc_result = CC2420TinyosNetworkP__ActiveSend__send(msg, len);
+#line 75
+
+#line 75
+  return __nesc_result;
+#line 75
+}
+#line 75
+# 128 "../../../tos/chips/cc2420/packet/CC2420PacketP.nc"
+static inline void CC2420PacketP__CC2420Packet__setNetwork(message_t * p_msg, uint8_t networkId)
+#line 128
+{
+
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+    *CC2420PacketP__getNetwork(p_msg) = networkId;
+#line 131
+    __nesc_atomic_end(__nesc_atomic); }
+}
+
+# 77 "../../../tos/chips/cc2420/interfaces/CC2420Packet.nc"
+inline static void CC2420TinyosNetworkP__CC2420Packet__setNetwork(message_t * p_msg, uint8_t networkId){
+#line 77
+  CC2420PacketP__CC2420Packet__setNetwork(p_msg, networkId);
+#line 77
+}
+#line 77
+# 81 "../../../tos/chips/cc2420/packet/CC2420PacketP.nc"
+static inline int CC2420PacketP__getAddressLength(int type)
+#line 81
+{
+  switch (type) {
+      case IEEE154_ADDR_SHORT: return 2;
+      case IEEE154_ADDR_EXT: return 8;
+      case IEEE154_ADDR_NONE: return 0;
+      default: return -100;
+    }
+}
+
+# 297 "/usr/local/lib/ncc/nesc_nx.h"
+static __inline  uint8_t __nesc_hton_leuint8(void * target, uint8_t value)
+#line 297
+{
+  uint8_t *base = target;
+
+#line 299
+  base[0] = value;
+  return value;
+}
+
+#line 347
+static __inline  uint32_t __nesc_hton_uint32(void * target, uint32_t value)
+#line 347
+{
+  uint8_t *base = target;
+
+#line 349
+  base[3] = value;
+  base[2] = value >> 8;
+  base[1] = value >> 16;
+  base[0] = value >> 24;
+  return value;
+}
+
+#line 286
+static __inline  uint8_t __nesc_hton_uint8(void * target, uint8_t value)
+#line 286
+{
+  uint8_t *base = target;
+
+#line 288
+  base[0] = value;
+  return value;
+}
+
+#line 303
+static __inline  int8_t __nesc_hton_int8(void * target, int8_t value)
+#line 303
+{
+#line 303
+  __nesc_hton_uint8(target, value);
+#line 303
+  return value;
+}
+
+#line 327
+static __inline  uint16_t __nesc_hton_leuint16(void * target, uint16_t value)
+#line 327
+{
+  uint8_t *base = target;
+
+#line 329
+  base[0] = value;
+  base[1] = value >> 8;
+  return value;
+}
+
+#line 322
+static __inline  uint16_t __nesc_ntoh_leuint16(const void * source)
+#line 322
+{
+  const uint8_t *base = source;
+
+#line 324
+  return ((uint16_t )base[1] << 8) | base[0];
+}
+
+# 547 "../../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
+static inline error_t CC2420TransmitP__send(message_t * p_msg, bool cca)
+#line 547
+{
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 548
+    {
+      if (CC2420TransmitP__m_state == CC2420TransmitP__S_CANCEL) {
+          {
+            enum __nesc_unnamed4242 __nesc_temp = 
+#line 550
+            ECANCEL;
+
+            {
+#line 550
+              __nesc_atomic_end(__nesc_atomic); 
+#line 550
+              return __nesc_temp;
+            }
+          }
+        }
+#line 553
+      if (CC2420TransmitP__m_state != CC2420TransmitP__S_STARTED) {
+          {
+            enum __nesc_unnamed4242 __nesc_temp = 
+#line 554
+            FAIL;
+
+            {
+#line 554
+              __nesc_atomic_end(__nesc_atomic); 
+#line 554
+              return __nesc_temp;
+            }
+          }
+        }
+
+
+      CC2420TransmitP__m_state = CC2420TransmitP__S_LOAD;
+      CC2420TransmitP__m_cca = cca;
+      CC2420TransmitP__m_msg = p_msg;
+      CC2420TransmitP__totalCcaChecks = 0;
+    }
+#line 564
+    __nesc_atomic_end(__nesc_atomic); }
+
+  if (CC2420TransmitP__acquireSpiResource() == SUCCESS) {
+      CC2420TransmitP__loadTXFIFO();
+    }
+
+  return SUCCESS;
+}
+
+#line 192
+static inline error_t CC2420TransmitP__Send__send(message_t * p_msg, bool useCca)
+#line 192
+{
+  return CC2420TransmitP__send(p_msg, useCca);
+}
+
+# 51 "../../../tos/chips/cc2420/interfaces/CC2420Transmit.nc"
+inline static error_t CC2420CsmaP__CC2420Transmit__send(message_t * p_msg, bool useCca){
+#line 51
+  enum __nesc_unnamed4242 __nesc_result;
+#line 51
+
+#line 51
+  __nesc_result = CC2420TransmitP__Send__send(p_msg, useCca);
+#line 51
+
+#line 51
+  return __nesc_result;
+#line 51
+}
+#line 51
+# 301 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+static inline void CC2420ActiveMessageP__RadioBackoff__default__requestCca(am_id_t id, 
+message_t *msg)
+#line 302
+{
+}
+
+# 95 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+inline static void CC2420ActiveMessageP__RadioBackoff__requestCca(am_id_t arg_0x7f49d692e700, message_t * msg){
+#line 95
+    CC2420ActiveMessageP__RadioBackoff__default__requestCca(arg_0x7f49d692e700, msg);
+#line 95
+}
+#line 95
+# 250 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+static inline void CC2420ActiveMessageP__SubBackoff__requestCca(message_t *msg)
+#line 250
+{
+
+  CC2420ActiveMessageP__RadioBackoff__requestCca(__nesc_ntoh_leuint8(((cc2420_header_t * )((uint8_t *)msg + (unsigned short )& ((message_t *)0)->data - sizeof(cc2420_header_t )))->type.nxdata), msg);
+}
+
+# 95 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+inline static void CC2420CsmaP__RadioBackoff__requestCca(message_t * msg){
+#line 95
+  CC2420ActiveMessageP__SubBackoff__requestCca(msg);
+#line 95
+}
+#line 95
+# 111 "../../../tos/system/StateImplP.nc"
+static inline void StateImplP__State__forceState(uint8_t id, uint8_t reqState)
+#line 111
+{
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 112
+    StateImplP__state[id] = reqState;
+#line 112
+    __nesc_atomic_end(__nesc_atomic); }
+}
+
+# 51 "../../../tos/interfaces/State.nc"
+inline static void CC2420CsmaP__SplitControlState__forceState(uint8_t reqState){
+#line 51
+  StateImplP__State__forceState(1U, reqState);
+#line 51
+}
+#line 51
+#line 66
+inline static bool CC2420CsmaP__SplitControlState__isState(uint8_t myState){
+#line 66
+  unsigned char __nesc_result;
+#line 66
+
+#line 66
+  __nesc_result = StateImplP__State__isState(1U, myState);
+#line 66
+
+#line 66
+  return __nesc_result;
+#line 66
+}
+#line 66
+# 152 "../../../tos/chips/cc2420/packet/CC2420PacketP.nc"
+static inline cc2420_metadata_t *CC2420PacketP__CC2420PacketBody__getMetadata(message_t *msg)
+#line 152
+{
+  return & ((message_metadata_t *)& msg->metadata)->cc2420_meta;
+}
+
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
+inline static cc2420_metadata_t * CC2420CsmaP__CC2420PacketBody__getMetadata(message_t * msg){
+#line 53
+  nx_struct cc2420_metadata *__nesc_result;
+#line 53
+
+#line 53
+  __nesc_result = CC2420PacketP__CC2420PacketBody__getMetadata(msg);
+#line 53
+
+#line 53
+  return __nesc_result;
+#line 53
+}
+#line 53
+#line 42
+inline static cc2420_header_t * CC2420CsmaP__CC2420PacketBody__getHeader(message_t * msg){
+#line 42
+  nx_struct cc2420_header *__nesc_result;
+#line 42
+
+#line 42
+  __nesc_result = CC2420PacketP__CC2420PacketBody__getHeader(msg);
+#line 42
+
+#line 42
+  return __nesc_result;
+#line 42
+}
+#line 42
+# 122 "../../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
+static inline error_t CC2420CsmaP__Send__send(message_t *p_msg, uint8_t len)
+#line 122
+{
+  unsigned char *__nesc_temp43;
+  unsigned char *__nesc_temp42;
+#line 124
+  cc2420_header_t *header = CC2420CsmaP__CC2420PacketBody__getHeader(p_msg);
+  cc2420_metadata_t *metadata = CC2420CsmaP__CC2420PacketBody__getMetadata(p_msg);
+
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 127
+    {
+      if (!CC2420CsmaP__SplitControlState__isState(CC2420CsmaP__S_STARTED)) {
+          {
+            enum __nesc_unnamed4242 __nesc_temp = 
+#line 129
+            FAIL;
+
+            {
+#line 129
+              __nesc_atomic_end(__nesc_atomic); 
+#line 129
+              return __nesc_temp;
+            }
+          }
+        }
+#line 132
+      CC2420CsmaP__SplitControlState__forceState(CC2420CsmaP__S_TRANSMITTING);
+      CC2420CsmaP__m_msg = p_msg;
+    }
+#line 134
+    __nesc_atomic_end(__nesc_atomic); }
+
+
+
+
+
+
+
+
+  (__nesc_temp42 = header->fcf.nxdata, __nesc_hton_leuint16(__nesc_temp42, __nesc_ntoh_leuint16(__nesc_temp42) & (((1 << IEEE154_FCF_ACK_REQ) | (
+  0x3 << IEEE154_FCF_SRC_ADDR_MODE)) | (
+  0x3 << IEEE154_FCF_DEST_ADDR_MODE))));
+
+  (__nesc_temp43 = header->fcf.nxdata, __nesc_hton_leuint16(__nesc_temp43, __nesc_ntoh_leuint16(__nesc_temp43) | ((IEEE154_TYPE_DATA << IEEE154_FCF_FRAME_TYPE) | (
+  1 << IEEE154_FCF_INTRAPAN))));
+
+  __nesc_hton_int8(metadata->ack.nxdata, FALSE);
+  __nesc_hton_uint8(metadata->rssi.nxdata, 0);
+  __nesc_hton_uint8(metadata->lqi.nxdata, 0);
+
+  __nesc_hton_uint32(metadata->timestamp.nxdata, CC2420_INVALID_TIMESTAMP);
+
+  CC2420CsmaP__ccaOn = TRUE;
+  CC2420CsmaP__RadioBackoff__requestCca(CC2420CsmaP__m_msg);
+
+  CC2420CsmaP__CC2420Transmit__send(CC2420CsmaP__m_msg, CC2420CsmaP__ccaOn);
+  return SUCCESS;
+}
+
+# 75 "../../../tos/interfaces/Send.nc"
+inline static error_t UniqueSendP__SubSend__send(message_t * msg, uint8_t len){
+#line 75
+  enum __nesc_unnamed4242 __nesc_result;
+#line 75
+
+#line 75
+  __nesc_result = CC2420CsmaP__Send__send(msg, len);
+#line 75
+
+#line 75
+  return __nesc_result;
+#line 75
+}
+#line 75
+# 42 "../../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
+inline static cc2420_header_t * UniqueSendP__CC2420PacketBody__getHeader(message_t * msg){
+#line 42
+  nx_struct cc2420_header *__nesc_result;
+#line 42
+
+#line 42
+  __nesc_result = CC2420PacketP__CC2420PacketBody__getHeader(msg);
+#line 42
+
+#line 42
+  return __nesc_result;
+#line 42
+}
+#line 42
+# 45 "../../../tos/interfaces/State.nc"
+inline static error_t UniqueSendP__State__requestState(uint8_t reqState){
+#line 45
+  enum __nesc_unnamed4242 __nesc_result;
+#line 45
+
+#line 45
+  __nesc_result = StateImplP__State__requestState(2U, reqState);
+#line 45
+
+#line 45
+  return __nesc_result;
+#line 45
+}
+#line 45
+# 75 "../../../tos/chips/cc2420/unique/UniqueSendP.nc"
+static inline error_t UniqueSendP__Send__send(message_t *msg, uint8_t len)
+#line 75
+{
+  error_t error;
+
+#line 77
+  if (UniqueSendP__State__requestState(UniqueSendP__S_SENDING) == SUCCESS) {
+      __nesc_hton_leuint8(UniqueSendP__CC2420PacketBody__getHeader(msg)->dsn.nxdata, UniqueSendP__localSendId++);
+
+      if ((error = UniqueSendP__SubSend__send(msg, len)) != SUCCESS) {
+          UniqueSendP__State__toIdle();
+        }
+
+      return error;
+    }
+
+  return EBUSY;
+}
+
+# 75 "../../../tos/interfaces/Send.nc"
+inline static error_t CC2420TinyosNetworkP__SubSend__send(message_t * msg, uint8_t len){
+#line 75
+  enum __nesc_unnamed4242 __nesc_result;
+#line 75
+
+#line 75
+  __nesc_result = UniqueSendP__Send__send(msg, len);
+#line 75
+
+#line 75
+  return __nesc_result;
+#line 75
+}
+#line 75
+# 97 "../../../tos/interfaces/Resource.nc"
+inline static error_t CC2420TransmitP__SpiResource__immediateRequest(void ){
+#line 97
+  enum __nesc_unnamed4242 __nesc_result;
+#line 97
+
+#line 97
+  __nesc_result = CC2420SpiP__Resource__immediateRequest(/*CC2420TransmitC.Spi*/CC2420SpiC__3__CLIENT_ID);
+#line 97
+
+#line 97
+  return __nesc_result;
+#line 97
+}
+#line 97
+# 45 "../../../tos/interfaces/State.nc"
+inline static error_t CC2420SpiP__WorkingState__requestState(uint8_t reqState){
+#line 45
+  enum __nesc_unnamed4242 __nesc_result;
+#line 45
+
+#line 45
+  __nesc_result = StateImplP__State__requestState(0U, reqState);
+#line 45
+
+#line 45
+  return __nesc_result;
+#line 45
+}
+#line 45
+# 338 "../../../tos/system/ArbiterP.nc"
+static inline bool /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__isOwner(uint8_t id)
+#line 338
+{
+  /* atomic removed: atomic calls only */
+#line 339
+  {
+    unsigned char __nesc_temp = 
+#line 339
+    /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__resId == id && /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__state == /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__RES_BUSY;
+
+#line 339
+    return __nesc_temp;
+  }
+}
+
+# 172 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+static inline bool /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__isOwner(uint8_t id)
+#line 172
+{
+#line 172
+  return FALSE;
+}
+
+# 128 "../../../tos/interfaces/Resource.nc"
+inline static bool /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__isOwner(uint8_t arg_0x7f49d71d34e0){
+#line 128
+  unsigned char __nesc_result;
+#line 128
+
+#line 128
+  switch (arg_0x7f49d71d34e0) {
+#line 128
+    case /*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID:
+#line 128
+      __nesc_result = /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__isOwner(/*CC2420SpiWireC.HplCC2420SpiC.SpiC.UsartC*/Msp430Usart0C__0__CLIENT_ID);
+#line 128
+      break;
+#line 128
+    default:
+#line 128
+      __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__isOwner(arg_0x7f49d71d34e0);
+#line 128
+      break;
+#line 128
+    }
+#line 128
+
+#line 128
+  return __nesc_result;
+#line 128
+}
+#line 128
+# 112 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+static inline bool /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__isOwner(uint8_t id)
+#line 112
+{
+  return /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__isOwner(id);
+}
+
+# 128 "../../../tos/interfaces/Resource.nc"
+inline static bool CC2420SpiP__SpiResource__isOwner(void ){
+#line 128
+  unsigned char __nesc_result;
+#line 128
+
+#line 128
+  __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__isOwner(/*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID);
+#line 128
+
+#line 128
+  return __nesc_result;
+#line 128
+}
+#line 128
+# 176 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+static inline const msp430_spi_union_config_t */*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Msp430SpiConfigure__default__getConfig(uint8_t id)
+#line 176
+{
+  return &msp430_spi_default_config;
+}
+
+# 39 "../../../tos/chips/msp430/usart/Msp430SpiConfigure.nc"
+inline static const msp430_spi_union_config_t */*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Msp430SpiConfigure__getConfig(uint8_t arg_0x7f49d71d2890){
+#line 39
+  union __nesc_unnamed4283 const *__nesc_result;
+#line 39
+
+#line 39
+    __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Msp430SpiConfigure__default__getConfig(arg_0x7f49d71d2890);
+#line 39
+
+#line 39
+  return __nesc_result;
+#line 39
+}
+#line 39
+# 168 "../../../tos/chips/msp430/usart/HplMsp430Usart.nc"
+inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__setModeSpi(const msp430_spi_union_config_t *config){
+#line 168
+  HplMsp430Usart0P__Usart__setModeSpi(config);
+#line 168
+}
+#line 168
+# 120 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+static inline void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__ResourceConfigure__configure(uint8_t id)
+#line 120
+{
+  /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__setModeSpi(/*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Msp430SpiConfigure__getConfig(id));
+}
+
+# 367 "../../../tos/system/ArbiterP.nc"
+static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__default__configure(uint8_t id)
+#line 367
+{
+}
+
+# 59 "../../../tos/interfaces/ResourceConfigure.nc"
+inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__configure(uint8_t arg_0x7f49d701aa30){
+#line 59
+  switch (arg_0x7f49d701aa30) {
+#line 59
+    case /*CC2420SpiWireC.HplCC2420SpiC.SpiC.UsartC*/Msp430Usart0C__0__CLIENT_ID:
+#line 59
+      /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__ResourceConfigure__configure(/*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID);
+#line 59
+      break;
+#line 59
+    default:
+#line 59
+      /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__default__configure(arg_0x7f49d701aa30);
+#line 59
+      break;
+#line 59
+    }
+#line 59
+}
+#line 59
+# 374 "../../../tos/system/ArbiterP.nc"
+static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__default__immediateRequested(void )
+#line 374
+{
+  /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__release();
+}
+
+# 79 "../../../tos/interfaces/ResourceDefaultOwner.nc"
+inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__immediateRequested(void ){
+#line 79
+  /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__default__immediateRequested();
+#line 79
+}
+#line 79
+# 365 "../../../tos/system/ArbiterP.nc"
+static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__default__immediateRequested(uint8_t id)
+#line 365
+{
+}
+
+# 61 "../../../tos/interfaces/ResourceRequested.nc"
+inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__immediateRequested(uint8_t arg_0x7f49d701dcf0){
+#line 61
+    /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__default__immediateRequested(arg_0x7f49d701dcf0);
+#line 61
+}
+#line 61
+# 222 "../../../tos/system/ArbiterP.nc"
+static inline error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__immediateRequest(uint8_t id)
+#line 222
+{
+  /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__immediateRequested(/*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__resId);
+  /* atomic removed: atomic calls only */
+#line 224
+  {
+
+
+
+
+    if (/*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__state != /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__RES_DEF_OWNED) 
+      {
+        enum __nesc_unnamed4242 __nesc_temp = 
+#line 230
+        FAIL;
+
+#line 230
+        return __nesc_temp;
+      }
+#line 231
+    /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__state = /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__RES_IMM_GRANTING;
+    /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__reqResId = id;
+  }
+  /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__immediateRequested();
+  if (/*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__resId == id) {
+      /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__configure(/*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__resId);
+      return SUCCESS;
+    }
+  /* atomic removed: atomic calls only */
+
+
+
+
+
+  /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__state = /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__RES_DEF_OWNED;
+  return FAIL;
+}
+
+# 174 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+static inline error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__immediateRequest(uint8_t id)
+#line 174
+{
+#line 174
+  return FAIL;
+}
+
+# 97 "../../../tos/interfaces/Resource.nc"
+inline static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__immediateRequest(uint8_t arg_0x7f49d71d34e0){
+#line 97
+  enum __nesc_unnamed4242 __nesc_result;
+#line 97
+
+#line 97
+  switch (arg_0x7f49d71d34e0) {
+#line 97
+    case /*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID:
+#line 97
+      __nesc_result = /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__immediateRequest(/*CC2420SpiWireC.HplCC2420SpiC.SpiC.UsartC*/Msp430Usart0C__0__CLIENT_ID);
+#line 97
+      break;
+#line 97
+    default:
+#line 97
+      __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__immediateRequest(arg_0x7f49d71d34e0);
+#line 97
+      break;
+#line 97
+    }
+#line 97
+
+#line 97
+  return __nesc_result;
+#line 97
+}
+#line 97
+# 104 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+static inline error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__immediateRequest(uint8_t id)
+#line 104
+{
+  return /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__immediateRequest(id);
+}
+
+# 97 "../../../tos/interfaces/Resource.nc"
+inline static error_t CC2420SpiP__SpiResource__immediateRequest(void ){
+#line 97
+  enum __nesc_unnamed4242 __nesc_result;
+#line 97
+
+#line 97
+  __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__immediateRequest(/*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID);
+#line 97
+
+#line 97
+  return __nesc_result;
+#line 97
+}
+#line 97
+# 137 "../../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
+static inline void HplMsp430Usart0P__Usart__resetUsart(bool reset)
+#line 137
+{
+  if (reset) {
+      U0CTL = 0x01;
+    }
+  else {
+      U0CTL &= ~0x01;
+    }
+}
+
+# 97 "../../../tos/chips/msp430/usart/HplMsp430Usart.nc"
+inline static void HplMsp430I2C0P__HplUsart__resetUsart(bool reset){
+#line 97
+  HplMsp430Usart0P__Usart__resetUsart(reset);
+#line 97
+}
+#line 97
+# 68 "../../../tos/chips/msp430/usart/HplMsp430I2C0P.nc"
+static inline void HplMsp430I2C0P__HplI2C__clearModeI2C(void )
+#line 68
+{
+  /* atomic removed: atomic calls only */
+#line 69
+  {
+    HplMsp430I2C0P__U0CTL &= ~((0x20 | 0x04) | 0x01);
+    HplMsp430I2C0P__HplUsart__resetUsart(TRUE);
+  }
+}
+
+# 7 "../../../tos/chips/msp430/usart/HplMsp430I2C.nc"
+inline static void HplMsp430Usart0P__HplI2C__clearModeI2C(void ){
+#line 7
+  HplMsp430I2C0P__HplI2C__clearModeI2C();
+#line 7
+}
+#line 7
+# 106 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+static inline void /*HplMsp430GeneralIOC.P35*/HplMsp430GeneralIOP__21__IO__selectIOFunc(void )
+#line 106
+{
+  /* atomic removed: atomic calls only */
+#line 106
+  * (volatile uint8_t * )27U &= ~(0x01 << 5);
+}
+
+# 97 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+inline static void HplMsp430Usart0P__URXD__selectIOFunc(void ){
+#line 97
+  /*HplMsp430GeneralIOC.P35*/HplMsp430GeneralIOP__21__IO__selectIOFunc();
+#line 97
+}
+#line 97
+# 106 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+static inline void /*HplMsp430GeneralIOC.P34*/HplMsp430GeneralIOP__20__IO__selectIOFunc(void )
+#line 106
+{
+  /* atomic removed: atomic calls only */
+#line 106
+  * (volatile uint8_t * )27U &= ~(0x01 << 4);
+}
+
+# 97 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+inline static void HplMsp430Usart0P__UTXD__selectIOFunc(void ){
+#line 97
+  /*HplMsp430GeneralIOC.P34*/HplMsp430GeneralIOP__20__IO__selectIOFunc();
+#line 97
+}
+#line 97
+# 193 "../../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
+static inline void HplMsp430Usart0P__Usart__disableUart(void )
+#line 193
+{
+  /* atomic removed: atomic calls only */
+#line 194
+  {
+    HplMsp430Usart0P__ME1 &= ~(0x80 | 0x40);
+    HplMsp430Usart0P__UTXD__selectIOFunc();
+    HplMsp430Usart0P__URXD__selectIOFunc();
+  }
+}
+
+#line 129
+static inline void HplMsp430Usart0P__Usart__setUmctl(uint8_t control)
+#line 129
+{
+  U0MCTL = control;
+}
+
+#line 118
+static inline void HplMsp430Usart0P__Usart__setUbr(uint16_t control)
+#line 118
+{
+  /* atomic removed: atomic calls only */
+#line 119
+  {
+    U0BR0 = control & 0x00FF;
+    U0BR1 = (control >> 8) & 0x00FF;
+  }
+}
+
+#line 242
+static inline void HplMsp430Usart0P__configSpi(const msp430_spi_union_config_t *config)
+#line 242
+{
+
+  U0CTL = (config->spiRegisters.uctl | 0x04) | 0x01;
+  HplMsp430Usart0P__U0TCTL = config->spiRegisters.utctl;
+
+  HplMsp430Usart0P__Usart__setUbr(config->spiRegisters.ubr);
+  HplMsp430Usart0P__Usart__setUmctl(0x00);
+}
+
+# 104 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+static inline void /*HplMsp430GeneralIOC.P33*/HplMsp430GeneralIOP__19__IO__selectModuleFunc(void )
+#line 104
+{
+  /* atomic removed: atomic calls only */
+#line 104
+  * (volatile uint8_t * )27U |= 0x01 << 3;
+}
+
+# 91 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+inline static void HplMsp430Usart0P__UCLK__selectModuleFunc(void ){
+#line 91
+  /*HplMsp430GeneralIOC.P33*/HplMsp430GeneralIOP__19__IO__selectModuleFunc();
+#line 91
+}
+#line 91
+# 104 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+static inline void /*HplMsp430GeneralIOC.P32*/HplMsp430GeneralIOP__18__IO__selectModuleFunc(void )
+#line 104
+{
+  /* atomic removed: atomic calls only */
+#line 104
+  * (volatile uint8_t * )27U |= 0x01 << 2;
+}
+
+# 91 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+inline static void HplMsp430Usart0P__SOMI__selectModuleFunc(void ){
+#line 91
+  /*HplMsp430GeneralIOC.P32*/HplMsp430GeneralIOP__18__IO__selectModuleFunc();
+#line 91
+}
+#line 91
+# 104 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+static inline void /*HplMsp430GeneralIOC.P31*/HplMsp430GeneralIOP__17__IO__selectModuleFunc(void )
+#line 104
+{
+  /* atomic removed: atomic calls only */
+#line 104
+  * (volatile uint8_t * )27U |= 0x01 << 1;
+}
+
+# 91 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+inline static void HplMsp430Usart0P__SIMO__selectModuleFunc(void ){
+#line 91
+  /*HplMsp430GeneralIOC.P31*/HplMsp430GeneralIOP__17__IO__selectModuleFunc();
+#line 91
+}
+#line 91
+# 224 "../../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
+static inline void HplMsp430Usart0P__Usart__enableSpi(void )
+#line 224
+{
+  /* atomic removed: atomic calls only */
+#line 225
+  {
+    HplMsp430Usart0P__SIMO__selectModuleFunc();
+    HplMsp430Usart0P__SOMI__selectModuleFunc();
+    HplMsp430Usart0P__UCLK__selectModuleFunc();
+  }
+  HplMsp430Usart0P__ME1 |= 0x40;
+}
+
+#line 328
+static inline void HplMsp430Usart0P__Usart__clrIntr(void )
+#line 328
+{
+  HplMsp430Usart0P__IFG1 &= ~(0x80 | 0x40);
+}
+
+
+
+
+
+
+
+
+
+static inline void HplMsp430Usart0P__Usart__disableIntr(void )
+#line 340
+{
+  HplMsp430Usart0P__IE1 &= ~(0x80 | 0x40);
+}
+
+# 118 "../../../tos/system/StateImplP.nc"
+static inline void StateImplP__State__toIdle(uint8_t id)
+#line 118
+{
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 119
+    StateImplP__state[id] = StateImplP__S_IDLE;
+#line 119
+    __nesc_atomic_end(__nesc_atomic); }
+}
+
+# 56 "../../../tos/interfaces/State.nc"
+inline static void CC2420SpiP__WorkingState__toIdle(void ){
+#line 56
+  StateImplP__State__toIdle(0U);
+#line 56
+}
+#line 56
+# 88 "../../../tos/interfaces/Resource.nc"
+inline static error_t CC2420TransmitP__SpiResource__request(void ){
+#line 88
+  enum __nesc_unnamed4242 __nesc_result;
+#line 88
+
+#line 88
+  __nesc_result = CC2420SpiP__Resource__request(/*CC2420TransmitC.Spi*/CC2420SpiC__3__CLIENT_ID);
+#line 88
+
+#line 88
+  return __nesc_result;
+#line 88
+}
+#line 88
+# 370 "../../../tos/system/ArbiterP.nc"
+static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__default__requested(void )
+#line 370
+{
+  /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__release();
+}
+
+# 71 "../../../tos/interfaces/ResourceDefaultOwner.nc"
+inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__requested(void ){
+#line 71
+  /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__default__requested();
+#line 71
+}
+#line 71
+# 70 "../../../tos/interfaces/ResourceQueue.nc"
+inline static resource_client_id_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Queue__dequeue(void ){
+#line 70
+  unsigned char __nesc_result;
+#line 70
+
+#line 70
+  __nesc_result = /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__FcfsQueue__dequeue();
+#line 70
+
+#line 70
+  return __nesc_result;
+#line 70
+}
+#line 70
+# 364 "../../../tos/system/ArbiterP.nc"
+static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__default__requested(uint8_t id)
+#line 364
+{
+}
+
+# 53 "../../../tos/interfaces/ResourceRequested.nc"
+inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__requested(uint8_t arg_0x7f49d701dcf0){
+#line 53
+    /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__default__requested(arg_0x7f49d701dcf0);
+#line 53
+}
+#line 53
+# 64 "../../../tos/system/FcfsResourceQueueC.nc"
+static inline bool /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__FcfsQueue__isEnqueued(resource_client_id_t id)
+#line 64
+{
+  /* atomic removed: atomic calls only */
+#line 65
+  {
+    unsigned char __nesc_temp = 
+#line 65
+    /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__resQ[id] != /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__NO_ENTRY || /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__qTail == id;
+
+#line 65
+    return __nesc_temp;
+  }
+}
+
+#line 82
+static inline error_t /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__FcfsQueue__enqueue(resource_client_id_t id)
+#line 82
+{
+  /* atomic removed: atomic calls only */
+#line 83
+  {
+    if (!/*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__FcfsQueue__isEnqueued(id)) {
+        if (/*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__qHead == /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__NO_ENTRY) {
+          /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__qHead = id;
+          }
+        else {
+#line 88
+          /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__resQ[/*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__qTail] = id;
+          }
+#line 89
+        /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__qTail = id;
+        {
+          enum __nesc_unnamed4242 __nesc_temp = 
+#line 90
+          SUCCESS;
+
+#line 90
+          return __nesc_temp;
+        }
+      }
+#line 92
+    {
+      enum __nesc_unnamed4242 __nesc_temp = 
+#line 92
+      EBUSY;
+
+#line 92
+      return __nesc_temp;
+    }
+  }
+}
+
+# 79 "../../../tos/interfaces/ResourceQueue.nc"
+inline static error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Queue__enqueue(resource_client_id_t id){
+#line 79
+  enum __nesc_unnamed4242 __nesc_result;
+#line 79
+
+#line 79
+  __nesc_result = /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__FcfsQueue__enqueue(id);
+#line 79
+
+#line 79
+  return __nesc_result;
+#line 79
+}
+#line 79
+# 157 "../../../tos/system/ArbiterP.nc"
+static inline error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__request(uint8_t id)
+#line 157
+{
+  error_t rval;
+
+  /* atomic removed: atomic calls only */
+
+
+
+
+
+  {
+#line 188
+    if (/*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__reqResId == id) 
+      {
+        enum __nesc_unnamed4242 __nesc_temp = 
+#line 189
+        EBUSY;
+
+#line 189
+        return __nesc_temp;
+      }
+#line 190
+    if ((rval = /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Queue__enqueue(id))) 
+      {
+        enum __nesc_unnamed4242 __nesc_temp = 
+#line 191
+        rval;
+
+#line 191
+        return __nesc_temp;
+      }
+  }
+  /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__requested(/*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__resId);
+  /* atomic removed: atomic calls only */
+
+
+
+
+
+
+  {
+
+
+
+
+    if (/*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__state != /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__RES_DEF_OWNED) 
+      {
+        enum __nesc_unnamed4242 __nesc_temp = 
+#line 208
+        SUCCESS;
+
+#line 208
+        return __nesc_temp;
+      }
+
+
+
+
+
+    /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__state = /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__RES_PREGRANT;
+    /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__reqResId = /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Queue__dequeue();
+  }
+  /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__requested();
+  return SUCCESS;
+}
+
+# 173 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+static inline error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__request(uint8_t id)
+#line 173
+{
+#line 173
+  return FAIL;
+}
+
+# 88 "../../../tos/interfaces/Resource.nc"
+inline static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__request(uint8_t arg_0x7f49d71d34e0){
+#line 88
+  enum __nesc_unnamed4242 __nesc_result;
+#line 88
+
+#line 88
+  switch (arg_0x7f49d71d34e0) {
+#line 88
+    case /*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID:
+#line 88
+      __nesc_result = /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__request(/*CC2420SpiWireC.HplCC2420SpiC.SpiC.UsartC*/Msp430Usart0C__0__CLIENT_ID);
+#line 88
+      break;
+#line 88
+    default:
+#line 88
+      __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__request(arg_0x7f49d71d34e0);
+#line 88
+      break;
+#line 88
+    }
+#line 88
+
+#line 88
+  return __nesc_result;
+#line 88
+}
+#line 88
+# 108 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+static inline error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__request(uint8_t id)
+#line 108
+{
+  return /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__request(id);
+}
+
+# 88 "../../../tos/interfaces/Resource.nc"
+inline static error_t CC2420SpiP__SpiResource__request(void ){
+#line 88
+  enum __nesc_unnamed4242 __nesc_result;
+#line 88
+
+#line 88
+  __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__request(/*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID);
+#line 88
+
+#line 88
+  return __nesc_result;
+#line 88
+}
+#line 88
+# 63 "../../../tos/chips/cc2420/interfaces/CC2420Register.nc"
+inline static cc2420_status_t CC2420TransmitP__TXCTRL__write(uint16_t data){
+#line 63
+  unsigned char __nesc_result;
+#line 63
+
+#line 63
+  __nesc_result = CC2420SpiP__Reg__write(CC2420_TXCTRL, data);
+#line 63
+
+#line 63
+  return __nesc_result;
+#line 63
+}
+#line 63
+# 365 "../../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
+static inline void HplMsp430Usart0P__Usart__tx(uint8_t data)
+#line 365
+{
+  HplMsp430Usart0P__U0TXBUF = data;
+}
+
+# 220 "../../../tos/chips/msp430/usart/HplMsp430Usart.nc"
+inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__tx(uint8_t data){
+#line 220
+  HplMsp430Usart0P__Usart__tx(data);
+#line 220
+}
+#line 220
+# 313 "../../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
+static inline bool HplMsp430Usart0P__Usart__isRxIntrPending(void )
+#line 313
+{
+  if (HplMsp430Usart0P__IFG1 & 0x40) {
+      return TRUE;
+    }
+  return FALSE;
+}
+
+# 192 "../../../tos/chips/msp430/usart/HplMsp430Usart.nc"
+inline static bool /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__isRxIntrPending(void ){
+#line 192
+  unsigned char __nesc_result;
+#line 192
+
+#line 192
+  __nesc_result = HplMsp430Usart0P__Usart__isRxIntrPending();
+#line 192
+
+#line 192
+  return __nesc_result;
+#line 192
+}
+#line 192
+# 324 "../../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
+static inline void HplMsp430Usart0P__Usart__clrRxIntr(void )
+#line 324
+{
+  HplMsp430Usart0P__IFG1 &= ~0x40;
+}
+
+# 197 "../../../tos/chips/msp430/usart/HplMsp430Usart.nc"
+inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__clrRxIntr(void ){
+#line 197
+  HplMsp430Usart0P__Usart__clrRxIntr();
+#line 197
+}
+#line 197
+# 369 "../../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
+static inline uint8_t HplMsp430Usart0P__Usart__rx(void )
+#line 369
+{
+  return U0RXBUF;
+}
+
+# 227 "../../../tos/chips/msp430/usart/HplMsp430Usart.nc"
+inline static uint8_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__rx(void ){
+#line 227
+  unsigned char __nesc_result;
+#line 227
+
+#line 227
+  __nesc_result = HplMsp430Usart0P__Usart__rx();
+#line 227
+
+#line 227
+  return __nesc_result;
+#line 227
+}
+#line 227
+# 76 "../../../tos/interfaces/SpiPacket.nc"
+inline static error_t CC2420SpiP__SpiPacket__send(uint8_t * txBuf, uint8_t * rxBuf, uint16_t len){
+#line 76
+  enum __nesc_unnamed4242 __nesc_result;
+#line 76
+
+#line 76
+  __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__send(/*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID, txBuf, rxBuf, len);
+#line 76
+
+#line 76
+  return __nesc_result;
+#line 76
+}
+#line 76
+# 45 "../../../tos/interfaces/SpiByte.nc"
+inline static uint8_t CC2420SpiP__SpiByte__write(uint8_t tx){
+#line 45
+  unsigned char __nesc_result;
+#line 45
+
+#line 45
+  __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiByte__write(tx);
+#line 45
+
+#line 45
+  return __nesc_result;
+#line 45
+}
+#line 45
+# 126 "../../../tos/system/StateImplP.nc"
+static inline bool StateImplP__State__isIdle(uint8_t id)
+#line 126
+{
+  return StateImplP__State__isState(id, StateImplP__S_IDLE);
+}
+
+# 61 "../../../tos/interfaces/State.nc"
+inline static bool CC2420SpiP__WorkingState__isIdle(void ){
+#line 61
+  unsigned char __nesc_result;
+#line 61
+
+#line 61
+  __nesc_result = StateImplP__State__isIdle(0U);
+#line 61
+
+#line 61
+  return __nesc_result;
+#line 61
+}
+#line 61
+# 214 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+static inline cc2420_status_t CC2420SpiP__Fifo__write(uint8_t addr, uint8_t *data, 
+uint8_t len)
+#line 215
+{
+
+  uint8_t status = 0;
+
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 219
+    {
+      if (CC2420SpiP__WorkingState__isIdle()) {
+          {
+            unsigned char __nesc_temp = 
+#line 221
+            status;
+
+            {
+#line 221
+              __nesc_atomic_end(__nesc_atomic); 
+#line 221
+              return __nesc_temp;
+            }
+          }
+        }
+    }
+#line 225
+    __nesc_atomic_end(__nesc_atomic); }
+#line 225
+  CC2420SpiP__m_addr = addr;
+
+  status = CC2420SpiP__SpiByte__write(CC2420SpiP__m_addr);
+  CC2420SpiP__SpiPacket__send(data, (void *)0, len);
+
+  return status;
+}
+
+# 82 "../../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
+inline static cc2420_status_t CC2420TransmitP__TXFIFO__write(uint8_t * data, uint8_t length){
+#line 82
+  unsigned char __nesc_result;
+#line 82
+
+#line 82
+  __nesc_result = CC2420SpiP__Fifo__write(CC2420_TXFIFO, data, length);
+#line 82
+
+#line 82
+  return __nesc_result;
+#line 82
+}
+#line 82
+# 344 "../../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
+static inline void HplMsp430Usart0P__Usart__enableRxIntr(void )
+#line 344
+{
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 345
+    {
+      HplMsp430Usart0P__IFG1 &= ~0x40;
+      HplMsp430Usart0P__IE1 |= 0x40;
+    }
+#line 348
+    __nesc_atomic_end(__nesc_atomic); }
+}
+
+# 180 "../../../tos/chips/msp430/usart/HplMsp430Usart.nc"
+inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__enableRxIntr(void ){
+#line 180
+  HplMsp430Usart0P__Usart__enableRxIntr();
+#line 180
+}
+#line 180
+# 67 "../../../tos/interfaces/TaskBasic.nc"
+inline static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__signalDone_task__postTask(void ){
+#line 67
+  enum __nesc_unnamed4242 __nesc_result;
+#line 67
+
+#line 67
+  __nesc_result = SchedulerBasicP__TaskBasic__postTask(/*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__signalDone_task);
+#line 67
+
+#line 67
+  return __nesc_result;
+#line 67
+}
+#line 67
+# 64 "../../../tos/system/FcfsResourceQueueC.nc"
+static inline bool /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__FcfsQueue__isEnqueued(resource_client_id_t id)
+#line 64
+{
+  /* atomic removed: atomic calls only */
+#line 65
+  {
+    unsigned char __nesc_temp = 
+#line 65
+    /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__resQ[id] != /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__NO_ENTRY || /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__qTail == id;
+
+#line 65
+    return __nesc_temp;
+  }
+}
+
+#line 82
+static inline error_t /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__FcfsQueue__enqueue(resource_client_id_t id)
+#line 82
+{
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 83
+    {
+      if (!/*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__FcfsQueue__isEnqueued(id)) {
+          if (/*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__qHead == /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__NO_ENTRY) {
+            /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__qHead = id;
+            }
+          else {
+#line 88
+            /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__resQ[/*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__qTail] = id;
+            }
+#line 89
+          /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__qTail = id;
+          {
+            enum __nesc_unnamed4242 __nesc_temp = 
+#line 90
+            SUCCESS;
+
+            {
+#line 90
+              __nesc_atomic_end(__nesc_atomic); 
+#line 90
+              return __nesc_temp;
+            }
+          }
+        }
+#line 92
+      {
+        enum __nesc_unnamed4242 __nesc_temp = 
+#line 92
+        EBUSY;
+
+        {
+#line 92
+          __nesc_atomic_end(__nesc_atomic); 
+#line 92
+          return __nesc_temp;
+        }
+      }
+    }
+#line 95
+    __nesc_atomic_end(__nesc_atomic); }
+}
+
+# 79 "../../../tos/interfaces/ResourceQueue.nc"
+inline static error_t CC2420TinyosNetworkP__Queue__enqueue(resource_client_id_t id){
+#line 79
+  enum __nesc_unnamed4242 __nesc_result;
+#line 79
+
+#line 79
+  __nesc_result = /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__FcfsQueue__enqueue(id);
+#line 79
+
+#line 79
+  return __nesc_result;
+#line 79
+}
+#line 79
+# 67 "../../../tos/interfaces/TaskBasic.nc"
+inline static error_t CC2420TinyosNetworkP__grantTask__postTask(void ){
+#line 67
+  enum __nesc_unnamed4242 __nesc_result;
+#line 67
+
+#line 67
+  __nesc_result = SchedulerBasicP__TaskBasic__postTask(CC2420TinyosNetworkP__grantTask);
+#line 67
+
+#line 67
+  return __nesc_result;
+#line 67
+}
+#line 67
+# 203 "../../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
+static inline error_t CC2420TinyosNetworkP__Resource__request(uint8_t id)
+#line 203
+{
+
+  CC2420TinyosNetworkP__grantTask__postTask();
+
+  if (CC2420TinyosNetworkP__TINYOS_N_NETWORKS > 1) {
+      return CC2420TinyosNetworkP__Queue__enqueue(id);
+    }
+  else 
+#line 209
+    {
+      if (id == CC2420TinyosNetworkP__resource_owner) {
+          return EALREADY;
+        }
+      else 
+#line 212
+        {
+          CC2420TinyosNetworkP__next_owner = id;
+          return SUCCESS;
+        }
+    }
+}
+
+# 88 "../../../tos/interfaces/Resource.nc"
+inline static error_t CC2420ActiveMessageP__RadioResource__request(void ){
+#line 88
+  enum __nesc_unnamed4242 __nesc_result;
+#line 88
+
+#line 88
+  __nesc_result = CC2420TinyosNetworkP__Resource__request(CC2420ActiveMessageC__CC2420_AM_SEND_ID);
+#line 88
+
+#line 88
+  return __nesc_result;
+#line 88
+}
+#line 88
+# 24 "../../../tos/platforms/telosa/TelosSerialP.nc"
 static inline void TelosSerialP__Resource__granted(void )
 #line 24
 {
 }
 
-# 240 "../../tos/chips/msp430/usart/Msp430UartP.nc"
+# 240 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
 static inline void /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__default__granted(uint8_t id)
 #line 240
 {
 }
 
-# 102 "../../tos/interfaces/Resource.nc"
-inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__granted(uint8_t arg_0x7f540cab08f0){
+# 102 "../../../tos/interfaces/Resource.nc"
+inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__granted(uint8_t arg_0x7f49d66a28f0){
 #line 102
-  switch (arg_0x7f540cab08f0) {
+  switch (arg_0x7f49d66a28f0) {
 #line 102
     case /*PlatformSerialC.UartC*/Msp430Uart1C__0__CLIENT_ID:
 #line 102
@@ -10162,7 +12999,7 @@ inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__granted(uint8
 #line 102
     default:
 #line 102
-      /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__default__granted(arg_0x7f540cab08f0);
+      /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__default__granted(arg_0x7f49d66a28f0);
 #line 102
       break;
 #line 102
@@ -10170,23 +13007,23 @@ inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__granted(uint8
 #line 102
 }
 #line 102
-# 103 "../../tos/chips/msp430/usart/Msp430UartP.nc"
+# 103 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
 static inline void /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__granted(uint8_t id)
 #line 103
 {
   /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__granted(id);
 }
 
-# 363 "../../tos/system/ArbiterP.nc"
+# 363 "../../../tos/system/ArbiterP.nc"
 static inline void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Resource__default__granted(uint8_t id)
 #line 363
 {
 }
 
-# 102 "../../tos/interfaces/Resource.nc"
-inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Resource__granted(uint8_t arg_0x7f540d435970){
+# 102 "../../../tos/interfaces/Resource.nc"
+inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Resource__granted(uint8_t arg_0x7f49d701f970){
 #line 102
-  switch (arg_0x7f540d435970) {
+  switch (arg_0x7f49d701f970) {
 #line 102
     case /*PlatformSerialC.UartC.UsartC*/Msp430Usart1C__0__CLIENT_ID:
 #line 102
@@ -10196,7 +13033,7 @@ inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Resource_
 #line 102
     default:
 #line 102
-      /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Resource__default__granted(arg_0x7f540d435970);
+      /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Resource__default__granted(arg_0x7f49d701f970);
 #line 102
       break;
 #line 102
@@ -10204,16 +13041,16 @@ inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Resource_
 #line 102
 }
 #line 102
-# 367 "../../tos/system/ArbiterP.nc"
+# 367 "../../../tos/system/ArbiterP.nc"
 static inline void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__default__configure(uint8_t id)
 #line 367
 {
 }
 
-# 59 "../../tos/interfaces/ResourceConfigure.nc"
-inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__configure(uint8_t arg_0x7f540d431a30){
+# 59 "../../../tos/interfaces/ResourceConfigure.nc"
+inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__configure(uint8_t arg_0x7f49d701aa30){
 #line 59
-  switch (arg_0x7f540d431a30) {
+  switch (arg_0x7f49d701aa30) {
 #line 59
     case /*PlatformSerialC.UartC.UsartC*/Msp430Usart1C__0__CLIENT_ID:
 #line 59
@@ -10223,7 +13060,7 @@ inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceC
 #line 59
     default:
 #line 59
-      /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__default__configure(arg_0x7f540d431a30);
+      /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__default__configure(arg_0x7f49d701aa30);
 #line 59
       break;
 #line 59
@@ -10231,7 +13068,7 @@ inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceC
 #line 59
 }
 #line 59
-# 346 "../../tos/system/ArbiterP.nc"
+# 346 "../../../tos/system/ArbiterP.nc"
 static inline void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__grantedTask__runTask(void )
 #line 346
 {
@@ -10251,28 +13088,28 @@ static inline void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__grantedTa
   /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Resource__granted(/*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__resId);
 }
 
-# 26 "../../tos/platforms/telosa/TelosSerialP.nc"
+# 26 "../../../tos/platforms/telosa/TelosSerialP.nc"
 static inline const msp430_uart_union_config_t *TelosSerialP__Msp430UartConfigure__getConfig(void )
 #line 26
 {
   return &TelosSerialP__msp430_uart_telos_config;
 }
 
-# 236 "../../tos/chips/msp430/usart/Msp430UartP.nc"
+# 236 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
 static inline const msp430_uart_union_config_t */*Msp430Uart1P.UartP*/Msp430UartP__0__Msp430UartConfigure__default__getConfig(uint8_t id)
 #line 236
 {
   return &msp430_uart_default_config;
 }
 
-# 39 "../../tos/chips/msp430/usart/Msp430UartConfigure.nc"
-inline static const msp430_uart_union_config_t */*Msp430Uart1P.UartP*/Msp430UartP__0__Msp430UartConfigure__getConfig(uint8_t arg_0x7f540caa92a0){
+# 39 "../../../tos/chips/msp430/usart/Msp430UartConfigure.nc"
+inline static const msp430_uart_union_config_t */*Msp430Uart1P.UartP*/Msp430UartP__0__Msp430UartConfigure__getConfig(uint8_t arg_0x7f49d669a2a0){
 #line 39
-  union __nesc_unnamed4286 const *__nesc_result;
+  union __nesc_unnamed4287 const *__nesc_result;
 #line 39
 
 #line 39
-  switch (arg_0x7f540caa92a0) {
+  switch (arg_0x7f49d669a2a0) {
 #line 39
     case /*PlatformSerialC.UartC*/Msp430Uart1C__0__CLIENT_ID:
 #line 39
@@ -10282,7 +13119,7 @@ inline static const msp430_uart_union_config_t */*Msp430Uart1P.UartP*/Msp430Uart
 #line 39
     default:
 #line 39
-      __nesc_result = /*Msp430Uart1P.UartP*/Msp430UartP__0__Msp430UartConfigure__default__getConfig(arg_0x7f540caa92a0);
+      __nesc_result = /*Msp430Uart1P.UartP*/Msp430UartP__0__Msp430UartConfigure__default__getConfig(arg_0x7f49d669a2a0);
 #line 39
       break;
 #line 39
@@ -10294,7 +13131,7 @@ inline static const msp430_uart_union_config_t */*Msp430Uart1P.UartP*/Msp430Uart
 #line 39
 }
 #line 39
-# 331 "../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
+# 331 "../../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
 static inline void HplMsp430Usart1P__Usart__clrIntr(void )
 #line 331
 {
@@ -10328,7 +13165,7 @@ static inline void HplMsp430Usart1P__Usart__resetUsart(bool reset)
     }
 }
 
-# 104 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 104 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P36*/HplMsp430GeneralIOP__22__IO__selectModuleFunc(void )
 #line 104
 {
@@ -10337,14 +13174,14 @@ static inline void /*HplMsp430GeneralIOC.P36*/HplMsp430GeneralIOP__22__IO__selec
   * (volatile uint8_t * )27U |= 0x01 << 6;
 }
 
-# 91 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 91 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void HplMsp430Usart1P__UTXD__selectModuleFunc(void ){
 #line 91
   /*HplMsp430GeneralIOC.P36*/HplMsp430GeneralIOP__22__IO__selectModuleFunc();
 #line 91
 }
 #line 91
-# 206 "../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
+# 206 "../../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
 static inline void HplMsp430Usart1P__Usart__enableUartTx(void )
 #line 206
 {
@@ -10352,7 +13189,7 @@ static inline void HplMsp430Usart1P__Usart__enableUartTx(void )
   HplMsp430Usart1P__ME2 |= 0x20;
 }
 
-# 106 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 106 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P37*/HplMsp430GeneralIOP__23__IO__selectIOFunc(void )
 #line 106
 {
@@ -10361,14 +13198,14 @@ static inline void /*HplMsp430GeneralIOC.P37*/HplMsp430GeneralIOP__23__IO__selec
   * (volatile uint8_t * )27U &= ~(0x01 << 7);
 }
 
-# 97 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 97 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void HplMsp430Usart1P__URXD__selectIOFunc(void ){
 #line 97
   /*HplMsp430GeneralIOC.P37*/HplMsp430GeneralIOP__23__IO__selectIOFunc();
 #line 97
 }
 #line 97
-# 222 "../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
+# 222 "../../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
 static inline void HplMsp430Usart1P__Usart__disableUartRx(void )
 #line 222
 {
@@ -10376,7 +13213,7 @@ static inline void HplMsp430Usart1P__Usart__disableUartRx(void )
   HplMsp430Usart1P__URXD__selectIOFunc();
 }
 
-# 104 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 104 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P37*/HplMsp430GeneralIOP__23__IO__selectModuleFunc(void )
 #line 104
 {
@@ -10385,14 +13222,14 @@ static inline void /*HplMsp430GeneralIOC.P37*/HplMsp430GeneralIOP__23__IO__selec
   * (volatile uint8_t * )27U |= 0x01 << 7;
 }
 
-# 91 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 91 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void HplMsp430Usart1P__URXD__selectModuleFunc(void ){
 #line 91
   /*HplMsp430GeneralIOC.P37*/HplMsp430GeneralIOP__23__IO__selectModuleFunc();
 #line 91
 }
 #line 91
-# 217 "../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
+# 217 "../../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
 static inline void HplMsp430Usart1P__Usart__enableUartRx(void )
 #line 217
 {
@@ -10400,7 +13237,7 @@ static inline void HplMsp430Usart1P__Usart__enableUartRx(void )
   HplMsp430Usart1P__ME2 |= 0x10;
 }
 
-# 106 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 106 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P36*/HplMsp430GeneralIOP__22__IO__selectIOFunc(void )
 #line 106
 {
@@ -10409,14 +13246,14 @@ static inline void /*HplMsp430GeneralIOC.P36*/HplMsp430GeneralIOP__22__IO__selec
   * (volatile uint8_t * )27U &= ~(0x01 << 6);
 }
 
-# 97 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 97 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void HplMsp430Usart1P__UTXD__selectIOFunc(void ){
 #line 97
   /*HplMsp430GeneralIOC.P36*/HplMsp430GeneralIOP__22__IO__selectIOFunc();
 #line 97
 }
 #line 97
-# 211 "../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
+# 211 "../../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
 static inline void HplMsp430Usart1P__Usart__disableUartTx(void )
 #line 211
 {
@@ -10510,14 +13347,14 @@ static inline void HplMsp430Usart1P__Usart__setModeUart(const msp430_uart_union_
   return;
 }
 
-# 174 "../../tos/chips/msp430/usart/HplMsp430Usart.nc"
+# 174 "../../../tos/chips/msp430/usart/HplMsp430Usart.nc"
 inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Usart__setModeUart(const msp430_uart_union_config_t *config){
 #line 174
   HplMsp430Usart1P__Usart__setModeUart(config);
 #line 174
 }
 #line 174
-# 106 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 106 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P51*/HplMsp430GeneralIOP__33__IO__selectIOFunc(void )
 #line 106
 {
@@ -10526,14 +13363,14 @@ static inline void /*HplMsp430GeneralIOC.P51*/HplMsp430GeneralIOP__33__IO__selec
   * (volatile uint8_t * )51U &= ~(0x01 << 1);
 }
 
-# 97 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 97 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void HplMsp430Usart1P__SIMO__selectIOFunc(void ){
 #line 97
   /*HplMsp430GeneralIOC.P51*/HplMsp430GeneralIOP__33__IO__selectIOFunc();
 #line 97
 }
 #line 97
-# 106 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 106 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P52*/HplMsp430GeneralIOP__34__IO__selectIOFunc(void )
 #line 106
 {
@@ -10542,14 +13379,14 @@ static inline void /*HplMsp430GeneralIOC.P52*/HplMsp430GeneralIOP__34__IO__selec
   * (volatile uint8_t * )51U &= ~(0x01 << 2);
 }
 
-# 97 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 97 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void HplMsp430Usart1P__SOMI__selectIOFunc(void ){
 #line 97
   /*HplMsp430GeneralIOC.P52*/HplMsp430GeneralIOP__34__IO__selectIOFunc();
 #line 97
 }
 #line 97
-# 106 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 106 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P53*/HplMsp430GeneralIOP__35__IO__selectIOFunc(void )
 #line 106
 {
@@ -10558,14 +13395,14 @@ static inline void /*HplMsp430GeneralIOC.P53*/HplMsp430GeneralIOP__35__IO__selec
   * (volatile uint8_t * )51U &= ~(0x01 << 3);
 }
 
-# 97 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 97 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void HplMsp430Usart1P__UCLK__selectIOFunc(void ){
 #line 97
   /*HplMsp430GeneralIOC.P53*/HplMsp430GeneralIOP__35__IO__selectIOFunc();
 #line 97
 }
 #line 97
-# 361 "../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
+# 361 "../../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
 static inline void HplMsp430Usart1P__Usart__enableIntr(void )
 #line 361
 {
@@ -10579,7 +13416,7 @@ static inline void HplMsp430Usart1P__Usart__enableIntr(void )
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 182 "../../tos/chips/msp430/usart/HplMsp430Usart.nc"
+# 182 "../../../tos/chips/msp430/usart/HplMsp430Usart.nc"
 inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Usart__enableIntr(void ){
 #line 182
   HplMsp430Usart1P__Usart__enableIntr();
@@ -10596,7 +13433,7 @@ static __inline  uint8_t __nesc_ntoh_uint8(const void * source)
   return base[0];
 }
 
-# 60 "../../tos/lib/serial/SerialActiveMessageP.nc"
+# 60 "../../../tos/lib/serial/SerialActiveMessageP.nc"
 static inline serial_header_t * /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__getHeader(message_t * msg)
 #line 60
 {
@@ -10613,7 +13450,7 @@ static inline am_id_t /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMPack
   return __nesc_ntoh_uint8(header->type.nxdata);
 }
 
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 inline static error_t BaseStationP__uartSendTask__postTask(void ){
 #line 67
   enum __nesc_unnamed4242 __nesc_result;
@@ -10628,14 +13465,14 @@ inline static error_t BaseStationP__uartSendTask__postTask(void ){
 #line 67
 }
 #line 67
-# 59 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 59 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__HplGeneralIO__toggle(void ){
 #line 59
   /*HplMsp430GeneralIOC.P56*/HplMsp430GeneralIOP__38__IO__toggle();
 #line 59
 }
 #line 59
-# 50 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 50 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__toggle(void )
 #line 50
 {
@@ -10643,14 +13480,14 @@ static inline void /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__toggle(v
   /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__HplGeneralIO__toggle();
 }
 
-# 42 "../../tos/interfaces/GeneralIO.nc"
+# 42 "../../../tos/interfaces/GeneralIO.nc"
 inline static void LedsP__Led2__toggle(void ){
 #line 42
   /*PlatformLedsC.Led2Impl*/Msp430GpioC__2__GeneralIO__toggle();
 #line 42
 }
 #line 42
-# 114 "../../tos/system/LedsP.nc"
+# 114 "../../../tos/system/LedsP.nc"
 static inline void LedsP__Leds__led2Toggle(void )
 #line 114
 {
@@ -10660,72 +13497,72 @@ static inline void LedsP__Leds__led2Toggle(void )
   ;
 }
 
-# 100 "../../tos/interfaces/Leds.nc"
+# 100 "../../../tos/interfaces/Leds.nc"
 inline static void BaseStationP__Leds__led2Toggle(void ){
 #line 100
   LedsP__Leds__led2Toggle();
 #line 100
 }
 #line 100
-# 105 "BaseStationP.nc"
+# 119 "BaseStationP.nc"
 static inline void BaseStationP__failBlink(void )
-#line 105
+#line 119
 {
   BaseStationP__Leds__led2Toggle();
 }
 
-#line 222
+#line 365
 static inline void BaseStationP__UartSend__sendDone(am_id_t id, message_t *msg, error_t error)
-#line 222
+#line 365
 {
   if (error != SUCCESS) {
     BaseStationP__failBlink();
     }
   else {
-#line 226
+#line 369
     { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
       if (msg == BaseStationP__uartQueue[BaseStationP__uartOut]) 
         {
           if (++BaseStationP__uartOut >= BaseStationP__UART_QUEUE_LEN) {
             BaseStationP__uartOut = 0;
             }
-#line 231
+#line 374
           if (BaseStationP__uartFull) {
             BaseStationP__uartFull = FALSE;
             }
         }
-#line 234
+#line 377
       __nesc_atomic_end(__nesc_atomic); }
     }
-#line 234
+#line 377
   BaseStationP__uartSendTask__postTask();
 }
 
-# 110 "../../tos/interfaces/AMSend.nc"
-inline static void /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMSend__sendDone(am_id_t arg_0x7f540cc9c320, message_t * msg, error_t error){
+# 110 "../../../tos/interfaces/AMSend.nc"
+inline static void /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMSend__sendDone(am_id_t arg_0x7f49d688f320, message_t * msg, error_t error){
 #line 110
-  BaseStationP__UartSend__sendDone(arg_0x7f540cc9c320, msg, error);
+  BaseStationP__UartSend__sendDone(arg_0x7f49d688f320, msg, error);
 #line 110
 }
 #line 110
-# 101 "../../tos/lib/serial/SerialActiveMessageP.nc"
+# 101 "../../../tos/lib/serial/SerialActiveMessageP.nc"
 static inline void /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__SubSend__sendDone(message_t *msg, error_t result)
 #line 101
 {
   /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMSend__sendDone(/*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMPacket__type(msg), msg, result);
 }
 
-# 376 "../../tos/lib/serial/SerialDispatcherP.nc"
+# 376 "../../../tos/lib/serial/SerialDispatcherP.nc"
 static inline void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Send__default__sendDone(uart_id_t idxxx, message_t *msg, error_t error)
 #line 376
 {
   return;
 }
 
-# 100 "../../tos/interfaces/Send.nc"
-inline static void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Send__sendDone(uart_id_t arg_0x7f540cb62640, message_t * msg, error_t error){
+# 100 "../../../tos/interfaces/Send.nc"
+inline static void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Send__sendDone(uart_id_t arg_0x7f49d6754640, message_t * msg, error_t error){
 #line 100
-  switch (arg_0x7f540cb62640) {
+  switch (arg_0x7f49d6754640) {
 #line 100
     case TOS_SERIAL_ACTIVE_MESSAGE_ID:
 #line 100
@@ -10735,7 +13572,7 @@ inline static void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__
 #line 100
     default:
 #line 100
-      /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Send__default__sendDone(arg_0x7f540cb62640, msg, error);
+      /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Send__default__sendDone(arg_0x7f49d6754640, msg, error);
 #line 100
       break;
 #line 100
@@ -10743,7 +13580,7 @@ inline static void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__
 #line 100
 }
 #line 100
-# 158 "../../tos/lib/serial/SerialDispatcherP.nc"
+# 158 "../../../tos/lib/serial/SerialDispatcherP.nc"
 static inline void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__signalSendDone__runTask(void )
 #line 158
 {
@@ -10764,43 +13601,7 @@ static inline void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__
   /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Send__sendDone(/*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__sendId, (message_t *)/*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__sendBuffer, error);
 }
 
-# 175 "../../tos/system/SchedulerBasicP.nc"
-static inline bool SchedulerBasicP__isWaiting(uint8_t id)
-#line 175
-{
-  return SchedulerBasicP__m_next[id] != SchedulerBasicP__NO_TASK || SchedulerBasicP__m_tail == id;
-}
-
-static inline bool SchedulerBasicP__pushTask(uint8_t id)
-#line 179
-{
-  if (!SchedulerBasicP__isWaiting(id)) {
-      if (SchedulerBasicP__m_head == SchedulerBasicP__NO_TASK) {
-          SchedulerBasicP__m_head = id;
-          SchedulerBasicP__m_tail = id;
-        }
-      else 
-#line 184
-        {
-          SchedulerBasicP__m_next[SchedulerBasicP__m_tail] = id;
-          SchedulerBasicP__m_tail = id;
-        }
-      return TRUE;
-    }
-  else 
-#line 189
-    {
-      return FALSE;
-    }
-}
-
-#line 148
-static inline void SchedulerBasicP__trace_post_task(uint16_t num)
-#line 148
-{
-}
-
-# 212 "../../tos/lib/serial/SerialDispatcherP.nc"
+#line 212
 static inline void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__unlockBuffer(uint8_t which)
 #line 212
 {
@@ -10812,21 +13613,21 @@ static inline void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__
     }
 }
 
-# 101 "BaseStationP.nc"
+# 115 "BaseStationP.nc"
 static inline void BaseStationP__dropBlink(void )
-#line 101
+#line 115
 {
   BaseStationP__Leds__led2Toggle();
 }
 
-# 67 "../../tos/interfaces/TaskBasic.nc"
-inline static error_t BaseStationP__radioSendTask__postTask(void ){
+# 67 "../../../tos/interfaces/TaskBasic.nc"
+inline static error_t BaseStationP__RadioSendTask__postTask(void ){
 #line 67
   enum __nesc_unnamed4242 __nesc_result;
 #line 67
 
 #line 67
-  __nesc_result = SchedulerBasicP__TaskBasic__postTask(BaseStationP__radioSendTask);
+  __nesc_result = SchedulerBasicP__TaskBasic__postTask(BaseStationP__RadioSendTask);
 #line 67
 
 #line 67
@@ -10834,11 +13635,11 @@ inline static error_t BaseStationP__radioSendTask__postTask(void ){
 #line 67
 }
 #line 67
-# 237 "BaseStationP.nc"
+# 380 "BaseStationP.nc"
 static inline message_t *BaseStationP__UartReceive__receive(am_id_t id, message_t *msg, 
 void *payload, 
 uint8_t len)
-#line 239
+#line 382
 {
   message_t *ret = msg;
   bool reflectToken = FALSE;
@@ -10852,20 +13653,20 @@ uint8_t len)
         if (++BaseStationP__radioIn >= BaseStationP__RADIO_QUEUE_LEN) {
           BaseStationP__radioIn = 0;
           }
-#line 251
+#line 394
         if (BaseStationP__radioIn == BaseStationP__radioOut) {
           BaseStationP__radioFull = TRUE;
           }
         if (!BaseStationP__radioBusy) 
           {
-            BaseStationP__radioSendTask__postTask();
+            BaseStationP__RadioSendTask__postTask();
             BaseStationP__radioBusy = TRUE;
           }
       }
     else {
       BaseStationP__dropBlink();
       }
-#line 262
+#line 405
     __nesc_atomic_end(__nesc_atomic); }
   if (reflectToken) {
     }
@@ -10874,14 +13675,14 @@ uint8_t len)
   return ret;
 }
 
-# 78 "../../tos/interfaces/Receive.nc"
-inline static message_t * /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__Receive__receive(am_id_t arg_0x7f540cc9b650, message_t * msg, void * payload, uint8_t len){
+# 78 "../../../tos/interfaces/Receive.nc"
+inline static message_t * /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__Receive__receive(am_id_t arg_0x7f49d688d650, message_t * msg, void * payload, uint8_t len){
 #line 78
   nx_struct message_t *__nesc_result;
 #line 78
 
 #line 78
-  __nesc_result = BaseStationP__UartReceive__receive(arg_0x7f540cc9b650, msg, payload, len);
+  __nesc_result = BaseStationP__UartReceive__receive(arg_0x7f49d688d650, msg, payload, len);
 #line 78
 
 #line 78
@@ -10889,14 +13690,14 @@ inline static message_t * /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__Re
 #line 78
 }
 #line 78
-# 113 "../../tos/lib/serial/SerialActiveMessageP.nc"
+# 113 "../../../tos/lib/serial/SerialActiveMessageP.nc"
 static inline message_t */*SerialActiveMessageC.AM*/SerialActiveMessageP__0__SubReceive__receive(message_t *msg, void *payload, uint8_t len)
 #line 113
 {
   return /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__Receive__receive(/*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMPacket__type(msg), msg, msg->data, len);
 }
 
-# 371 "../../tos/lib/serial/SerialDispatcherP.nc"
+# 371 "../../../tos/lib/serial/SerialDispatcherP.nc"
 static inline message_t */*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Receive__default__receive(uart_id_t idxxx, message_t *msg, 
 void *payload, 
 uint8_t len)
@@ -10905,14 +13706,14 @@ uint8_t len)
   return msg;
 }
 
-# 78 "../../tos/interfaces/Receive.nc"
-inline static message_t * /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Receive__receive(uart_id_t arg_0x7f540cb63960, message_t * msg, void * payload, uint8_t len){
+# 78 "../../../tos/interfaces/Receive.nc"
+inline static message_t * /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Receive__receive(uart_id_t arg_0x7f49d6755960, message_t * msg, void * payload, uint8_t len){
 #line 78
   nx_struct message_t *__nesc_result;
 #line 78
 
 #line 78
-  switch (arg_0x7f540cb63960) {
+  switch (arg_0x7f49d6755960) {
 #line 78
     case TOS_SERIAL_ACTIVE_MESSAGE_ID:
 #line 78
@@ -10922,7 +13723,7 @@ inline static message_t * /*SerialDispatcherC.SerialDispatcherP*/SerialDispatche
 #line 78
     default:
 #line 78
-      __nesc_result = /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Receive__default__receive(arg_0x7f540cb63960, msg, payload, len);
+      __nesc_result = /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Receive__default__receive(arg_0x7f49d6755960, msg, payload, len);
 #line 78
       break;
 #line 78
@@ -10934,14 +13735,14 @@ inline static message_t * /*SerialDispatcherC.SerialDispatcherP*/SerialDispatche
 #line 78
 }
 #line 78
-# 57 "../../tos/lib/serial/SerialPacketInfoActiveMessageP.nc"
+# 57 "../../../tos/lib/serial/SerialPacketInfoActiveMessageP.nc"
 static inline uint8_t SerialPacketInfoActiveMessageP__Info__upperLength(message_t *msg, uint8_t dataLinkLen)
 #line 57
 {
   return dataLinkLen - sizeof(serial_header_t );
 }
 
-# 365 "../../tos/lib/serial/SerialDispatcherP.nc"
+# 365 "../../../tos/lib/serial/SerialDispatcherP.nc"
 static inline uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__upperLength(uart_id_t id, message_t *msg, 
 uint8_t dataLinkLen)
 #line 366
@@ -10949,14 +13750,14 @@ uint8_t dataLinkLen)
   return 0;
 }
 
-# 31 "../../tos/lib/serial/SerialPacketInfo.nc"
-inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__upperLength(uart_id_t arg_0x7f540cb61b10, message_t *msg, uint8_t dataLinkLen){
+# 31 "../../../tos/lib/serial/SerialPacketInfo.nc"
+inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__upperLength(uart_id_t arg_0x7f49d6753b10, message_t *msg, uint8_t dataLinkLen){
 #line 31
   unsigned char __nesc_result;
 #line 31
 
 #line 31
-  switch (arg_0x7f540cb61b10) {
+  switch (arg_0x7f49d6753b10) {
 #line 31
     case TOS_SERIAL_ACTIVE_MESSAGE_ID:
 #line 31
@@ -10966,7 +13767,7 @@ inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__
 #line 31
     default:
 #line 31
-      __nesc_result = /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__upperLength(arg_0x7f540cb61b10, msg, dataLinkLen);
+      __nesc_result = /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__upperLength(arg_0x7f49d6753b10, msg, dataLinkLen);
 #line 31
       break;
 #line 31
@@ -10978,28 +13779,28 @@ inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__
 #line 31
 }
 #line 31
-# 51 "../../tos/lib/serial/SerialPacketInfoActiveMessageP.nc"
+# 51 "../../../tos/lib/serial/SerialPacketInfoActiveMessageP.nc"
 static inline uint8_t SerialPacketInfoActiveMessageP__Info__offset(void )
 #line 51
 {
   return (uint8_t )(sizeof(message_header_t ) - sizeof(serial_header_t ));
 }
 
-# 358 "../../tos/lib/serial/SerialDispatcherP.nc"
+# 358 "../../../tos/lib/serial/SerialDispatcherP.nc"
 static inline uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__offset(uart_id_t id)
 #line 358
 {
   return 0;
 }
 
-# 15 "../../tos/lib/serial/SerialPacketInfo.nc"
-inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__offset(uart_id_t arg_0x7f540cb61b10){
+# 15 "../../../tos/lib/serial/SerialPacketInfo.nc"
+inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__offset(uart_id_t arg_0x7f49d6753b10){
 #line 15
   unsigned char __nesc_result;
 #line 15
 
 #line 15
-  switch (arg_0x7f540cb61b10) {
+  switch (arg_0x7f49d6753b10) {
 #line 15
     case TOS_SERIAL_ACTIVE_MESSAGE_ID:
 #line 15
@@ -11009,7 +13810,7 @@ inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__
 #line 15
     default:
 #line 15
-      __nesc_result = /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__offset(arg_0x7f540cb61b10);
+      __nesc_result = /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__offset(arg_0x7f49d6753b10);
 #line 15
       break;
 #line 15
@@ -11021,7 +13822,7 @@ inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__
 #line 15
 }
 #line 15
-# 275 "../../tos/lib/serial/SerialDispatcherP.nc"
+# 275 "../../../tos/lib/serial/SerialDispatcherP.nc"
 static inline void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__receiveTask__runTask(void )
 #line 275
 {
@@ -11055,20 +13856,20 @@ static inline void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 142 "BaseStationP.nc"
+# 168 "BaseStationP.nc"
 static inline void BaseStationP__SerialControl__stopDone(error_t error)
-#line 142
+#line 168
 {
 }
 
-# 138 "../../tos/interfaces/SplitControl.nc"
+# 138 "../../../tos/interfaces/SplitControl.nc"
 inline static void SerialP__SplitControl__stopDone(error_t error){
 #line 138
   BaseStationP__SerialControl__stopDone(error);
 #line 138
 }
 #line 138
-# 128 "../../tos/chips/msp430/usart/HplMsp430Usart.nc"
+# 128 "../../../tos/chips/msp430/usart/HplMsp430Usart.nc"
 inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Usart__disableUart(void ){
 #line 128
   HplMsp430Usart1P__Usart__disableUart();
@@ -11082,7 +13883,7 @@ inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Usart__resetUsart(bool 
 #line 97
 }
 #line 97
-# 97 "../../tos/chips/msp430/usart/Msp430UartP.nc"
+# 97 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
 static inline void /*Msp430Uart1P.UartP*/Msp430UartP__0__ResourceConfigure__unconfigure(uint8_t id)
 #line 97
 {
@@ -11090,16 +13891,16 @@ static inline void /*Msp430Uart1P.UartP*/Msp430UartP__0__ResourceConfigure__unco
   /*Msp430Uart1P.UartP*/Msp430UartP__0__Usart__disableUart();
 }
 
-# 368 "../../tos/system/ArbiterP.nc"
+# 368 "../../../tos/system/ArbiterP.nc"
 static inline void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__default__unconfigure(uint8_t id)
 #line 368
 {
 }
 
-# 65 "../../tos/interfaces/ResourceConfigure.nc"
-inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__unconfigure(uint8_t arg_0x7f540d431a30){
+# 65 "../../../tos/interfaces/ResourceConfigure.nc"
+inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__unconfigure(uint8_t arg_0x7f49d701aa30){
 #line 65
-  switch (arg_0x7f540d431a30) {
+  switch (arg_0x7f49d701aa30) {
 #line 65
     case /*PlatformSerialC.UartC.UsartC*/Msp430Usart1C__0__CLIENT_ID:
 #line 65
@@ -11109,7 +13910,7 @@ inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceC
 #line 65
     default:
 #line 65
-      /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__default__unconfigure(arg_0x7f540d431a30);
+      /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceConfigure__default__unconfigure(arg_0x7f49d701aa30);
 #line 65
       break;
 #line 65
@@ -11117,7 +13918,7 @@ inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceC
 #line 65
 }
 #line 65
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 inline static error_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__grantedTask__postTask(void ){
 #line 67
   enum __nesc_unnamed4242 __nesc_result;
@@ -11132,7 +13933,7 @@ inline static error_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__grante
 #line 67
 }
 #line 67
-# 68 "../../tos/system/FcfsResourceQueueC.nc"
+# 68 "../../../tos/system/FcfsResourceQueueC.nc"
 static inline resource_client_id_t /*Msp430UsartShare1P.ArbiterC.Queue*/FcfsResourceQueueC__2__FcfsQueue__dequeue(void )
 #line 68
 {
@@ -11170,7 +13971,7 @@ static inline resource_client_id_t /*Msp430UsartShare1P.ArbiterC.Queue*/FcfsReso
   }
 }
 
-# 70 "../../tos/interfaces/ResourceQueue.nc"
+# 70 "../../../tos/interfaces/ResourceQueue.nc"
 inline static resource_client_id_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Queue__dequeue(void ){
 #line 70
   unsigned char __nesc_result;
@@ -11185,7 +13986,7 @@ inline static resource_client_id_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/Arbite
 #line 70
 }
 #line 70
-# 95 "../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
+# 95 "../../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
 static inline error_t HplMsp430Usart1P__AsyncStdControl__stop(void )
 #line 95
 {
@@ -11194,7 +13995,7 @@ static inline error_t HplMsp430Usart1P__AsyncStdControl__stop(void )
   return SUCCESS;
 }
 
-# 105 "../../tos/interfaces/AsyncStdControl.nc"
+# 105 "../../../tos/interfaces/AsyncStdControl.nc"
 inline static error_t /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__AsyncStdControl__stop(void ){
 #line 105
   enum __nesc_unnamed4242 __nesc_result;
@@ -11209,20 +14010,20 @@ inline static error_t /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowe
 #line 105
 }
 #line 105
-# 84 "../../tos/lib/power/AsyncPowerManagerP.nc"
+# 84 "../../../tos/lib/power/AsyncPowerManagerP.nc"
 static inline void /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__PowerDownCleanup__default__cleanup(void )
 #line 84
 {
 }
 
-# 62 "../../tos/lib/power/PowerDownCleanup.nc"
+# 62 "../../../tos/lib/power/PowerDownCleanup.nc"
 inline static void /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__PowerDownCleanup__cleanup(void ){
 #line 62
   /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__PowerDownCleanup__default__cleanup();
 #line 62
 }
 #line 62
-# 79 "../../tos/lib/power/AsyncPowerManagerP.nc"
+# 79 "../../../tos/lib/power/AsyncPowerManagerP.nc"
 static inline void /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__ResourceDefaultOwner__granted(void )
 #line 79
 {
@@ -11230,14 +14031,14 @@ static inline void /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerMa
   /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__AsyncStdControl__stop();
 }
 
-# 44 "../../tos/interfaces/ResourceDefaultOwner.nc"
+# 44 "../../../tos/interfaces/ResourceDefaultOwner.nc"
 inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceDefaultOwner__granted(void ){
 #line 44
   /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__ResourceDefaultOwner__granted();
 #line 44
 }
 #line 44
-# 60 "../../tos/system/FcfsResourceQueueC.nc"
+# 60 "../../../tos/system/FcfsResourceQueueC.nc"
 static inline bool /*Msp430UsartShare1P.ArbiterC.Queue*/FcfsResourceQueueC__2__FcfsQueue__isEmpty(void )
 #line 60
 {
@@ -11253,7 +14054,7 @@ static inline bool /*Msp430UsartShare1P.ArbiterC.Queue*/FcfsResourceQueueC__2__F
   }
 }
 
-# 53 "../../tos/interfaces/ResourceQueue.nc"
+# 53 "../../../tos/interfaces/ResourceQueue.nc"
 inline static bool /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Queue__isEmpty(void ){
 #line 53
   unsigned char __nesc_result;
@@ -11268,7 +14069,7 @@ inline static bool /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Queue__is
 #line 53
 }
 #line 53
-# 249 "../../tos/system/ArbiterP.nc"
+# 249 "../../../tos/system/ArbiterP.nc"
 static inline error_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Resource__release(uint8_t id)
 #line 249
 {
@@ -11324,7 +14125,7 @@ static inline error_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Resour
   return FAIL;
 }
 
-# 235 "../../tos/chips/msp430/usart/Msp430UartP.nc"
+# 235 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
 static inline error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__release(uint8_t id)
 #line 235
 {
@@ -11332,14 +14133,14 @@ static inline error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__defau
   return FAIL;
 }
 
-# 120 "../../tos/interfaces/Resource.nc"
-inline static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__release(uint8_t arg_0x7f540caaa020){
+# 120 "../../../tos/interfaces/Resource.nc"
+inline static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__release(uint8_t arg_0x7f49d669c020){
 #line 120
   enum __nesc_unnamed4242 __nesc_result;
 #line 120
 
 #line 120
-  switch (arg_0x7f540caaa020) {
+  switch (arg_0x7f49d669c020) {
 #line 120
     case /*PlatformSerialC.UartC*/Msp430Uart1C__0__CLIENT_ID:
 #line 120
@@ -11349,7 +14150,7 @@ inline static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__relea
 #line 120
     default:
 #line 120
-      __nesc_result = /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__release(arg_0x7f540caaa020);
+      __nesc_result = /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__release(arg_0x7f49d669c020);
 #line 120
       break;
 #line 120
@@ -11361,7 +14162,7 @@ inline static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__relea
 #line 120
 }
 #line 120
-# 232 "../../tos/chips/msp430/usart/Msp430UartP.nc"
+# 232 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
 static inline bool /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__isOwner(uint8_t id)
 #line 232
 {
@@ -11369,14 +14170,14 @@ static inline bool /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default_
   return FALSE;
 }
 
-# 128 "../../tos/interfaces/Resource.nc"
-inline static bool /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__isOwner(uint8_t arg_0x7f540caaa020){
+# 128 "../../../tos/interfaces/Resource.nc"
+inline static bool /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__isOwner(uint8_t arg_0x7f49d669c020){
 #line 128
   unsigned char __nesc_result;
 #line 128
 
 #line 128
-  switch (arg_0x7f540caaa020) {
+  switch (arg_0x7f49d669c020) {
 #line 128
     case /*PlatformSerialC.UartC*/Msp430Uart1C__0__CLIENT_ID:
 #line 128
@@ -11386,7 +14187,7 @@ inline static bool /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__isOwner(
 #line 128
     default:
 #line 128
-      __nesc_result = /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__isOwner(arg_0x7f540caaa020);
+      __nesc_result = /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__isOwner(arg_0x7f49d669c020);
 #line 128
       break;
 #line 128
@@ -11398,7 +14199,7 @@ inline static bool /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__isOwner(
 #line 128
 }
 #line 128
-# 80 "../../tos/chips/msp430/usart/Msp430UartP.nc"
+# 80 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
 static inline error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__release(uint8_t id)
 #line 80
 {
@@ -11413,7 +14214,7 @@ static inline error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__release(ui
   return /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__release(id);
 }
 
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 inline static error_t TelosSerialP__Resource__release(void ){
 #line 120
   enum __nesc_unnamed4242 __nesc_result;
@@ -11428,7 +14229,7 @@ inline static error_t TelosSerialP__Resource__release(void ){
 #line 120
 }
 #line 120
-# 19 "../../tos/platforms/telosa/TelosSerialP.nc"
+# 19 "../../../tos/platforms/telosa/TelosSerialP.nc"
 static inline error_t TelosSerialP__StdControl__stop(void )
 #line 19
 {
@@ -11436,7 +14237,7 @@ static inline error_t TelosSerialP__StdControl__stop(void )
   return SUCCESS;
 }
 
-# 105 "../../tos/interfaces/StdControl.nc"
+# 105 "../../../tos/interfaces/StdControl.nc"
 inline static error_t SerialP__SerialControl__stop(void ){
 #line 105
   enum __nesc_unnamed4242 __nesc_result;
@@ -11451,7 +14252,7 @@ inline static error_t SerialP__SerialControl__stop(void ){
 #line 105
 }
 #line 105
-# 336 "../../tos/lib/serial/SerialP.nc"
+# 336 "../../../tos/lib/serial/SerialP.nc"
 static inline void SerialP__SerialFlush__flushDone(void )
 #line 336
 {
@@ -11465,7 +14266,7 @@ static inline void SerialP__defaultSerialFlushTask__runTask(void )
   SerialP__SerialFlush__flushDone();
 }
 
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 inline static error_t SerialP__defaultSerialFlushTask__postTask(void ){
 #line 67
   enum __nesc_unnamed4242 __nesc_result;
@@ -11480,44 +14281,44 @@ inline static error_t SerialP__defaultSerialFlushTask__postTask(void ){
 #line 67
 }
 #line 67
-# 344 "../../tos/lib/serial/SerialP.nc"
+# 344 "../../../tos/lib/serial/SerialP.nc"
 static inline void SerialP__SerialFlush__default__flush(void )
 #line 344
 {
   SerialP__defaultSerialFlushTask__postTask();
 }
 
-# 49 "../../tos/lib/serial/SerialFlush.nc"
+# 49 "../../../tos/lib/serial/SerialFlush.nc"
 inline static void SerialP__SerialFlush__flush(void ){
 #line 49
   SerialP__SerialFlush__default__flush();
 #line 49
 }
 #line 49
-# 332 "../../tos/lib/serial/SerialP.nc"
+# 332 "../../../tos/lib/serial/SerialP.nc"
 static inline void SerialP__stopDoneTask__runTask(void )
 #line 332
 {
   SerialP__SerialFlush__flush();
 }
 
-# 136 "BaseStationP.nc"
+# 162 "BaseStationP.nc"
 static inline void BaseStationP__SerialControl__startDone(error_t error)
-#line 136
+#line 162
 {
   if (error == SUCCESS) {
       BaseStationP__uartFull = FALSE;
     }
 }
 
-# 113 "../../tos/interfaces/SplitControl.nc"
+# 113 "../../../tos/interfaces/SplitControl.nc"
 inline static void SerialP__SplitControl__startDone(error_t error){
 #line 113
   BaseStationP__SerialControl__startDone(error);
 #line 113
 }
 #line 113
-# 283 "../../tos/system/ArbiterP.nc"
+# 283 "../../../tos/system/ArbiterP.nc"
 static inline error_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceDefaultOwner__release(void )
 #line 283
 {
@@ -11569,7 +14370,7 @@ static inline error_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Resour
   return FAIL;
 }
 
-# 54 "../../tos/interfaces/ResourceDefaultOwner.nc"
+# 54 "../../../tos/interfaces/ResourceDefaultOwner.nc"
 inline static error_t /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__ResourceDefaultOwner__release(void ){
 #line 54
   enum __nesc_unnamed4242 __nesc_result;
@@ -11584,14 +14385,14 @@ inline static error_t /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowe
 #line 54
 }
 #line 54
-# 91 "../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
+# 91 "../../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
 static inline error_t HplMsp430Usart1P__AsyncStdControl__start(void )
 #line 91
 {
   return SUCCESS;
 }
 
-# 95 "../../tos/interfaces/AsyncStdControl.nc"
+# 95 "../../../tos/interfaces/AsyncStdControl.nc"
 inline static error_t /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__AsyncStdControl__start(void ){
 #line 95
   enum __nesc_unnamed4242 __nesc_result;
@@ -11606,7 +14407,7 @@ inline static error_t /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowe
 #line 95
 }
 #line 95
-# 74 "../../tos/lib/power/AsyncPowerManagerP.nc"
+# 74 "../../../tos/lib/power/AsyncPowerManagerP.nc"
 static inline void /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__ResourceDefaultOwner__immediateRequested(void )
 #line 74
 {
@@ -11614,27 +14415,27 @@ static inline void /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerMa
   /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__ResourceDefaultOwner__release();
 }
 
-# 79 "../../tos/interfaces/ResourceDefaultOwner.nc"
+# 79 "../../../tos/interfaces/ResourceDefaultOwner.nc"
 inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceDefaultOwner__immediateRequested(void ){
 #line 79
   /*Msp430UsartShare1P.PowerManagerC.PowerManager*/AsyncPowerManagerP__0__ResourceDefaultOwner__immediateRequested();
 #line 79
 }
 #line 79
-# 365 "../../tos/system/ArbiterP.nc"
+# 365 "../../../tos/system/ArbiterP.nc"
 static inline void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceRequested__default__immediateRequested(uint8_t id)
 #line 365
 {
 }
 
-# 61 "../../tos/interfaces/ResourceRequested.nc"
-inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceRequested__immediateRequested(uint8_t arg_0x7f540d434cf0){
+# 61 "../../../tos/interfaces/ResourceRequested.nc"
+inline static void /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceRequested__immediateRequested(uint8_t arg_0x7f49d701dcf0){
 #line 61
-    /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceRequested__default__immediateRequested(arg_0x7f540d434cf0);
+    /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceRequested__default__immediateRequested(arg_0x7f49d701dcf0);
 #line 61
 }
 #line 61
-# 222 "../../tos/system/ArbiterP.nc"
+# 222 "../../../tos/system/ArbiterP.nc"
 static inline error_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Resource__immediateRequest(uint8_t id)
 #line 222
 {
@@ -11684,7 +14485,7 @@ static inline error_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Resour
   return FAIL;
 }
 
-# 234 "../../tos/chips/msp430/usart/Msp430UartP.nc"
+# 234 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
 static inline error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__immediateRequest(uint8_t id)
 #line 234
 {
@@ -11692,14 +14493,14 @@ static inline error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__defau
   return FAIL;
 }
 
-# 97 "../../tos/interfaces/Resource.nc"
-inline static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__immediateRequest(uint8_t arg_0x7f540caaa020){
+# 97 "../../../tos/interfaces/Resource.nc"
+inline static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__immediateRequest(uint8_t arg_0x7f49d669c020){
 #line 97
   enum __nesc_unnamed4242 __nesc_result;
 #line 97
 
 #line 97
-  switch (arg_0x7f540caaa020) {
+  switch (arg_0x7f49d669c020) {
 #line 97
     case /*PlatformSerialC.UartC*/Msp430Uart1C__0__CLIENT_ID:
 #line 97
@@ -11709,7 +14510,7 @@ inline static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__immed
 #line 97
     default:
 #line 97
-      __nesc_result = /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__immediateRequest(arg_0x7f540caaa020);
+      __nesc_result = /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__default__immediateRequest(arg_0x7f49d669c020);
 #line 97
       break;
 #line 97
@@ -11721,14 +14522,14 @@ inline static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__immed
 #line 97
 }
 #line 97
-# 68 "../../tos/chips/msp430/usart/Msp430UartP.nc"
+# 68 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
 static inline error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__Resource__immediateRequest(uint8_t id)
 #line 68
 {
   return /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__immediateRequest(id);
 }
 
-# 97 "../../tos/interfaces/Resource.nc"
+# 97 "../../../tos/interfaces/Resource.nc"
 inline static error_t TelosSerialP__Resource__immediateRequest(void ){
 #line 97
   enum __nesc_unnamed4242 __nesc_result;
@@ -11743,14 +14544,14 @@ inline static error_t TelosSerialP__Resource__immediateRequest(void ){
 #line 97
 }
 #line 97
-# 15 "../../tos/platforms/telosa/TelosSerialP.nc"
+# 15 "../../../tos/platforms/telosa/TelosSerialP.nc"
 static inline error_t TelosSerialP__StdControl__start(void )
 #line 15
 {
   return TelosSerialP__Resource__immediateRequest();
 }
 
-# 95 "../../tos/interfaces/StdControl.nc"
+# 95 "../../../tos/interfaces/StdControl.nc"
 inline static error_t SerialP__SerialControl__start(void ){
 #line 95
   enum __nesc_unnamed4242 __nesc_result;
@@ -11765,7 +14566,7 @@ inline static error_t SerialP__SerialControl__start(void ){
 #line 95
 }
 #line 95
-# 322 "../../tos/lib/serial/SerialP.nc"
+# 322 "../../../tos/lib/serial/SerialP.nc"
 static inline void SerialP__startDoneTask__runTask(void )
 #line 322
 {
@@ -11781,7 +14582,7 @@ static inline void SerialP__startDoneTask__runTask(void )
   SerialP__SplitControl__startDone(SUCCESS);
 }
 
-# 56 "../../tos/lib/serial/SerialFrameComm.nc"
+# 56 "../../../tos/lib/serial/SerialFrameComm.nc"
 inline static error_t SerialP__SerialFrameComm__putDelimiter(void ){
 #line 56
   enum __nesc_unnamed4242 __nesc_result;
@@ -11796,7 +14597,7 @@ inline static error_t SerialP__SerialFrameComm__putDelimiter(void ){
 #line 56
 }
 #line 56
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 inline static error_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__signalSendDone__postTask(void ){
 #line 67
   enum __nesc_unnamed4242 __nesc_result;
@@ -11811,7 +14612,7 @@ inline static error_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__
 #line 67
 }
 #line 67
-# 194 "../../tos/lib/serial/SerialDispatcherP.nc"
+# 194 "../../../tos/lib/serial/SerialDispatcherP.nc"
 static inline void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__SendBytePacket__sendCompleted(error_t error)
 #line 194
 {
@@ -11823,14 +14624,14 @@ static inline void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__
   /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__signalSendDone__postTask();
 }
 
-# 91 "../../tos/lib/serial/SendBytePacket.nc"
+# 91 "../../../tos/lib/serial/SendBytePacket.nc"
 inline static void SerialP__SendBytePacket__sendCompleted(error_t error){
 #line 91
   /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__SendBytePacket__sendCompleted(error);
 #line 91
 }
 #line 91
-# 244 "../../tos/lib/serial/SerialP.nc"
+# 244 "../../../tos/lib/serial/SerialP.nc"
 static __inline bool SerialP__ack_queue_is_empty(void )
 #line 244
 {
@@ -12051,7 +14852,7 @@ static inline void SerialP__RunTx__runTask(void )
     }
 }
 
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 inline static error_t SerialP__stopDoneTask__postTask(void ){
 #line 67
   enum __nesc_unnamed4242 __nesc_result;
@@ -12066,7 +14867,7 @@ inline static error_t SerialP__stopDoneTask__postTask(void ){
 #line 67
 }
 #line 67
-# 48 "../../tos/interfaces/UartStream.nc"
+# 48 "../../../tos/interfaces/UartStream.nc"
 inline static error_t HdlcTranslateC__UartStream__send(uint8_t * buf, uint16_t len){
 #line 48
   enum __nesc_unnamed4242 __nesc_result;
@@ -12081,7 +14882,7 @@ inline static error_t HdlcTranslateC__UartStream__send(uint8_t * buf, uint16_t l
 #line 48
 }
 #line 48
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 inline static error_t SerialP__RunTx__postTask(void ){
 #line 67
   enum __nesc_unnamed4242 __nesc_result;
@@ -12096,21 +14897,7 @@ inline static error_t SerialP__RunTx__postTask(void ){
 #line 67
 }
 #line 67
-inline static error_t CC2420TinyosNetworkP__grantTask__postTask(void ){
-#line 67
-  enum __nesc_unnamed4242 __nesc_result;
-#line 67
-
-#line 67
-  __nesc_result = SchedulerBasicP__TaskBasic__postTask(CC2420TinyosNetworkP__grantTask);
-#line 67
-
-#line 67
-  return __nesc_result;
-#line 67
-}
-#line 67
-# 233 "../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
+# 233 "../../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
 static inline error_t CC2420TinyosNetworkP__Resource__release(uint8_t id)
 #line 233
 {
@@ -12128,10 +14915,10 @@ static inline void CC2420TinyosNetworkP__Resource__default__granted(uint8_t clie
   CC2420TinyosNetworkP__Resource__release(client);
 }
 
-# 102 "../../tos/interfaces/Resource.nc"
-inline static void CC2420TinyosNetworkP__Resource__granted(uint8_t arg_0x7f540cdd2600){
+# 102 "../../../tos/interfaces/Resource.nc"
+inline static void CC2420TinyosNetworkP__Resource__granted(uint8_t arg_0x7f49d69c5600){
 #line 102
-  switch (arg_0x7f540cdd2600) {
+  switch (arg_0x7f49d69c5600) {
 #line 102
     case CC2420ActiveMessageC__CC2420_AM_SEND_ID:
 #line 102
@@ -12141,7 +14928,7 @@ inline static void CC2420TinyosNetworkP__Resource__granted(uint8_t arg_0x7f540cd
 #line 102
     default:
 #line 102
-      CC2420TinyosNetworkP__Resource__default__granted(arg_0x7f540cdd2600);
+      CC2420TinyosNetworkP__Resource__default__granted(arg_0x7f49d69c5600);
 #line 102
       break;
 #line 102
@@ -12149,7 +14936,7 @@ inline static void CC2420TinyosNetworkP__Resource__granted(uint8_t arg_0x7f540cd
 #line 102
 }
 #line 102
-# 68 "../../tos/system/FcfsResourceQueueC.nc"
+# 68 "../../../tos/system/FcfsResourceQueueC.nc"
 static inline resource_client_id_t /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__FcfsQueue__dequeue(void )
 #line 68
 {
@@ -12197,7 +14984,7 @@ static inline resource_client_id_t /*CC2420TinyosNetworkC.FcfsResourceQueueC*/Fc
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 70 "../../tos/interfaces/ResourceQueue.nc"
+# 70 "../../../tos/interfaces/ResourceQueue.nc"
 inline static resource_client_id_t CC2420TinyosNetworkP__Queue__dequeue(void ){
 #line 70
   unsigned char __nesc_result;
@@ -12212,22 +14999,7 @@ inline static resource_client_id_t CC2420TinyosNetworkP__Queue__dequeue(void ){
 #line 70
 }
 #line 70
-#line 53
-inline static bool CC2420TinyosNetworkP__Queue__isEmpty(void ){
-#line 53
-  unsigned char __nesc_result;
-#line 53
-
-#line 53
-  __nesc_result = /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__FcfsQueue__isEmpty();
-#line 53
-
-#line 53
-  return __nesc_result;
-#line 53
-}
-#line 53
-# 184 "../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
+# 184 "../../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
 static inline void CC2420TinyosNetworkP__grantTask__runTask(void )
 #line 184
 {
@@ -12252,1436 +15024,14 @@ static inline void CC2420TinyosNetworkP__grantTask__runTask(void )
     }
 }
 
-# 128 "../../tos/chips/cc2420/packet/CC2420PacketP.nc"
-static inline void CC2420PacketP__CC2420Packet__setNetwork(message_t * p_msg, uint8_t networkId)
-#line 128
-{
-
-  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
-    *CC2420PacketP__getNetwork(p_msg) = networkId;
-#line 131
-    __nesc_atomic_end(__nesc_atomic); }
-}
-
-# 77 "../../tos/chips/cc2420/interfaces/CC2420Packet.nc"
-inline static void CC2420TinyosNetworkP__CC2420Packet__setNetwork(message_t * p_msg, uint8_t networkId){
-#line 77
-  CC2420PacketP__CC2420Packet__setNetwork(p_msg, networkId);
-#line 77
-}
-#line 77
-# 81 "../../tos/chips/cc2420/packet/CC2420PacketP.nc"
-static inline int CC2420PacketP__getAddressLength(int type)
-#line 81
-{
-  switch (type) {
-      case IEEE154_ADDR_SHORT: return 2;
-      case IEEE154_ADDR_EXT: return 8;
-      case IEEE154_ADDR_NONE: return 0;
-      default: return -100;
-    }
-}
-
-# 297 "/usr/local/lib/ncc/nesc_nx.h"
-static __inline  uint8_t __nesc_hton_leuint8(void * target, uint8_t value)
-#line 297
-{
-  uint8_t *base = target;
-
-#line 299
-  base[0] = value;
-  return value;
-}
-
-#line 347
-static __inline  uint32_t __nesc_hton_uint32(void * target, uint32_t value)
-#line 347
-{
-  uint8_t *base = target;
-
-#line 349
-  base[3] = value;
-  base[2] = value >> 8;
-  base[1] = value >> 16;
-  base[0] = value >> 24;
-  return value;
-}
-
-#line 286
-static __inline  uint8_t __nesc_hton_uint8(void * target, uint8_t value)
-#line 286
-{
-  uint8_t *base = target;
-
-#line 288
-  base[0] = value;
-  return value;
-}
-
-#line 303
-static __inline  int8_t __nesc_hton_int8(void * target, int8_t value)
-#line 303
-{
-#line 303
-  __nesc_hton_uint8(target, value);
-#line 303
-  return value;
-}
-
-#line 327
-static __inline  uint16_t __nesc_hton_leuint16(void * target, uint16_t value)
-#line 327
-{
-  uint8_t *base = target;
-
-#line 329
-  base[0] = value;
-  base[1] = value >> 8;
-  return value;
-}
-
-#line 322
-static __inline  uint16_t __nesc_ntoh_leuint16(const void * source)
-#line 322
-{
-  const uint8_t *base = source;
-
-#line 324
-  return ((uint16_t )base[1] << 8) | base[0];
-}
-
-# 547 "../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
-static inline error_t CC2420TransmitP__send(message_t * p_msg, bool cca)
-#line 547
-{
-  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
-#line 548
-    {
-      if (CC2420TransmitP__m_state == CC2420TransmitP__S_CANCEL) {
-          {
-            enum __nesc_unnamed4242 __nesc_temp = 
-#line 550
-            ECANCEL;
-
-            {
-#line 550
-              __nesc_atomic_end(__nesc_atomic); 
-#line 550
-              return __nesc_temp;
-            }
-          }
-        }
-#line 553
-      if (CC2420TransmitP__m_state != CC2420TransmitP__S_STARTED) {
-          {
-            enum __nesc_unnamed4242 __nesc_temp = 
-#line 554
-            FAIL;
-
-            {
-#line 554
-              __nesc_atomic_end(__nesc_atomic); 
-#line 554
-              return __nesc_temp;
-            }
-          }
-        }
-
-
-      CC2420TransmitP__m_state = CC2420TransmitP__S_LOAD;
-      CC2420TransmitP__m_cca = cca;
-      CC2420TransmitP__m_msg = p_msg;
-      CC2420TransmitP__totalCcaChecks = 0;
-    }
-#line 564
-    __nesc_atomic_end(__nesc_atomic); }
-
-  if (CC2420TransmitP__acquireSpiResource() == SUCCESS) {
-      CC2420TransmitP__loadTXFIFO();
-    }
-
-  return SUCCESS;
-}
-
-#line 192
-static inline error_t CC2420TransmitP__Send__send(message_t * p_msg, bool useCca)
-#line 192
-{
-  return CC2420TransmitP__send(p_msg, useCca);
-}
-
-# 51 "../../tos/chips/cc2420/interfaces/CC2420Transmit.nc"
-inline static error_t CC2420CsmaP__CC2420Transmit__send(message_t * p_msg, bool useCca){
-#line 51
-  enum __nesc_unnamed4242 __nesc_result;
-#line 51
-
-#line 51
-  __nesc_result = CC2420TransmitP__Send__send(p_msg, useCca);
-#line 51
-
-#line 51
-  return __nesc_result;
-#line 51
-}
-#line 51
-# 292 "/usr/local/lib/ncc/nesc_nx.h"
-static __inline  uint8_t __nesc_ntoh_leuint8(const void * source)
-#line 292
-{
-  const uint8_t *base = source;
-
-#line 294
-  return base[0];
-}
-
-# 301 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-static inline void CC2420ActiveMessageP__RadioBackoff__default__requestCca(am_id_t id, 
-message_t *msg)
-#line 302
-{
-}
-
-# 95 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
-inline static void CC2420ActiveMessageP__RadioBackoff__requestCca(am_id_t arg_0x7f540cd3b700, message_t * msg){
-#line 95
-    CC2420ActiveMessageP__RadioBackoff__default__requestCca(arg_0x7f540cd3b700, msg);
-#line 95
-}
-#line 95
-# 250 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-static inline void CC2420ActiveMessageP__SubBackoff__requestCca(message_t *msg)
-#line 250
-{
-
-  CC2420ActiveMessageP__RadioBackoff__requestCca(__nesc_ntoh_leuint8(((cc2420_header_t * )((uint8_t *)msg + (unsigned short )& ((message_t *)0)->data - sizeof(cc2420_header_t )))->type.nxdata), msg);
-}
-
-# 95 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
-inline static void CC2420CsmaP__RadioBackoff__requestCca(message_t * msg){
-#line 95
-  CC2420ActiveMessageP__SubBackoff__requestCca(msg);
-#line 95
-}
-#line 95
-# 111 "../../tos/system/StateImplP.nc"
-static inline void StateImplP__State__forceState(uint8_t id, uint8_t reqState)
-#line 111
-{
-  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
-#line 112
-    StateImplP__state[id] = reqState;
-#line 112
-    __nesc_atomic_end(__nesc_atomic); }
-}
-
-# 51 "../../tos/interfaces/State.nc"
-inline static void CC2420CsmaP__SplitControlState__forceState(uint8_t reqState){
-#line 51
-  StateImplP__State__forceState(1U, reqState);
-#line 51
-}
-#line 51
-#line 66
-inline static bool CC2420CsmaP__SplitControlState__isState(uint8_t myState){
-#line 66
-  unsigned char __nesc_result;
-#line 66
-
-#line 66
-  __nesc_result = StateImplP__State__isState(1U, myState);
-#line 66
-
-#line 66
-  return __nesc_result;
-#line 66
-}
-#line 66
-# 152 "../../tos/chips/cc2420/packet/CC2420PacketP.nc"
-static inline cc2420_metadata_t *CC2420PacketP__CC2420PacketBody__getMetadata(message_t *msg)
-#line 152
-{
-  return & ((message_metadata_t *)& msg->metadata)->cc2420_meta;
-}
-
-# 53 "../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
-inline static cc2420_metadata_t * CC2420CsmaP__CC2420PacketBody__getMetadata(message_t * msg){
-#line 53
-  nx_struct cc2420_metadata *__nesc_result;
-#line 53
-
-#line 53
-  __nesc_result = CC2420PacketP__CC2420PacketBody__getMetadata(msg);
-#line 53
-
-#line 53
-  return __nesc_result;
-#line 53
-}
-#line 53
-# 137 "../../tos/chips/cc2420/packet/CC2420PacketP.nc"
-static inline cc2420_header_t * CC2420PacketP__CC2420PacketBody__getHeader(message_t * msg)
-#line 137
-{
-  return (cc2420_header_t * )((uint8_t *)msg + (unsigned short )& ((message_t *)0)->data - sizeof(cc2420_header_t ));
-}
-
-# 42 "../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
-inline static cc2420_header_t * CC2420CsmaP__CC2420PacketBody__getHeader(message_t * msg){
-#line 42
-  nx_struct cc2420_header *__nesc_result;
-#line 42
-
-#line 42
-  __nesc_result = CC2420PacketP__CC2420PacketBody__getHeader(msg);
-#line 42
-
-#line 42
-  return __nesc_result;
-#line 42
-}
-#line 42
-# 122 "../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
-static inline error_t CC2420CsmaP__Send__send(message_t *p_msg, uint8_t len)
-#line 122
-{
-  unsigned char *__nesc_temp43;
-  unsigned char *__nesc_temp42;
-#line 124
-  cc2420_header_t *header = CC2420CsmaP__CC2420PacketBody__getHeader(p_msg);
-  cc2420_metadata_t *metadata = CC2420CsmaP__CC2420PacketBody__getMetadata(p_msg);
-
-  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
-#line 127
-    {
-      if (!CC2420CsmaP__SplitControlState__isState(CC2420CsmaP__S_STARTED)) {
-          {
-            enum __nesc_unnamed4242 __nesc_temp = 
-#line 129
-            FAIL;
-
-            {
-#line 129
-              __nesc_atomic_end(__nesc_atomic); 
-#line 129
-              return __nesc_temp;
-            }
-          }
-        }
-#line 132
-      CC2420CsmaP__SplitControlState__forceState(CC2420CsmaP__S_TRANSMITTING);
-      CC2420CsmaP__m_msg = p_msg;
-    }
-#line 134
-    __nesc_atomic_end(__nesc_atomic); }
-
-
-
-
-
-
-
-
-  (__nesc_temp42 = header->fcf.nxdata, __nesc_hton_leuint16(__nesc_temp42, __nesc_ntoh_leuint16(__nesc_temp42) & (((1 << IEEE154_FCF_ACK_REQ) | (
-  0x3 << IEEE154_FCF_SRC_ADDR_MODE)) | (
-  0x3 << IEEE154_FCF_DEST_ADDR_MODE))));
-
-  (__nesc_temp43 = header->fcf.nxdata, __nesc_hton_leuint16(__nesc_temp43, __nesc_ntoh_leuint16(__nesc_temp43) | ((IEEE154_TYPE_DATA << IEEE154_FCF_FRAME_TYPE) | (
-  1 << IEEE154_FCF_INTRAPAN))));
-
-  __nesc_hton_int8(metadata->ack.nxdata, FALSE);
-  __nesc_hton_uint8(metadata->rssi.nxdata, 0);
-  __nesc_hton_uint8(metadata->lqi.nxdata, 0);
-
-  __nesc_hton_uint32(metadata->timestamp.nxdata, CC2420_INVALID_TIMESTAMP);
-
-  CC2420CsmaP__ccaOn = TRUE;
-  CC2420CsmaP__RadioBackoff__requestCca(CC2420CsmaP__m_msg);
-
-  CC2420CsmaP__CC2420Transmit__send(CC2420CsmaP__m_msg, CC2420CsmaP__ccaOn);
-  return SUCCESS;
-}
-
-# 75 "../../tos/interfaces/Send.nc"
-inline static error_t UniqueSendP__SubSend__send(message_t * msg, uint8_t len){
-#line 75
-  enum __nesc_unnamed4242 __nesc_result;
-#line 75
-
-#line 75
-  __nesc_result = CC2420CsmaP__Send__send(msg, len);
-#line 75
-
-#line 75
-  return __nesc_result;
-#line 75
-}
-#line 75
-# 42 "../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
-inline static cc2420_header_t * UniqueSendP__CC2420PacketBody__getHeader(message_t * msg){
-#line 42
-  nx_struct cc2420_header *__nesc_result;
-#line 42
-
-#line 42
-  __nesc_result = CC2420PacketP__CC2420PacketBody__getHeader(msg);
-#line 42
-
-#line 42
-  return __nesc_result;
-#line 42
-}
-#line 42
-# 45 "../../tos/interfaces/State.nc"
-inline static error_t UniqueSendP__State__requestState(uint8_t reqState){
-#line 45
-  enum __nesc_unnamed4242 __nesc_result;
-#line 45
-
-#line 45
-  __nesc_result = StateImplP__State__requestState(2U, reqState);
-#line 45
-
-#line 45
-  return __nesc_result;
-#line 45
-}
-#line 45
-# 75 "../../tos/chips/cc2420/unique/UniqueSendP.nc"
-static inline error_t UniqueSendP__Send__send(message_t *msg, uint8_t len)
-#line 75
-{
-  error_t error;
-
-#line 77
-  if (UniqueSendP__State__requestState(UniqueSendP__S_SENDING) == SUCCESS) {
-      __nesc_hton_leuint8(UniqueSendP__CC2420PacketBody__getHeader(msg)->dsn.nxdata, UniqueSendP__localSendId++);
-
-      if ((error = UniqueSendP__SubSend__send(msg, len)) != SUCCESS) {
-          UniqueSendP__State__toIdle();
-        }
-
-      return error;
-    }
-
-  return EBUSY;
-}
-
-# 75 "../../tos/interfaces/Send.nc"
-inline static error_t CC2420TinyosNetworkP__SubSend__send(message_t * msg, uint8_t len){
-#line 75
-  enum __nesc_unnamed4242 __nesc_result;
-#line 75
-
-#line 75
-  __nesc_result = UniqueSendP__Send__send(msg, len);
-#line 75
-
-#line 75
-  return __nesc_result;
-#line 75
-}
-#line 75
-# 97 "../../tos/interfaces/Resource.nc"
-inline static error_t CC2420TransmitP__SpiResource__immediateRequest(void ){
-#line 97
-  enum __nesc_unnamed4242 __nesc_result;
-#line 97
-
-#line 97
-  __nesc_result = CC2420SpiP__Resource__immediateRequest(/*CC2420TransmitC.Spi*/CC2420SpiC__3__CLIENT_ID);
-#line 97
-
-#line 97
-  return __nesc_result;
-#line 97
-}
-#line 97
-# 45 "../../tos/interfaces/State.nc"
-inline static error_t CC2420SpiP__WorkingState__requestState(uint8_t reqState){
-#line 45
-  enum __nesc_unnamed4242 __nesc_result;
-#line 45
-
-#line 45
-  __nesc_result = StateImplP__State__requestState(0U, reqState);
-#line 45
-
-#line 45
-  return __nesc_result;
-#line 45
-}
-#line 45
-# 338 "../../tos/system/ArbiterP.nc"
-static inline bool /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__isOwner(uint8_t id)
-#line 338
-{
-  /* atomic removed: atomic calls only */
-#line 339
-  {
-    unsigned char __nesc_temp = 
-#line 339
-    /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__resId == id && /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__state == /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__RES_BUSY;
-
-#line 339
-    return __nesc_temp;
-  }
-}
-
-# 172 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-static inline bool /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__isOwner(uint8_t id)
-#line 172
-{
-#line 172
-  return FALSE;
-}
-
-# 128 "../../tos/interfaces/Resource.nc"
-inline static bool /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__isOwner(uint8_t arg_0x7f540d5ea4e0){
-#line 128
-  unsigned char __nesc_result;
-#line 128
-
-#line 128
-  switch (arg_0x7f540d5ea4e0) {
-#line 128
-    case /*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID:
-#line 128
-      __nesc_result = /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__isOwner(/*CC2420SpiWireC.HplCC2420SpiC.SpiC.UsartC*/Msp430Usart0C__0__CLIENT_ID);
-#line 128
-      break;
-#line 128
-    default:
-#line 128
-      __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__isOwner(arg_0x7f540d5ea4e0);
-#line 128
-      break;
-#line 128
-    }
-#line 128
-
-#line 128
-  return __nesc_result;
-#line 128
-}
-#line 128
-# 112 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-static inline bool /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__isOwner(uint8_t id)
-#line 112
-{
-  return /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__isOwner(id);
-}
-
-# 128 "../../tos/interfaces/Resource.nc"
-inline static bool CC2420SpiP__SpiResource__isOwner(void ){
-#line 128
-  unsigned char __nesc_result;
-#line 128
-
-#line 128
-  __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__isOwner(/*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID);
-#line 128
-
-#line 128
-  return __nesc_result;
-#line 128
-}
-#line 128
-# 176 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-static inline const msp430_spi_union_config_t */*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Msp430SpiConfigure__default__getConfig(uint8_t id)
-#line 176
-{
-  return &msp430_spi_default_config;
-}
-
-# 39 "../../tos/chips/msp430/usart/Msp430SpiConfigure.nc"
-inline static const msp430_spi_union_config_t */*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Msp430SpiConfigure__getConfig(uint8_t arg_0x7f540d5e9890){
-#line 39
-  union __nesc_unnamed4282 const *__nesc_result;
-#line 39
-
-#line 39
-    __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Msp430SpiConfigure__default__getConfig(arg_0x7f540d5e9890);
-#line 39
-
-#line 39
-  return __nesc_result;
-#line 39
-}
-#line 39
-# 168 "../../tos/chips/msp430/usart/HplMsp430Usart.nc"
-inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__setModeSpi(const msp430_spi_union_config_t *config){
-#line 168
-  HplMsp430Usart0P__Usart__setModeSpi(config);
-#line 168
-}
-#line 168
-# 120 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-static inline void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__ResourceConfigure__configure(uint8_t id)
-#line 120
-{
-  /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__setModeSpi(/*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Msp430SpiConfigure__getConfig(id));
-}
-
-# 367 "../../tos/system/ArbiterP.nc"
-static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__default__configure(uint8_t id)
-#line 367
-{
-}
-
-# 59 "../../tos/interfaces/ResourceConfigure.nc"
-inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__configure(uint8_t arg_0x7f540d431a30){
-#line 59
-  switch (arg_0x7f540d431a30) {
-#line 59
-    case /*CC2420SpiWireC.HplCC2420SpiC.SpiC.UsartC*/Msp430Usart0C__0__CLIENT_ID:
-#line 59
-      /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__ResourceConfigure__configure(/*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID);
-#line 59
-      break;
-#line 59
-    default:
-#line 59
-      /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__default__configure(arg_0x7f540d431a30);
-#line 59
-      break;
-#line 59
-    }
-#line 59
-}
-#line 59
-# 374 "../../tos/system/ArbiterP.nc"
-static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__default__immediateRequested(void )
-#line 374
-{
-  /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__release();
-}
-
-# 79 "../../tos/interfaces/ResourceDefaultOwner.nc"
-inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__immediateRequested(void ){
-#line 79
-  /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__default__immediateRequested();
-#line 79
-}
-#line 79
-# 365 "../../tos/system/ArbiterP.nc"
-static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__default__immediateRequested(uint8_t id)
-#line 365
-{
-}
-
-# 61 "../../tos/interfaces/ResourceRequested.nc"
-inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__immediateRequested(uint8_t arg_0x7f540d434cf0){
-#line 61
-    /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__default__immediateRequested(arg_0x7f540d434cf0);
-#line 61
-}
-#line 61
-# 222 "../../tos/system/ArbiterP.nc"
-static inline error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__immediateRequest(uint8_t id)
-#line 222
-{
-  /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__immediateRequested(/*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__resId);
-  /* atomic removed: atomic calls only */
-#line 224
-  {
-
-
-
-
-    if (/*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__state != /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__RES_DEF_OWNED) 
-      {
-        enum __nesc_unnamed4242 __nesc_temp = 
-#line 230
-        FAIL;
-
-#line 230
-        return __nesc_temp;
-      }
-#line 231
-    /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__state = /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__RES_IMM_GRANTING;
-    /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__reqResId = id;
-  }
-  /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__immediateRequested();
-  if (/*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__resId == id) {
-      /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__configure(/*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__resId);
-      return SUCCESS;
-    }
-  /* atomic removed: atomic calls only */
-
-
-
-
-
-  /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__state = /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__RES_DEF_OWNED;
-  return FAIL;
-}
-
-# 174 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-static inline error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__immediateRequest(uint8_t id)
-#line 174
-{
-#line 174
-  return FAIL;
-}
-
-# 97 "../../tos/interfaces/Resource.nc"
-inline static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__immediateRequest(uint8_t arg_0x7f540d5ea4e0){
-#line 97
-  enum __nesc_unnamed4242 __nesc_result;
-#line 97
-
-#line 97
-  switch (arg_0x7f540d5ea4e0) {
-#line 97
-    case /*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID:
-#line 97
-      __nesc_result = /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__immediateRequest(/*CC2420SpiWireC.HplCC2420SpiC.SpiC.UsartC*/Msp430Usart0C__0__CLIENT_ID);
-#line 97
-      break;
-#line 97
-    default:
-#line 97
-      __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__immediateRequest(arg_0x7f540d5ea4e0);
-#line 97
-      break;
-#line 97
-    }
-#line 97
-
-#line 97
-  return __nesc_result;
-#line 97
-}
-#line 97
-# 104 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-static inline error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__immediateRequest(uint8_t id)
-#line 104
-{
-  return /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__immediateRequest(id);
-}
-
-# 97 "../../tos/interfaces/Resource.nc"
-inline static error_t CC2420SpiP__SpiResource__immediateRequest(void ){
-#line 97
-  enum __nesc_unnamed4242 __nesc_result;
-#line 97
-
-#line 97
-  __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__immediateRequest(/*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID);
-#line 97
-
-#line 97
-  return __nesc_result;
-#line 97
-}
-#line 97
-# 137 "../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
-static inline void HplMsp430Usart0P__Usart__resetUsart(bool reset)
-#line 137
-{
-  if (reset) {
-      U0CTL = 0x01;
-    }
-  else {
-      U0CTL &= ~0x01;
-    }
-}
-
-# 97 "../../tos/chips/msp430/usart/HplMsp430Usart.nc"
-inline static void HplMsp430I2C0P__HplUsart__resetUsart(bool reset){
-#line 97
-  HplMsp430Usart0P__Usart__resetUsart(reset);
-#line 97
-}
-#line 97
-# 68 "../../tos/chips/msp430/usart/HplMsp430I2C0P.nc"
-static inline void HplMsp430I2C0P__HplI2C__clearModeI2C(void )
-#line 68
-{
-  /* atomic removed: atomic calls only */
-#line 69
-  {
-    HplMsp430I2C0P__U0CTL &= ~((0x20 | 0x04) | 0x01);
-    HplMsp430I2C0P__HplUsart__resetUsart(TRUE);
-  }
-}
-
-# 7 "../../tos/chips/msp430/usart/HplMsp430I2C.nc"
-inline static void HplMsp430Usart0P__HplI2C__clearModeI2C(void ){
-#line 7
-  HplMsp430I2C0P__HplI2C__clearModeI2C();
-#line 7
-}
-#line 7
-# 106 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
-static inline void /*HplMsp430GeneralIOC.P35*/HplMsp430GeneralIOP__21__IO__selectIOFunc(void )
-#line 106
-{
-  /* atomic removed: atomic calls only */
-#line 106
-  * (volatile uint8_t * )27U &= ~(0x01 << 5);
-}
-
-# 97 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
-inline static void HplMsp430Usart0P__URXD__selectIOFunc(void ){
-#line 97
-  /*HplMsp430GeneralIOC.P35*/HplMsp430GeneralIOP__21__IO__selectIOFunc();
-#line 97
-}
-#line 97
-# 106 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
-static inline void /*HplMsp430GeneralIOC.P34*/HplMsp430GeneralIOP__20__IO__selectIOFunc(void )
-#line 106
-{
-  /* atomic removed: atomic calls only */
-#line 106
-  * (volatile uint8_t * )27U &= ~(0x01 << 4);
-}
-
-# 97 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
-inline static void HplMsp430Usart0P__UTXD__selectIOFunc(void ){
-#line 97
-  /*HplMsp430GeneralIOC.P34*/HplMsp430GeneralIOP__20__IO__selectIOFunc();
-#line 97
-}
-#line 97
-# 193 "../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
-static inline void HplMsp430Usart0P__Usart__disableUart(void )
-#line 193
-{
-  /* atomic removed: atomic calls only */
-#line 194
-  {
-    HplMsp430Usart0P__ME1 &= ~(0x80 | 0x40);
-    HplMsp430Usart0P__UTXD__selectIOFunc();
-    HplMsp430Usart0P__URXD__selectIOFunc();
-  }
-}
-
-#line 129
-static inline void HplMsp430Usart0P__Usart__setUmctl(uint8_t control)
-#line 129
-{
-  U0MCTL = control;
-}
-
-#line 118
-static inline void HplMsp430Usart0P__Usart__setUbr(uint16_t control)
-#line 118
-{
-  /* atomic removed: atomic calls only */
-#line 119
-  {
-    U0BR0 = control & 0x00FF;
-    U0BR1 = (control >> 8) & 0x00FF;
-  }
-}
-
-#line 242
-static inline void HplMsp430Usart0P__configSpi(const msp430_spi_union_config_t *config)
-#line 242
-{
-
-  U0CTL = (config->spiRegisters.uctl | 0x04) | 0x01;
-  HplMsp430Usart0P__U0TCTL = config->spiRegisters.utctl;
-
-  HplMsp430Usart0P__Usart__setUbr(config->spiRegisters.ubr);
-  HplMsp430Usart0P__Usart__setUmctl(0x00);
-}
-
-# 104 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
-static inline void /*HplMsp430GeneralIOC.P33*/HplMsp430GeneralIOP__19__IO__selectModuleFunc(void )
-#line 104
-{
-  /* atomic removed: atomic calls only */
-#line 104
-  * (volatile uint8_t * )27U |= 0x01 << 3;
-}
-
-# 91 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
-inline static void HplMsp430Usart0P__UCLK__selectModuleFunc(void ){
-#line 91
-  /*HplMsp430GeneralIOC.P33*/HplMsp430GeneralIOP__19__IO__selectModuleFunc();
-#line 91
-}
-#line 91
-# 104 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
-static inline void /*HplMsp430GeneralIOC.P32*/HplMsp430GeneralIOP__18__IO__selectModuleFunc(void )
-#line 104
-{
-  /* atomic removed: atomic calls only */
-#line 104
-  * (volatile uint8_t * )27U |= 0x01 << 2;
-}
-
-# 91 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
-inline static void HplMsp430Usart0P__SOMI__selectModuleFunc(void ){
-#line 91
-  /*HplMsp430GeneralIOC.P32*/HplMsp430GeneralIOP__18__IO__selectModuleFunc();
-#line 91
-}
-#line 91
-# 104 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
-static inline void /*HplMsp430GeneralIOC.P31*/HplMsp430GeneralIOP__17__IO__selectModuleFunc(void )
-#line 104
-{
-  /* atomic removed: atomic calls only */
-#line 104
-  * (volatile uint8_t * )27U |= 0x01 << 1;
-}
-
-# 91 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
-inline static void HplMsp430Usart0P__SIMO__selectModuleFunc(void ){
-#line 91
-  /*HplMsp430GeneralIOC.P31*/HplMsp430GeneralIOP__17__IO__selectModuleFunc();
-#line 91
-}
-#line 91
-# 224 "../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
-static inline void HplMsp430Usart0P__Usart__enableSpi(void )
-#line 224
-{
-  /* atomic removed: atomic calls only */
-#line 225
-  {
-    HplMsp430Usart0P__SIMO__selectModuleFunc();
-    HplMsp430Usart0P__SOMI__selectModuleFunc();
-    HplMsp430Usart0P__UCLK__selectModuleFunc();
-  }
-  HplMsp430Usart0P__ME1 |= 0x40;
-}
-
-#line 328
-static inline void HplMsp430Usart0P__Usart__clrIntr(void )
-#line 328
-{
-  HplMsp430Usart0P__IFG1 &= ~(0x80 | 0x40);
-}
-
-
-
-
-
-
-
-
-
-static inline void HplMsp430Usart0P__Usart__disableIntr(void )
-#line 340
-{
-  HplMsp430Usart0P__IE1 &= ~(0x80 | 0x40);
-}
-
-# 118 "../../tos/system/StateImplP.nc"
-static inline void StateImplP__State__toIdle(uint8_t id)
-#line 118
-{
-  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
-#line 119
-    StateImplP__state[id] = StateImplP__S_IDLE;
-#line 119
-    __nesc_atomic_end(__nesc_atomic); }
-}
-
-# 56 "../../tos/interfaces/State.nc"
-inline static void CC2420SpiP__WorkingState__toIdle(void ){
-#line 56
-  StateImplP__State__toIdle(0U);
-#line 56
-}
-#line 56
-# 88 "../../tos/interfaces/Resource.nc"
-inline static error_t CC2420TransmitP__SpiResource__request(void ){
-#line 88
-  enum __nesc_unnamed4242 __nesc_result;
-#line 88
-
-#line 88
-  __nesc_result = CC2420SpiP__Resource__request(/*CC2420TransmitC.Spi*/CC2420SpiC__3__CLIENT_ID);
-#line 88
-
-#line 88
-  return __nesc_result;
-#line 88
-}
-#line 88
-# 370 "../../tos/system/ArbiterP.nc"
-static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__default__requested(void )
-#line 370
-{
-  /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__release();
-}
-
-# 71 "../../tos/interfaces/ResourceDefaultOwner.nc"
-inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__requested(void ){
-#line 71
-  /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__default__requested();
-#line 71
-}
-#line 71
-# 70 "../../tos/interfaces/ResourceQueue.nc"
-inline static resource_client_id_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Queue__dequeue(void ){
-#line 70
-  unsigned char __nesc_result;
-#line 70
-
-#line 70
-  __nesc_result = /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__FcfsQueue__dequeue();
-#line 70
-
-#line 70
-  return __nesc_result;
-#line 70
-}
-#line 70
-# 364 "../../tos/system/ArbiterP.nc"
-static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__default__requested(uint8_t id)
-#line 364
-{
-}
-
-# 53 "../../tos/interfaces/ResourceRequested.nc"
-inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__requested(uint8_t arg_0x7f540d434cf0){
-#line 53
-    /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__default__requested(arg_0x7f540d434cf0);
-#line 53
-}
-#line 53
-# 64 "../../tos/system/FcfsResourceQueueC.nc"
-static inline bool /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__FcfsQueue__isEnqueued(resource_client_id_t id)
-#line 64
-{
-  /* atomic removed: atomic calls only */
-#line 65
-  {
-    unsigned char __nesc_temp = 
-#line 65
-    /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__resQ[id] != /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__NO_ENTRY || /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__qTail == id;
-
-#line 65
-    return __nesc_temp;
-  }
-}
-
-#line 82
-static inline error_t /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__FcfsQueue__enqueue(resource_client_id_t id)
-#line 82
-{
-  /* atomic removed: atomic calls only */
-#line 83
-  {
-    if (!/*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__FcfsQueue__isEnqueued(id)) {
-        if (/*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__qHead == /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__NO_ENTRY) {
-          /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__qHead = id;
-          }
-        else {
-#line 88
-          /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__resQ[/*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__qTail] = id;
-          }
-#line 89
-        /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__qTail = id;
-        {
-          enum __nesc_unnamed4242 __nesc_temp = 
-#line 90
-          SUCCESS;
-
-#line 90
-          return __nesc_temp;
-        }
-      }
-#line 92
-    {
-      enum __nesc_unnamed4242 __nesc_temp = 
-#line 92
-      EBUSY;
-
-#line 92
-      return __nesc_temp;
-    }
-  }
-}
-
-# 79 "../../tos/interfaces/ResourceQueue.nc"
-inline static error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Queue__enqueue(resource_client_id_t id){
-#line 79
-  enum __nesc_unnamed4242 __nesc_result;
-#line 79
-
-#line 79
-  __nesc_result = /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__FcfsQueue__enqueue(id);
-#line 79
-
-#line 79
-  return __nesc_result;
-#line 79
-}
-#line 79
-# 157 "../../tos/system/ArbiterP.nc"
-static inline error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__request(uint8_t id)
-#line 157
-{
-  error_t rval;
-
-  /* atomic removed: atomic calls only */
-
-
-
-
-
-  {
-#line 188
-    if (/*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__reqResId == id) 
-      {
-        enum __nesc_unnamed4242 __nesc_temp = 
-#line 189
-        EBUSY;
-
-#line 189
-        return __nesc_temp;
-      }
-#line 190
-    if ((rval = /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Queue__enqueue(id))) 
-      {
-        enum __nesc_unnamed4242 __nesc_temp = 
-#line 191
-        rval;
-
-#line 191
-        return __nesc_temp;
-      }
-  }
-  /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceRequested__requested(/*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__resId);
-  /* atomic removed: atomic calls only */
-
-
-
-
-
-
-  {
-
-
-
-
-    if (/*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__state != /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__RES_DEF_OWNED) 
-      {
-        enum __nesc_unnamed4242 __nesc_temp = 
-#line 208
-        SUCCESS;
-
-#line 208
-        return __nesc_temp;
-      }
-
-
-
-
-
-    /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__state = /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__RES_PREGRANT;
-    /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__reqResId = /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Queue__dequeue();
-  }
-  /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__requested();
-  return SUCCESS;
-}
-
-# 173 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-static inline error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__request(uint8_t id)
-#line 173
-{
-#line 173
-  return FAIL;
-}
-
-# 88 "../../tos/interfaces/Resource.nc"
-inline static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__request(uint8_t arg_0x7f540d5ea4e0){
-#line 88
-  enum __nesc_unnamed4242 __nesc_result;
-#line 88
-
-#line 88
-  switch (arg_0x7f540d5ea4e0) {
-#line 88
-    case /*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID:
-#line 88
-      __nesc_result = /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__request(/*CC2420SpiWireC.HplCC2420SpiC.SpiC.UsartC*/Msp430Usart0C__0__CLIENT_ID);
-#line 88
-      break;
-#line 88
-    default:
-#line 88
-      __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__request(arg_0x7f540d5ea4e0);
-#line 88
-      break;
-#line 88
-    }
-#line 88
-
-#line 88
-  return __nesc_result;
-#line 88
-}
-#line 88
-# 108 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
-static inline error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__request(uint8_t id)
-#line 108
-{
-  return /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__request(id);
-}
-
-# 88 "../../tos/interfaces/Resource.nc"
-inline static error_t CC2420SpiP__SpiResource__request(void ){
-#line 88
-  enum __nesc_unnamed4242 __nesc_result;
-#line 88
-
-#line 88
-  __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__request(/*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID);
-#line 88
-
-#line 88
-  return __nesc_result;
-#line 88
-}
-#line 88
-# 63 "../../tos/chips/cc2420/interfaces/CC2420Register.nc"
-inline static cc2420_status_t CC2420TransmitP__TXCTRL__write(uint16_t data){
-#line 63
-  unsigned char __nesc_result;
-#line 63
-
-#line 63
-  __nesc_result = CC2420SpiP__Reg__write(CC2420_TXCTRL, data);
-#line 63
-
-#line 63
-  return __nesc_result;
-#line 63
-}
-#line 63
-# 365 "../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
-static inline void HplMsp430Usart0P__Usart__tx(uint8_t data)
-#line 365
-{
-  HplMsp430Usart0P__U0TXBUF = data;
-}
-
-# 220 "../../tos/chips/msp430/usart/HplMsp430Usart.nc"
-inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__tx(uint8_t data){
-#line 220
-  HplMsp430Usart0P__Usart__tx(data);
-#line 220
-}
-#line 220
-# 313 "../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
-static inline bool HplMsp430Usart0P__Usart__isRxIntrPending(void )
-#line 313
-{
-  if (HplMsp430Usart0P__IFG1 & 0x40) {
-      return TRUE;
-    }
-  return FALSE;
-}
-
-# 192 "../../tos/chips/msp430/usart/HplMsp430Usart.nc"
-inline static bool /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__isRxIntrPending(void ){
-#line 192
-  unsigned char __nesc_result;
-#line 192
-
-#line 192
-  __nesc_result = HplMsp430Usart0P__Usart__isRxIntrPending();
-#line 192
-
-#line 192
-  return __nesc_result;
-#line 192
-}
-#line 192
-# 324 "../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
-static inline void HplMsp430Usart0P__Usart__clrRxIntr(void )
-#line 324
-{
-  HplMsp430Usart0P__IFG1 &= ~0x40;
-}
-
-# 197 "../../tos/chips/msp430/usart/HplMsp430Usart.nc"
-inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__clrRxIntr(void ){
-#line 197
-  HplMsp430Usart0P__Usart__clrRxIntr();
-#line 197
-}
-#line 197
-# 369 "../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
-static inline uint8_t HplMsp430Usart0P__Usart__rx(void )
-#line 369
-{
-  return U0RXBUF;
-}
-
-# 227 "../../tos/chips/msp430/usart/HplMsp430Usart.nc"
-inline static uint8_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__rx(void ){
-#line 227
-  unsigned char __nesc_result;
-#line 227
-
-#line 227
-  __nesc_result = HplMsp430Usart0P__Usart__rx();
-#line 227
-
-#line 227
-  return __nesc_result;
-#line 227
-}
-#line 227
-# 76 "../../tos/interfaces/SpiPacket.nc"
-inline static error_t CC2420SpiP__SpiPacket__send(uint8_t * txBuf, uint8_t * rxBuf, uint16_t len){
-#line 76
-  enum __nesc_unnamed4242 __nesc_result;
-#line 76
-
-#line 76
-  __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__send(/*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID, txBuf, rxBuf, len);
-#line 76
-
-#line 76
-  return __nesc_result;
-#line 76
-}
-#line 76
-# 45 "../../tos/interfaces/SpiByte.nc"
-inline static uint8_t CC2420SpiP__SpiByte__write(uint8_t tx){
-#line 45
-  unsigned char __nesc_result;
-#line 45
-
-#line 45
-  __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiByte__write(tx);
-#line 45
-
-#line 45
-  return __nesc_result;
-#line 45
-}
-#line 45
-# 126 "../../tos/system/StateImplP.nc"
-static inline bool StateImplP__State__isIdle(uint8_t id)
-#line 126
-{
-  return StateImplP__State__isState(id, StateImplP__S_IDLE);
-}
-
-# 61 "../../tos/interfaces/State.nc"
-inline static bool CC2420SpiP__WorkingState__isIdle(void ){
-#line 61
-  unsigned char __nesc_result;
-#line 61
-
-#line 61
-  __nesc_result = StateImplP__State__isIdle(0U);
-#line 61
-
-#line 61
-  return __nesc_result;
-#line 61
-}
-#line 61
-# 214 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
-static inline cc2420_status_t CC2420SpiP__Fifo__write(uint8_t addr, uint8_t *data, 
-uint8_t len)
-#line 215
-{
-
-  uint8_t status = 0;
-
-  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
-#line 219
-    {
-      if (CC2420SpiP__WorkingState__isIdle()) {
-          {
-            unsigned char __nesc_temp = 
-#line 221
-            status;
-
-            {
-#line 221
-              __nesc_atomic_end(__nesc_atomic); 
-#line 221
-              return __nesc_temp;
-            }
-          }
-        }
-    }
-#line 225
-    __nesc_atomic_end(__nesc_atomic); }
-#line 225
-  CC2420SpiP__m_addr = addr;
-
-  status = CC2420SpiP__SpiByte__write(CC2420SpiP__m_addr);
-  CC2420SpiP__SpiPacket__send(data, (void *)0, len);
-
-  return status;
-}
-
-# 82 "../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
-inline static cc2420_status_t CC2420TransmitP__TXFIFO__write(uint8_t * data, uint8_t length){
-#line 82
-  unsigned char __nesc_result;
-#line 82
-
-#line 82
-  __nesc_result = CC2420SpiP__Fifo__write(CC2420_TXFIFO, data, length);
-#line 82
-
-#line 82
-  return __nesc_result;
-#line 82
-}
-#line 82
-# 344 "../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
-static inline void HplMsp430Usart0P__Usart__enableRxIntr(void )
-#line 344
-{
-  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
-#line 345
-    {
-      HplMsp430Usart0P__IFG1 &= ~0x40;
-      HplMsp430Usart0P__IE1 |= 0x40;
-    }
-#line 348
-    __nesc_atomic_end(__nesc_atomic); }
-}
-
-# 180 "../../tos/chips/msp430/usart/HplMsp430Usart.nc"
-inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__enableRxIntr(void ){
-#line 180
-  HplMsp430Usart0P__Usart__enableRxIntr();
-#line 180
-}
-#line 180
-# 67 "../../tos/interfaces/TaskBasic.nc"
-inline static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__signalDone_task__postTask(void ){
-#line 67
-  enum __nesc_unnamed4242 __nesc_result;
-#line 67
-
-#line 67
-  __nesc_result = SchedulerBasicP__TaskBasic__postTask(/*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__signalDone_task);
-#line 67
-
-#line 67
-  return __nesc_result;
-#line 67
-}
-#line 67
-# 103 "../../tos/lib/timer/Alarm.nc"
+# 103 "../../../tos/lib/timer/Alarm.nc"
 inline static void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__startAt(/*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__size_type t0, /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__size_type dt){
 #line 103
   /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Alarm__startAt(t0, dt);
 #line 103
 }
 #line 103
-# 58 "../../tos/lib/timer/AlarmToTimerC.nc"
+# 58 "../../../tos/lib/timer/AlarmToTimerC.nc"
 static inline void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__start(uint32_t t0, uint32_t dt, bool oneshot)
 {
   /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__m_dt = dt;
@@ -13696,68 +15046,68 @@ static inline void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Timer__star
   /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__start(t0, dt, TRUE);
 }
 
-# 129 "../../tos/lib/timer/Timer.nc"
+# 129 "../../../tos/lib/timer/Timer.nc"
 inline static void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__TimerFrom__startOneShotAt(uint32_t t0, uint32_t dt){
 #line 129
   /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Timer__startOneShotAt(t0, dt);
 #line 129
 }
 #line 129
-# 113 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 113 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Control__disableEvents(void )
 #line 113
 {
   * (volatile uint16_t * )390U &= ~0x0010;
 }
 
-# 77 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 77 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 inline static void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430TimerControl__disableEvents(void ){
 #line 77
   /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Control__disableEvents();
 #line 77
 }
 #line 77
-# 65 "../../tos/chips/msp430/timer/Msp430AlarmC.nc"
+# 65 "../../../tos/chips/msp430/timer/Msp430AlarmC.nc"
 static inline void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Alarm__stop(void )
 {
   /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430TimerControl__disableEvents();
 }
 
-# 73 "../../tos/lib/timer/Alarm.nc"
+# 73 "../../../tos/lib/timer/Alarm.nc"
 inline static void /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__AlarmFrom__stop(void ){
 #line 73
   /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Alarm__stop();
 #line 73
 }
 #line 73
-# 102 "../../tos/lib/timer/TransformAlarmC.nc"
+# 102 "../../../tos/lib/timer/TransformAlarmC.nc"
 static inline void /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Alarm__stop(void )
 {
   /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__AlarmFrom__stop();
 }
 
-# 73 "../../tos/lib/timer/Alarm.nc"
+# 73 "../../../tos/lib/timer/Alarm.nc"
 inline static void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__stop(void ){
 #line 73
   /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Alarm__stop();
 #line 73
 }
 #line 73
-# 71 "../../tos/lib/timer/AlarmToTimerC.nc"
+# 71 "../../../tos/lib/timer/AlarmToTimerC.nc"
 static inline void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Timer__stop(void )
 {
 #line 72
   /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__stop();
 }
 
-# 78 "../../tos/lib/timer/Timer.nc"
+# 78 "../../../tos/lib/timer/Timer.nc"
 inline static void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__TimerFrom__stop(void ){
 #line 78
   /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Timer__stop();
 #line 78
 }
 #line 78
-# 64 "../../tos/lib/timer/Counter.nc"
+# 64 "../../../tos/lib/timer/Counter.nc"
 inline static /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Counter__size_type /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Counter__get(void ){
 #line 64
   unsigned long __nesc_result;
@@ -13772,13 +15122,13 @@ inline static /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Coun
 #line 64
 }
 #line 64
-# 86 "../../tos/lib/timer/TransformAlarmC.nc"
+# 86 "../../../tos/lib/timer/TransformAlarmC.nc"
 static inline /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__to_size_type /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Alarm__getNow(void )
 {
   return /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Counter__get();
 }
 
-# 109 "../../tos/lib/timer/Alarm.nc"
+# 109 "../../../tos/lib/timer/Alarm.nc"
 inline static /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__size_type /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__getNow(void ){
 #line 109
   unsigned long __nesc_result;
@@ -13793,14 +15143,14 @@ inline static /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__size_type
 #line 109
 }
 #line 109
-# 96 "../../tos/lib/timer/AlarmToTimerC.nc"
+# 96 "../../../tos/lib/timer/AlarmToTimerC.nc"
 static inline uint32_t /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Timer__getNow(void )
 {
 #line 97
   return /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__getNow();
 }
 
-# 136 "../../tos/lib/timer/Timer.nc"
+# 136 "../../../tos/lib/timer/Timer.nc"
 inline static uint32_t /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__TimerFrom__getNow(void ){
 #line 136
   unsigned long __nesc_result;
@@ -13815,7 +15165,7 @@ inline static uint32_t /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImpl
 #line 136
 }
 #line 136
-# 184 "../../tos/lib/timer/VirtualizeTimerImplP.nc"
+# 184 "../../../tos/lib/timer/VirtualizeTimerImplP.nc"
 static inline void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__updateFromTimer__runTask(void )
 #line 184
 {
@@ -13858,92 +15208,13 @@ static inline void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0
     }
 }
 
-# 45 "../../tos/chips/msp430/timer/Msp430Timer.nc"
-inline static uint16_t /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Msp430Timer__get(void ){
-#line 45
-  unsigned int __nesc_result;
-#line 45
-
-#line 45
-  __nesc_result = /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Timer__get();
-#line 45
-
-#line 45
-  return __nesc_result;
-#line 45
-}
-#line 45
-# 49 "../../tos/chips/msp430/timer/Msp430CounterC.nc"
-static inline uint16_t /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Counter__get(void )
-{
-  return /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Msp430Timer__get();
-}
-
-# 64 "../../tos/lib/timer/Counter.nc"
-inline static /*CounterMilli32C.Transform*/TransformCounterC__1__CounterFrom__size_type /*CounterMilli32C.Transform*/TransformCounterC__1__CounterFrom__get(void ){
-#line 64
-  unsigned int __nesc_result;
-#line 64
-
-#line 64
-  __nesc_result = /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Counter__get();
-#line 64
-
-#line 64
-  return __nesc_result;
-#line 64
-}
-#line 64
-# 91 "../../tos/chips/msp430/timer/Msp430TimerP.nc"
-static inline bool /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Timer__isOverflowPending(void )
-#line 91
-{
-  return * (volatile uint16_t * )384U & 1U;
-}
-
-# 46 "../../tos/chips/msp430/timer/Msp430Timer.nc"
-inline static bool /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Msp430Timer__isOverflowPending(void ){
-#line 46
-  unsigned char __nesc_result;
-#line 46
-
-#line 46
-  __nesc_result = /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Timer__isOverflowPending();
-#line 46
-
-#line 46
-  return __nesc_result;
-#line 46
-}
-#line 46
-# 54 "../../tos/chips/msp430/timer/Msp430CounterC.nc"
-static inline bool /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Counter__isOverflowPending(void )
-{
-  return /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Msp430Timer__isOverflowPending();
-}
-
-# 71 "../../tos/lib/timer/Counter.nc"
-inline static bool /*CounterMilli32C.Transform*/TransformCounterC__1__CounterFrom__isOverflowPending(void ){
-#line 71
-  unsigned char __nesc_result;
-#line 71
-
-#line 71
-  __nesc_result = /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Counter__isOverflowPending();
-#line 71
-
-#line 71
-  return __nesc_result;
-#line 71
-}
-#line 71
-# 143 "../../tos/lib/timer/VirtualizeTimerImplP.nc"
+#line 143
 static inline void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__trace_timer_fired(uint16_t num)
 #line 143
 {
 }
 
-# 20 "../../tos/platforms/telosa/PlatformP.nc"
+# 20 "../../../tos/platforms/telosa/PlatformP.nc"
 static inline uint32_t PlatformP__Platform__usecsRaw(void )
 #line 20
 {
@@ -13951,7 +15222,7 @@ static inline uint32_t PlatformP__Platform__usecsRaw(void )
   return 0;
 }
 
-# 78 "../../tos/interfaces/Platform.nc"
+# 78 "../../../tos/interfaces/Platform.nc"
 inline static uint32_t /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Platform__usecsRaw(void ){
 #line 78
   unsigned long __nesc_result;
@@ -13966,20 +15237,249 @@ inline static uint32_t /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImpl
 #line 78
 }
 #line 78
-# 283 "../../tos/lib/timer/VirtualizeTimerImplP.nc"
+# 315 "/usr/local/lib/ncc/nesc_nx.h"
+static __inline  uint16_t __nesc_hton_uint16(void * target, uint16_t value)
+#line 315
+{
+  uint8_t *base = target;
+
+#line 317
+  base[1] = value;
+  base[0] = value >> 8;
+  return value;
+}
+
+# 80 "../../../tos/interfaces/AMSend.nc"
+inline static error_t BaseStationP__AMSend__send(am_addr_t addr, message_t * msg, uint8_t len){
+#line 80
+  enum __nesc_unnamed4242 __nesc_result;
+#line 80
+
+#line 80
+  __nesc_result = /*BaseStationC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__0__AMSend__send(addr, msg, len);
+#line 80
+
+#line 80
+  return __nesc_result;
+#line 80
+}
+#line 80
+# 125 "../../../tos/interfaces/Send.nc"
+inline static void * CC2420ActiveMessageP__SubSend__getPayload(message_t * msg, uint8_t len){
+#line 125
+  void *__nesc_result;
+#line 125
+
+#line 125
+  __nesc_result = CC2420TinyosNetworkP__ActiveSend__getPayload(msg, len);
+#line 125
+
+#line 125
+  return __nesc_result;
+#line 125
+}
+#line 125
+# 206 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+static inline void *CC2420ActiveMessageP__Packet__getPayload(message_t *msg, uint8_t len)
+#line 206
+{
+  return CC2420ActiveMessageP__SubSend__getPayload(msg, len);
+}
+
+# 126 "../../../tos/interfaces/Packet.nc"
+inline static void * BaseStationP__Packet__getPayload(message_t * msg, uint8_t len){
+#line 126
+  void *__nesc_result;
+#line 126
+
+#line 126
+  __nesc_result = CC2420ActiveMessageP__Packet__getPayload(msg, len);
+#line 126
+
+#line 126
+  return __nesc_result;
+#line 126
+}
+#line 126
+# 178 "BaseStationP.nc"
+static inline void BaseStationP__TimerTramaTDMA__fired(void )
+#line 178
+{
+  if (!BaseStationP__busy) {
+      TDMAmsg *tdma = (TDMAmsg *)BaseStationP__Packet__getPayload(&BaseStationP__pkt, sizeof(TDMAmsg ));
+
+      if (tdma == (void *)0) {
+          return;
+        }
+
+
+
+      __nesc_hton_uint8(tdma->idM.nxdata, BaseStationP__node_id_master);
+
+
+
+
+      for (BaseStationP__i = 0; BaseStationP__i < 3; BaseStationP__i++) {
+          __nesc_hton_uint8(tdma->idS[BaseStationP__i].nxdata, BaseStationP__ids[BaseStationP__i]);
+        }
+
+      __nesc_hton_uint16(tdma->tiempoTrama.nxdata, TIMER_PERIODO_TRAMA);
+      __nesc_hton_uint16(tdma->periodo.nxdata, TIMER_PERIODO_COMPLETO);
+
+
+
+
+      if (
+#line 202
+      BaseStationP__AMSend__send(AM_BROADCAST_ADDR, 
+      &BaseStationP__pkt, sizeof(TDMAmsg )) == SUCCESS) {
+          BaseStationP__busy = TRUE;
+        }
+    }
+}
+
+#line 174
+static inline void BaseStationP__TimerLeds__fired(void )
+#line 174
+{
+  BaseStationP__setLeds(0);
+}
+
+# 283 "../../../tos/lib/timer/VirtualizeTimerImplP.nc"
 static inline void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Timer__default__fired(uint8_t num)
 #line 283
 {
 }
 
-# 83 "../../tos/lib/timer/Timer.nc"
-inline static void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Timer__fired(uint8_t arg_0x7f540cf2d850){
+# 83 "../../../tos/lib/timer/Timer.nc"
+inline static void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Timer__fired(uint8_t arg_0x7f49d6b1fb60){
 #line 83
-    /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Timer__default__fired(arg_0x7f540cf2d850);
+  switch (arg_0x7f49d6b1fb60) {
+#line 83
+    case 1U:
+#line 83
+      BaseStationP__TimerTramaTDMA__fired();
+#line 83
+      break;
+#line 83
+    case 2U:
+#line 83
+      BaseStationP__TimerLeds__fired();
+#line 83
+      break;
+#line 83
+    default:
+#line 83
+      /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Timer__default__fired(arg_0x7f49d6b1fb60);
+#line 83
+      break;
+#line 83
+    }
 #line 83
 }
 #line 83
-# 146 "../../tos/lib/timer/VirtualizeTimerImplP.nc"
+# 149 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+static inline void CC2420ActiveMessageP__AMPacket__setDestination(message_t *amsg, am_addr_t addr)
+#line 149
+{
+  cc2420_header_t *header = CC2420ActiveMessageP__CC2420PacketBody__getHeader(amsg);
+
+#line 151
+  __nesc_hton_leuint16(header->dest.nxdata, addr);
+}
+
+# 103 "../../../tos/interfaces/AMPacket.nc"
+inline static void /*BaseStationC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__0__AMPacket__setDestination(message_t * amsg, am_addr_t addr){
+#line 103
+  CC2420ActiveMessageP__AMPacket__setDestination(amsg, addr);
+#line 103
+}
+#line 103
+# 169 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+static inline void CC2420ActiveMessageP__AMPacket__setType(message_t *amsg, am_id_t type)
+#line 169
+{
+  cc2420_header_t *header = CC2420ActiveMessageP__CC2420PacketBody__getHeader(amsg);
+
+#line 171
+  __nesc_hton_leuint8(header->type.nxdata, type);
+}
+
+# 162 "../../../tos/interfaces/AMPacket.nc"
+inline static void /*BaseStationC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__0__AMPacket__setType(message_t * amsg, am_id_t t){
+#line 162
+  CC2420ActiveMessageP__AMPacket__setType(amsg, t);
+#line 162
+}
+#line 162
+# 198 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+static inline void CC2420ActiveMessageP__Packet__setPayloadLength(message_t *msg, uint8_t len)
+#line 198
+{
+  __nesc_hton_leuint8(CC2420ActiveMessageP__CC2420PacketBody__getHeader(msg)->length.nxdata, len + CC2420_SIZE);
+}
+
+# 94 "../../../tos/interfaces/Packet.nc"
+inline static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Packet__setPayloadLength(message_t * msg, uint8_t len){
+#line 94
+  CC2420ActiveMessageP__Packet__setPayloadLength(msg, len);
+#line 94
+}
+#line 94
+# 105 "../../../tos/system/AMQueueImplP.nc"
+static inline error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__send(uint8_t clientId, message_t *msg, 
+uint8_t len)
+#line 106
+{
+  if (clientId >= 1) {
+      return FAIL;
+    }
+  if (/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__queue[clientId].msg != (void *)0) {
+      return EBUSY;
+    }
+  ;
+
+  /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__queue[clientId].msg = msg;
+  /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Packet__setPayloadLength(msg, len);
+
+  if (/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current >= 1) {
+      error_t err;
+      am_id_t amId = /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMPacket__type(msg);
+      am_addr_t dest = /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMPacket__destination(msg);
+
+      ;
+      /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current = clientId;
+
+      err = /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__send(amId, dest, msg, len);
+      if (err != SUCCESS) {
+          ;
+          /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current = 1;
+          /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__queue[clientId].msg = (void *)0;
+        }
+      return err;
+    }
+  else {
+      ;
+    }
+  return SUCCESS;
+}
+
+# 75 "../../../tos/interfaces/Send.nc"
+inline static error_t /*BaseStationC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__0__Send__send(message_t * msg, uint8_t len){
+#line 75
+  enum __nesc_unnamed4242 __nesc_result;
+#line 75
+
+#line 75
+  __nesc_result = /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__send(0U, msg, len);
+#line 75
+
+#line 75
+  return __nesc_result;
+#line 75
+}
+#line 75
+# 146 "../../../tos/lib/timer/VirtualizeTimerImplP.nc"
 static inline void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__trace_timer_end(uint16_t num, uint32_t delta)
 #line 146
 {
@@ -13988,64 +15488,49 @@ static inline void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0
     }
 }
 
-# 67 "../../tos/interfaces/TaskBasic.nc"
-inline static error_t /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__updateFromTimer__postTask(void ){
-#line 67
-  enum __nesc_unnamed4242 __nesc_result;
-#line 67
-
-#line 67
-  __nesc_result = SchedulerBasicP__TaskBasic__postTask(/*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__updateFromTimer);
-#line 67
-
-#line 67
-  return __nesc_result;
-#line 67
-}
-#line 67
-# 109 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 109 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Control__enableEvents(void )
 #line 109
 {
   * (volatile uint16_t * )390U |= 0x0010;
 }
 
-# 76 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 76 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 inline static void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430TimerControl__enableEvents(void ){
 #line 76
   /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Control__enableEvents();
 #line 76
 }
 #line 76
-# 92 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Control__clearPendingInterrupt(void )
 #line 92
 {
   * (volatile uint16_t * )390U &= ~0x0001;
 }
 
-# 43 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 43 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 inline static void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430TimerControl__clearPendingInterrupt(void ){
 #line 43
   /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Control__clearPendingInterrupt();
 #line 43
 }
 #line 43
-# 140 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 140 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Compare__setEvent(uint16_t x)
 #line 140
 {
   * (volatile uint16_t * )406U = x;
 }
 
-# 42 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 42 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 inline static void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430Compare__setEvent(uint16_t time){
 #line 42
   /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Compare__setEvent(time);
 #line 42
 }
 #line 42
-# 45 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 inline static uint16_t /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Timer__get(void ){
 #line 45
   unsigned int __nesc_result;
@@ -14060,21 +15545,21 @@ inline static uint16_t /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Time
 #line 45
 }
 #line 45
-# 148 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 148 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Compare__setEventFromNow(uint16_t delta)
 #line 148
 {
   * (volatile uint16_t * )406U = /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Timer__get() + delta;
 }
 
-# 44 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 44 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 inline static void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430Compare__setEventFromNow(uint16_t delta){
 #line 44
   /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Compare__setEventFromNow(delta);
 #line 44
 }
 #line 44
-# 45 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 inline static uint16_t /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430Timer__get(void ){
 #line 45
   unsigned int __nesc_result;
@@ -14089,7 +15574,7 @@ inline static uint16_t /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp
 #line 45
 }
 #line 45
-# 81 "../../tos/chips/msp430/timer/Msp430AlarmC.nc"
+# 81 "../../../tos/chips/msp430/timer/Msp430AlarmC.nc"
 static inline void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Alarm__startAt(uint16_t t0, uint16_t dt)
 {
   /* atomic removed: atomic calls only */
@@ -14121,28 +15606,28 @@ static inline void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430A
   }
 }
 
-# 103 "../../tos/lib/timer/Alarm.nc"
+# 103 "../../../tos/lib/timer/Alarm.nc"
 inline static void /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__AlarmFrom__startAt(/*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__AlarmFrom__size_type t0, /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__AlarmFrom__size_type dt){
 #line 103
   /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Alarm__startAt(t0, dt);
 #line 103
 }
 #line 103
-# 227 "../../tos/lib/timer/VirtualizeTimerImplP.nc"
+# 227 "../../../tos/lib/timer/VirtualizeTimerImplP.nc"
 static inline void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__TimerFrom__fired(void )
 #line 227
 {
   /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__fireTimers(/*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__TimerFrom__getNow());
 }
 
-# 83 "../../tos/lib/timer/Timer.nc"
+# 83 "../../../tos/lib/timer/Timer.nc"
 inline static void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Timer__fired(void ){
 #line 83
   /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__TimerFrom__fired();
 #line 83
 }
 #line 83
-# 91 "../../tos/lib/timer/TransformAlarmC.nc"
+# 91 "../../../tos/lib/timer/TransformAlarmC.nc"
 static inline /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__to_size_type /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Alarm__getAlarm(void )
 {
   { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
@@ -14163,7 +15648,7 @@ static inline /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__to_s
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 116 "../../tos/lib/timer/Alarm.nc"
+# 116 "../../../tos/lib/timer/Alarm.nc"
 inline static /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__size_type /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__getAlarm(void ){
 #line 116
   unsigned long __nesc_result;
@@ -14178,7 +15663,7 @@ inline static /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__size_type
 #line 116
 }
 #line 116
-# 74 "../../tos/lib/timer/AlarmToTimerC.nc"
+# 74 "../../../tos/lib/timer/AlarmToTimerC.nc"
 static inline void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__fired__runTask(void )
 {
   if (/*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__m_oneshot == FALSE) {
@@ -14196,7 +15681,7 @@ static __inline  int8_t __nesc_ntoh_int8(const void * source)
   return __nesc_ntoh_uint8(source);
 }
 
-# 42 "../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
+# 42 "../../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
 inline static cc2420_header_t * CC2420TinyosNetworkP__CC2420PacketBody__getHeader(message_t * msg){
 #line 42
   nx_struct cc2420_header *__nesc_result;
@@ -14211,7 +15696,7 @@ inline static cc2420_header_t * CC2420TinyosNetworkP__CC2420PacketBody__getHeade
 #line 42
 }
 #line 42
-# 139 "../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
+# 139 "../../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
 static inline void *CC2420TinyosNetworkP__BareSend__getPayload(message_t *msg, uint8_t len)
 #line 139
 {
@@ -14229,7 +15714,7 @@ static inline message_t *CC2420TinyosNetworkP__BareReceive__default__receive(mes
   return msg;
 }
 
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 inline static message_t * CC2420TinyosNetworkP__BareReceive__receive(message_t * msg, void * payload, uint8_t len){
 #line 78
   nx_struct message_t *__nesc_result;
@@ -14244,23 +15729,21 @@ inline static message_t * CC2420TinyosNetworkP__BareReceive__receive(message_t *
 #line 78
 }
 #line 78
-# 149 "BaseStationP.nc"
-static inline message_t *BaseStationP__RadioSnoop__receive(am_id_t id, message_t *msg, 
-void *payload, 
-uint8_t len)
-#line 151
+# 283 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+static inline message_t *CC2420ActiveMessageP__Snoop__default__receive(am_id_t id, message_t *msg, void *payload, uint8_t len)
+#line 283
 {
-  return BaseStationP__receive(msg, payload, len);
+  return msg;
 }
 
-# 78 "../../tos/interfaces/Receive.nc"
-inline static message_t * CC2420ActiveMessageP__Snoop__receive(am_id_t arg_0x7f540cd3fc00, message_t * msg, void * payload, uint8_t len){
+# 78 "../../../tos/interfaces/Receive.nc"
+inline static message_t * CC2420ActiveMessageP__Snoop__receive(am_id_t arg_0x7f49d6932c40, message_t * msg, void * payload, uint8_t len){
 #line 78
   nx_struct message_t *__nesc_result;
 #line 78
 
 #line 78
-  __nesc_result = BaseStationP__RadioSnoop__receive(arg_0x7f540cd3fc00, msg, payload, len);
+    __nesc_result = CC2420ActiveMessageP__Snoop__default__receive(arg_0x7f49d6932c40, msg, payload, len);
 #line 78
 
 #line 78
@@ -14268,23 +15751,188 @@ inline static message_t * CC2420ActiveMessageP__Snoop__receive(am_id_t arg_0x7f5
 #line 78
 }
 #line 78
-# 155 "BaseStationP.nc"
-static inline message_t *BaseStationP__RadioReceive__receive(am_id_t id, message_t *msg, 
-void *payload, 
-uint8_t len)
-#line 157
+# 310 "/usr/local/lib/ncc/nesc_nx.h"
+static __inline  uint16_t __nesc_ntoh_uint16(const void * source)
+#line 310
 {
-  return BaseStationP__receive(msg, payload, len);
+  const uint8_t *base = source;
+
+#line 312
+  return ((uint16_t )base[0] << 8) | base[1];
 }
 
-# 78 "../../tos/interfaces/Receive.nc"
-inline static message_t * CC2420ActiveMessageP__Receive__receive(am_id_t arg_0x7f540cd3f020, message_t * msg, void * payload, uint8_t len){
+# 246 "../../../tos/lib/timer/VirtualizeTimerImplP.nc"
+static inline void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Timer__startOneShot(uint8_t num, uint32_t dt)
+#line 246
+{
+  /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__startTimer(num, /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__TimerFrom__getNow(), dt, TRUE);
+}
+
+# 73 "../../../tos/lib/timer/Timer.nc"
+inline static void BaseStationP__TimerLeds__startOneShot(uint32_t dt){
+#line 73
+  /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Timer__startOneShot(2U, dt);
+#line 73
+}
+#line 73
+# 231 "BaseStationP.nc"
+static inline message_t *BaseStationP__Receive__receive(message_t *msg, 
+void *payload, 
+uint8_t len)
+#line 233
+{
+
+  message_t *ret = msg;
+
+  if (len == sizeof(RespuestaMsg )) {
+      RespuestaMsg *rcvPkt = (RespuestaMsg *)payload;
+      int id = __nesc_ntoh_uint8(rcvPkt->idS.nxdata);
+      int count_strikes = 0;
+      uint16_t rssi_temp;
+      int16_t sum_rssi;
+      int16_t rssi_medio;
+
+
+
+      if (((__nesc_ntoh_uint8(rcvPkt->idS.nxdata) == 1 || __nesc_ntoh_uint8(rcvPkt->idS.nxdata) == 2) || __nesc_ntoh_uint8(rcvPkt->idS.nxdata) == 3) && __nesc_ntoh_uint8(
+      rcvPkt->idM.nxdata) == BaseStationP__node_id_master) {
+          if (__nesc_ntoh_uint8(rcvPkt->idS.nxdata) == 1) {
+              BaseStationP__setLeds(1);
+            }
+          else {
+#line 251
+            if (__nesc_ntoh_uint8(rcvPkt->idS.nxdata) == 2) {
+                BaseStationP__setLeds(2);
+              }
+            else {
+#line 253
+              if (__nesc_ntoh_uint8(rcvPkt->idS.nxdata) == 3) {
+                  BaseStationP__setLeds(4);
+                  BaseStationP__TimerLeds__startOneShot(TIMER_ON_LEDS);
+                }
+              }
+            }
+          for (BaseStationP__i = 0; BaseStationP__i < 3; BaseStationP__i++) {
+              rssi_temp = __nesc_ntoh_uint16(rcvPkt->rssi[BaseStationP__i].nxdata);
+              if (rssi_temp >= 128) {
+                BaseStationP__rssi_dbm[id - 1][BaseStationP__i] = rssi_temp - 45 - 256;
+                }
+              else {
+#line 264
+                BaseStationP__rssi_dbm[id - 1][BaseStationP__i] = rssi_temp - 45;
+                }
+
+              if (!BaseStationP__calibrado) {
+
+                  BaseStationP__rssi_historico[id - 1][BaseStationP__i][BaseStationP__posicion_medida[id - 1]] = BaseStationP__rssi_dbm[id - 1][BaseStationP__i];
+                  BaseStationP__strikes[id - 1][BaseStationP__i][BaseStationP__posicion_medida[id - 1]] = FALSE;
+                  BaseStationP__alarma[id - 1][BaseStationP__i] = FALSE;
+                }
+              else 
+#line 272
+                {
+                  sum_rssi = 0;
+                  for (BaseStationP__j = 0; BaseStationP__j < PERIODO_CALIBRACION - 1; BaseStationP__j++) {
+                      sum_rssi += BaseStationP__rssi_historico[id - 1][BaseStationP__i][BaseStationP__j];
+                    }
+                  rssi_medio = sum_rssi / PERIODO_CALIBRACION;
+                  if (BaseStationP__rssi_dbm[id - 1][BaseStationP__i] < 0.8 * rssi_medio || BaseStationP__rssi_dbm[id - 1][BaseStationP__i] > 1.2 * rssi_medio) {
+
+                      BaseStationP__rssi_historico[id - 1][BaseStationP__i][BaseStationP__posicion_medida[id - 1]] = rssi_medio;
+                      BaseStationP__strikes[id - 1][BaseStationP__i][BaseStationP__posicion_medida[id - 1]] = TRUE;
+                    }
+                  else 
+#line 282
+                    {
+
+                      BaseStationP__rssi_historico[id - 1][BaseStationP__i][BaseStationP__posicion_medida[id - 1]] = BaseStationP__rssi_dbm[id - 1][BaseStationP__i];
+                      BaseStationP__strikes[id - 1][BaseStationP__i][BaseStationP__posicion_medida[id - 1]] = FALSE;
+                    }
+
+                  count_strikes = 0;
+                  for (BaseStationP__j = 0; BaseStationP__j < PERIODO_CALIBRACION; BaseStationP__j++) 
+                    if (BaseStationP__strikes[id - 1][BaseStationP__i][BaseStationP__j]) {
+                      count_strikes++;
+                      }
+#line 292
+                  if (count_strikes >= ALARMA_STRIKES) {
+                    BaseStationP__alarma[id - 1][BaseStationP__i] = TRUE;
+                    }
+                  else {
+#line 295
+                    BaseStationP__alarma[id - 1][BaseStationP__i] = FALSE;
+                    }
+                }
+            }
+
+          BaseStationP__posicion_medida[id - 1]++;
+          if (BaseStationP__posicion_medida[id - 1] >= PERIODO_CALIBRACION) {
+              BaseStationP__posicion_medida[id - 1] = 0;
+              BaseStationP__calibrado = TRUE;
+            }
+        }
+
+
+
+      { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 309
+        {
+          if (!BaseStationP__uartFull) 
+            {
+              ret = BaseStationP__uartQueue[BaseStationP__uartIn];
+              BaseStationP__uartQueue[BaseStationP__uartIn] = msg;
+
+              BaseStationP__uartIn = (BaseStationP__uartIn + 1) % BaseStationP__UART_QUEUE_LEN;
+
+              if (BaseStationP__uartIn == BaseStationP__uartOut) {
+                BaseStationP__uartFull = TRUE;
+                }
+              if (!BaseStationP__uartBusy) 
+                {
+                  BaseStationP__uartSendTask__postTask();
+                  BaseStationP__uartBusy = TRUE;
+                }
+            }
+          else {
+            BaseStationP__dropBlink();
+            }
+        }
+#line 329
+        __nesc_atomic_end(__nesc_atomic); }
+    }
+#line 330
+  return ret;
+}
+
+# 279 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+static inline message_t *CC2420ActiveMessageP__Receive__default__receive(am_id_t id, message_t *msg, void *payload, uint8_t len)
+#line 279
+{
+  return msg;
+}
+
+# 78 "../../../tos/interfaces/Receive.nc"
+inline static message_t * CC2420ActiveMessageP__Receive__receive(am_id_t arg_0x7f49d6932060, message_t * msg, void * payload, uint8_t len){
 #line 78
   nx_struct message_t *__nesc_result;
 #line 78
 
 #line 78
-  __nesc_result = BaseStationP__RadioReceive__receive(arg_0x7f540cd3f020, msg, payload, len);
+  switch (arg_0x7f49d6932060) {
+#line 78
+    case 17:
+#line 78
+      __nesc_result = BaseStationP__Receive__receive(msg, payload, len);
+#line 78
+      break;
+#line 78
+    default:
+#line 78
+      __nesc_result = CC2420ActiveMessageP__Receive__default__receive(arg_0x7f49d6932060, msg, payload, len);
+#line 78
+      break;
+#line 78
+    }
 #line 78
 
 #line 78
@@ -14292,14 +15940,14 @@ inline static message_t * CC2420ActiveMessageP__Receive__receive(am_id_t arg_0x7
 #line 78
 }
 #line 78
-# 73 "../../tos/system/ActiveMessageAddressC.nc"
+# 73 "../../../tos/system/ActiveMessageAddressC.nc"
 static inline am_addr_t ActiveMessageAddressC__ActiveMessageAddress__amAddress(void )
 #line 73
 {
   return ActiveMessageAddressC__amAddress();
 }
 
-# 50 "../../tos/interfaces/ActiveMessageAddress.nc"
+# 50 "../../../tos/interfaces/ActiveMessageAddress.nc"
 inline static am_addr_t CC2420ActiveMessageP__ActiveMessageAddress__amAddress(void ){
 #line 50
   unsigned int __nesc_result;
@@ -14314,7 +15962,7 @@ inline static am_addr_t CC2420ActiveMessageP__ActiveMessageAddress__amAddress(vo
 #line 50
 }
 #line 50
-# 135 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+# 135 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
 static inline am_addr_t CC2420ActiveMessageP__AMPacket__address(void )
 #line 135
 {
@@ -14342,7 +15990,7 @@ static inline message_t *CC2420ActiveMessageP__SubReceive__receive(message_t *ms
     }
 }
 
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 inline static message_t * CC2420TinyosNetworkP__ActiveReceive__receive(message_t * msg, void * payload, uint8_t len){
 #line 78
   nx_struct message_t *__nesc_result;
@@ -14357,7 +16005,7 @@ inline static message_t * CC2420TinyosNetworkP__ActiveReceive__receive(message_t
 #line 78
 }
 #line 78
-# 53 "../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
 inline static cc2420_metadata_t * CC2420TinyosNetworkP__CC2420PacketBody__getMetadata(message_t * msg){
 #line 53
   nx_struct cc2420_metadata *__nesc_result;
@@ -14372,7 +16020,7 @@ inline static cc2420_metadata_t * CC2420TinyosNetworkP__CC2420PacketBody__getMet
 #line 53
 }
 #line 53
-# 119 "../../tos/chips/cc2420/packet/CC2420PacketP.nc"
+# 119 "../../../tos/chips/cc2420/packet/CC2420PacketP.nc"
 static inline uint8_t CC2420PacketP__CC2420Packet__getNetwork(message_t * p_msg)
 #line 119
 {
@@ -14396,7 +16044,7 @@ static inline uint8_t CC2420PacketP__CC2420Packet__getNetwork(message_t * p_msg)
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 75 "../../tos/chips/cc2420/interfaces/CC2420Packet.nc"
+# 75 "../../../tos/chips/cc2420/interfaces/CC2420Packet.nc"
 inline static uint8_t CC2420TinyosNetworkP__CC2420Packet__getNetwork(message_t * p_msg){
 #line 75
   unsigned char __nesc_result;
@@ -14411,7 +16059,7 @@ inline static uint8_t CC2420TinyosNetworkP__CC2420Packet__getNetwork(message_t *
 #line 75
 }
 #line 75
-# 158 "../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
+# 158 "../../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
 static inline message_t *CC2420TinyosNetworkP__SubReceive__receive(message_t *msg, void *payload, uint8_t len)
 #line 158
 {
@@ -14436,7 +16084,7 @@ static inline message_t *CC2420TinyosNetworkP__SubReceive__receive(message_t *ms
     }
 }
 
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 inline static message_t * UniqueReceiveP__Receive__receive(message_t * msg, void * payload, uint8_t len){
 #line 78
   nx_struct message_t *__nesc_result;
@@ -14451,7 +16099,7 @@ inline static message_t * UniqueReceiveP__Receive__receive(message_t * msg, void
 #line 78
 }
 #line 78
-# 138 "../../tos/chips/cc2420/unique/UniqueReceiveP.nc"
+# 138 "../../../tos/chips/cc2420/unique/UniqueReceiveP.nc"
 static inline void UniqueReceiveP__insert(uint16_t msgSource, uint8_t msgDsn)
 #line 138
 {
@@ -14485,7 +16133,7 @@ static inline message_t *UniqueReceiveP__DuplicateReceive__default__receive(mess
   return msg;
 }
 
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 inline static message_t * UniqueReceiveP__DuplicateReceive__receive(message_t * msg, void * payload, uint8_t len){
 #line 78
   nx_struct message_t *__nesc_result;
@@ -14500,7 +16148,7 @@ inline static message_t * UniqueReceiveP__DuplicateReceive__receive(message_t * 
 #line 78
 }
 #line 78
-# 112 "../../tos/chips/cc2420/unique/UniqueReceiveP.nc"
+# 112 "../../../tos/chips/cc2420/unique/UniqueReceiveP.nc"
 static inline bool UniqueReceiveP__hasSeen(uint16_t msgSource, uint8_t msgDsn)
 #line 112
 {
@@ -14540,7 +16188,7 @@ static inline bool UniqueReceiveP__hasSeen(uint16_t msgSource, uint8_t msgDsn)
   return FALSE;
 }
 
-# 42 "../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
+# 42 "../../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
 inline static cc2420_header_t * UniqueReceiveP__CC2420PacketBody__getHeader(message_t * msg){
 #line 42
   nx_struct cc2420_header *__nesc_result;
@@ -14555,7 +16203,7 @@ inline static cc2420_header_t * UniqueReceiveP__CC2420PacketBody__getHeader(mess
 #line 42
 }
 #line 42
-# 165 "../../tos/chips/cc2420/unique/UniqueReceiveP.nc"
+# 165 "../../../tos/chips/cc2420/unique/UniqueReceiveP.nc"
 static inline uint16_t UniqueReceiveP__getSourceKey(message_t * msg)
 #line 165
 {
@@ -14604,7 +16252,7 @@ uint8_t len)
     }
 }
 
-# 78 "../../tos/interfaces/Receive.nc"
+# 78 "../../../tos/interfaces/Receive.nc"
 inline static message_t * CC2420ReceiveP__Receive__receive(message_t * msg, void * payload, uint8_t len){
 #line 78
   nx_struct message_t *__nesc_result;
@@ -14619,14 +16267,14 @@ inline static message_t * CC2420ReceiveP__Receive__receive(message_t * msg, void
 #line 78
 }
 #line 78
-# 298 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
+# 298 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
 static inline ieee_eui64_t CC2420ControlP__CC2420Config__getExtAddr(void )
 #line 298
 {
   return CC2420ControlP__m_ext_addr;
 }
 
-# 66 "../../tos/chips/cc2420/interfaces/CC2420Config.nc"
+# 66 "../../../tos/chips/cc2420/interfaces/CC2420Config.nc"
 inline static ieee_eui64_t CC2420ReceiveP__CC2420Config__getExtAddr(void ){
 #line 66
   struct ieee_eui64 __nesc_result;
@@ -14660,7 +16308,7 @@ inline static uint16_t CC2420ReceiveP__CC2420Config__getShortAddr(void ){
 #line 71
 }
 #line 71
-# 355 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
+# 355 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
 static inline bool CC2420ControlP__CC2420Config__isAddressRecognitionEnabled(void )
 #line 355
 {
@@ -14682,7 +16330,7 @@ static inline bool CC2420ControlP__CC2420Config__isAddressRecognitionEnabled(voi
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 93 "../../tos/chips/cc2420/interfaces/CC2420Config.nc"
+# 93 "../../../tos/chips/cc2420/interfaces/CC2420Config.nc"
 inline static bool CC2420ReceiveP__CC2420Config__isAddressRecognitionEnabled(void ){
 #line 93
   unsigned char __nesc_result;
@@ -14697,7 +16345,7 @@ inline static bool CC2420ReceiveP__CC2420Config__isAddressRecognitionEnabled(voi
 #line 93
 }
 #line 93
-# 42 "../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
+# 42 "../../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
 inline static cc2420_header_t * CC2420ReceiveP__CC2420PacketBody__getHeader(message_t * msg){
 #line 42
   nx_struct cc2420_header *__nesc_result;
@@ -14712,7 +16360,7 @@ inline static cc2420_header_t * CC2420ReceiveP__CC2420PacketBody__getHeader(mess
 #line 42
 }
 #line 42
-# 824 "../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
+# 824 "../../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
 static inline bool CC2420ReceiveP__passesAddressCheck(message_t *msg)
 #line 824
 {
@@ -14746,7 +16394,7 @@ static inline bool CC2420ReceiveP__passesAddressCheck(message_t *msg)
     }
 }
 
-# 53 "../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
 inline static cc2420_metadata_t * CC2420ReceiveP__CC2420PacketBody__getMetadata(message_t * msg){
 #line 53
   nx_struct cc2420_metadata *__nesc_result;
@@ -14761,7 +16409,7 @@ inline static cc2420_metadata_t * CC2420ReceiveP__CC2420PacketBody__getMetadata(
 #line 53
 }
 #line 53
-# 676 "../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
+# 676 "../../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
 static inline void CC2420ReceiveP__receiveDone_task__runTask(void )
 #line 676
 {
@@ -14788,7 +16436,7 @@ static inline void CC2420ReceiveP__receiveDone_task__runTask(void )
   CC2420ReceiveP__waitForNextPacket();
 }
 
-# 95 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+# 95 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
 static inline void CC2420SpiP__ChipSpiResource__abortRelease(void )
 #line 95
 {
@@ -14797,14 +16445,14 @@ static inline void CC2420SpiP__ChipSpiResource__abortRelease(void )
   CC2420SpiP__release = FALSE;
 }
 
-# 31 "../../tos/chips/cc2420/interfaces/ChipSpiResource.nc"
+# 31 "../../../tos/chips/cc2420/interfaces/ChipSpiResource.nc"
 inline static void CC2420TransmitP__ChipSpiResource__abortRelease(void ){
 #line 31
   CC2420SpiP__ChipSpiResource__abortRelease();
 #line 31
 }
 #line 31
-# 377 "../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
+# 377 "../../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
 static inline void CC2420TransmitP__ChipSpiResource__releasing(void )
 #line 377
 {
@@ -14813,14 +16461,14 @@ static inline void CC2420TransmitP__ChipSpiResource__releasing(void )
     }
 }
 
-# 24 "../../tos/chips/cc2420/interfaces/ChipSpiResource.nc"
+# 24 "../../../tos/chips/cc2420/interfaces/ChipSpiResource.nc"
 inline static void CC2420SpiP__ChipSpiResource__releasing(void ){
 #line 24
   CC2420TransmitP__ChipSpiResource__releasing();
 #line 24
 }
 #line 24
-# 158 "../../tos/chips/msp430/usart/HplMsp430Usart.nc"
+# 158 "../../../tos/chips/msp430/usart/HplMsp430Usart.nc"
 inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__disableSpi(void ){
 #line 158
   HplMsp430Usart0P__Usart__disableSpi();
@@ -14834,7 +16482,7 @@ inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__resetUsar
 #line 97
 }
 #line 97
-# 124 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+# 124 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
 static inline void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__ResourceConfigure__unconfigure(uint8_t id)
 #line 124
 {
@@ -14842,16 +16490,16 @@ static inline void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__ResourceConfigur
   /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__disableSpi();
 }
 
-# 368 "../../tos/system/ArbiterP.nc"
+# 368 "../../../tos/system/ArbiterP.nc"
 static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__default__unconfigure(uint8_t id)
 #line 368
 {
 }
 
-# 65 "../../tos/interfaces/ResourceConfigure.nc"
-inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__unconfigure(uint8_t arg_0x7f540d431a30){
+# 65 "../../../tos/interfaces/ResourceConfigure.nc"
+inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__unconfigure(uint8_t arg_0x7f49d701aa30){
 #line 65
-  switch (arg_0x7f540d431a30) {
+  switch (arg_0x7f49d701aa30) {
 #line 65
     case /*CC2420SpiWireC.HplCC2420SpiC.SpiC.UsartC*/Msp430Usart0C__0__CLIENT_ID:
 #line 65
@@ -14861,7 +16509,7 @@ inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceC
 #line 65
     default:
 #line 65
-      /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__default__unconfigure(arg_0x7f540d431a30);
+      /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceConfigure__default__unconfigure(arg_0x7f49d701aa30);
 #line 65
       break;
 #line 65
@@ -14869,7 +16517,7 @@ inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceC
 #line 65
 }
 #line 65
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 inline static error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__grantedTask__postTask(void ){
 #line 67
   enum __nesc_unnamed4242 __nesc_result;
@@ -14884,20 +16532,20 @@ inline static error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__grante
 #line 67
 }
 #line 67
-# 366 "../../tos/system/ArbiterP.nc"
+# 366 "../../../tos/system/ArbiterP.nc"
 static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__default__granted(void )
 #line 366
 {
 }
 
-# 44 "../../tos/interfaces/ResourceDefaultOwner.nc"
+# 44 "../../../tos/interfaces/ResourceDefaultOwner.nc"
 inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__granted(void ){
 #line 44
   /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__default__granted();
 #line 44
 }
 #line 44
-# 60 "../../tos/system/FcfsResourceQueueC.nc"
+# 60 "../../../tos/system/FcfsResourceQueueC.nc"
 static inline bool /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__FcfsQueue__isEmpty(void )
 #line 60
 {
@@ -14913,7 +16561,7 @@ static inline bool /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__F
   }
 }
 
-# 53 "../../tos/interfaces/ResourceQueue.nc"
+# 53 "../../../tos/interfaces/ResourceQueue.nc"
 inline static bool /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Queue__isEmpty(void ){
 #line 53
   unsigned char __nesc_result;
@@ -14928,7 +16576,7 @@ inline static bool /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Queue__is
 #line 53
 }
 #line 53
-# 249 "../../tos/system/ArbiterP.nc"
+# 249 "../../../tos/system/ArbiterP.nc"
 static inline error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__release(uint8_t id)
 #line 249
 {
@@ -14976,7 +16624,7 @@ static inline error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resour
   return FAIL;
 }
 
-# 175 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+# 175 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
 static inline error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__release(uint8_t id)
 #line 175
 {
@@ -14984,14 +16632,14 @@ static inline error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource
   return FAIL;
 }
 
-# 120 "../../tos/interfaces/Resource.nc"
-inline static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__release(uint8_t arg_0x7f540d5ea4e0){
+# 120 "../../../tos/interfaces/Resource.nc"
+inline static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__release(uint8_t arg_0x7f49d71d34e0){
 #line 120
   enum __nesc_unnamed4242 __nesc_result;
 #line 120
 
 #line 120
-  switch (arg_0x7f540d5ea4e0) {
+  switch (arg_0x7f49d71d34e0) {
 #line 120
     case /*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID:
 #line 120
@@ -15001,7 +16649,7 @@ inline static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource
 #line 120
     default:
 #line 120
-      __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__release(arg_0x7f540d5ea4e0);
+      __nesc_result = /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__default__release(arg_0x7f49d71d34e0);
 #line 120
       break;
 #line 120
@@ -15013,14 +16661,14 @@ inline static error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource
 #line 120
 }
 #line 120
-# 116 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+# 116 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
 static inline error_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__release(uint8_t id)
 #line 116
 {
   return /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__release(id);
 }
 
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 inline static error_t CC2420SpiP__SpiResource__release(void ){
 #line 120
   enum __nesc_unnamed4242 __nesc_result;
@@ -15035,7 +16683,7 @@ inline static error_t CC2420SpiP__SpiResource__release(void ){
 #line 120
 }
 #line 120
-# 106 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 106 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P31*/HplMsp430GeneralIOP__17__IO__selectIOFunc(void )
 #line 106
 {
@@ -15044,14 +16692,14 @@ static inline void /*HplMsp430GeneralIOC.P31*/HplMsp430GeneralIOP__17__IO__selec
   * (volatile uint8_t * )27U &= ~(0x01 << 1);
 }
 
-# 97 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 97 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void HplMsp430Usart0P__SIMO__selectIOFunc(void ){
 #line 97
   /*HplMsp430GeneralIOC.P31*/HplMsp430GeneralIOP__17__IO__selectIOFunc();
 #line 97
 }
 #line 97
-# 106 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 106 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P32*/HplMsp430GeneralIOP__18__IO__selectIOFunc(void )
 #line 106
 {
@@ -15060,14 +16708,14 @@ static inline void /*HplMsp430GeneralIOC.P32*/HplMsp430GeneralIOP__18__IO__selec
   * (volatile uint8_t * )27U &= ~(0x01 << 2);
 }
 
-# 97 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 97 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void HplMsp430Usart0P__SOMI__selectIOFunc(void ){
 #line 97
   /*HplMsp430GeneralIOC.P32*/HplMsp430GeneralIOP__18__IO__selectIOFunc();
 #line 97
 }
 #line 97
-# 106 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 106 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P33*/HplMsp430GeneralIOP__19__IO__selectIOFunc(void )
 #line 106
 {
@@ -15076,14 +16724,14 @@ static inline void /*HplMsp430GeneralIOC.P33*/HplMsp430GeneralIOP__19__IO__selec
   * (volatile uint8_t * )27U &= ~(0x01 << 3);
 }
 
-# 97 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 97 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void HplMsp430Usart0P__UCLK__selectIOFunc(void ){
 #line 97
   /*HplMsp430GeneralIOC.P33*/HplMsp430GeneralIOP__19__IO__selectIOFunc();
 #line 97
 }
 #line 97
-# 178 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+# 178 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
 static inline bool CC2420SpiP__Resource__isOwner(uint8_t id)
 #line 178
 {
@@ -15099,7 +16747,7 @@ static inline bool CC2420SpiP__Resource__isOwner(uint8_t id)
   }
 }
 
-# 128 "../../tos/interfaces/Resource.nc"
+# 128 "../../../tos/interfaces/Resource.nc"
 inline static bool CC2420ReceiveP__SpiResource__isOwner(void ){
 #line 128
   unsigned char __nesc_result;
@@ -15144,7 +16792,7 @@ inline static error_t CC2420ReceiveP__SpiResource__request(void ){
 #line 88
 }
 #line 88
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 inline static error_t CC2420SpiP__grant__postTask(void ){
 #line 67
   enum __nesc_unnamed4242 __nesc_result;
@@ -15159,23 +16807,23 @@ inline static error_t CC2420SpiP__grant__postTask(void ){
 #line 67
 }
 #line 67
-# 184 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+# 184 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
 static inline void CC2420SpiP__SpiResource__granted(void )
 #line 184
 {
   CC2420SpiP__grant__postTask();
 }
 
-# 180 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+# 180 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
 static inline void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__default__granted(uint8_t id)
 #line 180
 {
 }
 
-# 102 "../../tos/interfaces/Resource.nc"
-inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__granted(uint8_t arg_0x7f540d5ef410){
+# 102 "../../../tos/interfaces/Resource.nc"
+inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__granted(uint8_t arg_0x7f49d71d8410){
 #line 102
-  switch (arg_0x7f540d5ef410) {
+  switch (arg_0x7f49d71d8410) {
 #line 102
     case /*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID:
 #line 102
@@ -15185,7 +16833,7 @@ inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__grante
 #line 102
     default:
 #line 102
-      /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__default__granted(arg_0x7f540d5ef410);
+      /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__default__granted(arg_0x7f49d71d8410);
 #line 102
       break;
 #line 102
@@ -15193,23 +16841,23 @@ inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__grante
 #line 102
 }
 #line 102
-# 130 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+# 130 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
 static inline void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartResource__granted(uint8_t id)
 #line 130
 {
   /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Resource__granted(id);
 }
 
-# 363 "../../tos/system/ArbiterP.nc"
+# 363 "../../../tos/system/ArbiterP.nc"
 static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__default__granted(uint8_t id)
 #line 363
 {
 }
 
-# 102 "../../tos/interfaces/Resource.nc"
-inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__granted(uint8_t arg_0x7f540d435970){
+# 102 "../../../tos/interfaces/Resource.nc"
+inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__granted(uint8_t arg_0x7f49d701f970){
 #line 102
-  switch (arg_0x7f540d435970) {
+  switch (arg_0x7f49d701f970) {
 #line 102
     case /*CC2420SpiWireC.HplCC2420SpiC.SpiC.UsartC*/Msp430Usart0C__0__CLIENT_ID:
 #line 102
@@ -15219,7 +16867,7 @@ inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource_
 #line 102
     default:
 #line 102
-      /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__default__granted(arg_0x7f540d435970);
+      /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__default__granted(arg_0x7f49d701f970);
 #line 102
       break;
 #line 102
@@ -15227,7 +16875,7 @@ inline static void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource_
 #line 102
 }
 #line 102
-# 346 "../../tos/system/ArbiterP.nc"
+# 346 "../../../tos/system/ArbiterP.nc"
 static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__grantedTask__runTask(void )
 #line 346
 {
@@ -15247,16 +16895,16 @@ static inline void /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__grantedTa
   /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__Resource__granted(/*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__resId);
 }
 
-# 251 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+# 251 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
 static inline void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__default__sendDone(uint8_t id, uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len, error_t error)
 #line 251
 {
 }
 
-# 88 "../../tos/interfaces/SpiPacket.nc"
-inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__sendDone(uint8_t arg_0x7f540d5eb6a0, uint8_t * txBuf, uint8_t * rxBuf, uint16_t len, error_t error){
+# 88 "../../../tos/interfaces/SpiPacket.nc"
+inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__sendDone(uint8_t arg_0x7f49d71d46a0, uint8_t * txBuf, uint8_t * rxBuf, uint16_t len, error_t error){
 #line 88
-  switch (arg_0x7f540d5eb6a0) {
+  switch (arg_0x7f49d71d46a0) {
 #line 88
     case /*CC2420SpiWireC.HplCC2420SpiC.SpiC*/Msp430Spi0C__0__CLIENT_ID:
 #line 88
@@ -15266,7 +16914,7 @@ inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__sendD
 #line 88
     default:
 #line 88
-      /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__default__sendDone(arg_0x7f540d5eb6a0, txBuf, rxBuf, len, error);
+      /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__default__sendDone(arg_0x7f49d71d46a0, txBuf, rxBuf, len, error);
 #line 88
       break;
 #line 88
@@ -15274,7 +16922,7 @@ inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiPacket__sendD
 #line 88
 }
 #line 88
-# 244 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+# 244 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
 static inline void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__signalDone(void )
 #line 244
 {
@@ -15293,14 +16941,14 @@ static inline void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__signalDone_task_
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 486 "../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
+# 486 "../../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
 static inline void CC2420TransmitP__TXFIFO__readDone(uint8_t *tx_buf, uint8_t tx_len, 
 error_t error)
 #line 487
 {
 }
 
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 inline static error_t CC2420ReceiveP__SpiResource__release(void ){
 #line 120
   enum __nesc_unnamed4242 __nesc_result;
@@ -15315,14 +16963,14 @@ inline static error_t CC2420ReceiveP__SpiResource__release(void ){
 #line 120
 }
 #line 120
-# 49 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 49 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__HplGeneralIO__set(void ){
 #line 49
   /*HplMsp430GeneralIOC.P42*/HplMsp430GeneralIOP__26__IO__set();
 #line 49
 }
 #line 49
-# 48 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 48 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__GeneralIO__set(void )
 #line 48
 {
@@ -15330,14 +16978,14 @@ static inline void /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__GeneralIO__set(void )
   /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__HplGeneralIO__set();
 }
 
-# 40 "../../tos/interfaces/GeneralIO.nc"
+# 40 "../../../tos/interfaces/GeneralIO.nc"
 inline static void CC2420ReceiveP__CSN__set(void ){
 #line 40
   /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__GeneralIO__set();
 #line 40
 }
 #line 40
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 inline static error_t CC2420ReceiveP__receiveDone_task__postTask(void ){
 #line 67
   enum __nesc_unnamed4242 __nesc_result;
@@ -15352,7 +17000,7 @@ inline static error_t CC2420ReceiveP__receiveDone_task__postTask(void ){
 #line 67
 }
 #line 67
-# 53 "../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
 inline static cc2420_metadata_t * CC2420TransmitP__CC2420PacketBody__getMetadata(message_t * msg){
 #line 53
   nx_struct cc2420_metadata *__nesc_result;
@@ -15367,47 +17015,47 @@ inline static cc2420_metadata_t * CC2420TransmitP__CC2420PacketBody__getMetadata
 #line 53
 }
 #line 53
-# 113 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 113 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Control__disableEvents(void )
 #line 113
 {
   * (volatile uint16_t * )386U &= ~0x0010;
 }
 
-# 77 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 77 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 inline static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430TimerControl__disableEvents(void ){
 #line 77
   /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Control__disableEvents();
 #line 77
 }
 #line 77
-# 65 "../../tos/chips/msp430/timer/Msp430AlarmC.nc"
+# 65 "../../../tos/chips/msp430/timer/Msp430AlarmC.nc"
 static inline void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Alarm__stop(void )
 {
   /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430TimerControl__disableEvents();
 }
 
-# 73 "../../tos/lib/timer/Alarm.nc"
+# 73 "../../../tos/lib/timer/Alarm.nc"
 inline static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__AlarmFrom__stop(void ){
 #line 73
   /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Alarm__stop();
 #line 73
 }
 #line 73
-# 102 "../../tos/lib/timer/TransformAlarmC.nc"
+# 102 "../../../tos/lib/timer/TransformAlarmC.nc"
 static inline void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Alarm__stop(void )
 {
   /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__AlarmFrom__stop();
 }
 
-# 73 "../../tos/lib/timer/Alarm.nc"
+# 73 "../../../tos/lib/timer/Alarm.nc"
 inline static void CC2420TransmitP__BackoffTimer__stop(void ){
 #line 73
   /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Alarm__stop();
 #line 73
 }
 #line 73
-# 42 "../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
+# 42 "../../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
 inline static cc2420_header_t * CC2420TransmitP__CC2420PacketBody__getHeader(message_t * msg){
 #line 42
   nx_struct cc2420_header *__nesc_result;
@@ -15422,7 +17070,7 @@ inline static cc2420_header_t * CC2420TransmitP__CC2420PacketBody__getHeader(mes
 #line 42
 }
 #line 42
-# 389 "../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
+# 389 "../../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
 static inline void CC2420TransmitP__CC2420Receive__receive(uint8_t type, message_t *ack_msg)
 #line 389
 {
@@ -15451,14 +17099,14 @@ static inline void CC2420TransmitP__CC2420Receive__receive(uint8_t type, message
     }
 }
 
-# 63 "../../tos/chips/cc2420/interfaces/CC2420Receive.nc"
+# 63 "../../../tos/chips/cc2420/interfaces/CC2420Receive.nc"
 inline static void CC2420ReceiveP__CC2420Receive__receive(uint8_t type, message_t * message){
 #line 63
   CC2420TransmitP__CC2420Receive__receive(type, message);
 #line 63
 }
 #line 63
-# 70 "../../tos/interfaces/PacketTimeStamp.nc"
+# 70 "../../../tos/interfaces/PacketTimeStamp.nc"
 inline static void CC2420ReceiveP__PacketTimeStamp__clear(message_t * msg){
 #line 70
   CC2420PacketP__PacketTimeStamp32khz__clear(msg);
@@ -15479,7 +17127,7 @@ inline static void CC2420ReceiveP__PacketTimeStamp__set(message_t * msg, CC2420R
 #line 78
 }
 #line 78
-# 98 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 98 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline uint8_t /*HplMsp430GeneralIOC.P10*/HplMsp430GeneralIOP__0__IO__getRaw(void )
 #line 98
 {
@@ -15495,7 +17143,7 @@ static inline bool /*HplMsp430GeneralIOC.P10*/HplMsp430GeneralIOP__0__IO__get(vo
   return /*HplMsp430GeneralIOC.P10*/HplMsp430GeneralIOP__0__IO__getRaw() != 0;
 }
 
-# 74 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 74 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static bool /*HplCC2420PinsC.FIFOPM*/Msp430GpioC__6__HplGeneralIO__get(void ){
 #line 74
   unsigned char __nesc_result;
@@ -15510,7 +17158,7 @@ inline static bool /*HplCC2420PinsC.FIFOPM*/Msp430GpioC__6__HplGeneralIO__get(vo
 #line 74
 }
 #line 74
-# 51 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 51 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline bool /*HplCC2420PinsC.FIFOPM*/Msp430GpioC__6__GeneralIO__get(void )
 #line 51
 {
@@ -15518,7 +17166,7 @@ static inline bool /*HplCC2420PinsC.FIFOPM*/Msp430GpioC__6__GeneralIO__get(void 
   return /*HplCC2420PinsC.FIFOPM*/Msp430GpioC__6__HplGeneralIO__get();
 }
 
-# 43 "../../tos/interfaces/GeneralIO.nc"
+# 43 "../../../tos/interfaces/GeneralIO.nc"
 inline static bool CC2420ReceiveP__FIFOP__get(void ){
 #line 43
   unsigned char __nesc_result;
@@ -15533,7 +17181,7 @@ inline static bool CC2420ReceiveP__FIFOP__get(void ){
 #line 43
 }
 #line 43
-# 98 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 98 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline uint8_t /*HplMsp430GeneralIOC.P13*/HplMsp430GeneralIOP__3__IO__getRaw(void )
 #line 98
 {
@@ -15549,7 +17197,7 @@ static inline bool /*HplMsp430GeneralIOC.P13*/HplMsp430GeneralIOP__3__IO__get(vo
   return /*HplMsp430GeneralIOC.P13*/HplMsp430GeneralIOP__3__IO__getRaw() != 0;
 }
 
-# 74 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 74 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static bool /*HplCC2420PinsC.FIFOM*/Msp430GpioC__5__HplGeneralIO__get(void ){
 #line 74
   unsigned char __nesc_result;
@@ -15564,7 +17212,7 @@ inline static bool /*HplCC2420PinsC.FIFOM*/Msp430GpioC__5__HplGeneralIO__get(voi
 #line 74
 }
 #line 74
-# 51 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 51 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline bool /*HplCC2420PinsC.FIFOM*/Msp430GpioC__5__GeneralIO__get(void )
 #line 51
 {
@@ -15572,7 +17220,7 @@ static inline bool /*HplCC2420PinsC.FIFOM*/Msp430GpioC__5__GeneralIO__get(void )
   return /*HplCC2420PinsC.FIFOM*/Msp430GpioC__5__HplGeneralIO__get();
 }
 
-# 43 "../../tos/interfaces/GeneralIO.nc"
+# 43 "../../../tos/interfaces/GeneralIO.nc"
 inline static bool CC2420ReceiveP__FIFO__get(void ){
 #line 43
   unsigned char __nesc_result;
@@ -15587,7 +17235,7 @@ inline static bool CC2420ReceiveP__FIFO__get(void ){
 #line 43
 }
 #line 43
-# 209 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+# 209 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
 static inline error_t CC2420SpiP__Fifo__continueRead(uint8_t addr, uint8_t *data, 
 uint8_t len)
 #line 210
@@ -15595,7 +17243,7 @@ uint8_t len)
   return CC2420SpiP__SpiPacket__send((void *)0, data, len);
 }
 
-# 62 "../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
+# 62 "../../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
 inline static error_t CC2420ReceiveP__RXFIFO__continueRead(uint8_t * data, uint8_t length){
 #line 62
   enum __nesc_unnamed4242 __nesc_result;
@@ -15625,14 +17273,14 @@ inline static cc2420_status_t CC2420ReceiveP__RXFIFO__beginRead(uint8_t * data, 
 #line 51
 }
 #line 51
-# 54 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 54 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__HplGeneralIO__clr(void ){
 #line 54
   /*HplMsp430GeneralIOC.P42*/HplMsp430GeneralIOP__26__IO__clr();
 #line 54
 }
 #line 54
-# 49 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 49 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__GeneralIO__clr(void )
 #line 49
 {
@@ -15640,14 +17288,14 @@ static inline void /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__GeneralIO__clr(void )
   /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__HplGeneralIO__clr();
 }
 
-# 41 "../../tos/interfaces/GeneralIO.nc"
+# 41 "../../../tos/interfaces/GeneralIO.nc"
 inline static void CC2420ReceiveP__CSN__clr(void ){
 #line 41
   /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__GeneralIO__clr();
 #line 41
 }
 #line 41
-# 53 "../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
 inline static cc2420_status_t CC2420ReceiveP__SACK__strobe(void ){
 #line 53
   unsigned char __nesc_result;
@@ -15662,7 +17310,7 @@ inline static cc2420_status_t CC2420ReceiveP__SACK__strobe(void ){
 #line 53
 }
 #line 53
-# 382 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
+# 382 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
 static inline bool CC2420ControlP__CC2420Config__isHwAutoAckDefault(void )
 #line 382
 {
@@ -15678,7 +17326,7 @@ static inline bool CC2420ControlP__CC2420Config__isHwAutoAckDefault(void )
   }
 }
 
-# 112 "../../tos/chips/cc2420/interfaces/CC2420Config.nc"
+# 112 "../../../tos/chips/cc2420/interfaces/CC2420Config.nc"
 inline static bool CC2420ReceiveP__CC2420Config__isHwAutoAckDefault(void ){
 #line 112
   unsigned char __nesc_result;
@@ -15693,7 +17341,7 @@ inline static bool CC2420ReceiveP__CC2420Config__isHwAutoAckDefault(void ){
 #line 112
 }
 #line 112
-# 389 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
+# 389 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
 static inline bool CC2420ControlP__CC2420Config__isAutoAckEnabled(void )
 #line 389
 {
@@ -15709,7 +17357,7 @@ static inline bool CC2420ControlP__CC2420Config__isAutoAckEnabled(void )
   }
 }
 
-# 117 "../../tos/chips/cc2420/interfaces/CC2420Config.nc"
+# 117 "../../../tos/chips/cc2420/interfaces/CC2420Config.nc"
 inline static bool CC2420ReceiveP__CC2420Config__isAutoAckEnabled(void ){
 #line 117
   unsigned char __nesc_result;
@@ -15724,7 +17372,7 @@ inline static bool CC2420ReceiveP__CC2420Config__isAutoAckEnabled(void ){
 #line 117
 }
 #line 117
-# 530 "../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
+# 530 "../../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
 static inline void CC2420ReceiveP__RXFIFO__readDone(uint8_t *rx_buf, uint8_t rx_len, 
 error_t error)
 #line 531
@@ -15878,16 +17526,16 @@ error_t error)
     }
 }
 
-# 370 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+# 370 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
 static inline void CC2420SpiP__Fifo__default__readDone(uint8_t addr, uint8_t *rx_buf, uint8_t rx_len, error_t error)
 #line 370
 {
 }
 
-# 71 "../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
-inline static void CC2420SpiP__Fifo__readDone(uint8_t arg_0x7f540d6f36e0, uint8_t * data, uint8_t length, error_t error){
+# 71 "../../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
+inline static void CC2420SpiP__Fifo__readDone(uint8_t arg_0x7f49d72dc6e0, uint8_t * data, uint8_t length, error_t error){
 #line 71
-  switch (arg_0x7f540d6f36e0) {
+  switch (arg_0x7f49d72dc6e0) {
 #line 71
     case CC2420_TXFIFO:
 #line 71
@@ -15903,7 +17551,7 @@ inline static void CC2420SpiP__Fifo__readDone(uint8_t arg_0x7f540d6f36e0, uint8_
 #line 71
     default:
 #line 71
-      CC2420SpiP__Fifo__default__readDone(arg_0x7f540d6f36e0, data, length, error);
+      CC2420SpiP__Fifo__default__readDone(arg_0x7f49d72dc6e0, data, length, error);
 #line 71
       break;
 #line 71
@@ -15911,7 +17559,7 @@ inline static void CC2420SpiP__Fifo__readDone(uint8_t arg_0x7f540d6f36e0, uint8_
 #line 71
 }
 #line 71
-# 53 "../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
 inline static cc2420_status_t CC2420ReceiveP__SFLUSHRX__strobe(void ){
 #line 53
   unsigned char __nesc_result;
@@ -15926,14 +17574,14 @@ inline static cc2420_status_t CC2420ReceiveP__SFLUSHRX__strobe(void ){
 #line 53
 }
 #line 53
-# 102 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+# 102 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
 static inline error_t CC2420SpiP__ChipSpiResource__attemptRelease(void )
 #line 102
 {
   return CC2420SpiP__attemptRelease();
 }
 
-# 39 "../../tos/chips/cc2420/interfaces/ChipSpiResource.nc"
+# 39 "../../../tos/chips/cc2420/interfaces/ChipSpiResource.nc"
 inline static error_t CC2420TransmitP__ChipSpiResource__attemptRelease(void ){
 #line 39
   enum __nesc_unnamed4242 __nesc_result;
@@ -15948,7 +17596,7 @@ inline static error_t CC2420TransmitP__ChipSpiResource__attemptRelease(void ){
 #line 39
 }
 #line 39
-# 64 "../../tos/lib/timer/Counter.nc"
+# 64 "../../../tos/lib/timer/Counter.nc"
 inline static /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Counter__size_type /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Counter__get(void ){
 #line 64
   unsigned long __nesc_result;
@@ -15963,7 +17611,7 @@ inline static /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__
 #line 64
 }
 #line 64
-# 86 "../../tos/lib/timer/TransformAlarmC.nc"
+# 86 "../../../tos/lib/timer/TransformAlarmC.nc"
 static inline /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__to_size_type /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Alarm__getNow(void )
 {
   return /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Counter__get();
@@ -15975,49 +17623,49 @@ static inline void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAla
   /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Alarm__startAt(/*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Alarm__getNow(), dt);
 }
 
-# 66 "../../tos/lib/timer/Alarm.nc"
+# 66 "../../../tos/lib/timer/Alarm.nc"
 inline static void CC2420TransmitP__BackoffTimer__start(CC2420TransmitP__BackoffTimer__size_type dt){
 #line 66
   /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Alarm__start(dt);
 #line 66
 }
 #line 66
-# 293 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+# 293 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
 static inline void CC2420ActiveMessageP__RadioBackoff__default__requestInitialBackoff(am_id_t id, 
 message_t *msg)
 #line 294
 {
 }
 
-# 81 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
-inline static void CC2420ActiveMessageP__RadioBackoff__requestInitialBackoff(am_id_t arg_0x7f540cd3b700, message_t * msg){
+# 81 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+inline static void CC2420ActiveMessageP__RadioBackoff__requestInitialBackoff(am_id_t arg_0x7f49d692e700, message_t * msg){
 #line 81
-    CC2420ActiveMessageP__RadioBackoff__default__requestInitialBackoff(arg_0x7f540cd3b700, msg);
+    CC2420ActiveMessageP__RadioBackoff__default__requestInitialBackoff(arg_0x7f49d692e700, msg);
 #line 81
 }
 #line 81
-# 241 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+# 241 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
 static inline void CC2420ActiveMessageP__SubBackoff__requestInitialBackoff(message_t *msg)
 #line 241
 {
   CC2420ActiveMessageP__RadioBackoff__requestInitialBackoff(__nesc_ntoh_leuint8(((cc2420_header_t * )((uint8_t *)msg + (unsigned short )& ((message_t *)0)->data - sizeof(cc2420_header_t )))->type.nxdata), msg);
 }
 
-# 81 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+# 81 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
 inline static void CC2420CsmaP__RadioBackoff__requestInitialBackoff(message_t * msg){
 #line 81
   CC2420ActiveMessageP__SubBackoff__requestInitialBackoff(msg);
 #line 81
 }
 #line 81
-# 89 "../../tos/system/RandomMlcgC.nc"
+# 89 "../../../tos/system/RandomMlcgC.nc"
 static inline uint16_t RandomMlcgC__Random__rand16(void )
 #line 89
 {
   return (uint16_t )RandomMlcgC__Random__rand32();
 }
 
-# 52 "../../tos/interfaces/Random.nc"
+# 52 "../../../tos/interfaces/Random.nc"
 inline static uint16_t CC2420CsmaP__Random__rand16(void ){
 #line 52
   unsigned int __nesc_result;
@@ -16032,21 +17680,21 @@ inline static uint16_t CC2420CsmaP__Random__rand16(void ){
 #line 52
 }
 #line 52
-# 243 "../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
+# 243 "../../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
 static inline void CC2420TransmitP__RadioBackoff__setInitialBackoff(uint16_t backoffTime)
 #line 243
 {
   CC2420TransmitP__myInitialBackoff = backoffTime + 1;
 }
 
-# 60 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+# 60 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
 inline static void CC2420CsmaP__SubBackoff__setInitialBackoff(uint16_t backoffTime){
 #line 60
   CC2420TransmitP__RadioBackoff__setInitialBackoff(backoffTime);
 #line 60
 }
 #line 60
-# 223 "../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
+# 223 "../../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
 static inline void CC2420CsmaP__SubBackoff__requestInitialBackoff(message_t *msg)
 #line 223
 {
@@ -16056,14 +17704,14 @@ static inline void CC2420CsmaP__SubBackoff__requestInitialBackoff(message_t *msg
   CC2420CsmaP__RadioBackoff__requestInitialBackoff(msg);
 }
 
-# 81 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+# 81 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
 inline static void CC2420TransmitP__RadioBackoff__requestInitialBackoff(message_t * msg){
 #line 81
   CC2420CsmaP__SubBackoff__requestInitialBackoff(msg);
 #line 81
 }
 #line 81
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 inline static error_t CC2420TransmitP__SpiResource__release(void ){
 #line 120
   enum __nesc_unnamed4242 __nesc_result;
@@ -16078,7 +17726,7 @@ inline static error_t CC2420TransmitP__SpiResource__release(void ){
 #line 120
 }
 #line 120
-# 803 "../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
+# 803 "../../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
 static inline error_t CC2420TransmitP__releaseSpiResource(void )
 #line 803
 {
@@ -16086,7 +17734,7 @@ static inline error_t CC2420TransmitP__releaseSpiResource(void )
   return SUCCESS;
 }
 
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 inline static error_t CC2420CsmaP__sendDone_task__postTask(void ){
 #line 67
   enum __nesc_unnamed4242 __nesc_result;
@@ -16101,7 +17749,7 @@ inline static error_t CC2420CsmaP__sendDone_task__postTask(void ){
 #line 67
 }
 #line 67
-# 205 "../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
+# 205 "../../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
 static inline void CC2420CsmaP__CC2420Transmit__sendDone(message_t *p_msg, error_t err)
 #line 205
 {
@@ -16113,21 +17761,21 @@ static inline void CC2420CsmaP__CC2420Transmit__sendDone(message_t *p_msg, error
   CC2420CsmaP__sendDone_task__postTask();
 }
 
-# 73 "../../tos/chips/cc2420/interfaces/CC2420Transmit.nc"
+# 73 "../../../tos/chips/cc2420/interfaces/CC2420Transmit.nc"
 inline static void CC2420TransmitP__Send__sendDone(message_t * p_msg, error_t error){
 #line 73
   CC2420CsmaP__CC2420Transmit__sendDone(p_msg, error);
 #line 73
 }
 #line 73
-# 40 "../../tos/interfaces/GeneralIO.nc"
+# 40 "../../../tos/interfaces/GeneralIO.nc"
 inline static void CC2420TransmitP__CSN__set(void ){
 #line 40
   /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__GeneralIO__set();
 #line 40
 }
 #line 40
-# 53 "../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
 inline static cc2420_status_t CC2420TransmitP__SFLUSHTX__strobe(void ){
 #line 53
   unsigned char __nesc_result;
@@ -16142,14 +17790,14 @@ inline static cc2420_status_t CC2420TransmitP__SFLUSHTX__strobe(void ){
 #line 53
 }
 #line 53
-# 41 "../../tos/interfaces/GeneralIO.nc"
+# 41 "../../../tos/interfaces/GeneralIO.nc"
 inline static void CC2420TransmitP__CSN__clr(void ){
 #line 41
   /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__GeneralIO__clr();
 #line 41
 }
 #line 41
-# 454 "../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
+# 454 "../../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
 static inline void CC2420TransmitP__TXFIFO__writeDone(uint8_t *tx_buf, uint8_t tx_len, 
 error_t error)
 #line 455
@@ -16192,22 +17840,22 @@ error_t error)
     }
 }
 
-# 668 "../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
+# 668 "../../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
 static inline void CC2420ReceiveP__RXFIFO__writeDone(uint8_t *tx_buf, uint8_t tx_len, error_t error)
 #line 668
 {
 }
 
-# 373 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+# 373 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
 static inline void CC2420SpiP__Fifo__default__writeDone(uint8_t addr, uint8_t *tx_buf, uint8_t tx_len, error_t error)
 #line 373
 {
 }
 
-# 91 "../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
-inline static void CC2420SpiP__Fifo__writeDone(uint8_t arg_0x7f540d6f36e0, uint8_t * data, uint8_t length, error_t error){
+# 91 "../../../tos/chips/cc2420/interfaces/CC2420Fifo.nc"
+inline static void CC2420SpiP__Fifo__writeDone(uint8_t arg_0x7f49d72dc6e0, uint8_t * data, uint8_t length, error_t error){
 #line 91
-  switch (arg_0x7f540d6f36e0) {
+  switch (arg_0x7f49d72dc6e0) {
 #line 91
     case CC2420_TXFIFO:
 #line 91
@@ -16223,7 +17871,7 @@ inline static void CC2420SpiP__Fifo__writeDone(uint8_t arg_0x7f540d6f36e0, uint8
 #line 91
     default:
 #line 91
-      CC2420SpiP__Fifo__default__writeDone(arg_0x7f540d6f36e0, data, length, error);
+      CC2420SpiP__Fifo__default__writeDone(arg_0x7f49d72dc6e0, data, length, error);
 #line 91
       break;
 #line 91
@@ -16231,7 +17879,7 @@ inline static void CC2420SpiP__Fifo__writeDone(uint8_t arg_0x7f540d6f36e0, uint8
 #line 91
 }
 #line 91
-# 53 "../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
 inline static cc2420_status_t CC2420TransmitP__STXONCCA__strobe(void ){
 #line 53
   unsigned char __nesc_result;
@@ -16274,49 +17922,49 @@ inline static cc2420_status_t CC2420TransmitP__SNOP__strobe(void ){
 #line 53
 }
 #line 53
-# 297 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+# 297 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
 static inline void CC2420ActiveMessageP__RadioBackoff__default__requestCongestionBackoff(am_id_t id, 
 message_t *msg)
 #line 298
 {
 }
 
-# 88 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
-inline static void CC2420ActiveMessageP__RadioBackoff__requestCongestionBackoff(am_id_t arg_0x7f540cd3b700, message_t * msg){
+# 88 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+inline static void CC2420ActiveMessageP__RadioBackoff__requestCongestionBackoff(am_id_t arg_0x7f49d692e700, message_t * msg){
 #line 88
-    CC2420ActiveMessageP__RadioBackoff__default__requestCongestionBackoff(arg_0x7f540cd3b700, msg);
+    CC2420ActiveMessageP__RadioBackoff__default__requestCongestionBackoff(arg_0x7f49d692e700, msg);
 #line 88
 }
 #line 88
-# 246 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+# 246 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
 static inline void CC2420ActiveMessageP__SubBackoff__requestCongestionBackoff(message_t *msg)
 #line 246
 {
   CC2420ActiveMessageP__RadioBackoff__requestCongestionBackoff(__nesc_ntoh_leuint8(((cc2420_header_t * )((uint8_t *)msg + (unsigned short )& ((message_t *)0)->data - sizeof(cc2420_header_t )))->type.nxdata), msg);
 }
 
-# 88 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+# 88 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
 inline static void CC2420CsmaP__RadioBackoff__requestCongestionBackoff(message_t * msg){
 #line 88
   CC2420ActiveMessageP__SubBackoff__requestCongestionBackoff(msg);
 #line 88
 }
 #line 88
-# 251 "../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
+# 251 "../../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
 static inline void CC2420TransmitP__RadioBackoff__setCongestionBackoff(uint16_t backoffTime)
 #line 251
 {
   CC2420TransmitP__myCongestionBackoff = backoffTime + 1;
 }
 
-# 66 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+# 66 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
 inline static void CC2420CsmaP__SubBackoff__setCongestionBackoff(uint16_t backoffTime){
 #line 66
   CC2420TransmitP__RadioBackoff__setCongestionBackoff(backoffTime);
 #line 66
 }
 #line 66
-# 230 "../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
+# 230 "../../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
 static inline void CC2420CsmaP__SubBackoff__requestCongestionBackoff(message_t *msg)
 #line 230
 {
@@ -16326,14 +17974,14 @@ static inline void CC2420CsmaP__SubBackoff__requestCongestionBackoff(message_t *
   CC2420CsmaP__RadioBackoff__requestCongestionBackoff(msg);
 }
 
-# 88 "../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
+# 88 "../../../tos/chips/cc2420/interfaces/RadioBackoff.nc"
 inline static void CC2420TransmitP__RadioBackoff__requestCongestionBackoff(message_t * msg){
 #line 88
   CC2420CsmaP__SubBackoff__requestCongestionBackoff(msg);
 #line 88
 }
 #line 88
-# 64 "../../tos/lib/timer/Counter.nc"
+# 64 "../../../tos/lib/timer/Counter.nc"
 inline static /*Counter32khz32C.Transform*/TransformCounterC__0__CounterFrom__size_type /*Counter32khz32C.Transform*/TransformCounterC__0__CounterFrom__get(void ){
 #line 64
   unsigned int __nesc_result;
@@ -16369,49 +18017,49 @@ inline static bool /*Counter32khz32C.Transform*/TransformCounterC__0__CounterFro
 #line 71
 }
 #line 71
-# 109 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 109 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Control__enableEvents(void )
 #line 109
 {
   * (volatile uint16_t * )386U |= 0x0010;
 }
 
-# 76 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 76 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 inline static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430TimerControl__enableEvents(void ){
 #line 76
   /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Control__enableEvents();
 #line 76
 }
 #line 76
-# 92 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Control__clearPendingInterrupt(void )
 #line 92
 {
   * (volatile uint16_t * )386U &= ~0x0001;
 }
 
-# 43 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 43 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 inline static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430TimerControl__clearPendingInterrupt(void ){
 #line 43
   /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Control__clearPendingInterrupt();
 #line 43
 }
 #line 43
-# 140 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 140 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Compare__setEvent(uint16_t x)
 #line 140
 {
   * (volatile uint16_t * )402U = x;
 }
 
-# 42 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 42 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 inline static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430Compare__setEvent(uint16_t time){
 #line 42
   /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Compare__setEvent(time);
 #line 42
 }
 #line 42
-# 45 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 inline static uint16_t /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Timer__get(void ){
 #line 45
   unsigned int __nesc_result;
@@ -16426,21 +18074,21 @@ inline static uint16_t /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Time
 #line 45
 }
 #line 45
-# 148 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 148 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Compare__setEventFromNow(uint16_t delta)
 #line 148
 {
   * (volatile uint16_t * )402U = /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Timer__get() + delta;
 }
 
-# 44 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 44 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 inline static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430Compare__setEventFromNow(uint16_t delta){
 #line 44
   /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Compare__setEventFromNow(delta);
 #line 44
 }
 #line 44
-# 45 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 inline static uint16_t /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430Timer__get(void ){
 #line 45
   unsigned int __nesc_result;
@@ -16455,7 +18103,7 @@ inline static uint16_t /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*
 #line 45
 }
 #line 45
-# 81 "../../tos/chips/msp430/timer/Msp430AlarmC.nc"
+# 81 "../../../tos/chips/msp430/timer/Msp430AlarmC.nc"
 static inline void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Alarm__startAt(uint16_t t0, uint16_t dt)
 {
   /* atomic removed: atomic calls only */
@@ -16487,14 +18135,14 @@ static inline void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp
   }
 }
 
-# 103 "../../tos/lib/timer/Alarm.nc"
+# 103 "../../../tos/lib/timer/Alarm.nc"
 inline static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__AlarmFrom__startAt(/*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__AlarmFrom__size_type t0, /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__AlarmFrom__size_type dt){
 #line 103
   /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Alarm__startAt(t0, dt);
 #line 103
 }
 #line 103
-# 63 "../../tos/chips/cc2420/interfaces/CC2420Register.nc"
+# 63 "../../../tos/chips/cc2420/interfaces/CC2420Register.nc"
 inline static cc2420_status_t CC2420ControlP__TXCTRL__write(uint16_t data){
 #line 63
   unsigned char __nesc_result;
@@ -16509,7 +18157,7 @@ inline static cc2420_status_t CC2420ControlP__TXCTRL__write(uint16_t data){
 #line 63
 }
 #line 63
-# 533 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
+# 533 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
 static inline void CC2420ControlP__writeTxctrl(void )
 #line 533
 {
@@ -16523,7 +18171,7 @@ static inline void CC2420ControlP__writeTxctrl(void )
   }
 }
 
-# 63 "../../tos/chips/cc2420/interfaces/CC2420Register.nc"
+# 63 "../../../tos/chips/cc2420/interfaces/CC2420Register.nc"
 inline static cc2420_status_t CC2420ControlP__RXCTRL1__write(uint16_t data){
 #line 63
   unsigned char __nesc_result;
@@ -16552,7 +18200,7 @@ inline static cc2420_status_t CC2420ControlP__IOCFG0__write(uint16_t data){
 #line 63
 }
 #line 63
-# 53 "../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
 inline static cc2420_status_t CC2420ControlP__SXOSCON__strobe(void ){
 #line 53
   unsigned char __nesc_result;
@@ -16567,7 +18215,7 @@ inline static cc2420_status_t CC2420ControlP__SXOSCON__strobe(void ){
 #line 53
 }
 #line 53
-# 119 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 119 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port14__enable(void )
 #line 119
 {
@@ -16575,14 +18223,14 @@ static inline void HplMsp430InterruptP__Port14__enable(void )
   P1IE |= 1 << 4;
 }
 
-# 44 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 44 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__HplInterrupt__enable(void ){
 #line 44
   HplMsp430InterruptP__Port14__enable();
 #line 44
 }
 #line 44
-# 155 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 155 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port14__edgeRising(void )
 #line 155
 {
@@ -16590,14 +18238,14 @@ static inline void HplMsp430InterruptP__Port14__edgeRising(void )
   P1IES &= 0xef;
 }
 
-# 66 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 66 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__HplInterrupt__edgeRising(void ){
 #line 66
   HplMsp430InterruptP__Port14__edgeRising();
 #line 66
 }
 #line 66
-# 137 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 137 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port14__clear(void )
 #line 137
 {
@@ -16605,14 +18253,14 @@ static inline void HplMsp430InterruptP__Port14__clear(void )
   P1IFG &= ~(1 << 4);
 }
 
-# 54 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 54 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__HplInterrupt__clear(void ){
 #line 54
   HplMsp430InterruptP__Port14__clear();
 #line 54
 }
 #line 54
-# 128 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 128 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port14__disable(void )
 #line 128
 {
@@ -16620,14 +18268,14 @@ static inline void HplMsp430InterruptP__Port14__disable(void )
   P1IE &= ~(1 << 4);
 }
 
-# 49 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 49 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__HplInterrupt__disable(void ){
 #line 49
   HplMsp430InterruptP__Port14__disable();
 #line 49
 }
 #line 49
-# 76 "../../tos/chips/msp430/x1x2/pins/Msp430InterruptC.nc"
+# 76 "../../../tos/chips/msp430/x1x2/pins/Msp430InterruptC.nc"
 static inline error_t /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__Interrupt__disable(void )
 #line 76
 {
@@ -16651,7 +18299,7 @@ static inline error_t /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0_
   return SUCCESS;
 }
 
-# 53 "../../tos/interfaces/GpioInterrupt.nc"
+# 53 "../../../tos/interfaces/GpioInterrupt.nc"
 inline static error_t CC2420ControlP__InterruptCCA__enableRisingEdge(void ){
 #line 53
   enum __nesc_unnamed4242 __nesc_result;
@@ -16666,7 +18314,7 @@ inline static error_t CC2420ControlP__InterruptCCA__enableRisingEdge(void ){
 #line 53
 }
 #line 53
-# 63 "../../tos/chips/cc2420/interfaces/CC2420Register.nc"
+# 63 "../../../tos/chips/cc2420/interfaces/CC2420Register.nc"
 inline static cc2420_status_t CC2420ControlP__IOCFG1__write(uint16_t data){
 #line 63
   unsigned char __nesc_result;
@@ -16681,7 +18329,7 @@ inline static cc2420_status_t CC2420ControlP__IOCFG1__write(uint16_t data){
 #line 63
 }
 #line 63
-# 224 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
+# 224 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
 static inline error_t CC2420ControlP__CC2420Power__startOscillator(void )
 #line 224
 {
@@ -16731,7 +18379,7 @@ static inline error_t CC2420ControlP__CC2420Power__startOscillator(void )
   return SUCCESS;
 }
 
-# 71 "../../tos/chips/cc2420/interfaces/CC2420Power.nc"
+# 71 "../../../tos/chips/cc2420/interfaces/CC2420Power.nc"
 inline static error_t CC2420CsmaP__CC2420Power__startOscillator(void ){
 #line 71
   enum __nesc_unnamed4242 __nesc_result;
@@ -16746,28 +18394,28 @@ inline static error_t CC2420CsmaP__CC2420Power__startOscillator(void ){
 #line 71
 }
 #line 71
-# 214 "../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
+# 214 "../../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
 static inline void CC2420CsmaP__Resource__granted(void )
 #line 214
 {
   CC2420CsmaP__CC2420Power__startOscillator();
 }
 
-# 102 "../../tos/interfaces/Resource.nc"
+# 102 "../../../tos/interfaces/Resource.nc"
 inline static void CC2420ControlP__Resource__granted(void ){
 #line 102
   CC2420CsmaP__Resource__granted();
 #line 102
 }
 #line 102
-# 41 "../../tos/interfaces/GeneralIO.nc"
+# 41 "../../../tos/interfaces/GeneralIO.nc"
 inline static void CC2420ControlP__CSN__clr(void ){
 #line 41
   /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__GeneralIO__clr();
 #line 41
 }
 #line 41
-# 413 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
+# 413 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
 static inline void CC2420ControlP__SpiResource__granted(void )
 #line 413
 {
@@ -16775,7 +18423,7 @@ static inline void CC2420ControlP__SpiResource__granted(void )
   CC2420ControlP__Resource__granted();
 }
 
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 inline static error_t CC2420ControlP__syncDone__postTask(void ){
 #line 67
   enum __nesc_unnamed4242 __nesc_result;
@@ -16790,7 +18438,7 @@ inline static error_t CC2420ControlP__syncDone__postTask(void ){
 #line 67
 }
 #line 67
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 inline static error_t CC2420ControlP__SyncResource__release(void ){
 #line 120
   enum __nesc_unnamed4242 __nesc_result;
@@ -16805,14 +18453,14 @@ inline static error_t CC2420ControlP__SyncResource__release(void ){
 #line 120
 }
 #line 120
-# 40 "../../tos/interfaces/GeneralIO.nc"
+# 40 "../../../tos/interfaces/GeneralIO.nc"
 inline static void CC2420ControlP__CSN__set(void ){
 #line 40
   /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__GeneralIO__set();
 #line 40
 }
 #line 40
-# 53 "../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420Strobe.nc"
 inline static cc2420_status_t CC2420ControlP__SRXON__strobe(void ){
 #line 53
   unsigned char __nesc_result;
@@ -16841,7 +18489,7 @@ inline static cc2420_status_t CC2420ControlP__SRFOFF__strobe(void ){
 #line 53
 }
 #line 53
-# 399 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
+# 399 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
 static inline void CC2420ControlP__SyncResource__granted(void )
 #line 399
 {
@@ -16864,14 +18512,14 @@ static inline void CC2420ControlP__ReadRssi__default__readDone(error_t error, ui
 {
 }
 
-# 63 "../../tos/interfaces/Read.nc"
+# 63 "../../../tos/interfaces/Read.nc"
 inline static void CC2420ControlP__ReadRssi__readDone(error_t result, CC2420ControlP__ReadRssi__val_t val){
 #line 63
   CC2420ControlP__ReadRssi__default__readDone(result, val);
 #line 63
 }
 #line 63
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 inline static error_t CC2420ControlP__RssiResource__release(void ){
 #line 120
   enum __nesc_unnamed4242 __nesc_result;
@@ -16886,7 +18534,7 @@ inline static error_t CC2420ControlP__RssiResource__release(void ){
 #line 120
 }
 #line 120
-# 287 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+# 287 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
 static inline cc2420_status_t CC2420SpiP__Reg__read(uint8_t addr, uint16_t *data)
 #line 287
 {
@@ -16921,7 +18569,7 @@ static inline cc2420_status_t CC2420SpiP__Reg__read(uint8_t addr, uint16_t *data
   return status;
 }
 
-# 55 "../../tos/chips/cc2420/interfaces/CC2420Register.nc"
+# 55 "../../../tos/chips/cc2420/interfaces/CC2420Register.nc"
 inline static cc2420_status_t CC2420ControlP__RSSI__read(uint16_t *data){
 #line 55
   unsigned char __nesc_result;
@@ -16936,7 +18584,7 @@ inline static cc2420_status_t CC2420ControlP__RSSI__read(uint16_t *data){
 #line 55
 }
 #line 55
-# 418 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
+# 418 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
 static inline void CC2420ControlP__RssiResource__granted(void )
 #line 418
 {
@@ -16953,7 +18601,7 @@ static inline void CC2420ControlP__RssiResource__granted(void )
   CC2420ControlP__ReadRssi__readDone(SUCCESS, data);
 }
 
-# 416 "../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
+# 416 "../../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
 static inline void CC2420TransmitP__SpiResource__granted(void )
 #line 416
 {
@@ -16997,7 +18645,7 @@ static inline void CC2420TransmitP__SpiResource__granted(void )
     }
 }
 
-# 513 "../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
+# 513 "../../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
 static inline void CC2420ReceiveP__SpiResource__granted(void )
 #line 513
 {
@@ -17011,16 +18659,16 @@ static inline void CC2420ReceiveP__SpiResource__granted(void )
   CC2420ReceiveP__receive();
 }
 
-# 367 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+# 367 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
 static inline void CC2420SpiP__Resource__default__granted(uint8_t id)
 #line 367
 {
 }
 
-# 102 "../../tos/interfaces/Resource.nc"
-inline static void CC2420SpiP__Resource__granted(uint8_t arg_0x7f540d6f4360){
+# 102 "../../../tos/interfaces/Resource.nc"
+inline static void CC2420SpiP__Resource__granted(uint8_t arg_0x7f49d72dd360){
 #line 102
-  switch (arg_0x7f540d6f4360) {
+  switch (arg_0x7f49d72dd360) {
 #line 102
     case /*CC2420ControlC.Spi*/CC2420SpiC__0__CLIENT_ID:
 #line 102
@@ -17054,7 +18702,7 @@ inline static void CC2420SpiP__Resource__granted(uint8_t arg_0x7f540d6f4360){
 #line 102
     default:
 #line 102
-      CC2420SpiP__Resource__default__granted(arg_0x7f540d6f4360);
+      CC2420SpiP__Resource__default__granted(arg_0x7f49d72dd360);
 #line 102
       break;
 #line 102
@@ -17062,7 +18710,7 @@ inline static void CC2420SpiP__Resource__granted(uint8_t arg_0x7f540d6f4360){
 #line 102
 }
 #line 102
-# 358 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+# 358 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
 static inline void CC2420SpiP__grant__runTask(void )
 #line 358
 {
@@ -17079,7 +18727,7 @@ static inline void CC2420SpiP__grant__runTask(void )
   CC2420SpiP__Resource__granted(holder);
 }
 
-# 63 "../../tos/chips/cc2420/interfaces/CC2420Register.nc"
+# 63 "../../../tos/chips/cc2420/interfaces/CC2420Register.nc"
 inline static cc2420_status_t CC2420ControlP__FSCTRL__write(uint16_t data){
 #line 63
   unsigned char __nesc_result;
@@ -17108,7 +18756,7 @@ inline static cc2420_status_t CC2420ControlP__MDMCTRL0__write(uint16_t data){
 #line 63
 }
 #line 63
-# 63 "../../tos/chips/cc2420/interfaces/CC2420Ram.nc"
+# 63 "../../../tos/chips/cc2420/interfaces/CC2420Ram.nc"
 inline static cc2420_status_t CC2420ControlP__IEEEADR__write(uint8_t offset, uint8_t * data, uint8_t length){
 #line 63
   unsigned char __nesc_result;
@@ -17123,19 +18771,19 @@ inline static cc2420_status_t CC2420ControlP__IEEEADR__write(uint8_t offset, uin
 #line 63
 }
 #line 63
-# 235 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+# 235 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
 static inline void CC2420ActiveMessageP__CC2420Config__syncDone(error_t error)
 #line 235
 {
 }
 
-# 709 "../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
+# 709 "../../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
 static inline void CC2420ReceiveP__CC2420Config__syncDone(error_t error)
 #line 709
 {
 }
 
-# 55 "../../tos/chips/cc2420/interfaces/CC2420Config.nc"
+# 55 "../../../tos/chips/cc2420/interfaces/CC2420Config.nc"
 inline static void CC2420ControlP__CC2420Config__syncDone(error_t error){
 #line 55
   CC2420ReceiveP__CC2420Config__syncDone(error);
@@ -17144,7 +18792,7 @@ inline static void CC2420ControlP__CC2420Config__syncDone(error_t error){
 #line 55
 }
 #line 55
-# 469 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
+# 469 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
 static inline void CC2420ControlP__syncDone__runTask(void )
 #line 469
 {
@@ -17156,7 +18804,7 @@ static inline void CC2420ControlP__syncDone__runTask(void )
   CC2420ControlP__CC2420Config__syncDone(SUCCESS);
 }
 
-# 88 "../../tos/interfaces/Resource.nc"
+# 88 "../../../tos/interfaces/Resource.nc"
 inline static error_t CC2420ControlP__SyncResource__request(void ){
 #line 88
   enum __nesc_unnamed4242 __nesc_result;
@@ -17171,7 +18819,7 @@ inline static error_t CC2420ControlP__SyncResource__request(void ){
 #line 88
 }
 #line 88
-# 323 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
+# 323 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
 static inline error_t CC2420ControlP__CC2420Config__sync(void )
 #line 323
 {
@@ -17215,27 +18863,27 @@ static inline void CC2420ControlP__sync__runTask(void )
   CC2420ControlP__CC2420Config__sync();
 }
 
-# 248 "../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
+# 248 "../../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
 static inline void CC2420TinyosNetworkP__BareSend__default__sendDone(message_t *msg, error_t error)
 #line 248
 {
 }
 
-# 100 "../../tos/interfaces/Send.nc"
+# 100 "../../../tos/interfaces/Send.nc"
 inline static void CC2420TinyosNetworkP__BareSend__sendDone(message_t * msg, error_t error){
 #line 100
   CC2420TinyosNetworkP__BareSend__default__sendDone(msg, error);
 #line 100
 }
 #line 100
-# 110 "../../tos/interfaces/AMSend.nc"
-inline static void CC2420ActiveMessageP__AMSend__sendDone(am_id_t arg_0x7f540cd44cd0, message_t * msg, error_t error){
+# 110 "../../../tos/interfaces/AMSend.nc"
+inline static void CC2420ActiveMessageP__AMSend__sendDone(am_id_t arg_0x7f49d6936ce0, message_t * msg, error_t error){
 #line 110
-  BaseStationP__RadioSend__sendDone(arg_0x7f540cd44cd0, msg, error);
+  /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__sendDone(arg_0x7f49d6936ce0, msg, error);
 #line 110
 }
 #line 110
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 inline static error_t CC2420ActiveMessageP__RadioResource__release(void ){
 #line 120
   enum __nesc_unnamed4242 __nesc_result;
@@ -17250,7 +18898,7 @@ inline static error_t CC2420ActiveMessageP__RadioResource__release(void ){
 #line 120
 }
 #line 120
-# 212 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+# 212 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
 static inline void CC2420ActiveMessageP__SubSend__sendDone(message_t *msg, error_t result)
 #line 212
 {
@@ -17258,14 +18906,14 @@ static inline void CC2420ActiveMessageP__SubSend__sendDone(message_t *msg, error
   CC2420ActiveMessageP__AMSend__sendDone(CC2420ActiveMessageP__AMPacket__type(msg), msg, result);
 }
 
-# 100 "../../tos/interfaces/Send.nc"
+# 100 "../../../tos/interfaces/Send.nc"
 inline static void CC2420TinyosNetworkP__ActiveSend__sendDone(message_t * msg, error_t error){
 #line 100
   CC2420ActiveMessageP__SubSend__sendDone(msg, error);
 #line 100
 }
 #line 100
-# 149 "../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
+# 149 "../../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
 static inline void CC2420TinyosNetworkP__SubSend__sendDone(message_t *msg, error_t error)
 #line 149
 {
@@ -17279,14 +18927,14 @@ static inline void CC2420TinyosNetworkP__SubSend__sendDone(message_t *msg, error
     }
 }
 
-# 100 "../../tos/interfaces/Send.nc"
+# 100 "../../../tos/interfaces/Send.nc"
 inline static void UniqueSendP__Send__sendDone(message_t * msg, error_t error){
 #line 100
   CC2420TinyosNetworkP__SubSend__sendDone(msg, error);
 #line 100
 }
 #line 100
-# 104 "../../tos/chips/cc2420/unique/UniqueSendP.nc"
+# 104 "../../../tos/chips/cc2420/unique/UniqueSendP.nc"
 static inline void UniqueSendP__SubSend__sendDone(message_t *msg, error_t error)
 #line 104
 {
@@ -17294,14 +18942,14 @@ static inline void UniqueSendP__SubSend__sendDone(message_t *msg, error_t error)
   UniqueSendP__Send__sendDone(msg, error);
 }
 
-# 100 "../../tos/interfaces/Send.nc"
+# 100 "../../../tos/interfaces/Send.nc"
 inline static void CC2420CsmaP__Send__sendDone(message_t * msg, error_t error){
 #line 100
   UniqueSendP__SubSend__sendDone(msg, error);
 #line 100
 }
 #line 100
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 inline static error_t CC2420CsmaP__stopDone_task__postTask(void ){
 #line 67
   enum __nesc_unnamed4242 __nesc_result;
@@ -17316,14 +18964,14 @@ inline static error_t CC2420CsmaP__stopDone_task__postTask(void ){
 #line 67
 }
 #line 67
-# 49 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 49 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__HplGeneralIO__set(void ){
 #line 49
   /*HplMsp430GeneralIOC.P46*/HplMsp430GeneralIOP__30__IO__set();
 #line 49
 }
 #line 49
-# 48 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 48 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__GeneralIO__set(void )
 #line 48
 {
@@ -17331,14 +18979,14 @@ static inline void /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__GeneralIO__set(void )
   /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__HplGeneralIO__set();
 }
 
-# 40 "../../tos/interfaces/GeneralIO.nc"
+# 40 "../../../tos/interfaces/GeneralIO.nc"
 inline static void CC2420ControlP__RSTN__set(void ){
 #line 40
   /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__GeneralIO__set();
 #line 40
 }
 #line 40
-# 96 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 96 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P45*/HplMsp430GeneralIOP__29__IO__clr(void )
 #line 96
 {
@@ -17350,14 +18998,14 @@ static inline void /*HplMsp430GeneralIOC.P45*/HplMsp430GeneralIOP__29__IO__clr(v
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 54 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 54 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__HplGeneralIO__clr(void ){
 #line 54
   /*HplMsp430GeneralIOC.P45*/HplMsp430GeneralIOP__29__IO__clr();
 #line 54
 }
 #line 54
-# 49 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 49 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__GeneralIO__clr(void )
 #line 49
 {
@@ -17365,21 +19013,21 @@ static inline void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__GeneralIO__clr(void )
   /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__HplGeneralIO__clr();
 }
 
-# 41 "../../tos/interfaces/GeneralIO.nc"
+# 41 "../../../tos/interfaces/GeneralIO.nc"
 inline static void CC2420ControlP__VREN__clr(void ){
 #line 41
   /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__GeneralIO__clr();
 #line 41
 }
 #line 41
-# 54 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 54 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__HplGeneralIO__clr(void ){
 #line 54
   /*HplMsp430GeneralIOC.P46*/HplMsp430GeneralIOP__30__IO__clr();
 #line 54
 }
 #line 54
-# 49 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 49 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__GeneralIO__clr(void )
 #line 49
 {
@@ -17387,14 +19035,14 @@ static inline void /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__GeneralIO__clr(void )
   /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__HplGeneralIO__clr();
 }
 
-# 41 "../../tos/interfaces/GeneralIO.nc"
+# 41 "../../../tos/interfaces/GeneralIO.nc"
 inline static void CC2420ControlP__RSTN__clr(void ){
 #line 41
   /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__GeneralIO__clr();
 #line 41
 }
 #line 41
-# 216 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
+# 216 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
 static inline error_t CC2420ControlP__CC2420Power__stopVReg(void )
 #line 216
 {
@@ -17405,7 +19053,7 @@ static inline error_t CC2420ControlP__CC2420Power__stopVReg(void )
   return SUCCESS;
 }
 
-# 63 "../../tos/chips/cc2420/interfaces/CC2420Power.nc"
+# 63 "../../../tos/chips/cc2420/interfaces/CC2420Power.nc"
 inline static error_t CC2420CsmaP__CC2420Power__stopVReg(void ){
 #line 63
   enum __nesc_unnamed4242 __nesc_result;
@@ -17420,14 +19068,14 @@ inline static error_t CC2420CsmaP__CC2420Power__stopVReg(void ){
 #line 63
 }
 #line 63
-# 77 "../../tos/types/TinyError.h"
+# 77 "../../../tos/types/TinyError.h"
 static inline  error_t ecombine(error_t r1, error_t r2)
 #line 77
 {
   return r1 == r2 ? r1 : FAIL;
 }
 
-# 124 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 124 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port10__disable(void )
 #line 124
 {
@@ -17435,14 +19083,14 @@ static inline void HplMsp430InterruptP__Port10__disable(void )
   P1IE &= ~(1 << 0);
 }
 
-# 49 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 49 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__HplInterrupt__disable(void ){
 #line 49
   HplMsp430InterruptP__Port10__disable();
 #line 49
 }
 #line 49
-# 76 "../../tos/chips/msp430/x1x2/pins/Msp430InterruptC.nc"
+# 76 "../../../tos/chips/msp430/x1x2/pins/Msp430InterruptC.nc"
 static inline error_t /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__Interrupt__disable(void )
 #line 76
 {
@@ -17451,7 +19099,7 @@ static inline error_t /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__
   return SUCCESS;
 }
 
-# 61 "../../tos/interfaces/GpioInterrupt.nc"
+# 61 "../../../tos/interfaces/GpioInterrupt.nc"
 inline static error_t CC2420ReceiveP__InterruptFIFOP__disable(void ){
 #line 61
   enum __nesc_unnamed4242 __nesc_result;
@@ -17466,7 +19114,7 @@ inline static error_t CC2420ReceiveP__InterruptFIFOP__disable(void ){
 #line 61
 }
 #line 61
-# 171 "../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
+# 171 "../../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
 static inline error_t CC2420ReceiveP__StdControl__stop(void )
 #line 171
 {
@@ -17483,7 +19131,7 @@ static inline error_t CC2420ReceiveP__StdControl__stop(void )
   return SUCCESS;
 }
 
-# 106 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 106 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P41*/HplMsp430GeneralIOP__25__IO__selectIOFunc(void )
 #line 106
 {
@@ -17492,28 +19140,28 @@ static inline void /*HplMsp430GeneralIOC.P41*/HplMsp430GeneralIOP__25__IO__selec
   * (volatile uint8_t * )31U &= ~(0x01 << 1);
 }
 
-# 97 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 97 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__GeneralIO__selectIOFunc(void ){
 #line 97
   /*HplMsp430GeneralIOC.P41*/HplMsp430GeneralIOP__25__IO__selectIOFunc();
 #line 97
 }
 #line 97
-# 113 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 113 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Control__disableEvents(void )
 #line 113
 {
   * (volatile uint16_t * )388U &= ~0x0010;
 }
 
-# 77 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 77 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 inline static void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Msp430TimerControl__disableEvents(void ){
 #line 77
   /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Control__disableEvents();
 #line 77
 }
 #line 77
-# 82 "../../tos/chips/msp430/timer/GpioCaptureC.nc"
+# 82 "../../../tos/chips/msp430/timer/GpioCaptureC.nc"
 static inline void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Capture__disable(void )
 #line 82
 {
@@ -17525,14 +19173,14 @@ static inline void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Capture_
   }
 }
 
-# 66 "../../tos/interfaces/GpioCapture.nc"
+# 66 "../../../tos/interfaces/GpioCapture.nc"
 inline static void CC2420TransmitP__CaptureSFD__disable(void ){
 #line 66
   /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Capture__disable();
 #line 66
 }
 #line 66
-# 179 "../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
+# 179 "../../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
 static inline error_t CC2420TransmitP__StdControl__stop(void )
 #line 179
 {
@@ -17550,7 +19198,7 @@ static inline error_t CC2420TransmitP__StdControl__stop(void )
   return SUCCESS;
 }
 
-# 105 "../../tos/interfaces/StdControl.nc"
+# 105 "../../../tos/interfaces/StdControl.nc"
 inline static error_t CC2420CsmaP__SubControl__stop(void ){
 #line 105
   enum __nesc_unnamed4242 __nesc_result;
@@ -17567,7 +19215,7 @@ inline static error_t CC2420CsmaP__SubControl__stop(void ){
 #line 105
 }
 #line 105
-# 275 "../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
+# 275 "../../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
 static inline void CC2420CsmaP__shutdown(void )
 #line 275
 {
@@ -17598,20 +19246,20 @@ static inline void CC2420CsmaP__sendDone_task__runTask(void )
   CC2420CsmaP__Send__sendDone(CC2420CsmaP__m_msg, packetErr);
 }
 
-# 143 "BaseStationP.nc"
-static inline void BaseStationP__RadioControl__stopDone(error_t error)
-#line 143
+# 171 "BaseStationP.nc"
+static inline void BaseStationP__AMControl__stopDone(error_t error)
+#line 171
 {
 }
 
-# 138 "../../tos/interfaces/SplitControl.nc"
+# 138 "../../../tos/interfaces/SplitControl.nc"
 inline static void CC2420CsmaP__SplitControl__stopDone(error_t error){
 #line 138
-  BaseStationP__RadioControl__stopDone(error);
+  BaseStationP__AMControl__stopDone(error);
 #line 138
 }
 #line 138
-# 265 "../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
+# 265 "../../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
 static inline void CC2420CsmaP__stopDone_task__runTask(void )
 #line 265
 {
@@ -17619,23 +19267,59 @@ static inline void CC2420CsmaP__stopDone_task__runTask(void )
   CC2420CsmaP__SplitControl__stopDone(SUCCESS);
 }
 
-# 130 "BaseStationP.nc"
-static inline void BaseStationP__RadioControl__startDone(error_t error)
-#line 130
+# 104 "../../../tos/interfaces/SplitControl.nc"
+inline static error_t BaseStationP__AMControl__start(void ){
+#line 104
+  enum __nesc_unnamed4242 __nesc_result;
+#line 104
+
+#line 104
+  __nesc_result = CC2420CsmaP__SplitControl__start();
+#line 104
+
+#line 104
+  return __nesc_result;
+#line 104
+}
+#line 104
+# 242 "../../../tos/lib/timer/VirtualizeTimerImplP.nc"
+static inline void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Timer__startPeriodic(uint8_t num, uint32_t dt)
+#line 242
+{
+  /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__startTimer(num, /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__TimerFrom__getNow(), dt, FALSE);
+}
+
+# 64 "../../../tos/lib/timer/Timer.nc"
+inline static void BaseStationP__TimerTramaTDMA__startPeriodic(uint32_t dt){
+#line 64
+  /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Timer__startPeriodic(1U, dt);
+#line 64
+}
+#line 64
+# 152 "BaseStationP.nc"
+static inline void BaseStationP__AMControl__startDone(error_t error)
+#line 152
 {
   if (error == SUCCESS) {
       BaseStationP__radioFull = FALSE;
+
+      BaseStationP__TimerTramaTDMA__startPeriodic(TIMER_PERIODO_COMPLETO);
+    }
+  else 
+#line 157
+    {
+      BaseStationP__AMControl__start();
     }
 }
 
-# 113 "../../tos/interfaces/SplitControl.nc"
+# 113 "../../../tos/interfaces/SplitControl.nc"
 inline static void CC2420CsmaP__SplitControl__startDone(error_t error){
 #line 113
-  BaseStationP__RadioControl__startDone(error);
+  BaseStationP__AMControl__startDone(error);
 #line 113
 }
 #line 113
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 inline static error_t CC2420ControlP__SpiResource__release(void ){
 #line 120
   enum __nesc_unnamed4242 __nesc_result;
@@ -17650,7 +19334,7 @@ inline static error_t CC2420ControlP__SpiResource__release(void ){
 #line 120
 }
 #line 120
-# 196 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
+# 196 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
 static inline error_t CC2420ControlP__Resource__release(void )
 #line 196
 {
@@ -17675,7 +19359,7 @@ static inline error_t CC2420ControlP__Resource__release(void )
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 120 "../../tos/interfaces/Resource.nc"
+# 120 "../../../tos/interfaces/Resource.nc"
 inline static error_t CC2420CsmaP__Resource__release(void ){
 #line 120
   enum __nesc_unnamed4242 __nesc_result;
@@ -17690,7 +19374,7 @@ inline static error_t CC2420CsmaP__Resource__release(void ){
 #line 120
 }
 #line 120
-# 268 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
+# 268 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
 static inline error_t CC2420ControlP__CC2420Power__rxOn(void )
 #line 268
 {
@@ -17719,7 +19403,7 @@ static inline error_t CC2420ControlP__CC2420Power__rxOn(void )
   return SUCCESS;
 }
 
-# 90 "../../tos/chips/cc2420/interfaces/CC2420Power.nc"
+# 90 "../../../tos/chips/cc2420/interfaces/CC2420Power.nc"
 inline static error_t CC2420CsmaP__CC2420Power__rxOn(void ){
 #line 90
   enum __nesc_unnamed4242 __nesc_result;
@@ -17734,7 +19418,7 @@ inline static error_t CC2420CsmaP__CC2420Power__rxOn(void ){
 #line 90
 }
 #line 90
-# 115 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 115 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port10__enable(void )
 #line 115
 {
@@ -17742,14 +19426,14 @@ static inline void HplMsp430InterruptP__Port10__enable(void )
   P1IE |= 1 << 0;
 }
 
-# 44 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 44 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__HplInterrupt__enable(void ){
 #line 44
   HplMsp430InterruptP__Port10__enable();
 #line 44
 }
 #line 44
-# 160 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 160 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port10__edgeFalling(void )
 #line 160
 {
@@ -17757,14 +19441,14 @@ static inline void HplMsp430InterruptP__Port10__edgeFalling(void )
   P1IES |= 0x01;
 }
 
-# 67 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 67 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__HplInterrupt__edgeFalling(void ){
 #line 67
   HplMsp430InterruptP__Port10__edgeFalling();
 #line 67
 }
 #line 67
-# 133 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 133 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port10__clear(void )
 #line 133
 {
@@ -17772,14 +19456,14 @@ static inline void HplMsp430InterruptP__Port10__clear(void )
   P1IFG &= ~(1 << 0);
 }
 
-# 54 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 54 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__HplInterrupt__clear(void ){
 #line 54
   HplMsp430InterruptP__Port10__clear();
 #line 54
 }
 #line 54
-# 66 "../../tos/chips/msp430/x1x2/pins/Msp430InterruptC.nc"
+# 66 "../../../tos/chips/msp430/x1x2/pins/Msp430InterruptC.nc"
 static inline error_t /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__Interrupt__enableFallingEdge(void )
 #line 66
 {
@@ -17794,7 +19478,7 @@ static inline error_t /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__
   return SUCCESS;
 }
 
-# 54 "../../tos/interfaces/GpioInterrupt.nc"
+# 54 "../../../tos/interfaces/GpioInterrupt.nc"
 inline static error_t CC2420ReceiveP__InterruptFIFOP__enableFallingEdge(void ){
 #line 54
   enum __nesc_unnamed4242 __nesc_result;
@@ -17809,7 +19493,7 @@ inline static error_t CC2420ReceiveP__InterruptFIFOP__enableFallingEdge(void ){
 #line 54
 }
 #line 54
-# 157 "../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
+# 157 "../../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
 static inline error_t CC2420ReceiveP__StdControl__start(void )
 #line 157
 {
@@ -17830,14 +19514,14 @@ static inline error_t CC2420ReceiveP__StdControl__start(void )
   return SUCCESS;
 }
 
-# 74 "../../tos/chips/msp430/timer/GpioCaptureC.nc"
+# 74 "../../../tos/chips/msp430/timer/GpioCaptureC.nc"
 static inline error_t /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Capture__captureRisingEdge(void )
 #line 74
 {
   return /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__enableCapture(MSP430TIMER_CM_RISING);
 }
 
-# 53 "../../tos/interfaces/GpioCapture.nc"
+# 53 "../../../tos/interfaces/GpioCapture.nc"
 inline static error_t CC2420TransmitP__CaptureSFD__captureRisingEdge(void ){
 #line 53
   enum __nesc_unnamed4242 __nesc_result;
@@ -17852,7 +19536,7 @@ inline static error_t CC2420TransmitP__CaptureSFD__captureRisingEdge(void ){
 #line 53
 }
 #line 53
-# 168 "../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
+# 168 "../../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
 static inline error_t CC2420TransmitP__StdControl__start(void )
 #line 168
 {
@@ -17870,7 +19554,7 @@ static inline error_t CC2420TransmitP__StdControl__start(void )
   return SUCCESS;
 }
 
-# 95 "../../tos/interfaces/StdControl.nc"
+# 95 "../../../tos/interfaces/StdControl.nc"
 inline static error_t CC2420CsmaP__SubControl__start(void ){
 #line 95
   enum __nesc_unnamed4242 __nesc_result;
@@ -17887,7 +19571,7 @@ inline static error_t CC2420CsmaP__SubControl__start(void ){
 #line 95
 }
 #line 95
-# 257 "../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
+# 257 "../../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
 static inline void CC2420CsmaP__startDone_task__runTask(void )
 #line 257
 {
@@ -17898,7 +19582,7 @@ static inline void CC2420CsmaP__startDone_task__runTask(void )
   CC2420CsmaP__SplitControl__startDone(SUCCESS);
 }
 
-# 100 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 100 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P41*/HplMsp430GeneralIOP__25__IO__makeInput(void )
 #line 100
 {
@@ -17907,14 +19591,14 @@ static inline void /*HplMsp430GeneralIOC.P41*/HplMsp430GeneralIOP__25__IO__makeI
   * (volatile uint8_t * )30U &= ~(0x01 << 1);
 }
 
-# 79 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 79 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__GeneralIO__makeInput(void ){
 #line 79
   /*HplMsp430GeneralIOC.P41*/HplMsp430GeneralIOP__25__IO__makeInput();
 #line 79
 }
 #line 79
-# 104 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 104 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P41*/HplMsp430GeneralIOP__25__IO__selectModuleFunc(void )
 #line 104
 {
@@ -17923,19 +19607,19 @@ static inline void /*HplMsp430GeneralIOC.P41*/HplMsp430GeneralIOP__25__IO__selec
   * (volatile uint8_t * )31U |= 0x01 << 1;
 }
 
-# 91 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 91 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__GeneralIO__selectModuleFunc(void ){
 #line 91
   /*HplMsp430GeneralIOC.P41*/HplMsp430GeneralIOP__25__IO__selectModuleFunc();
 #line 91
 }
 #line 91
-# 58 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 58 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline  uint16_t /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__CC2int(/*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__cc_t x)
 #line 58
 {
 #line 58
-  union /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4____nesc_unnamed4379 {
+  union /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4____nesc_unnamed4384 {
 #line 58
     /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__cc_t f;
 #line 58
@@ -17970,28 +19654,130 @@ static inline void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Control_
   * (volatile uint16_t * )388U = /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__capComControl(cm, ccis, 1);
 }
 
-# 74 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 74 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 inline static void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Msp430TimerControl__setControlAsCapture(uint8_t cm, uint8_t ccis){
 #line 74
   /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Control__setControlAsCapture(cm, ccis);
 #line 74
 }
 #line 74
-# 109 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 109 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Control__enableEvents(void )
 #line 109
 {
   * (volatile uint16_t * )388U |= 0x0010;
 }
 
-# 76 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 76 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 inline static void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Msp430TimerControl__enableEvents(void ){
 #line 76
   /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Control__enableEvents();
 #line 76
 }
 #line 76
-# 97 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 45 "../../../tos/interfaces/State.nc"
+inline static error_t CC2420CsmaP__SplitControlState__requestState(uint8_t reqState){
+#line 45
+  enum __nesc_unnamed4242 __nesc_result;
+#line 45
+
+#line 45
+  __nesc_result = StateImplP__State__requestState(1U, reqState);
+#line 45
+
+#line 45
+  return __nesc_result;
+#line 45
+}
+#line 45
+# 66 "../../../tos/lib/timer/Alarm.nc"
+inline static void CC2420ControlP__StartupTimer__start(CC2420ControlP__StartupTimer__size_type dt){
+#line 66
+  /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Alarm__start(dt);
+#line 66
+}
+#line 66
+# 95 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+static inline void /*HplMsp430GeneralIOC.P45*/HplMsp430GeneralIOP__29__IO__set(void )
+#line 95
+{
+#line 95
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 95
+    * (volatile uint8_t * )29U |= 0x01 << 5;
+#line 95
+    __nesc_atomic_end(__nesc_atomic); }
+}
+
+# 49 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+inline static void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__HplGeneralIO__set(void ){
+#line 49
+  /*HplMsp430GeneralIOC.P45*/HplMsp430GeneralIOP__29__IO__set();
+#line 49
+}
+#line 49
+# 48 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
+static inline void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__GeneralIO__set(void )
+#line 48
+{
+#line 48
+  /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__HplGeneralIO__set();
+}
+
+# 40 "../../../tos/interfaces/GeneralIO.nc"
+inline static void CC2420ControlP__VREN__set(void ){
+#line 40
+  /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__GeneralIO__set();
+#line 40
+}
+#line 40
+# 204 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
+static inline error_t CC2420ControlP__CC2420Power__startVReg(void )
+#line 204
+{
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 205
+    {
+      if (CC2420ControlP__m_state != CC2420ControlP__S_VREG_STOPPED) {
+          {
+            enum __nesc_unnamed4242 __nesc_temp = 
+#line 207
+            FAIL;
+
+            {
+#line 207
+              __nesc_atomic_end(__nesc_atomic); 
+#line 207
+              return __nesc_temp;
+            }
+          }
+        }
+#line 209
+      CC2420ControlP__m_state = CC2420ControlP__S_VREG_STARTING;
+    }
+#line 210
+    __nesc_atomic_end(__nesc_atomic); }
+  CC2420ControlP__VREN__set();
+  CC2420ControlP__StartupTimer__start(CC2420_TIME_VREN);
+  return SUCCESS;
+}
+
+# 51 "../../../tos/chips/cc2420/interfaces/CC2420Power.nc"
+inline static error_t CC2420CsmaP__CC2420Power__startVReg(void ){
+#line 51
+  enum __nesc_unnamed4242 __nesc_result;
+#line 51
+
+#line 51
+  __nesc_result = CC2420ControlP__CC2420Power__startVReg();
+#line 51
+
+#line 51
+  return __nesc_result;
+#line 51
+}
+#line 51
+# 97 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P54*/HplMsp430GeneralIOP__36__IO__toggle(void )
 #line 97
 {
@@ -18003,14 +19789,14 @@ static inline void /*HplMsp430GeneralIOC.P54*/HplMsp430GeneralIOP__36__IO__toggl
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 59 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 59 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__HplGeneralIO__toggle(void ){
 #line 59
   /*HplMsp430GeneralIOC.P54*/HplMsp430GeneralIOP__36__IO__toggle();
 #line 59
 }
 #line 59
-# 50 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 50 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__toggle(void )
 #line 50
 {
@@ -18018,14 +19804,14 @@ static inline void /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__toggle(v
   /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__HplGeneralIO__toggle();
 }
 
-# 42 "../../tos/interfaces/GeneralIO.nc"
+# 42 "../../../tos/interfaces/GeneralIO.nc"
 inline static void LedsP__Led0__toggle(void ){
 #line 42
   /*PlatformLedsC.Led0Impl*/Msp430GpioC__0__GeneralIO__toggle();
 #line 42
 }
 #line 42
-# 84 "../../tos/system/LedsP.nc"
+# 84 "../../../tos/system/LedsP.nc"
 static inline void LedsP__Leds__led0Toggle(void )
 #line 84
 {
@@ -18035,384 +19821,14 @@ static inline void LedsP__Leds__led0Toggle(void )
   ;
 }
 
-# 67 "../../tos/interfaces/Leds.nc"
+# 67 "../../../tos/interfaces/Leds.nc"
 inline static void BaseStationP__Leds__led0Toggle(void ){
 #line 67
   LedsP__Leds__led0Toggle();
 #line 67
 }
 #line 67
-# 64 "../../tos/system/FcfsResourceQueueC.nc"
-static inline bool /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__FcfsQueue__isEnqueued(resource_client_id_t id)
-#line 64
-{
-  /* atomic removed: atomic calls only */
-#line 65
-  {
-    unsigned char __nesc_temp = 
-#line 65
-    /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__resQ[id] != /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__NO_ENTRY || /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__qTail == id;
-
-#line 65
-    return __nesc_temp;
-  }
-}
-
-#line 82
-static inline error_t /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__FcfsQueue__enqueue(resource_client_id_t id)
-#line 82
-{
-  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
-#line 83
-    {
-      if (!/*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__FcfsQueue__isEnqueued(id)) {
-          if (/*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__qHead == /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__NO_ENTRY) {
-            /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__qHead = id;
-            }
-          else {
-#line 88
-            /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__resQ[/*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__qTail] = id;
-            }
-#line 89
-          /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__qTail = id;
-          {
-            enum __nesc_unnamed4242 __nesc_temp = 
-#line 90
-            SUCCESS;
-
-            {
-#line 90
-              __nesc_atomic_end(__nesc_atomic); 
-#line 90
-              return __nesc_temp;
-            }
-          }
-        }
-#line 92
-      {
-        enum __nesc_unnamed4242 __nesc_temp = 
-#line 92
-        EBUSY;
-
-        {
-#line 92
-          __nesc_atomic_end(__nesc_atomic); 
-#line 92
-          return __nesc_temp;
-        }
-      }
-    }
-#line 95
-    __nesc_atomic_end(__nesc_atomic); }
-}
-
-# 79 "../../tos/interfaces/ResourceQueue.nc"
-inline static error_t CC2420TinyosNetworkP__Queue__enqueue(resource_client_id_t id){
-#line 79
-  enum __nesc_unnamed4242 __nesc_result;
-#line 79
-
-#line 79
-  __nesc_result = /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__FcfsQueue__enqueue(id);
-#line 79
-
-#line 79
-  return __nesc_result;
-#line 79
-}
-#line 79
-# 203 "../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
-static inline error_t CC2420TinyosNetworkP__Resource__request(uint8_t id)
-#line 203
-{
-
-  CC2420TinyosNetworkP__grantTask__postTask();
-
-  if (CC2420TinyosNetworkP__TINYOS_N_NETWORKS > 1) {
-      return CC2420TinyosNetworkP__Queue__enqueue(id);
-    }
-  else 
-#line 209
-    {
-      if (id == CC2420TinyosNetworkP__resource_owner) {
-          return EALREADY;
-        }
-      else 
-#line 212
-        {
-          CC2420TinyosNetworkP__next_owner = id;
-          return SUCCESS;
-        }
-    }
-}
-
-# 88 "../../tos/interfaces/Resource.nc"
-inline static error_t CC2420ActiveMessageP__RadioResource__request(void ){
-#line 88
-  enum __nesc_unnamed4242 __nesc_result;
-#line 88
-
-#line 88
-  __nesc_result = CC2420TinyosNetworkP__Resource__request(CC2420ActiveMessageC__CC2420_AM_SEND_ID);
-#line 88
-
-#line 88
-  return __nesc_result;
-#line 88
-}
-#line 88
-# 75 "../../tos/interfaces/Send.nc"
-inline static error_t CC2420ActiveMessageP__SubSend__send(message_t * msg, uint8_t len){
-#line 75
-  enum __nesc_unnamed4242 __nesc_result;
-#line 75
-
-#line 75
-  __nesc_result = CC2420TinyosNetworkP__ActiveSend__send(msg, len);
-#line 75
-
-#line 75
-  return __nesc_result;
-#line 75
-}
-#line 75
-# 291 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-static inline void CC2420ActiveMessageP__SendNotifier__default__aboutToSend(am_id_t amId, am_addr_t addr, message_t *msg)
-#line 291
-{
-}
-
-# 59 "../../tos/interfaces/SendNotifier.nc"
-inline static void CC2420ActiveMessageP__SendNotifier__aboutToSend(am_id_t arg_0x7f540cd3cb30, am_addr_t dest, message_t * msg){
-#line 59
-    CC2420ActiveMessageP__SendNotifier__default__aboutToSend(arg_0x7f540cd3cb30, dest, msg);
-#line 59
-}
-#line 59
-# 219 "../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
-static inline error_t CC2420TinyosNetworkP__Resource__immediateRequest(uint8_t id)
-#line 219
-{
-  if (CC2420TinyosNetworkP__resource_owner == id) {
-#line 220
-    return EALREADY;
-    }
-  if (CC2420TinyosNetworkP__TINYOS_N_NETWORKS > 1) {
-      if (CC2420TinyosNetworkP__resource_owner == CC2420TinyosNetworkP__OWNER_NONE && CC2420TinyosNetworkP__Queue__isEmpty()) {
-          CC2420TinyosNetworkP__resource_owner = id;
-          return SUCCESS;
-        }
-      return FAIL;
-    }
-  else 
-#line 228
-    {
-      CC2420TinyosNetworkP__resource_owner = id;
-      return SUCCESS;
-    }
-}
-
-# 97 "../../tos/interfaces/Resource.nc"
-inline static error_t CC2420ActiveMessageP__RadioResource__immediateRequest(void ){
-#line 97
-  enum __nesc_unnamed4242 __nesc_result;
-#line 97
-
-#line 97
-  __nesc_result = CC2420TinyosNetworkP__Resource__immediateRequest(CC2420ActiveMessageC__CC2420_AM_SEND_ID);
-#line 97
-
-#line 97
-  return __nesc_result;
-#line 97
-}
-#line 97
-# 310 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
-static inline uint16_t CC2420ControlP__CC2420Config__getPanAddr(void )
-#line 310
-{
-  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
-#line 311
-    {
-      unsigned int __nesc_temp = 
-#line 311
-      CC2420ControlP__m_pan;
-
-      {
-#line 311
-        __nesc_atomic_end(__nesc_atomic); 
-#line 311
-        return __nesc_temp;
-      }
-    }
-#line 313
-    __nesc_atomic_end(__nesc_atomic); }
-}
-
-# 77 "../../tos/chips/cc2420/interfaces/CC2420Config.nc"
-inline static uint16_t CC2420ActiveMessageP__CC2420Config__getPanAddr(void ){
-#line 77
-  unsigned int __nesc_result;
-#line 77
-
-#line 77
-  __nesc_result = CC2420ControlP__CC2420Config__getPanAddr();
-#line 77
-
-#line 77
-  return __nesc_result;
-#line 77
-}
-#line 77
-# 173 "../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
-static inline uint8_t CC2420CsmaP__Send__maxPayloadLength(void )
-#line 173
-{
-  return 28;
-}
-
-# 112 "../../tos/interfaces/Send.nc"
-inline static uint8_t UniqueSendP__SubSend__maxPayloadLength(void ){
-#line 112
-  unsigned char __nesc_result;
-#line 112
-
-#line 112
-  __nesc_result = CC2420CsmaP__Send__maxPayloadLength();
-#line 112
-
-#line 112
-  return __nesc_result;
-#line 112
-}
-#line 112
-# 95 "../../tos/chips/cc2420/unique/UniqueSendP.nc"
-static inline uint8_t UniqueSendP__Send__maxPayloadLength(void )
-#line 95
-{
-  return UniqueSendP__SubSend__maxPayloadLength();
-}
-
-# 112 "../../tos/interfaces/Send.nc"
-inline static uint8_t CC2420TinyosNetworkP__SubSend__maxPayloadLength(void ){
-#line 112
-  unsigned char __nesc_result;
-#line 112
-
-#line 112
-  __nesc_result = UniqueSendP__Send__maxPayloadLength();
-#line 112
-
-#line 112
-  return __nesc_result;
-#line 112
-}
-#line 112
-# 90 "../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
-static inline uint8_t CC2420TinyosNetworkP__ActiveSend__maxPayloadLength(void )
-#line 90
-{
-  return CC2420TinyosNetworkP__SubSend__maxPayloadLength();
-}
-
-# 112 "../../tos/interfaces/Send.nc"
-inline static uint8_t CC2420ActiveMessageP__SubSend__maxPayloadLength(void ){
-#line 112
-  unsigned char __nesc_result;
-#line 112
-
-#line 112
-  __nesc_result = CC2420TinyosNetworkP__ActiveSend__maxPayloadLength();
-#line 112
-
-#line 112
-  return __nesc_result;
-#line 112
-}
-#line 112
-# 202 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-static inline uint8_t CC2420ActiveMessageP__Packet__maxPayloadLength(void )
-#line 202
-{
-  return CC2420ActiveMessageP__SubSend__maxPayloadLength();
-}
-
-# 42 "../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
-inline static cc2420_header_t * CC2420ActiveMessageP__CC2420PacketBody__getHeader(message_t * msg){
-#line 42
-  nx_struct cc2420_header *__nesc_result;
-#line 42
-
-#line 42
-  __nesc_result = CC2420PacketP__CC2420PacketBody__getHeader(msg);
-#line 42
-
-#line 42
-  return __nesc_result;
-#line 42
-}
-#line 42
-# 87 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-static inline error_t CC2420ActiveMessageP__AMSend__send(am_id_t id, am_addr_t addr, 
-message_t *msg, 
-uint8_t len)
-#line 89
-{
-  unsigned char *__nesc_temp48;
-#line 90
-  cc2420_header_t *header = CC2420ActiveMessageP__CC2420PacketBody__getHeader(msg);
-
-  if (len > CC2420ActiveMessageP__Packet__maxPayloadLength()) {
-      return ESIZE;
-    }
-
-  __nesc_hton_leuint8(header->type.nxdata, id);
-  __nesc_hton_leuint16(header->dest.nxdata, addr);
-  __nesc_hton_leuint16(header->destpan.nxdata, CC2420ActiveMessageP__CC2420Config__getPanAddr());
-  __nesc_hton_leuint16(header->src.nxdata, CC2420ActiveMessageP__AMPacket__address());
-  (__nesc_temp48 = header->fcf.nxdata, __nesc_hton_leuint16(__nesc_temp48, __nesc_ntoh_leuint16(__nesc_temp48) | (((1 << IEEE154_FCF_INTRAPAN) | (
-  IEEE154_ADDR_SHORT << IEEE154_FCF_DEST_ADDR_MODE)) | (
-  IEEE154_ADDR_SHORT << IEEE154_FCF_SRC_ADDR_MODE))));
-  __nesc_hton_leuint8(header->length.nxdata, len + CC2420_SIZE);
-
-  if (CC2420ActiveMessageP__RadioResource__immediateRequest() == SUCCESS) {
-      error_t rc;
-
-#line 107
-      CC2420ActiveMessageP__SendNotifier__aboutToSend(id, addr, msg);
-
-      rc = CC2420ActiveMessageP__SubSend__send(msg, len);
-      if (rc != SUCCESS) {
-          CC2420ActiveMessageP__RadioResource__release();
-        }
-
-      return rc;
-    }
-  else 
-#line 115
-    {
-      CC2420ActiveMessageP__pending_length = len;
-      CC2420ActiveMessageP__pending_message = msg;
-      return CC2420ActiveMessageP__RadioResource__request();
-    }
-}
-
-# 80 "../../tos/interfaces/AMSend.nc"
-inline static error_t BaseStationP__RadioSend__send(am_id_t arg_0x7f540e04d530, am_addr_t addr, message_t * msg, uint8_t len){
-#line 80
-  enum __nesc_unnamed4242 __nesc_result;
-#line 80
-
-#line 80
-  __nesc_result = CC2420ActiveMessageP__AMSend__send(arg_0x7f540e04d530, addr, msg, len);
-#line 80
-
-#line 80
-  return __nesc_result;
-#line 80
-}
-#line 80
-# 154 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+# 154 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
 static inline void CC2420ActiveMessageP__AMPacket__setSource(message_t *amsg, am_addr_t addr)
 #line 154
 {
@@ -18422,14 +19838,14 @@ static inline void CC2420ActiveMessageP__AMPacket__setSource(message_t *amsg, am
   __nesc_hton_leuint16(header->src.nxdata, addr);
 }
 
-# 121 "../../tos/interfaces/AMPacket.nc"
-inline static void BaseStationP__RadioAMPacket__setSource(message_t * amsg, am_addr_t addr){
+# 121 "../../../tos/interfaces/AMPacket.nc"
+inline static void BaseStationP__AMPacket__setSource(message_t * amsg, am_addr_t addr){
 #line 121
   CC2420ActiveMessageP__AMPacket__setSource(amsg, addr);
 #line 121
 }
 #line 121
-# 53 "../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
+# 53 "../../../tos/chips/cc2420/interfaces/CC2420PacketBody.nc"
 inline static cc2420_metadata_t * CC2420ActiveMessageP__CC2420PacketBody__getMetadata(message_t * msg){
 #line 53
   nx_struct cc2420_metadata *__nesc_result;
@@ -18444,7 +19860,7 @@ inline static cc2420_metadata_t * CC2420ActiveMessageP__CC2420PacketBody__getMet
 #line 53
 }
 #line 53
-# 189 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+# 189 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
 static inline void CC2420ActiveMessageP__Packet__clear(message_t *msg)
 #line 189
 {
@@ -18452,14 +19868,14 @@ static inline void CC2420ActiveMessageP__Packet__clear(message_t *msg)
   memset(CC2420ActiveMessageP__CC2420PacketBody__getMetadata(msg), 0x0, sizeof(cc2420_metadata_t ));
 }
 
-# 65 "../../tos/interfaces/Packet.nc"
-inline static void BaseStationP__RadioPacket__clear(message_t * msg){
+# 65 "../../../tos/interfaces/Packet.nc"
+inline static void BaseStationP__Packet__clear(message_t * msg){
 #line 65
   CC2420ActiveMessageP__Packet__clear(msg);
 #line 65
 }
 #line 65
-# 147 "../../tos/interfaces/AMPacket.nc"
+# 147 "../../../tos/interfaces/AMPacket.nc"
 inline static am_id_t BaseStationP__UartAMPacket__type(message_t * amsg){
 #line 147
   unsigned char __nesc_result;
@@ -18474,17 +19890,7 @@ inline static am_id_t BaseStationP__UartAMPacket__type(message_t * amsg){
 #line 147
 }
 #line 147
-# 310 "/usr/local/lib/ncc/nesc_nx.h"
-static __inline  uint16_t __nesc_ntoh_uint16(const void * source)
-#line 310
-{
-  const uint8_t *base = source;
-
-#line 312
-  return ((uint16_t )base[0] << 8) | base[1];
-}
-
-# 155 "../../tos/lib/serial/SerialActiveMessageP.nc"
+# 155 "../../../tos/lib/serial/SerialActiveMessageP.nc"
 static inline am_addr_t /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMPacket__source(message_t *amsg)
 #line 155
 {
@@ -18494,7 +19900,7 @@ static inline am_addr_t /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMPa
   return __nesc_ntoh_uint16(header->src.nxdata);
 }
 
-# 88 "../../tos/interfaces/AMPacket.nc"
+# 88 "../../../tos/interfaces/AMPacket.nc"
 inline static am_addr_t BaseStationP__UartAMPacket__source(message_t * amsg){
 #line 88
   unsigned int __nesc_result;
@@ -18509,7 +19915,7 @@ inline static am_addr_t BaseStationP__UartAMPacket__source(message_t * amsg){
 #line 88
 }
 #line 88
-# 150 "../../tos/lib/serial/SerialActiveMessageP.nc"
+# 150 "../../../tos/lib/serial/SerialActiveMessageP.nc"
 static inline am_addr_t /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMPacket__destination(message_t *amsg)
 #line 150
 {
@@ -18519,7 +19925,7 @@ static inline am_addr_t /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMPa
   return __nesc_ntoh_uint16(header->dest.nxdata);
 }
 
-# 78 "../../tos/interfaces/AMPacket.nc"
+# 78 "../../../tos/interfaces/AMPacket.nc"
 inline static am_addr_t BaseStationP__UartAMPacket__destination(message_t * amsg){
 #line 78
   unsigned int __nesc_result;
@@ -18534,7 +19940,7 @@ inline static am_addr_t BaseStationP__UartAMPacket__destination(message_t * amsg
 #line 78
 }
 #line 78
-# 124 "../../tos/lib/serial/SerialActiveMessageP.nc"
+# 124 "../../../tos/lib/serial/SerialActiveMessageP.nc"
 static inline uint8_t /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__Packet__payloadLength(message_t *msg)
 #line 124
 {
@@ -18544,7 +19950,7 @@ static inline uint8_t /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__Packet
   return __nesc_ntoh_uint8(header->length.nxdata);
 }
 
-# 78 "../../tos/interfaces/Packet.nc"
+# 78 "../../../tos/interfaces/Packet.nc"
 inline static uint8_t BaseStationP__UartPacket__payloadLength(message_t * msg){
 #line 78
   unsigned char __nesc_result;
@@ -18559,14 +19965,14 @@ inline static uint8_t BaseStationP__UartPacket__payloadLength(message_t * msg){
 #line 78
 }
 #line 78
-# 270 "BaseStationP.nc"
-static inline void BaseStationP__radioSendTask__runTask(void )
-#line 270
+# 413 "BaseStationP.nc"
+static inline void BaseStationP__RadioSendTask__runTask(void )
+#line 413
 {
   uint8_t len;
   am_id_t id;
   am_addr_t addr;
-#line 273
+#line 416
   am_addr_t source;
   message_t *msg;
 
@@ -18575,13 +19981,13 @@ static inline void BaseStationP__radioSendTask__runTask(void )
       {
         BaseStationP__radioBusy = FALSE;
         {
-#line 280
+#line 423
           __nesc_atomic_end(__nesc_atomic); 
-#line 280
+#line 423
           return;
         }
       }
-#line 282
+#line 425
     __nesc_atomic_end(__nesc_atomic); }
   msg = BaseStationP__radioQueue[BaseStationP__radioOut];
   len = BaseStationP__UartPacket__payloadLength(msg);
@@ -18589,19 +19995,19 @@ static inline void BaseStationP__radioSendTask__runTask(void )
   source = BaseStationP__UartAMPacket__source(msg);
   id = BaseStationP__UartAMPacket__type(msg);
 
-  BaseStationP__RadioPacket__clear(msg);
-  BaseStationP__RadioAMPacket__setSource(msg, source);
+  BaseStationP__Packet__clear(msg);
+  BaseStationP__AMPacket__setSource(msg, source);
 
-  if (BaseStationP__RadioSend__send(id, addr, msg, len) == SUCCESS) {
+  if (BaseStationP__AMSend__send(addr, msg, len) == SUCCESS) {
     BaseStationP__Leds__led0Toggle();
     }
   else {
       BaseStationP__failBlink();
-      BaseStationP__radioSendTask__postTask();
+      BaseStationP__RadioSendTask__postTask();
     }
 }
 
-# 97 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 97 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P55*/HplMsp430GeneralIOP__37__IO__toggle(void )
 #line 97
 {
@@ -18613,14 +20019,14 @@ static inline void /*HplMsp430GeneralIOC.P55*/HplMsp430GeneralIOP__37__IO__toggl
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 59 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 59 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__HplGeneralIO__toggle(void ){
 #line 59
   /*HplMsp430GeneralIOC.P55*/HplMsp430GeneralIOP__37__IO__toggle();
 #line 59
 }
 #line 59
-# 50 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 50 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__toggle(void )
 #line 50
 {
@@ -18628,14 +20034,14 @@ static inline void /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__toggle(v
   /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__HplGeneralIO__toggle();
 }
 
-# 42 "../../tos/interfaces/GeneralIO.nc"
+# 42 "../../../tos/interfaces/GeneralIO.nc"
 inline static void LedsP__Led1__toggle(void ){
 #line 42
   /*PlatformLedsC.Led1Impl*/Msp430GpioC__1__GeneralIO__toggle();
 #line 42
 }
 #line 42
-# 99 "../../tos/system/LedsP.nc"
+# 99 "../../../tos/system/LedsP.nc"
 static inline void LedsP__Leds__led1Toggle(void )
 #line 99
 {
@@ -18645,26 +20051,14 @@ static inline void LedsP__Leds__led1Toggle(void )
   ;
 }
 
-# 83 "../../tos/interfaces/Leds.nc"
+# 83 "../../../tos/interfaces/Leds.nc"
 inline static void BaseStationP__Leds__led1Toggle(void ){
 #line 83
   LedsP__Leds__led1Toggle();
 #line 83
 }
 #line 83
-# 315 "/usr/local/lib/ncc/nesc_nx.h"
-static __inline  uint16_t __nesc_hton_uint16(void * target, uint16_t value)
-#line 315
-{
-  uint8_t *base = target;
-
-#line 317
-  base[1] = value;
-  base[0] = value >> 8;
-  return value;
-}
-
-# 539 "../../tos/lib/serial/SerialP.nc"
+# 539 "../../../tos/lib/serial/SerialP.nc"
 static inline error_t SerialP__SendBytePacket__startSend(uint8_t b)
 #line 539
 {
@@ -18709,7 +20103,7 @@ static inline error_t SerialP__SendBytePacket__startSend(uint8_t b)
   return EBUSY;
 }
 
-# 62 "../../tos/lib/serial/SendBytePacket.nc"
+# 62 "../../../tos/lib/serial/SendBytePacket.nc"
 inline static error_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__SendBytePacket__startSend(uint8_t first_byte){
 #line 62
   enum __nesc_unnamed4242 __nesc_result;
@@ -18724,14 +20118,14 @@ inline static error_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__
 #line 62
 }
 #line 62
-# 54 "../../tos/lib/serial/SerialPacketInfoActiveMessageP.nc"
+# 54 "../../../tos/lib/serial/SerialPacketInfoActiveMessageP.nc"
 static inline uint8_t SerialPacketInfoActiveMessageP__Info__dataLinkLength(message_t *msg, uint8_t upperLen)
 #line 54
 {
   return upperLen + sizeof(serial_header_t );
 }
 
-# 361 "../../tos/lib/serial/SerialDispatcherP.nc"
+# 361 "../../../tos/lib/serial/SerialDispatcherP.nc"
 static inline uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__dataLinkLength(uart_id_t id, message_t *msg, 
 uint8_t upperLen)
 #line 362
@@ -18739,14 +20133,14 @@ uint8_t upperLen)
   return 0;
 }
 
-# 23 "../../tos/lib/serial/SerialPacketInfo.nc"
-inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__dataLinkLength(uart_id_t arg_0x7f540cb61b10, message_t *msg, uint8_t upperLen){
+# 23 "../../../tos/lib/serial/SerialPacketInfo.nc"
+inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__dataLinkLength(uart_id_t arg_0x7f49d6753b10, message_t *msg, uint8_t upperLen){
 #line 23
   unsigned char __nesc_result;
 #line 23
 
 #line 23
-  switch (arg_0x7f540cb61b10) {
+  switch (arg_0x7f49d6753b10) {
 #line 23
     case TOS_SERIAL_ACTIVE_MESSAGE_ID:
 #line 23
@@ -18756,7 +20150,7 @@ inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__
 #line 23
     default:
 #line 23
-      __nesc_result = /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__dataLinkLength(arg_0x7f540cb61b10, msg, upperLen);
+      __nesc_result = /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__PacketInfo__default__dataLinkLength(arg_0x7f49d6753b10, msg, upperLen);
 #line 23
       break;
 #line 23
@@ -18768,7 +20162,7 @@ inline static uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__
 #line 23
 }
 #line 23
-# 111 "../../tos/lib/serial/SerialDispatcherP.nc"
+# 111 "../../../tos/lib/serial/SerialDispatcherP.nc"
 static inline error_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Send__send(uint8_t id, message_t *msg, uint8_t len)
 #line 111
 {
@@ -18819,7 +20213,7 @@ static inline error_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__
     }
 }
 
-# 75 "../../tos/interfaces/Send.nc"
+# 75 "../../../tos/interfaces/Send.nc"
 inline static error_t /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__SubSend__send(message_t * msg, uint8_t len){
 #line 75
   enum __nesc_unnamed4242 __nesc_result;
@@ -18834,7 +20228,7 @@ inline static error_t /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__SubSen
 #line 75
 }
 #line 75
-# 133 "../../tos/lib/serial/SerialActiveMessageP.nc"
+# 133 "../../../tos/lib/serial/SerialActiveMessageP.nc"
 static inline uint8_t /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__Packet__maxPayloadLength(void )
 #line 133
 {
@@ -18865,14 +20259,14 @@ uint8_t len)
   return /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__SubSend__send(msg, len);
 }
 
-# 80 "../../tos/interfaces/AMSend.nc"
-inline static error_t BaseStationP__UartSend__send(am_id_t arg_0x7f540e05bd40, am_addr_t addr, message_t * msg, uint8_t len){
+# 80 "../../../tos/interfaces/AMSend.nc"
+inline static error_t BaseStationP__UartSend__send(am_id_t arg_0x7f49d7c85d40, am_addr_t addr, message_t * msg, uint8_t len){
 #line 80
   enum __nesc_unnamed4242 __nesc_result;
 #line 80
 
 #line 80
-  __nesc_result = /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMSend__send(arg_0x7f540e05bd40, addr, msg, len);
+  __nesc_result = /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMSend__send(arg_0x7f49d7c85d40, addr, msg, len);
 #line 80
 
 #line 80
@@ -18880,7 +20274,7 @@ inline static error_t BaseStationP__UartSend__send(am_id_t arg_0x7f540e05bd40, a
 #line 80
 }
 #line 80
-# 191 "../../tos/lib/serial/SerialActiveMessageP.nc"
+# 191 "../../../tos/lib/serial/SerialActiveMessageP.nc"
 static inline void /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMPacket__setGroup(message_t *msg, am_group_t group)
 #line 191
 {
@@ -18890,14 +20284,14 @@ static inline void /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMPacket_
   __nesc_hton_uint8(header->group.nxdata, group);
 }
 
-# 187 "../../tos/interfaces/AMPacket.nc"
+# 187 "../../../tos/interfaces/AMPacket.nc"
 inline static void BaseStationP__UartAMPacket__setGroup(message_t * amsg, am_group_t grp){
 #line 187
   /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMPacket__setGroup(amsg, grp);
 #line 187
 }
 #line 187
-# 165 "../../tos/lib/serial/SerialActiveMessageP.nc"
+# 165 "../../../tos/lib/serial/SerialActiveMessageP.nc"
 static inline void /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMPacket__setSource(message_t *amsg, am_addr_t addr)
 #line 165
 {
@@ -18907,14 +20301,14 @@ static inline void /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMPacket_
   __nesc_hton_uint16(header->src.nxdata, addr);
 }
 
-# 121 "../../tos/interfaces/AMPacket.nc"
+# 121 "../../../tos/interfaces/AMPacket.nc"
 inline static void BaseStationP__UartAMPacket__setSource(message_t * amsg, am_addr_t addr){
 #line 121
   /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__AMPacket__setSource(amsg, addr);
 #line 121
 }
 #line 121
-# 64 "../../tos/lib/serial/SerialActiveMessageP.nc"
+# 64 "../../../tos/lib/serial/SerialActiveMessageP.nc"
 static inline serial_metadata_t */*SerialActiveMessageC.AM*/SerialActiveMessageP__0__getMetadata(message_t *msg)
 #line 64
 {
@@ -18931,22 +20325,22 @@ static inline void /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__Packet__c
   return;
 }
 
-# 65 "../../tos/interfaces/Packet.nc"
+# 65 "../../../tos/interfaces/Packet.nc"
 inline static void BaseStationP__UartPacket__clear(message_t * msg){
 #line 65
   /*SerialActiveMessageC.AM*/SerialActiveMessageP__0__Packet__clear(msg);
 #line 65
 }
 #line 65
-# 174 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+# 174 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
 static inline am_group_t CC2420ActiveMessageP__AMPacket__group(message_t *amsg)
 #line 174
 {
   return __nesc_ntoh_leuint16(CC2420ActiveMessageP__CC2420PacketBody__getHeader(amsg)->destpan.nxdata);
 }
 
-# 177 "../../tos/interfaces/AMPacket.nc"
-inline static am_group_t BaseStationP__RadioAMPacket__group(message_t * amsg){
+# 177 "../../../tos/interfaces/AMPacket.nc"
+inline static am_group_t BaseStationP__AMPacket__group(message_t * amsg){
 #line 177
   unsigned char __nesc_result;
 #line 177
@@ -18960,7 +20354,7 @@ inline static am_group_t BaseStationP__RadioAMPacket__group(message_t * amsg){
 #line 177
 }
 #line 177
-# 144 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+# 144 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
 static inline am_addr_t CC2420ActiveMessageP__AMPacket__source(message_t *amsg)
 #line 144
 {
@@ -18970,8 +20364,8 @@ static inline am_addr_t CC2420ActiveMessageP__AMPacket__source(message_t *amsg)
   return __nesc_ntoh_leuint16(header->src.nxdata);
 }
 
-# 88 "../../tos/interfaces/AMPacket.nc"
-inline static am_addr_t BaseStationP__RadioAMPacket__source(message_t * amsg){
+# 88 "../../../tos/interfaces/AMPacket.nc"
+inline static am_addr_t BaseStationP__AMPacket__source(message_t * amsg){
 #line 88
   unsigned int __nesc_result;
 #line 88
@@ -18986,7 +20380,7 @@ inline static am_addr_t BaseStationP__RadioAMPacket__source(message_t * amsg){
 }
 #line 88
 #line 78
-inline static am_addr_t BaseStationP__RadioAMPacket__destination(message_t * amsg){
+inline static am_addr_t BaseStationP__AMPacket__destination(message_t * amsg){
 #line 78
   unsigned int __nesc_result;
 #line 78
@@ -19001,7 +20395,7 @@ inline static am_addr_t BaseStationP__RadioAMPacket__destination(message_t * ams
 }
 #line 78
 #line 147
-inline static am_id_t BaseStationP__RadioAMPacket__type(message_t * amsg){
+inline static am_id_t BaseStationP__AMPacket__type(message_t * amsg){
 #line 147
   unsigned char __nesc_result;
 #line 147
@@ -19015,15 +20409,8 @@ inline static am_id_t BaseStationP__RadioAMPacket__type(message_t * amsg){
 #line 147
 }
 #line 147
-# 194 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-static inline uint8_t CC2420ActiveMessageP__Packet__payloadLength(message_t *msg)
-#line 194
-{
-  return __nesc_ntoh_leuint8(CC2420ActiveMessageP__CC2420PacketBody__getHeader(msg)->length.nxdata) - CC2420_SIZE;
-}
-
-# 78 "../../tos/interfaces/Packet.nc"
-inline static uint8_t BaseStationP__RadioPacket__payloadLength(message_t * msg){
+# 78 "../../../tos/interfaces/Packet.nc"
+inline static uint8_t BaseStationP__Packet__payloadLength(message_t * msg){
 #line 78
   unsigned char __nesc_result;
 #line 78
@@ -19037,38 +20424,38 @@ inline static uint8_t BaseStationP__RadioPacket__payloadLength(message_t * msg){
 #line 78
 }
 #line 78
-# 190 "BaseStationP.nc"
+# 333 "BaseStationP.nc"
 static inline void BaseStationP__uartSendTask__runTask(void )
-#line 190
+#line 333
 {
   uint8_t len;
   am_id_t id;
   am_addr_t addr;
-#line 193
+#line 336
   am_addr_t src;
   message_t *msg;
   am_group_t grp;
 
-#line 196
+#line 339
   { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
     if (BaseStationP__uartIn == BaseStationP__uartOut && !BaseStationP__uartFull) 
       {
         BaseStationP__uartBusy = FALSE;
         {
-#line 200
+#line 343
           __nesc_atomic_end(__nesc_atomic); 
-#line 200
+#line 343
           return;
         }
       }
-#line 202
+#line 345
     __nesc_atomic_end(__nesc_atomic); }
   msg = BaseStationP__uartQueue[BaseStationP__uartOut];
-  BaseStationP__tmpLen = len = BaseStationP__RadioPacket__payloadLength(msg);
-  id = BaseStationP__RadioAMPacket__type(msg);
-  addr = BaseStationP__RadioAMPacket__destination(msg);
-  src = BaseStationP__RadioAMPacket__source(msg);
-  grp = BaseStationP__RadioAMPacket__group(msg);
+  BaseStationP__tmpLen = len = BaseStationP__Packet__payloadLength(msg);
+  id = BaseStationP__AMPacket__type(msg);
+  addr = BaseStationP__AMPacket__destination(msg);
+  src = BaseStationP__AMPacket__source(msg);
+  grp = BaseStationP__AMPacket__group(msg);
   BaseStationP__UartPacket__clear(msg);
   BaseStationP__UartAMPacket__setSource(msg, src);
   BaseStationP__UartAMPacket__setGroup(msg, grp);
@@ -19082,7 +20469,7 @@ static inline void BaseStationP__uartSendTask__runTask(void )
     }
 }
 
-# 48 "../../tos/interfaces/LocalIeeeEui64.nc"
+# 48 "../../../tos/interfaces/LocalIeeeEui64.nc"
 inline static ieee_eui64_t CC2420ControlP__LocalIeeeEui64__getId(void ){
 #line 48
   struct ieee_eui64 __nesc_result;
@@ -19097,7 +20484,7 @@ inline static ieee_eui64_t CC2420ControlP__LocalIeeeEui64__getId(void ){
 #line 48
 }
 #line 48
-# 94 "../../tos/system/ActiveMessageAddressC.nc"
+# 94 "../../../tos/system/ActiveMessageAddressC.nc"
 static inline am_group_t ActiveMessageAddressC__ActiveMessageAddress__amGroup(void )
 #line 94
 {
@@ -19109,7 +20496,7 @@ static inline am_group_t ActiveMessageAddressC__ActiveMessageAddress__amGroup(vo
   return myGroup;
 }
 
-# 55 "../../tos/interfaces/ActiveMessageAddress.nc"
+# 55 "../../../tos/interfaces/ActiveMessageAddress.nc"
 inline static am_group_t CC2420ControlP__ActiveMessageAddress__amGroup(void ){
 #line 55
   unsigned char __nesc_result;
@@ -19139,7 +20526,7 @@ inline static am_addr_t CC2420ControlP__ActiveMessageAddress__amAddress(void ){
 #line 50
 }
 #line 50
-# 102 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 102 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P45*/HplMsp430GeneralIOP__29__IO__makeOutput(void )
 #line 102
 {
@@ -19148,14 +20535,14 @@ static inline void /*HplMsp430GeneralIOC.P45*/HplMsp430GeneralIOP__29__IO__makeO
   * (volatile uint8_t * )30U |= 0x01 << 5;
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__HplGeneralIO__makeOutput(void ){
 #line 85
   /*HplMsp430GeneralIOC.P45*/HplMsp430GeneralIOP__29__IO__makeOutput();
 #line 85
 }
 #line 85
-# 54 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 54 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__GeneralIO__makeOutput(void )
 #line 54
 {
@@ -19163,14 +20550,14 @@ static inline void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__GeneralIO__makeOutput
   /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__HplGeneralIO__makeOutput();
 }
 
-# 46 "../../tos/interfaces/GeneralIO.nc"
+# 46 "../../../tos/interfaces/GeneralIO.nc"
 inline static void CC2420ControlP__VREN__makeOutput(void ){
 #line 46
   /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__GeneralIO__makeOutput();
 #line 46
 }
 #line 46
-# 102 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 102 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P46*/HplMsp430GeneralIOP__30__IO__makeOutput(void )
 #line 102
 {
@@ -19179,14 +20566,14 @@ static inline void /*HplMsp430GeneralIOC.P46*/HplMsp430GeneralIOP__30__IO__makeO
   * (volatile uint8_t * )30U |= 0x01 << 6;
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__HplGeneralIO__makeOutput(void ){
 #line 85
   /*HplMsp430GeneralIOC.P46*/HplMsp430GeneralIOP__30__IO__makeOutput();
 #line 85
 }
 #line 85
-# 54 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 54 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__GeneralIO__makeOutput(void )
 #line 54
 {
@@ -19194,14 +20581,14 @@ static inline void /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__GeneralIO__makeOutput
   /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__HplGeneralIO__makeOutput();
 }
 
-# 46 "../../tos/interfaces/GeneralIO.nc"
+# 46 "../../../tos/interfaces/GeneralIO.nc"
 inline static void CC2420ControlP__RSTN__makeOutput(void ){
 #line 46
   /*HplCC2420PinsC.RSTNM*/Msp430GpioC__7__GeneralIO__makeOutput();
 #line 46
 }
 #line 46
-# 102 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 102 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P42*/HplMsp430GeneralIOP__26__IO__makeOutput(void )
 #line 102
 {
@@ -19210,14 +20597,14 @@ static inline void /*HplMsp430GeneralIOC.P42*/HplMsp430GeneralIOP__26__IO__makeO
   * (volatile uint8_t * )30U |= 0x01 << 2;
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__HplGeneralIO__makeOutput(void ){
 #line 85
   /*HplMsp430GeneralIOC.P42*/HplMsp430GeneralIOP__26__IO__makeOutput();
 #line 85
 }
 #line 85
-# 54 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 54 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__GeneralIO__makeOutput(void )
 #line 54
 {
@@ -19225,14 +20612,14 @@ static inline void /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__GeneralIO__makeOutput(
   /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__HplGeneralIO__makeOutput();
 }
 
-# 46 "../../tos/interfaces/GeneralIO.nc"
+# 46 "../../../tos/interfaces/GeneralIO.nc"
 inline static void CC2420ControlP__CSN__makeOutput(void ){
 #line 46
   /*HplCC2420PinsC.CSNM*/Msp430GpioC__4__GeneralIO__makeOutput();
 #line 46
 }
 #line 46
-# 129 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
+# 129 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
 static inline error_t CC2420ControlP__Init__init(void )
 #line 129
 {
@@ -19289,7 +20676,7 @@ static inline error_t CC2420ControlP__Init__init(void )
   return SUCCESS;
 }
 
-# 81 "../../tos/system/StateImplP.nc"
+# 81 "../../../tos/system/StateImplP.nc"
 static inline error_t StateImplP__Init__init(void )
 #line 81
 {
@@ -19302,7 +20689,7 @@ static inline error_t StateImplP__Init__init(void )
   return SUCCESS;
 }
 
-# 55 "../../tos/system/FcfsResourceQueueC.nc"
+# 55 "../../../tos/system/FcfsResourceQueueC.nc"
 static inline error_t /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__Init__init(void )
 #line 55
 {
@@ -19310,12 +20697,12 @@ static inline error_t /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1
   return SUCCESS;
 }
 
-# 58 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 58 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline  uint16_t /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__CC2int(/*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__cc_t x)
 #line 58
 {
 #line 58
-  union /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3____nesc_unnamed4380 {
+  union /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3____nesc_unnamed4385 {
 #line 58
     /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__cc_t f;
 #line 58
@@ -19351,14 +20738,14 @@ static inline void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Control_
   * (volatile uint16_t * )386U = /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__capComControl(MSP430TIMER_CM_RISING, MSP430TIMER_CCI_A, 0);
 }
 
-# 56 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 56 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 inline static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430TimerControl__setControlAsCompare(void ){
 #line 56
   /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Control__setControlAsCompare();
 #line 56
 }
 #line 56
-# 53 "../../tos/chips/msp430/timer/Msp430AlarmC.nc"
+# 53 "../../../tos/chips/msp430/timer/Msp430AlarmC.nc"
 static inline error_t /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Init__init(void )
 {
   /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430TimerControl__disableEvents();
@@ -19366,14 +20753,14 @@ static inline error_t /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/
   return SUCCESS;
 }
 
-# 79 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 79 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*HplCC2420PinsC.SFDM*/Msp430GpioC__8__HplGeneralIO__makeInput(void ){
 #line 79
   /*HplMsp430GeneralIOC.P41*/HplMsp430GeneralIOP__25__IO__makeInput();
 #line 79
 }
 #line 79
-# 52 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 52 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*HplCC2420PinsC.SFDM*/Msp430GpioC__8__GeneralIO__makeInput(void )
 #line 52
 {
@@ -19381,7 +20768,7 @@ static inline void /*HplCC2420PinsC.SFDM*/Msp430GpioC__8__GeneralIO__makeInput(v
   /*HplCC2420PinsC.SFDM*/Msp430GpioC__8__HplGeneralIO__makeInput();
 }
 
-# 44 "../../tos/interfaces/GeneralIO.nc"
+# 44 "../../../tos/interfaces/GeneralIO.nc"
 inline static void CC2420TransmitP__SFD__makeInput(void ){
 #line 44
   /*HplCC2420PinsC.SFDM*/Msp430GpioC__8__GeneralIO__makeInput();
@@ -19396,7 +20783,7 @@ inline static void CC2420TransmitP__CSN__makeOutput(void ){
 #line 46
 }
 #line 46
-# 100 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 100 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P14*/HplMsp430GeneralIOP__4__IO__makeInput(void )
 #line 100
 {
@@ -19405,14 +20792,14 @@ static inline void /*HplMsp430GeneralIOC.P14*/HplMsp430GeneralIOP__4__IO__makeIn
   * (volatile uint8_t * )34U &= ~(0x01 << 4);
 }
 
-# 79 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 79 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*HplCC2420PinsC.CCAM*/Msp430GpioC__3__HplGeneralIO__makeInput(void ){
 #line 79
   /*HplMsp430GeneralIOC.P14*/HplMsp430GeneralIOP__4__IO__makeInput();
 #line 79
 }
 #line 79
-# 52 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 52 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*HplCC2420PinsC.CCAM*/Msp430GpioC__3__GeneralIO__makeInput(void )
 #line 52
 {
@@ -19420,14 +20807,14 @@ static inline void /*HplCC2420PinsC.CCAM*/Msp430GpioC__3__GeneralIO__makeInput(v
   /*HplCC2420PinsC.CCAM*/Msp430GpioC__3__HplGeneralIO__makeInput();
 }
 
-# 44 "../../tos/interfaces/GeneralIO.nc"
+# 44 "../../../tos/interfaces/GeneralIO.nc"
 inline static void CC2420TransmitP__CCA__makeInput(void ){
 #line 44
   /*HplCC2420PinsC.CCAM*/Msp430GpioC__3__GeneralIO__makeInput();
 #line 44
 }
 #line 44
-# 160 "../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
+# 160 "../../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
 static inline error_t CC2420TransmitP__Init__init(void )
 #line 160
 {
@@ -19437,7 +20824,7 @@ static inline error_t CC2420TransmitP__Init__init(void )
   return SUCCESS;
 }
 
-# 151 "../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
+# 151 "../../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
 static inline error_t CC2420ReceiveP__Init__init(void )
 #line 151
 {
@@ -19445,12 +20832,12 @@ static inline error_t CC2420ReceiveP__Init__init(void )
   return SUCCESS;
 }
 
-# 58 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 58 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline  uint16_t /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__CC2int(/*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__cc_t x)
 #line 58
 {
 #line 58
-  union /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5____nesc_unnamed4381 {
+  union /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5____nesc_unnamed4386 {
 #line 58
     /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__cc_t f;
 #line 58
@@ -19486,14 +20873,14 @@ static inline void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Control_
   * (volatile uint16_t * )390U = /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__capComControl(MSP430TIMER_CM_RISING, MSP430TIMER_CCI_A, 0);
 }
 
-# 56 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 56 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 inline static void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430TimerControl__setControlAsCompare(void ){
 #line 56
   /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Control__setControlAsCompare();
 #line 56
 }
 #line 56
-# 53 "../../tos/chips/msp430/timer/Msp430AlarmC.nc"
+# 53 "../../../tos/chips/msp430/timer/Msp430AlarmC.nc"
 static inline error_t /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Init__init(void )
 {
   /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430TimerControl__disableEvents();
@@ -19501,7 +20888,7 @@ static inline error_t /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp4
   return SUCCESS;
 }
 
-# 55 "../../tos/system/RandomMlcgC.nc"
+# 55 "../../../tos/system/RandomMlcgC.nc"
 static inline error_t RandomMlcgC__Init__init(void )
 #line 55
 {
@@ -19512,7 +20899,7 @@ static inline error_t RandomMlcgC__Init__init(void )
   return SUCCESS;
 }
 
-# 52 "../../tos/interfaces/Random.nc"
+# 52 "../../../tos/interfaces/Random.nc"
 inline static uint16_t UniqueSendP__Random__rand16(void ){
 #line 52
   unsigned int __nesc_result;
@@ -19527,7 +20914,7 @@ inline static uint16_t UniqueSendP__Random__rand16(void ){
 #line 52
 }
 #line 52
-# 62 "../../tos/chips/cc2420/unique/UniqueSendP.nc"
+# 62 "../../../tos/chips/cc2420/unique/UniqueSendP.nc"
 static inline error_t UniqueSendP__Init__init(void )
 #line 62
 {
@@ -19535,7 +20922,7 @@ static inline error_t UniqueSendP__Init__init(void )
   return SUCCESS;
 }
 
-# 71 "../../tos/chips/cc2420/unique/UniqueReceiveP.nc"
+# 71 "../../../tos/chips/cc2420/unique/UniqueReceiveP.nc"
 static inline error_t UniqueReceiveP__Init__init(void )
 #line 71
 {
@@ -19549,7 +20936,7 @@ static inline error_t UniqueReceiveP__Init__init(void )
   return SUCCESS;
 }
 
-# 55 "../../tos/system/FcfsResourceQueueC.nc"
+# 55 "../../../tos/system/FcfsResourceQueueC.nc"
 static inline error_t /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__Init__init(void )
 #line 55
 {
@@ -19557,7 +20944,7 @@ static inline error_t /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQue
   return SUCCESS;
 }
 
-# 216 "../../tos/lib/serial/SerialP.nc"
+# 216 "../../../tos/lib/serial/SerialP.nc"
 static __inline void SerialP__ackInit(void )
 #line 216
 {
@@ -19606,7 +20993,7 @@ static inline error_t SerialP__Init__init(void )
   return SUCCESS;
 }
 
-# 55 "../../tos/system/FcfsResourceQueueC.nc"
+# 55 "../../../tos/system/FcfsResourceQueueC.nc"
 static inline error_t /*Msp430UsartShare1P.ArbiterC.Queue*/FcfsResourceQueueC__2__Init__init(void )
 #line 55
 {
@@ -19614,7 +21001,7 @@ static inline error_t /*Msp430UsartShare1P.ArbiterC.Queue*/FcfsResourceQueueC__2
   return SUCCESS;
 }
 
-# 62 "../../tos/interfaces/Init.nc"
+# 62 "../../../tos/interfaces/Init.nc"
 inline static error_t RealMainP__SoftwareInit__init(void ){
 #line 62
   enum __nesc_unnamed4242 __nesc_result;
@@ -19653,7 +21040,7 @@ inline static error_t RealMainP__SoftwareInit__init(void ){
 #line 62
 }
 #line 62
-# 24 "../../tos/chips/ds2411/Ds2411P.nc"
+# 24 "../../../tos/chips/ds2411/Ds2411P.nc"
 static inline bool Ds2411P__ds2411_check_crc(const ds2411_serial_t *id)
 #line 24
 {
@@ -19680,14 +21067,14 @@ static inline bool Ds2411P__ds2411_check_crc(const ds2411_serial_t *id)
   return crc == 0;
 }
 
-# 23 "../../tos/chips/ds2411/Ds2411PowerControlC.nc"
+# 23 "../../../tos/chips/ds2411/Ds2411PowerControlC.nc"
 static inline error_t Ds2411PowerControlC__StdControl__stop(void )
 #line 23
 {
   return SUCCESS;
 }
 
-# 105 "../../tos/interfaces/StdControl.nc"
+# 105 "../../../tos/interfaces/StdControl.nc"
 inline static error_t Ds2411P__PowerControl__stop(void ){
 #line 105
   enum __nesc_unnamed4242 __nesc_result;
@@ -19702,14 +21089,14 @@ inline static error_t Ds2411P__PowerControl__stop(void ){
 #line 105
 }
 #line 105
-# 66 "../../tos/lib/timer/BusyWait.nc"
+# 66 "../../../tos/lib/timer/BusyWait.nc"
 inline static void OneWireMasterP__BusyWait__wait(OneWireMasterP__BusyWait__size_type dt){
 #line 66
   /*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0__BusyWait__wait(dt);
 #line 66
 }
 #line 66
-# 98 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 98 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline uint8_t /*HplMsp430GeneralIOC.P24*/HplMsp430GeneralIOP__12__IO__getRaw(void )
 #line 98
 {
@@ -19725,7 +21112,7 @@ static inline bool /*HplMsp430GeneralIOC.P24*/HplMsp430GeneralIOP__12__IO__get(v
   return /*HplMsp430GeneralIOC.P24*/HplMsp430GeneralIOP__12__IO__getRaw() != 0;
 }
 
-# 74 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 74 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static bool /*HplDs2411C.MspGpio*/Msp430GpioC__10__HplGeneralIO__get(void ){
 #line 74
   unsigned char __nesc_result;
@@ -19740,7 +21127,7 @@ inline static bool /*HplDs2411C.MspGpio*/Msp430GpioC__10__HplGeneralIO__get(void
 #line 74
 }
 #line 74
-# 51 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 51 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline bool /*HplDs2411C.MspGpio*/Msp430GpioC__10__GeneralIO__get(void )
 #line 51
 {
@@ -19748,7 +21135,7 @@ static inline bool /*HplDs2411C.MspGpio*/Msp430GpioC__10__GeneralIO__get(void )
   return /*HplDs2411C.MspGpio*/Msp430GpioC__10__HplGeneralIO__get();
 }
 
-# 43 "../../tos/interfaces/GeneralIO.nc"
+# 43 "../../../tos/interfaces/GeneralIO.nc"
 inline static bool OneWireMasterP__Pin__get(void ){
 #line 43
   unsigned char __nesc_result;
@@ -19763,7 +21150,7 @@ inline static bool OneWireMasterP__Pin__get(void ){
 #line 43
 }
 #line 43
-# 100 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 100 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P24*/HplMsp430GeneralIOP__12__IO__makeInput(void )
 #line 100
 {
@@ -19772,14 +21159,14 @@ static inline void /*HplMsp430GeneralIOC.P24*/HplMsp430GeneralIOP__12__IO__makeI
   * (volatile uint8_t * )42U &= ~(0x01 << 4);
 }
 
-# 79 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 79 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*HplDs2411C.MspGpio*/Msp430GpioC__10__HplGeneralIO__makeInput(void ){
 #line 79
   /*HplMsp430GeneralIOC.P24*/HplMsp430GeneralIOP__12__IO__makeInput();
 #line 79
 }
 #line 79
-# 52 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 52 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*HplDs2411C.MspGpio*/Msp430GpioC__10__GeneralIO__makeInput(void )
 #line 52
 {
@@ -19787,14 +21174,14 @@ static inline void /*HplDs2411C.MspGpio*/Msp430GpioC__10__GeneralIO__makeInput(v
   /*HplDs2411C.MspGpio*/Msp430GpioC__10__HplGeneralIO__makeInput();
 }
 
-# 44 "../../tos/interfaces/GeneralIO.nc"
+# 44 "../../../tos/interfaces/GeneralIO.nc"
 inline static void OneWireMasterP__Pin__makeInput(void ){
 #line 44
   /*HplDs2411C.MspGpio*/Msp430GpioC__10__GeneralIO__makeInput();
 #line 44
 }
 #line 44
-# 102 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 102 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P24*/HplMsp430GeneralIOP__12__IO__makeOutput(void )
 #line 102
 {
@@ -19803,14 +21190,14 @@ static inline void /*HplMsp430GeneralIOC.P24*/HplMsp430GeneralIOP__12__IO__makeO
   * (volatile uint8_t * )42U |= 0x01 << 4;
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*HplDs2411C.MspGpio*/Msp430GpioC__10__HplGeneralIO__makeOutput(void ){
 #line 85
   /*HplMsp430GeneralIOC.P24*/HplMsp430GeneralIOP__12__IO__makeOutput();
 #line 85
 }
 #line 85
-# 54 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 54 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*HplDs2411C.MspGpio*/Msp430GpioC__10__GeneralIO__makeOutput(void )
 #line 54
 {
@@ -19818,14 +21205,14 @@ static inline void /*HplDs2411C.MspGpio*/Msp430GpioC__10__GeneralIO__makeOutput(
   /*HplDs2411C.MspGpio*/Msp430GpioC__10__HplGeneralIO__makeOutput();
 }
 
-# 46 "../../tos/interfaces/GeneralIO.nc"
+# 46 "../../../tos/interfaces/GeneralIO.nc"
 inline static void OneWireMasterP__Pin__makeOutput(void ){
 #line 46
   /*HplDs2411C.MspGpio*/Msp430GpioC__10__GeneralIO__makeOutput();
 #line 46
 }
 #line 46
-# 66 "../../tos/lib/onewire/OneWireMasterP.nc"
+# 66 "../../../tos/lib/onewire/OneWireMasterP.nc"
 static inline bool OneWireMasterP__readBit(void )
 #line 66
 {
@@ -19899,7 +21286,7 @@ static inline void OneWireMasterP__writeByte(uint8_t c)
     }
 }
 
-# 96 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 96 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline void /*HplMsp430GeneralIOC.P24*/HplMsp430GeneralIOP__12__IO__clr(void )
 #line 96
 {
@@ -19908,14 +21295,14 @@ static inline void /*HplMsp430GeneralIOC.P24*/HplMsp430GeneralIOP__12__IO__clr(v
   * (volatile uint8_t * )41U &= ~(0x01 << 4);
 }
 
-# 54 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 54 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static void /*HplDs2411C.MspGpio*/Msp430GpioC__10__HplGeneralIO__clr(void ){
 #line 54
   /*HplMsp430GeneralIOC.P24*/HplMsp430GeneralIOP__12__IO__clr();
 #line 54
 }
 #line 54
-# 49 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 49 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline void /*HplDs2411C.MspGpio*/Msp430GpioC__10__GeneralIO__clr(void )
 #line 49
 {
@@ -19923,14 +21310,14 @@ static inline void /*HplDs2411C.MspGpio*/Msp430GpioC__10__GeneralIO__clr(void )
   /*HplDs2411C.MspGpio*/Msp430GpioC__10__HplGeneralIO__clr();
 }
 
-# 41 "../../tos/interfaces/GeneralIO.nc"
+# 41 "../../../tos/interfaces/GeneralIO.nc"
 inline static void OneWireMasterP__Pin__clr(void ){
 #line 41
   /*HplDs2411C.MspGpio*/Msp430GpioC__10__GeneralIO__clr();
 #line 41
 }
 #line 41
-# 34 "../../tos/lib/onewire/OneWireMasterP.nc"
+# 34 "../../../tos/lib/onewire/OneWireMasterP.nc"
 static inline bool OneWireMasterP__reset(void )
 #line 34
 {
@@ -19984,7 +21371,7 @@ static inline error_t OneWireMasterP__OneWire__read(uint8_t cmd, uint8_t *buf, u
   return e;
 }
 
-# 10 "../../tos/lib/onewire/OneWireReadWrite.nc"
+# 10 "../../../tos/lib/onewire/OneWireReadWrite.nc"
 inline static error_t Ds2411P__OneWire__read(uint8_t cmd, uint8_t *buf, uint8_t len){
 #line 10
   enum __nesc_unnamed4242 __nesc_result;
@@ -19999,14 +21386,14 @@ inline static error_t Ds2411P__OneWire__read(uint8_t cmd, uint8_t *buf, uint8_t 
 #line 10
 }
 #line 10
-# 19 "../../tos/chips/ds2411/Ds2411PowerControlC.nc"
+# 19 "../../../tos/chips/ds2411/Ds2411PowerControlC.nc"
 static inline error_t Ds2411PowerControlC__StdControl__start(void )
 #line 19
 {
   return SUCCESS;
 }
 
-# 95 "../../tos/interfaces/StdControl.nc"
+# 95 "../../../tos/interfaces/StdControl.nc"
 inline static error_t Ds2411P__PowerControl__start(void ){
 #line 95
   enum __nesc_unnamed4242 __nesc_result;
@@ -20021,7 +21408,7 @@ inline static error_t Ds2411P__PowerControl__start(void ){
 #line 95
 }
 #line 95
-# 41 "../../tos/chips/ds2411/Ds2411P.nc"
+# 41 "../../../tos/chips/ds2411/Ds2411P.nc"
 static inline error_t Ds2411P__readId(void )
 #line 41
 {
@@ -20065,7 +21452,7 @@ static inline error_t Ds2411P__ReadId48__read(uint8_t *id)
   return e;
 }
 
-# 13 "../../tos/chips/ds2411/ReadId48.nc"
+# 13 "../../../tos/chips/ds2411/ReadId48.nc"
 inline static error_t LocalIeeeEui64P__ReadId48__read(uint8_t *id){
 #line 13
   enum __nesc_unnamed4242 __nesc_result;
@@ -20080,7 +21467,7 @@ inline static error_t LocalIeeeEui64P__ReadId48__read(uint8_t *id){
 #line 13
 }
 #line 13
-# 64 "../../tos/chips/msp430/timer/Msp430TimerP.nc"
+# 64 "../../../tos/chips/msp430/timer/Msp430TimerP.nc"
 static inline uint16_t /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Timer__get(void )
 {
 
@@ -20121,7 +21508,7 @@ static inline uint16_t /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Timer__get(
     }
 }
 
-# 45 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 45 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 inline static uint16_t /*Msp430CounterMicroC.Counter*/Msp430CounterC__1__Msp430Timer__get(void ){
 #line 45
   unsigned int __nesc_result;
@@ -20136,13 +21523,13 @@ inline static uint16_t /*Msp430CounterMicroC.Counter*/Msp430CounterC__1__Msp430T
 #line 45
 }
 #line 45
-# 49 "../../tos/chips/msp430/timer/Msp430CounterC.nc"
+# 49 "../../../tos/chips/msp430/timer/Msp430CounterC.nc"
 static inline uint16_t /*Msp430CounterMicroC.Counter*/Msp430CounterC__1__Counter__get(void )
 {
   return /*Msp430CounterMicroC.Counter*/Msp430CounterC__1__Msp430Timer__get();
 }
 
-# 64 "../../tos/lib/timer/Counter.nc"
+# 64 "../../../tos/lib/timer/Counter.nc"
 inline static /*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0__Counter__size_type /*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0__Counter__get(void ){
 #line 64
   unsigned int __nesc_result;
@@ -20157,14 +21544,14 @@ inline static /*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0__Counter__s
 #line 64
 }
 #line 64
-# 580 "../../tos/chips/msp430/msp430hardware.h"
+# 580 "../../../tos/chips/msp430/msp430hardware.h"
 static __inline __attribute((always_inline))  void __nesc_enable_interrupt(void )
 #line 580
 {
   __eint();
 }
 
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 inline static error_t SerialP__startDoneTask__postTask(void ){
 #line 67
   enum __nesc_unnamed4242 __nesc_result;
@@ -20179,7 +21566,7 @@ inline static error_t SerialP__startDoneTask__postTask(void ){
 #line 67
 }
 #line 67
-# 348 "../../tos/lib/serial/SerialP.nc"
+# 348 "../../../tos/lib/serial/SerialP.nc"
 static inline error_t SerialP__SplitControl__start(void )
 #line 348
 {
@@ -20207,7 +21594,7 @@ static inline error_t SerialP__SplitControl__start(void )
   return SUCCESS;
 }
 
-# 104 "../../tos/interfaces/SplitControl.nc"
+# 104 "../../../tos/interfaces/SplitControl.nc"
 inline static error_t BaseStationP__SerialControl__start(void ){
 #line 104
   enum __nesc_unnamed4242 __nesc_result;
@@ -20222,182 +21609,44 @@ inline static error_t BaseStationP__SerialControl__start(void ){
 #line 104
 }
 #line 104
-# 66 "../../tos/lib/timer/Alarm.nc"
-inline static void CC2420ControlP__StartupTimer__start(CC2420ControlP__StartupTimer__size_type dt){
-#line 66
-  /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Alarm__start(dt);
-#line 66
-}
-#line 66
-# 95 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
-static inline void /*HplMsp430GeneralIOC.P45*/HplMsp430GeneralIOP__29__IO__set(void )
-#line 95
-{
-#line 95
-  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
-#line 95
-    * (volatile uint8_t * )29U |= 0x01 << 5;
-#line 95
-    __nesc_atomic_end(__nesc_atomic); }
-}
-
-# 49 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
-inline static void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__HplGeneralIO__set(void ){
-#line 49
-  /*HplMsp430GeneralIOC.P45*/HplMsp430GeneralIOP__29__IO__set();
-#line 49
-}
-#line 49
-# 48 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
-static inline void /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__GeneralIO__set(void )
-#line 48
-{
-#line 48
-  /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__HplGeneralIO__set();
-}
-
-# 40 "../../tos/interfaces/GeneralIO.nc"
-inline static void CC2420ControlP__VREN__set(void ){
-#line 40
-  /*HplCC2420PinsC.VRENM*/Msp430GpioC__9__GeneralIO__set();
-#line 40
-}
-#line 40
-# 204 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
-static inline error_t CC2420ControlP__CC2420Power__startVReg(void )
-#line 204
-{
-  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
-#line 205
-    {
-      if (CC2420ControlP__m_state != CC2420ControlP__S_VREG_STOPPED) {
-          {
-            enum __nesc_unnamed4242 __nesc_temp = 
-#line 207
-            FAIL;
-
-            {
-#line 207
-              __nesc_atomic_end(__nesc_atomic); 
-#line 207
-              return __nesc_temp;
-            }
-          }
-        }
-#line 209
-      CC2420ControlP__m_state = CC2420ControlP__S_VREG_STARTING;
-    }
-#line 210
-    __nesc_atomic_end(__nesc_atomic); }
-  CC2420ControlP__VREN__set();
-  CC2420ControlP__StartupTimer__start(CC2420_TIME_VREN);
-  return SUCCESS;
-}
-
-# 51 "../../tos/chips/cc2420/interfaces/CC2420Power.nc"
-inline static error_t CC2420CsmaP__CC2420Power__startVReg(void ){
-#line 51
-  enum __nesc_unnamed4242 __nesc_result;
-#line 51
-
-#line 51
-  __nesc_result = CC2420ControlP__CC2420Power__startVReg();
-#line 51
-
-#line 51
-  return __nesc_result;
-#line 51
-}
-#line 51
-# 45 "../../tos/interfaces/State.nc"
-inline static error_t CC2420CsmaP__SplitControlState__requestState(uint8_t reqState){
-#line 45
-  enum __nesc_unnamed4242 __nesc_result;
-#line 45
-
-#line 45
-  __nesc_result = StateImplP__State__requestState(1U, reqState);
-#line 45
-
-#line 45
-  return __nesc_result;
-#line 45
-}
-#line 45
-# 81 "../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
-static inline error_t CC2420CsmaP__SplitControl__start(void )
-#line 81
-{
-  if (CC2420CsmaP__SplitControlState__requestState(CC2420CsmaP__S_STARTING) == SUCCESS) {
-      CC2420CsmaP__CC2420Power__startVReg();
-      return SUCCESS;
-    }
-  else {
-#line 86
-    if (CC2420CsmaP__SplitControlState__isState(CC2420CsmaP__S_STARTED)) {
-        return EALREADY;
-      }
-    else {
-#line 89
-      if (CC2420CsmaP__SplitControlState__isState(CC2420CsmaP__S_STARTING)) {
-          return SUCCESS;
-        }
-      }
-    }
-#line 93
-  return EBUSY;
-}
-
-# 104 "../../tos/interfaces/SplitControl.nc"
-inline static error_t BaseStationP__RadioControl__start(void ){
-#line 104
-  enum __nesc_unnamed4242 __nesc_result;
-#line 104
-
-#line 104
-  __nesc_result = CC2420CsmaP__SplitControl__start();
-#line 104
-
-#line 104
-  return __nesc_result;
-#line 104
-}
-#line 104
-# 109 "BaseStationP.nc"
+# 128 "BaseStationP.nc"
 static inline void BaseStationP__Boot__booted(void )
-#line 109
+#line 128
 {
-  uint8_t i;
+  BaseStationP__node_id_master = TOS_NODE_ID;
 
-  for (i = 0; i < BaseStationP__UART_QUEUE_LEN; i++) 
-    BaseStationP__uartQueue[i] = &BaseStationP__uartQueueBufs[i];
+  for (BaseStationP__i = 0; BaseStationP__i < 3; BaseStationP__i++) 
+    BaseStationP__posicion_medida[BaseStationP__i] = 0;
+
+  for (BaseStationP__i = 0; BaseStationP__i < BaseStationP__UART_QUEUE_LEN; BaseStationP__i++) 
+    BaseStationP__uartQueue[BaseStationP__i] = &BaseStationP__uartQueueBufs[BaseStationP__i];
   BaseStationP__uartIn = BaseStationP__uartOut = 0;
   BaseStationP__uartBusy = FALSE;
   BaseStationP__uartFull = TRUE;
 
-  for (i = 0; i < BaseStationP__RADIO_QUEUE_LEN; i++) 
-    BaseStationP__radioQueue[i] = &BaseStationP__radioQueueBufs[i];
+  for (BaseStationP__i = 0; BaseStationP__i < BaseStationP__RADIO_QUEUE_LEN; BaseStationP__i++) 
+    BaseStationP__radioQueue[BaseStationP__i] = &BaseStationP__radioQueueBufs[BaseStationP__i];
   BaseStationP__radioIn = BaseStationP__radioOut = 0;
   BaseStationP__radioBusy = FALSE;
   BaseStationP__radioFull = TRUE;
 
-  if (BaseStationP__RadioControl__start() == EALREADY) {
+  if (BaseStationP__AMControl__start() == EALREADY) {
     BaseStationP__radioFull = FALSE;
     }
-#line 126
+#line 148
   if (BaseStationP__SerialControl__start() == EALREADY) {
     BaseStationP__uartFull = FALSE;
     }
 }
 
-# 60 "../../tos/interfaces/Boot.nc"
+# 60 "../../../tos/interfaces/Boot.nc"
 inline static void RealMainP__Boot__booted(void ){
 #line 60
   BaseStationP__Boot__booted();
 #line 60
 }
 #line 60
-# 150 "../../tos/system/SchedulerBasicP.nc"
+# 150 "../../../tos/system/SchedulerBasicP.nc"
 static inline void SchedulerBasicP__trace_task_end(uint16_t num, uint32_t delta)
 #line 150
 {
@@ -20417,21 +21666,21 @@ static inline void SchedulerBasicP__trace_task_start(uint16_t num)
 {
 }
 
-# 573 "../../tos/chips/msp430/msp430hardware.h"
+# 573 "../../../tos/chips/msp430/msp430hardware.h"
 static __inline __attribute((always_inline))  void __nesc_disable_interrupt(void )
 #line 573
 {
   __dint();
 }
 
-# 228 "../../tos/chips/msp430/clock_bcs/Msp430ClockP.nc"
+# 228 "../../../tos/chips/msp430/clock_bcs/Msp430ClockP.nc"
 static inline mcu_power_t Msp430ClockP__McuPowerOverride__lowestState(void )
 #line 228
 {
   return MSP430_POWER_LPM3;
 }
 
-# 62 "../../tos/interfaces/McuPowerOverride.nc"
+# 62 "../../../tos/interfaces/McuPowerOverride.nc"
 inline static mcu_power_t McuSleepC__McuPowerOverride__lowestState(void ){
 #line 62
   unsigned char __nesc_result;
@@ -20446,7 +21695,7 @@ inline static mcu_power_t McuSleepC__McuPowerOverride__lowestState(void ){
 #line 62
 }
 #line 62
-# 79 "../../tos/chips/msp430/x1xxx/McuSleepC.nc"
+# 79 "../../../tos/chips/msp430/x1xxx/McuSleepC.nc"
 static inline mcu_power_t McuSleepC__getPowerState(void )
 #line 79
 {
@@ -20507,14 +21756,14 @@ static inline mcu_power_t McuSleepC__getPowerState(void )
   return pState;
 }
 
-# 556 "../../tos/chips/msp430/msp430hardware.h"
+# 556 "../../../tos/chips/msp430/msp430hardware.h"
 static inline  mcu_power_t mcombine(mcu_power_t m1, mcu_power_t m2)
 #line 556
 {
   return m1 < m2 ? m1 : m2;
 }
 
-# 119 "../../tos/chips/msp430/x1xxx/McuSleepC.nc"
+# 119 "../../../tos/chips/msp430/x1xxx/McuSleepC.nc"
 static inline void McuSleepC__computePowerState(void )
 #line 119
 {
@@ -20539,14 +21788,14 @@ static inline void McuSleepC__McuSleep__sleep(void )
   __nesc_disable_interrupt();
 }
 
-# 79 "../../tos/interfaces/McuSleep.nc"
+# 79 "../../../tos/interfaces/McuSleep.nc"
 inline static void SchedulerBasicP__McuSleep__sleep(void ){
 #line 79
   McuSleepC__McuSleep__sleep();
 #line 79
 }
 #line 79
-# 161 "../../tos/system/SchedulerBasicP.nc"
+# 161 "../../../tos/system/SchedulerBasicP.nc"
 static __inline uint8_t SchedulerBasicP__popTask(void )
 #line 161
 {
@@ -20592,14 +21841,14 @@ static inline void SchedulerBasicP__Scheduler__taskLoop(void )
     }
 }
 
-# 72 "../../tos/interfaces/Scheduler.nc"
+# 72 "../../../tos/interfaces/Scheduler.nc"
 inline static void RealMainP__Scheduler__taskLoop(void ){
 #line 72
   SchedulerBasicP__Scheduler__taskLoop();
 #line 72
 }
 #line 72
-# 171 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 171 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline void /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__Timer__overflow(void )
 #line 171
 {
@@ -20617,25 +21866,25 @@ static inline void /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__Timer__o
 {
 }
 
-# 85 "../../tos/lib/timer/BusyWaitCounterC.nc"
+# 85 "../../../tos/lib/timer/BusyWaitCounterC.nc"
 static inline void /*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0__Counter__overflow(void )
 {
 }
 
-# 82 "../../tos/lib/timer/Counter.nc"
+# 82 "../../../tos/lib/timer/Counter.nc"
 inline static void /*Msp430CounterMicroC.Counter*/Msp430CounterC__1__Counter__overflow(void ){
 #line 82
   /*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0__Counter__overflow();
 #line 82
 }
 #line 82
-# 64 "../../tos/chips/msp430/timer/Msp430CounterC.nc"
+# 64 "../../../tos/chips/msp430/timer/Msp430CounterC.nc"
 static inline void /*Msp430CounterMicroC.Counter*/Msp430CounterC__1__Msp430Timer__overflow(void )
 {
   /*Msp430CounterMicroC.Counter*/Msp430CounterC__1__Counter__overflow();
 }
 
-# 48 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 48 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 inline static void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Timer__overflow(void ){
 #line 48
   /*Msp430CounterMicroC.Counter*/Msp430CounterC__1__Msp430Timer__overflow();
@@ -20648,7 +21897,7 @@ inline static void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Timer__overflow
 #line 48
 }
 #line 48
-# 162 "../../tos/chips/msp430/timer/Msp430TimerP.nc"
+# 162 "../../../tos/chips/msp430/timer/Msp430TimerP.nc"
 static inline void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Overflow__fired(void )
 {
   /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Timer__overflow();
@@ -20660,10 +21909,10 @@ static inline void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__default_
 {
 }
 
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
-inline static void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__fired(uint8_t arg_0x7f540dad48b0){
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+inline static void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__fired(uint8_t arg_0x7f49d76bc8b0){
 #line 39
-  switch (arg_0x7f540dad48b0) {
+  switch (arg_0x7f49d76bc8b0) {
 #line 39
     case 0:
 #line 39
@@ -20691,7 +21940,7 @@ inline static void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__fired(ui
 #line 39
     default:
 #line 39
-      /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__default__fired(arg_0x7f540dad48b0);
+      /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__default__fired(arg_0x7f49d76bc8b0);
 #line 39
       break;
 #line 39
@@ -20699,26 +21948,26 @@ inline static void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__fired(ui
 #line 39
 }
 #line 39
-# 144 "../../tos/chips/msp430/timer/Msp430TimerP.nc"
+# 144 "../../../tos/chips/msp430/timer/Msp430TimerP.nc"
 static inline void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__VectorTimerX0__fired(void )
 #line 144
 {
   /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__fired(0);
 }
 
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
 inline static void Msp430TimerCommonP__VectorTimerA0__fired(void ){
 #line 39
   /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__VectorTimerX0__fired();
 #line 39
 }
 #line 39
-# 59 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 59 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline  /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__cc_t /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__int2CC(uint16_t x)
 #line 59
 {
 #line 59
-  union /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0____nesc_unnamed4382 {
+  union /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0____nesc_unnamed4387 {
 #line 59
     uint16_t f;
 #line 59
@@ -20744,14 +21993,14 @@ static inline void /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__Capture_
 {
 }
 
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 inline static void /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__Capture__captured(uint16_t time){
 #line 92
   /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__Capture__default__captured(time);
 #line 92
 }
 #line 92
-# 136 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 136 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline uint16_t /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__Capture__getEvent(void )
 #line 136
 {
@@ -20764,19 +22013,19 @@ static inline void /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__Compare_
 {
 }
 
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 inline static void /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__Compare__fired(void ){
 #line 46
   /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__Compare__default__fired();
 #line 46
 }
 #line 46
-# 59 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 59 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline  /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__cc_t /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__int2CC(uint16_t x)
 #line 59
 {
 #line 59
-  union /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1____nesc_unnamed4383 {
+  union /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1____nesc_unnamed4388 {
 #line 59
     uint16_t f;
 #line 59
@@ -20802,14 +22051,14 @@ static inline void /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__Capture_
 {
 }
 
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 inline static void /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__Capture__captured(uint16_t time){
 #line 92
   /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__Capture__default__captured(time);
 #line 92
 }
 #line 92
-# 136 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 136 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline uint16_t /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__Capture__getEvent(void )
 #line 136
 {
@@ -20822,19 +22071,19 @@ static inline void /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__Compare_
 {
 }
 
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 inline static void /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__Compare__fired(void ){
 #line 46
   /*Msp430TimerC.Msp430TimerA1*/Msp430TimerCapComP__1__Compare__default__fired();
 #line 46
 }
 #line 46
-# 59 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 59 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline  /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__cc_t /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__int2CC(uint16_t x)
 #line 59
 {
 #line 59
-  union /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2____nesc_unnamed4384 {
+  union /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2____nesc_unnamed4389 {
 #line 59
     uint16_t f;
 #line 59
@@ -20860,14 +22109,14 @@ static inline void /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__Capture_
 {
 }
 
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 inline static void /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__Capture__captured(uint16_t time){
 #line 92
   /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__Capture__default__captured(time);
 #line 92
 }
 #line 92
-# 136 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 136 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline uint16_t /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__Capture__getEvent(void )
 #line 136
 {
@@ -20880,14 +22129,14 @@ static inline void /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__Compare_
 {
 }
 
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 inline static void /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__Compare__fired(void ){
 #line 46
   /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__Compare__default__fired();
 #line 46
 }
 #line 46
-# 157 "../../tos/chips/msp430/timer/Msp430TimerP.nc"
+# 157 "../../../tos/chips/msp430/timer/Msp430TimerP.nc"
 static inline void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__VectorTimerX1__fired(void )
 #line 157
 {
@@ -20897,28 +22146,28 @@ static inline void /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__VectorTimerX1__
   /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__Event__fired(n >> 1);
 }
 
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
 inline static void Msp430TimerCommonP__VectorTimerA1__fired(void ){
 #line 39
   /*Msp430TimerC.Msp430TimerA*/Msp430TimerP__0__VectorTimerX1__fired();
 #line 39
 }
 #line 39
-# 144 "../../tos/chips/msp430/timer/Msp430TimerP.nc"
+# 144 "../../../tos/chips/msp430/timer/Msp430TimerP.nc"
 static inline void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__VectorTimerX0__fired(void )
 #line 144
 {
   /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Event__fired(0);
 }
 
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
 inline static void Msp430TimerCommonP__VectorTimerB0__fired(void ){
 #line 39
   /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__VectorTimerX0__fired();
 #line 39
 }
 #line 39
-# 171 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 171 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline void /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__Timer__overflow(void )
 #line 171
 {
@@ -20960,7 +22209,7 @@ static inline void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Timer__o
 {
 }
 
-# 114 "../../tos/chips/msp430/timer/Msp430AlarmC.nc"
+# 114 "../../../tos/chips/msp430/timer/Msp430AlarmC.nc"
 static inline void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430Timer__overflow(void )
 {
 }
@@ -20970,17 +22219,17 @@ static inline void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp
 {
 }
 
-# 177 "../../tos/lib/timer/TransformAlarmC.nc"
+# 177 "../../../tos/lib/timer/TransformAlarmC.nc"
 static inline void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Counter__overflow(void )
 {
 }
 
-# 58 "../../tos/lib/timer/CounterToLocalTimeC.nc"
+# 58 "../../../tos/lib/timer/CounterToLocalTimeC.nc"
 static inline void /*CC2420PacketC.CounterToLocalTimeC*/CounterToLocalTimeC__0__Counter__overflow(void )
 {
 }
 
-# 82 "../../tos/lib/timer/Counter.nc"
+# 82 "../../../tos/lib/timer/Counter.nc"
 inline static void /*Counter32khz32C.Transform*/TransformCounterC__0__Counter__overflow(void ){
 #line 82
   /*CC2420PacketC.CounterToLocalTimeC*/CounterToLocalTimeC__0__Counter__overflow();
@@ -20989,7 +22238,7 @@ inline static void /*Counter32khz32C.Transform*/TransformCounterC__0__Counter__o
 #line 82
 }
 #line 82
-# 133 "../../tos/lib/timer/TransformCounterC.nc"
+# 133 "../../../tos/lib/timer/TransformCounterC.nc"
 static inline void /*Counter32khz32C.Transform*/TransformCounterC__0__CounterFrom__overflow(void )
 {
   /* atomic removed: atomic calls only */
@@ -21001,17 +22250,17 @@ static inline void /*Counter32khz32C.Transform*/TransformCounterC__0__CounterFro
   }
 }
 
-# 58 "../../tos/lib/timer/CounterToLocalTimeC.nc"
+# 58 "../../../tos/lib/timer/CounterToLocalTimeC.nc"
 static inline void /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC__1__Counter__overflow(void )
 {
 }
 
-# 177 "../../tos/lib/timer/TransformAlarmC.nc"
+# 177 "../../../tos/lib/timer/TransformAlarmC.nc"
 static inline void /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Counter__overflow(void )
 {
 }
 
-# 82 "../../tos/lib/timer/Counter.nc"
+# 82 "../../../tos/lib/timer/Counter.nc"
 inline static void /*CounterMilli32C.Transform*/TransformCounterC__1__Counter__overflow(void ){
 #line 82
   /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Counter__overflow();
@@ -21020,7 +22269,7 @@ inline static void /*CounterMilli32C.Transform*/TransformCounterC__1__Counter__o
 #line 82
 }
 #line 82
-# 133 "../../tos/lib/timer/TransformCounterC.nc"
+# 133 "../../../tos/lib/timer/TransformCounterC.nc"
 static inline void /*CounterMilli32C.Transform*/TransformCounterC__1__CounterFrom__overflow(void )
 {
   /* atomic removed: atomic calls only */
@@ -21032,13 +22281,13 @@ static inline void /*CounterMilli32C.Transform*/TransformCounterC__1__CounterFro
   }
 }
 
-# 230 "../../tos/chips/msp430/usart/Msp430UartP.nc"
+# 230 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
 static inline void /*Msp430Uart1P.UartP*/Msp430UartP__0__Counter__overflow(void )
 #line 230
 {
 }
 
-# 82 "../../tos/lib/timer/Counter.nc"
+# 82 "../../../tos/lib/timer/Counter.nc"
 inline static void /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Counter__overflow(void ){
 #line 82
   /*Msp430Uart1P.UartP*/Msp430UartP__0__Counter__overflow();
@@ -21049,13 +22298,13 @@ inline static void /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Counter__ov
 #line 82
 }
 #line 82
-# 64 "../../tos/chips/msp430/timer/Msp430CounterC.nc"
+# 64 "../../../tos/chips/msp430/timer/Msp430CounterC.nc"
 static inline void /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Msp430Timer__overflow(void )
 {
   /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Counter__overflow();
 }
 
-# 48 "../../tos/chips/msp430/timer/Msp430Timer.nc"
+# 48 "../../../tos/chips/msp430/timer/Msp430Timer.nc"
 inline static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Timer__overflow(void ){
 #line 48
   /*Msp430Counter32khzC.Counter*/Msp430CounterC__0__Msp430Timer__overflow();
@@ -21080,13 +22329,13 @@ inline static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Timer__overflow
 #line 48
 }
 #line 48
-# 162 "../../tos/chips/msp430/timer/Msp430TimerP.nc"
+# 162 "../../../tos/chips/msp430/timer/Msp430TimerP.nc"
 static inline void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Overflow__fired(void )
 {
   /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Timer__overflow();
 }
 
-# 88 "../../tos/interfaces/Resource.nc"
+# 88 "../../../tos/interfaces/Resource.nc"
 inline static error_t CC2420ControlP__SpiResource__request(void ){
 #line 88
   enum __nesc_unnamed4242 __nesc_result;
@@ -21101,14 +22350,14 @@ inline static error_t CC2420ControlP__SpiResource__request(void ){
 #line 88
 }
 #line 88
-# 188 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
+# 188 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
 static inline error_t CC2420ControlP__Resource__request(void )
 #line 188
 {
   return CC2420ControlP__SpiResource__request();
 }
 
-# 88 "../../tos/interfaces/Resource.nc"
+# 88 "../../../tos/interfaces/Resource.nc"
 inline static error_t CC2420CsmaP__Resource__request(void ){
 #line 88
   enum __nesc_unnamed4242 __nesc_result;
@@ -21123,21 +22372,21 @@ inline static error_t CC2420CsmaP__Resource__request(void ){
 #line 88
 }
 #line 88
-# 210 "../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
+# 210 "../../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
 static inline void CC2420CsmaP__CC2420Power__startVRegDone(void )
 #line 210
 {
   CC2420CsmaP__Resource__request();
 }
 
-# 56 "../../tos/chips/cc2420/interfaces/CC2420Power.nc"
+# 56 "../../../tos/chips/cc2420/interfaces/CC2420Power.nc"
 inline static void CC2420ControlP__CC2420Power__startVRegDone(void ){
 #line 56
   CC2420CsmaP__CC2420Power__startVRegDone();
 #line 56
 }
 #line 56
-# 431 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
+# 431 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
 static inline void CC2420ControlP__StartupTimer__fired(void )
 #line 431
 {
@@ -21149,7 +22398,7 @@ static inline void CC2420ControlP__StartupTimer__fired(void )
     }
 }
 
-# 98 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 98 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline uint8_t /*HplMsp430GeneralIOC.P14*/HplMsp430GeneralIOP__4__IO__getRaw(void )
 #line 98
 {
@@ -21165,7 +22414,7 @@ static inline bool /*HplMsp430GeneralIOC.P14*/HplMsp430GeneralIOP__4__IO__get(vo
   return /*HplMsp430GeneralIOC.P14*/HplMsp430GeneralIOP__4__IO__getRaw() != 0;
 }
 
-# 74 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 74 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static bool /*HplCC2420PinsC.CCAM*/Msp430GpioC__3__HplGeneralIO__get(void ){
 #line 74
   unsigned char __nesc_result;
@@ -21180,7 +22429,7 @@ inline static bool /*HplCC2420PinsC.CCAM*/Msp430GpioC__3__HplGeneralIO__get(void
 #line 74
 }
 #line 74
-# 51 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 51 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline bool /*HplCC2420PinsC.CCAM*/Msp430GpioC__3__GeneralIO__get(void )
 #line 51
 {
@@ -21188,7 +22437,7 @@ static inline bool /*HplCC2420PinsC.CCAM*/Msp430GpioC__3__GeneralIO__get(void )
   return /*HplCC2420PinsC.CCAM*/Msp430GpioC__3__HplGeneralIO__get();
 }
 
-# 43 "../../tos/interfaces/GeneralIO.nc"
+# 43 "../../../tos/interfaces/GeneralIO.nc"
 inline static bool CC2420TransmitP__CCA__get(void ){
 #line 43
   unsigned char __nesc_result;
@@ -21203,7 +22452,7 @@ inline static bool CC2420TransmitP__CCA__get(void ){
 #line 43
 }
 #line 43
-# 498 "../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
+# 498 "../../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
 static inline void CC2420TransmitP__BackoffTimer__fired(void )
 #line 498
 {
@@ -21250,7 +22499,7 @@ static inline void CC2420TransmitP__BackoffTimer__fired(void )
   }
 }
 
-# 78 "../../tos/lib/timer/Alarm.nc"
+# 78 "../../../tos/lib/timer/Alarm.nc"
 inline static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Alarm__fired(void ){
 #line 78
   CC2420TransmitP__BackoffTimer__fired();
@@ -21259,7 +22508,7 @@ inline static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAla
 #line 78
 }
 #line 78
-# 162 "../../tos/lib/timer/TransformAlarmC.nc"
+# 162 "../../../tos/lib/timer/TransformAlarmC.nc"
 static inline void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__AlarmFrom__fired(void )
 {
   /* atomic removed: atomic calls only */
@@ -21275,28 +22524,28 @@ static inline void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAla
   }
 }
 
-# 78 "../../tos/lib/timer/Alarm.nc"
+# 78 "../../../tos/lib/timer/Alarm.nc"
 inline static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Alarm__fired(void ){
 #line 78
   /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__AlarmFrom__fired();
 #line 78
 }
 #line 78
-# 70 "../../tos/chips/msp430/timer/Msp430AlarmC.nc"
+# 70 "../../../tos/chips/msp430/timer/Msp430AlarmC.nc"
 static inline void /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430Compare__fired(void )
 {
   /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430TimerControl__disableEvents();
   /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Alarm__fired();
 }
 
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 inline static void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Compare__fired(void ){
 #line 46
   /*AlarmMultiplexC.Alarm.Alarm32khz32C.AlarmC.Msp430Alarm*/Msp430AlarmC__0__Msp430Compare__fired();
 #line 46
 }
 #line 46
-# 136 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 136 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline uint16_t /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Capture__getEvent(void )
 #line 136
 {
@@ -21309,19 +22558,19 @@ static inline void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Capture_
 {
 }
 
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 inline static void /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Capture__captured(uint16_t time){
 #line 92
   /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__Capture__default__captured(time);
 #line 92
 }
 #line 92
-# 59 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 59 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline  /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__cc_t /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3__int2CC(uint16_t x)
 #line 59
 {
 #line 59
-  union /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3____nesc_unnamed4385 {
+  union /*Msp430TimerC.Msp430TimerB0*/Msp430TimerCapComP__3____nesc_unnamed4390 {
 #line 59
     uint16_t f;
 #line 59
@@ -21360,14 +22609,14 @@ static inline void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Compare_
 {
 }
 
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 inline static void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Compare__fired(void ){
 #line 46
   /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Compare__default__fired();
 #line 46
 }
 #line 46
-# 136 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 136 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline uint16_t /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Capture__getEvent(void )
 #line 136
 {
@@ -21386,14 +22635,14 @@ static __inline  uint32_t __nesc_ntoh_uint32(const void * source)
   (uint32_t )base[2] << 8)) | base[3];
 }
 
-# 70 "../../tos/interfaces/PacketTimeStamp.nc"
+# 70 "../../../tos/interfaces/PacketTimeStamp.nc"
 inline static void CC2420TransmitP__PacketTimeStamp__clear(message_t * msg){
 #line 70
   CC2420PacketP__PacketTimeStamp32khz__clear(msg);
 #line 70
 }
 #line 70
-# 195 "../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
+# 195 "../../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
 static inline void CC2420ReceiveP__CC2420Receive__sfd_dropped(void )
 #line 195
 {
@@ -21402,14 +22651,14 @@ static inline void CC2420ReceiveP__CC2420Receive__sfd_dropped(void )
     }
 }
 
-# 55 "../../tos/chips/cc2420/interfaces/CC2420Receive.nc"
+# 55 "../../../tos/chips/cc2420/interfaces/CC2420Receive.nc"
 inline static void CC2420TransmitP__CC2420Receive__sfd_dropped(void ){
 #line 55
   CC2420ReceiveP__CC2420Receive__sfd_dropped();
 #line 55
 }
 #line 55
-# 98 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 98 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static inline uint8_t /*HplMsp430GeneralIOC.P41*/HplMsp430GeneralIOP__25__IO__getRaw(void )
 #line 98
 {
@@ -21425,7 +22674,7 @@ static inline bool /*HplMsp430GeneralIOC.P41*/HplMsp430GeneralIOP__25__IO__get(v
   return /*HplMsp430GeneralIOC.P41*/HplMsp430GeneralIOP__25__IO__getRaw() != 0;
 }
 
-# 74 "../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
+# 74 "../../../tos/chips/msp430/pins/HplMsp430GeneralIO.nc"
 inline static bool /*HplCC2420PinsC.SFDM*/Msp430GpioC__8__HplGeneralIO__get(void ){
 #line 74
   unsigned char __nesc_result;
@@ -21440,7 +22689,7 @@ inline static bool /*HplCC2420PinsC.SFDM*/Msp430GpioC__8__HplGeneralIO__get(void
 #line 74
 }
 #line 74
-# 51 "../../tos/chips/msp430/pins/Msp430GpioC.nc"
+# 51 "../../../tos/chips/msp430/pins/Msp430GpioC.nc"
 static inline bool /*HplCC2420PinsC.SFDM*/Msp430GpioC__8__GeneralIO__get(void )
 #line 51
 {
@@ -21448,7 +22697,7 @@ static inline bool /*HplCC2420PinsC.SFDM*/Msp430GpioC__8__GeneralIO__get(void )
   return /*HplCC2420PinsC.SFDM*/Msp430GpioC__8__HplGeneralIO__get();
 }
 
-# 43 "../../tos/interfaces/GeneralIO.nc"
+# 43 "../../../tos/interfaces/GeneralIO.nc"
 inline static bool CC2420TransmitP__SFD__get(void ){
 #line 43
   unsigned char __nesc_result;
@@ -21463,7 +22712,7 @@ inline static bool CC2420TransmitP__SFD__get(void ){
 #line 43
 }
 #line 43
-# 186 "../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
+# 186 "../../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
 static inline void CC2420ReceiveP__CC2420Receive__sfd(uint32_t time)
 #line 186
 {
@@ -21477,21 +22726,21 @@ static inline void CC2420ReceiveP__CC2420Receive__sfd(uint32_t time)
     }
 }
 
-# 49 "../../tos/chips/cc2420/interfaces/CC2420Receive.nc"
+# 49 "../../../tos/chips/cc2420/interfaces/CC2420Receive.nc"
 inline static void CC2420TransmitP__CC2420Receive__sfd(uint32_t time){
 #line 49
   CC2420ReceiveP__CC2420Receive__sfd(time);
 #line 49
 }
 #line 49
-# 78 "../../tos/chips/msp430/timer/GpioCaptureC.nc"
+# 78 "../../../tos/chips/msp430/timer/GpioCaptureC.nc"
 static inline error_t /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Capture__captureFallingEdge(void )
 #line 78
 {
   return /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__enableCapture(MSP430TIMER_CM_FALLING);
 }
 
-# 54 "../../tos/interfaces/GpioCapture.nc"
+# 54 "../../../tos/interfaces/GpioCapture.nc"
 inline static error_t CC2420TransmitP__CaptureSFD__captureFallingEdge(void ){
 #line 54
   enum __nesc_unnamed4242 __nesc_result;
@@ -21506,7 +22755,7 @@ inline static error_t CC2420TransmitP__CaptureSFD__captureFallingEdge(void ){
 #line 54
 }
 #line 54
-# 63 "../../tos/chips/cc2420/interfaces/CC2420Ram.nc"
+# 63 "../../../tos/chips/cc2420/interfaces/CC2420Ram.nc"
 inline static cc2420_status_t CC2420TransmitP__TXFIFO_RAM__write(uint8_t offset, uint8_t * data, uint8_t length){
 #line 63
   unsigned char __nesc_result;
@@ -21521,7 +22770,7 @@ inline static cc2420_status_t CC2420TransmitP__TXFIFO_RAM__write(uint8_t offset,
 #line 63
 }
 #line 63
-# 219 "../../tos/chips/cc2420/packet/CC2420PacketP.nc"
+# 219 "../../../tos/chips/cc2420/packet/CC2420PacketP.nc"
 static inline uint8_t CC2420PacketP__PacketTimeSyncOffset__get(message_t *msg)
 {
   return __nesc_ntoh_leuint8(CC2420PacketP__CC2420PacketBody__getHeader(msg)->length.nxdata)
@@ -21530,7 +22779,7 @@ static inline uint8_t CC2420PacketP__PacketTimeSyncOffset__get(message_t *msg)
    - sizeof(timesync_radio_t );
 }
 
-# 58 "../../tos/chips/cc2420/interfaces/PacketTimeSyncOffset.nc"
+# 58 "../../../tos/chips/cc2420/interfaces/PacketTimeSyncOffset.nc"
 inline static uint8_t CC2420TransmitP__PacketTimeSyncOffset__get(message_t * msg){
 #line 58
   unsigned char __nesc_result;
@@ -21545,13 +22794,13 @@ inline static uint8_t CC2420TransmitP__PacketTimeSyncOffset__get(message_t * msg
 #line 58
 }
 #line 58
-# 210 "../../tos/chips/cc2420/packet/CC2420PacketP.nc"
+# 210 "../../../tos/chips/cc2420/packet/CC2420PacketP.nc"
 static inline bool CC2420PacketP__PacketTimeSyncOffset__isSet(message_t *msg)
 {
   return __nesc_ntoh_int8(CC2420PacketP__CC2420PacketBody__getMetadata(msg)->timesync.nxdata);
 }
 
-# 50 "../../tos/chips/cc2420/interfaces/PacketTimeSyncOffset.nc"
+# 50 "../../../tos/chips/cc2420/interfaces/PacketTimeSyncOffset.nc"
 inline static bool CC2420TransmitP__PacketTimeSyncOffset__isSet(message_t * msg){
 #line 50
   unsigned char __nesc_result;
@@ -21566,14 +22815,14 @@ inline static bool CC2420TransmitP__PacketTimeSyncOffset__isSet(message_t * msg)
 #line 50
 }
 #line 50
-# 78 "../../tos/interfaces/PacketTimeStamp.nc"
+# 78 "../../../tos/interfaces/PacketTimeStamp.nc"
 inline static void CC2420TransmitP__PacketTimeStamp__set(message_t * msg, CC2420TransmitP__PacketTimeStamp__size_type value){
 #line 78
   CC2420PacketP__PacketTimeStamp32khz__set(msg, value);
 #line 78
 }
 #line 78
-# 109 "../../tos/lib/timer/Alarm.nc"
+# 109 "../../../tos/lib/timer/Alarm.nc"
 inline static CC2420TransmitP__BackoffTimer__size_type CC2420TransmitP__BackoffTimer__getNow(void ){
 #line 109
   unsigned long __nesc_result;
@@ -21588,7 +22837,7 @@ inline static CC2420TransmitP__BackoffTimer__size_type CC2420TransmitP__BackoffT
 #line 109
 }
 #line 109
-# 259 "../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
+# 259 "../../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
 static __inline uint32_t CC2420TransmitP__getTime32(uint16_t captured_time)
 {
   uint32_t now = CC2420TransmitP__BackoffTimer__getNow();
@@ -21707,42 +22956,42 @@ static inline void CC2420TransmitP__CaptureSFD__captured(uint16_t time)
   }
 }
 
-# 61 "../../tos/interfaces/GpioCapture.nc"
+# 61 "../../../tos/interfaces/GpioCapture.nc"
 inline static void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Capture__captured(uint16_t time){
 #line 61
   CC2420TransmitP__CaptureSFD__captured(time);
 #line 61
 }
 #line 61
-# 156 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 156 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Capture__clearOverflow(void )
 #line 156
 {
   * (volatile uint16_t * )388U &= ~0x0002;
 }
 
-# 74 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 74 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 inline static void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Msp430Capture__clearOverflow(void ){
 #line 74
   /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Capture__clearOverflow();
 #line 74
 }
 #line 74
-# 92 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Control__clearPendingInterrupt(void )
 #line 92
 {
   * (volatile uint16_t * )388U &= ~0x0001;
 }
 
-# 43 "../../tos/chips/msp430/timer/Msp430TimerControl.nc"
+# 43 "../../../tos/chips/msp430/timer/Msp430TimerControl.nc"
 inline static void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Msp430TimerControl__clearPendingInterrupt(void ){
 #line 43
   /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Control__clearPendingInterrupt();
 #line 43
 }
 #line 43
-# 89 "../../tos/chips/msp430/timer/GpioCaptureC.nc"
+# 89 "../../../tos/chips/msp430/timer/GpioCaptureC.nc"
 static inline void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Msp430Capture__captured(uint16_t time)
 #line 89
 {
@@ -21751,19 +23000,19 @@ static inline void /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Msp430Ca
   /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Capture__captured(time);
 }
 
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 inline static void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Capture__captured(uint16_t time){
 #line 92
   /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__Msp430Capture__captured(time);
 #line 92
 }
 #line 92
-# 59 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 59 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline  /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__cc_t /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__int2CC(uint16_t x)
 #line 59
 {
 #line 59
-  union /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4____nesc_unnamed4386 {
+  union /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4____nesc_unnamed4391 {
 #line 59
     uint16_t f;
 #line 59
@@ -21796,7 +23045,7 @@ static inline void /*Msp430TimerC.Msp430TimerB1*/Msp430TimerCapComP__4__Event__f
     }
 }
 
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 inline static error_t /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__fired__postTask(void ){
 #line 67
   enum __nesc_unnamed4242 __nesc_result;
@@ -21811,21 +23060,21 @@ inline static error_t /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__fired__p
 #line 67
 }
 #line 67
-# 81 "../../tos/lib/timer/AlarmToTimerC.nc"
+# 81 "../../../tos/lib/timer/AlarmToTimerC.nc"
 static inline void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__fired(void )
 {
 #line 82
   /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__fired__postTask();
 }
 
-# 78 "../../tos/lib/timer/Alarm.nc"
+# 78 "../../../tos/lib/timer/Alarm.nc"
 inline static void /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Alarm__fired(void ){
 #line 78
   /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC__0__Alarm__fired();
 #line 78
 }
 #line 78
-# 162 "../../tos/lib/timer/TransformAlarmC.nc"
+# 162 "../../../tos/lib/timer/TransformAlarmC.nc"
 static inline void /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__AlarmFrom__fired(void )
 {
   /* atomic removed: atomic calls only */
@@ -21841,28 +23090,28 @@ static inline void /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1_
   }
 }
 
-# 78 "../../tos/lib/timer/Alarm.nc"
+# 78 "../../../tos/lib/timer/Alarm.nc"
 inline static void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Alarm__fired(void ){
 #line 78
   /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__AlarmFrom__fired();
 #line 78
 }
 #line 78
-# 70 "../../tos/chips/msp430/timer/Msp430AlarmC.nc"
+# 70 "../../../tos/chips/msp430/timer/Msp430AlarmC.nc"
 static inline void /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430Compare__fired(void )
 {
   /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430TimerControl__disableEvents();
   /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Alarm__fired();
 }
 
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 inline static void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Compare__fired(void ){
 #line 46
   /*HilTimerMilliC.AlarmMilli32C.AlarmFrom.Msp430Alarm*/Msp430AlarmC__1__Msp430Compare__fired();
 #line 46
 }
 #line 46
-# 136 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 136 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline uint16_t /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Capture__getEvent(void )
 #line 136
 {
@@ -21875,19 +23124,19 @@ static inline void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Capture_
 {
 }
 
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 inline static void /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Capture__captured(uint16_t time){
 #line 92
   /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__Capture__default__captured(time);
 #line 92
 }
 #line 92
-# 59 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 59 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline  /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__cc_t /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5__int2CC(uint16_t x)
 #line 59
 {
 #line 59
-  union /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5____nesc_unnamed4387 {
+  union /*Msp430TimerC.Msp430TimerB2*/Msp430TimerCapComP__5____nesc_unnamed4392 {
 #line 59
     uint16_t f;
 #line 59
@@ -21926,14 +23175,14 @@ static inline void /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__Compare_
 {
 }
 
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 inline static void /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__Compare__fired(void ){
 #line 46
   /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__Compare__default__fired();
 #line 46
 }
 #line 46
-# 136 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 136 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline uint16_t /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__Capture__getEvent(void )
 #line 136
 {
@@ -21946,19 +23195,19 @@ static inline void /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__Capture_
 {
 }
 
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 inline static void /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__Capture__captured(uint16_t time){
 #line 92
   /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__Capture__default__captured(time);
 #line 92
 }
 #line 92
-# 59 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 59 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline  /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__cc_t /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6__int2CC(uint16_t x)
 #line 59
 {
 #line 59
-  union /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6____nesc_unnamed4388 {
+  union /*Msp430TimerC.Msp430TimerB3*/Msp430TimerCapComP__6____nesc_unnamed4393 {
 #line 59
     uint16_t f;
 #line 59
@@ -21997,14 +23246,14 @@ static inline void /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__Compare_
 {
 }
 
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 inline static void /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__Compare__fired(void ){
 #line 46
   /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__Compare__default__fired();
 #line 46
 }
 #line 46
-# 136 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 136 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline uint16_t /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__Capture__getEvent(void )
 #line 136
 {
@@ -22017,19 +23266,19 @@ static inline void /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__Capture_
 {
 }
 
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 inline static void /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__Capture__captured(uint16_t time){
 #line 92
   /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__Capture__default__captured(time);
 #line 92
 }
 #line 92
-# 59 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 59 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline  /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__cc_t /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7__int2CC(uint16_t x)
 #line 59
 {
 #line 59
-  union /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7____nesc_unnamed4389 {
+  union /*Msp430TimerC.Msp430TimerB4*/Msp430TimerCapComP__7____nesc_unnamed4394 {
 #line 59
     uint16_t f;
 #line 59
@@ -22068,14 +23317,14 @@ static inline void /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__Compare_
 {
 }
 
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 inline static void /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__Compare__fired(void ){
 #line 46
   /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__Compare__default__fired();
 #line 46
 }
 #line 46
-# 136 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 136 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline uint16_t /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__Capture__getEvent(void )
 #line 136
 {
@@ -22088,19 +23337,19 @@ static inline void /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__Capture_
 {
 }
 
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 inline static void /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__Capture__captured(uint16_t time){
 #line 92
   /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__Capture__default__captured(time);
 #line 92
 }
 #line 92
-# 59 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 59 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline  /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__cc_t /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8__int2CC(uint16_t x)
 #line 59
 {
 #line 59
-  union /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8____nesc_unnamed4390 {
+  union /*Msp430TimerC.Msp430TimerB5*/Msp430TimerCapComP__8____nesc_unnamed4395 {
 #line 59
     uint16_t f;
 #line 59
@@ -22139,14 +23388,14 @@ static inline void /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__Compare_
 {
 }
 
-# 46 "../../tos/chips/msp430/timer/Msp430Compare.nc"
+# 46 "../../../tos/chips/msp430/timer/Msp430Compare.nc"
 inline static void /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__Compare__fired(void ){
 #line 46
   /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__Compare__default__fired();
 #line 46
 }
 #line 46
-# 136 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 136 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline uint16_t /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__Capture__getEvent(void )
 #line 136
 {
@@ -22159,19 +23408,19 @@ static inline void /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__Capture_
 {
 }
 
-# 92 "../../tos/chips/msp430/timer/Msp430Capture.nc"
+# 92 "../../../tos/chips/msp430/timer/Msp430Capture.nc"
 inline static void /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__Capture__captured(uint16_t time){
 #line 92
   /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__Capture__default__captured(time);
 #line 92
 }
 #line 92
-# 59 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 59 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static inline  /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__cc_t /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__int2CC(uint16_t x)
 #line 59
 {
 #line 59
-  union /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9____nesc_unnamed4391 {
+  union /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9____nesc_unnamed4396 {
 #line 59
     uint16_t f;
 #line 59
@@ -22204,7 +23453,7 @@ static inline void /*Msp430TimerC.Msp430TimerB6*/Msp430TimerCapComP__9__Event__f
     }
 }
 
-# 157 "../../tos/chips/msp430/timer/Msp430TimerP.nc"
+# 157 "../../../tos/chips/msp430/timer/Msp430TimerP.nc"
 static inline void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__VectorTimerX1__fired(void )
 #line 157
 {
@@ -22214,14 +23463,14 @@ static inline void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__VectorTimerX1__
   /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Event__fired(n >> 1);
 }
 
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
 inline static void Msp430TimerCommonP__VectorTimerB1__fired(void ){
 #line 39
   /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__VectorTimerX1__fired();
 #line 39
 }
 #line 39
-# 212 "../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
+# 212 "../../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
 static inline void CC2420ReceiveP__InterruptFIFOP__fired(void )
 #line 212
 {
@@ -22239,14 +23488,14 @@ static inline void CC2420ReceiveP__InterruptFIFOP__fired(void )
     }
 }
 
-# 68 "../../tos/interfaces/GpioInterrupt.nc"
+# 68 "../../../tos/interfaces/GpioInterrupt.nc"
 inline static void /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__Interrupt__fired(void ){
 #line 68
   CC2420ReceiveP__InterruptFIFOP__fired();
 #line 68
 }
 #line 68
-# 93 "../../tos/chips/msp430/x1x2/pins/Msp430InterruptC.nc"
+# 93 "../../../tos/chips/msp430/x1x2/pins/Msp430InterruptC.nc"
 static inline void /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__HplInterrupt__fired(void )
 #line 93
 {
@@ -22258,14 +23507,14 @@ static inline void /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__
   /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__Interrupt__fired();
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void HplMsp430InterruptP__Port10__fired(void ){
 #line 85
   /*HplCC2420InterruptsC.InterruptFIFOPC*/Msp430InterruptC__1__HplInterrupt__fired();
 #line 85
 }
 #line 85
-# 134 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 134 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port11__clear(void )
 #line 134
 {
@@ -22279,14 +23528,14 @@ static inline void HplMsp430InterruptP__Port11__default__fired(void )
 {
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void HplMsp430InterruptP__Port11__fired(void ){
 #line 85
   HplMsp430InterruptP__Port11__default__fired();
 #line 85
 }
 #line 85
-# 135 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 135 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port12__clear(void )
 #line 135
 {
@@ -22300,14 +23549,14 @@ static inline void HplMsp430InterruptP__Port12__default__fired(void )
 {
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void HplMsp430InterruptP__Port12__fired(void ){
 #line 85
   HplMsp430InterruptP__Port12__default__fired();
 #line 85
 }
 #line 85
-# 136 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 136 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port13__clear(void )
 #line 136
 {
@@ -22321,14 +23570,14 @@ static inline void HplMsp430InterruptP__Port13__default__fired(void )
 {
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void HplMsp430InterruptP__Port13__fired(void ){
 #line 85
   HplMsp430InterruptP__Port13__default__fired();
 #line 85
 }
 #line 85
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 inline static error_t CC2420CsmaP__startDone_task__postTask(void ){
 #line 67
   enum __nesc_unnamed4242 __nesc_result;
@@ -22343,21 +23592,21 @@ inline static error_t CC2420CsmaP__startDone_task__postTask(void ){
 #line 67
 }
 #line 67
-# 218 "../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
+# 218 "../../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
 static inline void CC2420CsmaP__CC2420Power__startOscillatorDone(void )
 #line 218
 {
   CC2420CsmaP__startDone_task__postTask();
 }
 
-# 76 "../../tos/chips/cc2420/interfaces/CC2420Power.nc"
+# 76 "../../../tos/chips/cc2420/interfaces/CC2420Power.nc"
 inline static void CC2420ControlP__CC2420Power__startOscillatorDone(void ){
 #line 76
   CC2420CsmaP__CC2420Power__startOscillatorDone();
 #line 76
 }
 #line 76
-# 61 "../../tos/interfaces/GpioInterrupt.nc"
+# 61 "../../../tos/interfaces/GpioInterrupt.nc"
 inline static error_t CC2420ControlP__InterruptCCA__disable(void ){
 #line 61
   enum __nesc_unnamed4242 __nesc_result;
@@ -22372,7 +23621,7 @@ inline static error_t CC2420ControlP__InterruptCCA__disable(void ){
 #line 61
 }
 #line 61
-# 441 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
+# 441 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
 static inline void CC2420ControlP__InterruptCCA__fired(void )
 #line 441
 {
@@ -22385,14 +23634,14 @@ static inline void CC2420ControlP__InterruptCCA__fired(void )
   CC2420ControlP__CC2420Power__startOscillatorDone();
 }
 
-# 68 "../../tos/interfaces/GpioInterrupt.nc"
+# 68 "../../../tos/interfaces/GpioInterrupt.nc"
 inline static void /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__Interrupt__fired(void ){
 #line 68
   CC2420ControlP__InterruptCCA__fired();
 #line 68
 }
 #line 68
-# 93 "../../tos/chips/msp430/x1x2/pins/Msp430InterruptC.nc"
+# 93 "../../../tos/chips/msp430/x1x2/pins/Msp430InterruptC.nc"
 static inline void /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__HplInterrupt__fired(void )
 #line 93
 {
@@ -22404,14 +23653,14 @@ static inline void /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__Hp
   /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__Interrupt__fired();
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void HplMsp430InterruptP__Port14__fired(void ){
 #line 85
   /*HplCC2420InterruptsC.InterruptCCAC*/Msp430InterruptC__0__HplInterrupt__fired();
 #line 85
 }
 #line 85
-# 138 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 138 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port15__clear(void )
 #line 138
 {
@@ -22425,14 +23674,14 @@ static inline void HplMsp430InterruptP__Port15__default__fired(void )
 {
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void HplMsp430InterruptP__Port15__fired(void ){
 #line 85
   HplMsp430InterruptP__Port15__default__fired();
 #line 85
 }
 #line 85
-# 139 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 139 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port16__clear(void )
 #line 139
 {
@@ -22446,14 +23695,14 @@ static inline void HplMsp430InterruptP__Port16__default__fired(void )
 {
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void HplMsp430InterruptP__Port16__fired(void ){
 #line 85
   HplMsp430InterruptP__Port16__default__fired();
 #line 85
 }
 #line 85
-# 140 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 140 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port17__clear(void )
 #line 140
 {
@@ -22467,14 +23716,14 @@ static inline void HplMsp430InterruptP__Port17__default__fired(void )
 {
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void HplMsp430InterruptP__Port17__fired(void ){
 #line 85
   HplMsp430InterruptP__Port17__default__fired();
 #line 85
 }
 #line 85
-# 267 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 267 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port20__clear(void )
 #line 267
 {
@@ -22488,14 +23737,14 @@ static inline void HplMsp430InterruptP__Port20__default__fired(void )
 {
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void HplMsp430InterruptP__Port20__fired(void ){
 #line 85
   HplMsp430InterruptP__Port20__default__fired();
 #line 85
 }
 #line 85
-# 268 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 268 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port21__clear(void )
 #line 268
 {
@@ -22509,14 +23758,14 @@ static inline void HplMsp430InterruptP__Port21__default__fired(void )
 {
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void HplMsp430InterruptP__Port21__fired(void ){
 #line 85
   HplMsp430InterruptP__Port21__default__fired();
 #line 85
 }
 #line 85
-# 269 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 269 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port22__clear(void )
 #line 269
 {
@@ -22530,14 +23779,14 @@ static inline void HplMsp430InterruptP__Port22__default__fired(void )
 {
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void HplMsp430InterruptP__Port22__fired(void ){
 #line 85
   HplMsp430InterruptP__Port22__default__fired();
 #line 85
 }
 #line 85
-# 270 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 270 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port23__clear(void )
 #line 270
 {
@@ -22551,14 +23800,14 @@ static inline void HplMsp430InterruptP__Port23__default__fired(void )
 {
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void HplMsp430InterruptP__Port23__fired(void ){
 #line 85
   HplMsp430InterruptP__Port23__default__fired();
 #line 85
 }
 #line 85
-# 271 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 271 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port24__clear(void )
 #line 271
 {
@@ -22572,14 +23821,14 @@ static inline void HplMsp430InterruptP__Port24__default__fired(void )
 {
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void HplMsp430InterruptP__Port24__fired(void ){
 #line 85
   HplMsp430InterruptP__Port24__default__fired();
 #line 85
 }
 #line 85
-# 272 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 272 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port25__clear(void )
 #line 272
 {
@@ -22593,14 +23842,14 @@ static inline void HplMsp430InterruptP__Port25__default__fired(void )
 {
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void HplMsp430InterruptP__Port25__fired(void ){
 #line 85
   HplMsp430InterruptP__Port25__default__fired();
 #line 85
 }
 #line 85
-# 273 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 273 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port26__clear(void )
 #line 273
 {
@@ -22614,14 +23863,14 @@ static inline void HplMsp430InterruptP__Port26__default__fired(void )
 {
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void HplMsp430InterruptP__Port26__fired(void ){
 #line 85
   HplMsp430InterruptP__Port26__default__fired();
 #line 85
 }
 #line 85
-# 274 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 274 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 static inline void HplMsp430InterruptP__Port27__clear(void )
 #line 274
 {
@@ -22635,21 +23884,21 @@ static inline void HplMsp430InterruptP__Port27__default__fired(void )
 {
 }
 
-# 85 "../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
+# 85 "../../../tos/chips/msp430/pins/HplMsp430Interrupt.nc"
 inline static void HplMsp430InterruptP__Port27__fired(void ){
 #line 85
   HplMsp430InterruptP__Port27__default__fired();
 #line 85
 }
 #line 85
-# 331 "../../tos/system/ArbiterP.nc"
+# 331 "../../../tos/system/ArbiterP.nc"
 static inline uint8_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ArbiterInfo__userId(void )
 #line 331
 {
   return /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__resId;
 }
 
-# 98 "../../tos/interfaces/ArbiterInfo.nc"
+# 98 "../../../tos/interfaces/ArbiterInfo.nc"
 inline static uint8_t /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__ArbiterInfo__userId(void ){
 #line 98
   unsigned char __nesc_result;
@@ -22664,21 +23913,21 @@ inline static uint8_t /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Ar
 #line 98
 }
 #line 98
-# 332 "../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
+# 332 "../../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
 static inline void HplMsp430Usart0P__Usart__disableRxIntr(void )
 #line 332
 {
   HplMsp430Usart0P__IE1 &= ~0x40;
 }
 
-# 177 "../../tos/chips/msp430/usart/HplMsp430Usart.nc"
+# 177 "../../../tos/chips/msp430/usart/HplMsp430Usart.nc"
 inline static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__Usart__disableRxIntr(void ){
 #line 177
   HplMsp430Usart0P__Usart__disableRxIntr();
 #line 177
 }
 #line 177
-# 231 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+# 231 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
 static inline void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartInterrupts__rxDone(uint8_t data)
 #line 231
 {
@@ -22697,16 +23946,16 @@ static inline void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartInterrupts_
     }
 }
 
-# 65 "../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
+# 65 "../../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
 static inline void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Interrupts__default__rxDone(uint8_t id, uint8_t data)
 #line 65
 {
 }
 
-# 54 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
-inline static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Interrupts__rxDone(uint8_t arg_0x7f540d476600, uint8_t data){
+# 54 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+inline static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Interrupts__rxDone(uint8_t arg_0x7f49d705e600, uint8_t data){
 #line 54
-  switch (arg_0x7f540d476600) {
+  switch (arg_0x7f49d705e600) {
 #line 54
     case /*CC2420SpiWireC.HplCC2420SpiC.SpiC.UsartC*/Msp430Usart0C__0__CLIENT_ID:
 #line 54
@@ -22716,7 +23965,7 @@ inline static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Inter
 #line 54
     default:
 #line 54
-      /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Interrupts__default__rxDone(arg_0x7f540d476600, data);
+      /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Interrupts__default__rxDone(arg_0x7f49d705e600, data);
 #line 54
       break;
 #line 54
@@ -22724,7 +23973,7 @@ inline static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Inter
 #line 54
 }
 #line 54
-# 90 "../../tos/interfaces/ArbiterInfo.nc"
+# 90 "../../../tos/interfaces/ArbiterInfo.nc"
 inline static bool /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__ArbiterInfo__inUse(void ){
 #line 90
   unsigned char __nesc_result;
@@ -22739,7 +23988,7 @@ inline static bool /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Arbit
 #line 90
 }
 #line 90
-# 54 "../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
+# 54 "../../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
 static inline void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__RawInterrupts__rxDone(uint8_t data)
 #line 54
 {
@@ -22748,21 +23997,21 @@ static inline void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__RawIn
     }
 }
 
-# 54 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+# 54 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 inline static void HplMsp430Usart0P__Interrupts__rxDone(uint8_t data){
 #line 54
   /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__RawInterrupts__rxDone(data);
 #line 54
 }
 #line 54
-# 378 "../../tos/system/ArbiterP.nc"
+# 378 "../../../tos/system/ArbiterP.nc"
 static inline bool /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwnerInfo__default__inUse(void )
 #line 378
 {
   return FALSE;
 }
 
-# 9 "../../tos/interfaces/ResourceDefaultOwnerInfo.nc"
+# 9 "../../../tos/interfaces/ResourceDefaultOwnerInfo.nc"
 inline static bool /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwnerInfo__inUse(void ){
 #line 9
   unsigned char __nesc_result;
@@ -22777,7 +24026,7 @@ inline static bool /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceD
 #line 9
 }
 #line 9
-# 64 "../../tos/chips/msp430/usart/HplMsp430I2C0P.nc"
+# 64 "../../../tos/chips/msp430/usart/HplMsp430I2C0P.nc"
 static inline bool HplMsp430I2C0P__HplI2C__isI2C(void )
 #line 64
 {
@@ -22793,7 +24042,7 @@ static inline bool HplMsp430I2C0P__HplI2C__isI2C(void )
   }
 }
 
-# 6 "../../tos/chips/msp430/usart/HplMsp430I2C.nc"
+# 6 "../../../tos/chips/msp430/usart/HplMsp430I2C.nc"
 inline static bool HplMsp430Usart0P__HplI2C__isI2C(void ){
 #line 6
   unsigned char __nesc_result;
@@ -22808,20 +24057,20 @@ inline static bool HplMsp430Usart0P__HplI2C__isI2C(void ){
 #line 6
 }
 #line 6
-# 66 "../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
+# 66 "../../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
 static inline void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__I2CInterrupts__default__fired(uint8_t id)
 #line 66
 {
 }
 
-# 39 "../../tos/chips/msp430/usart/HplMsp430I2CInterrupts.nc"
-inline static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__I2CInterrupts__fired(uint8_t arg_0x7f540d4754e0){
+# 39 "../../../tos/chips/msp430/usart/HplMsp430I2CInterrupts.nc"
+inline static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__I2CInterrupts__fired(uint8_t arg_0x7f49d705d4e0){
 #line 39
-    /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__I2CInterrupts__default__fired(arg_0x7f540d4754e0);
+    /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__I2CInterrupts__default__fired(arg_0x7f49d705d4e0);
 #line 39
 }
 #line 39
-# 59 "../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
+# 59 "../../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
 static inline void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__RawI2CInterrupts__fired(void )
 #line 59
 {
@@ -22830,29 +24079,29 @@ static inline void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__RawI2
     }
 }
 
-# 39 "../../tos/chips/msp430/usart/HplMsp430I2CInterrupts.nc"
+# 39 "../../../tos/chips/msp430/usart/HplMsp430I2CInterrupts.nc"
 inline static void HplMsp430Usart0P__I2CInterrupts__fired(void ){
 #line 39
   /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__RawI2CInterrupts__fired();
 #line 39
 }
 #line 39
-# 249 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+# 249 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
 static inline void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__UsartInterrupts__txDone(void )
 #line 249
 {
 }
 
-# 64 "../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
+# 64 "../../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
 static inline void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Interrupts__default__txDone(uint8_t id)
 #line 64
 {
 }
 
-# 49 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
-inline static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Interrupts__txDone(uint8_t arg_0x7f540d476600){
+# 49 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+inline static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Interrupts__txDone(uint8_t arg_0x7f49d705e600){
 #line 49
-  switch (arg_0x7f540d476600) {
+  switch (arg_0x7f49d705e600) {
 #line 49
     case /*CC2420SpiWireC.HplCC2420SpiC.SpiC.UsartC*/Msp430Usart0C__0__CLIENT_ID:
 #line 49
@@ -22862,7 +24111,7 @@ inline static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Inter
 #line 49
     default:
 #line 49
-      /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Interrupts__default__txDone(arg_0x7f540d476600);
+      /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Interrupts__default__txDone(arg_0x7f49d705e600);
 #line 49
       break;
 #line 49
@@ -22870,7 +24119,7 @@ inline static void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__Inter
 #line 49
 }
 #line 49
-# 49 "../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
+# 49 "../../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
 static inline void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__RawInterrupts__txDone(void )
 #line 49
 {
@@ -22879,21 +24128,21 @@ static inline void /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__RawIn
     }
 }
 
-# 49 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+# 49 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 inline static void HplMsp430Usart0P__Interrupts__txDone(void ){
 #line 49
   /*Msp430UsartShare0P.UsartShareP*/Msp430UsartShareP__0__RawInterrupts__txDone();
 #line 49
 }
 #line 49
-# 331 "../../tos/system/ArbiterP.nc"
+# 331 "../../../tos/system/ArbiterP.nc"
 static inline uint8_t /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ArbiterInfo__userId(void )
 #line 331
 {
   return /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__resId;
 }
 
-# 98 "../../tos/interfaces/ArbiterInfo.nc"
+# 98 "../../../tos/interfaces/ArbiterInfo.nc"
 inline static uint8_t /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__ArbiterInfo__userId(void ){
 #line 98
   unsigned char __nesc_result;
@@ -22908,35 +24157,35 @@ inline static uint8_t /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Ar
 #line 98
 }
 #line 98
-# 397 "../../tos/lib/serial/SerialP.nc"
+# 397 "../../../tos/lib/serial/SerialP.nc"
 static inline void SerialP__SerialFrameComm__dataReceived(uint8_t data)
 #line 397
 {
   SerialP__rx_state_machine(FALSE, data);
 }
 
-# 94 "../../tos/lib/serial/SerialFrameComm.nc"
+# 94 "../../../tos/lib/serial/SerialFrameComm.nc"
 inline static void HdlcTranslateC__SerialFrameComm__dataReceived(uint8_t data){
 #line 94
   SerialP__SerialFrameComm__dataReceived(data);
 #line 94
 }
 #line 94
-# 394 "../../tos/lib/serial/SerialP.nc"
+# 394 "../../../tos/lib/serial/SerialP.nc"
 static inline void SerialP__SerialFrameComm__delimiterReceived(void )
 #line 394
 {
   SerialP__rx_state_machine(TRUE, 0);
 }
 
-# 85 "../../tos/lib/serial/SerialFrameComm.nc"
+# 85 "../../../tos/lib/serial/SerialFrameComm.nc"
 inline static void HdlcTranslateC__SerialFrameComm__delimiterReceived(void ){
 #line 85
   SerialP__SerialFrameComm__delimiterReceived();
 #line 85
 }
 #line 85
-# 73 "../../tos/lib/serial/HdlcTranslateC.nc"
+# 73 "../../../tos/lib/serial/HdlcTranslateC.nc"
 static inline void HdlcTranslateC__UartStream__receivedByte(uint8_t data)
 #line 73
 {
@@ -22971,16 +24220,16 @@ static inline void HdlcTranslateC__UartStream__receivedByte(uint8_t data)
   HdlcTranslateC__SerialFrameComm__dataReceived(data);
 }
 
-# 243 "../../tos/chips/msp430/usart/Msp430UartP.nc"
+# 243 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
 static inline void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__receivedByte(uint8_t id, uint8_t byte)
 #line 243
 {
 }
 
-# 79 "../../tos/interfaces/UartStream.nc"
-inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__receivedByte(uint8_t arg_0x7f540caae920, uint8_t byte){
+# 79 "../../../tos/interfaces/UartStream.nc"
+inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__receivedByte(uint8_t arg_0x7f49d669f920, uint8_t byte){
 #line 79
-  switch (arg_0x7f540caae920) {
+  switch (arg_0x7f49d669f920) {
 #line 79
     case /*PlatformSerialC.UartC*/Msp430Uart1C__0__CLIENT_ID:
 #line 79
@@ -22990,7 +24239,7 @@ inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__receivedByt
 #line 79
     default:
 #line 79
-      /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__receivedByte(arg_0x7f540caae920, byte);
+      /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__receivedByte(arg_0x7f49d669f920, byte);
 #line 79
       break;
 #line 79
@@ -22998,22 +24247,22 @@ inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__receivedByt
 #line 79
 }
 #line 79
-# 132 "../../tos/lib/serial/HdlcTranslateC.nc"
+# 132 "../../../tos/lib/serial/HdlcTranslateC.nc"
 static inline void HdlcTranslateC__UartStream__receiveDone(uint8_t *buf, uint16_t len, error_t error)
 #line 132
 {
 }
 
-# 244 "../../tos/chips/msp430/usart/Msp430UartP.nc"
+# 244 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
 static inline void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__receiveDone(uint8_t id, uint8_t *buf, uint16_t len, error_t error)
 #line 244
 {
 }
 
-# 99 "../../tos/interfaces/UartStream.nc"
-inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__receiveDone(uint8_t arg_0x7f540caae920, uint8_t * buf, uint16_t len, error_t error){
+# 99 "../../../tos/interfaces/UartStream.nc"
+inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__receiveDone(uint8_t arg_0x7f49d669f920, uint8_t * buf, uint16_t len, error_t error){
 #line 99
-  switch (arg_0x7f540caae920) {
+  switch (arg_0x7f49d669f920) {
 #line 99
     case /*PlatformSerialC.UartC*/Msp430Uart1C__0__CLIENT_ID:
 #line 99
@@ -23023,7 +24272,7 @@ inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__receiveDone
 #line 99
     default:
 #line 99
-      /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__receiveDone(arg_0x7f540caae920, buf, len, error);
+      /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__receiveDone(arg_0x7f49d669f920, buf, len, error);
 #line 99
       break;
 #line 99
@@ -23031,7 +24280,7 @@ inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__receiveDone
 #line 99
 }
 #line 99
-# 136 "../../tos/chips/msp430/usart/Msp430UartP.nc"
+# 136 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
 static inline void /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartInterrupts__rxDone(uint8_t id, uint8_t data)
 #line 136
 {
@@ -23052,16 +24301,16 @@ static inline void /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartInterrupts__rxDone
     }
 }
 
-# 65 "../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
+# 65 "../../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
 static inline void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Interrupts__default__rxDone(uint8_t id, uint8_t data)
 #line 65
 {
 }
 
-# 54 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
-inline static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Interrupts__rxDone(uint8_t arg_0x7f540d476600, uint8_t data){
+# 54 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+inline static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Interrupts__rxDone(uint8_t arg_0x7f49d705e600, uint8_t data){
 #line 54
-  switch (arg_0x7f540d476600) {
+  switch (arg_0x7f49d705e600) {
 #line 54
     case /*PlatformSerialC.UartC.UsartC*/Msp430Usart1C__0__CLIENT_ID:
 #line 54
@@ -23071,7 +24320,7 @@ inline static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Inter
 #line 54
     default:
 #line 54
-      /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Interrupts__default__rxDone(arg_0x7f540d476600, data);
+      /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Interrupts__default__rxDone(arg_0x7f49d705e600, data);
 #line 54
       break;
 #line 54
@@ -23079,7 +24328,7 @@ inline static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Inter
 #line 54
 }
 #line 54
-# 90 "../../tos/interfaces/ArbiterInfo.nc"
+# 90 "../../../tos/interfaces/ArbiterInfo.nc"
 inline static bool /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__ArbiterInfo__inUse(void ){
 #line 90
   unsigned char __nesc_result;
@@ -23094,7 +24343,7 @@ inline static bool /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Arbit
 #line 90
 }
 #line 90
-# 54 "../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
+# 54 "../../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
 static inline void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__RawInterrupts__rxDone(uint8_t data)
 #line 54
 {
@@ -23103,21 +24352,21 @@ static inline void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__RawIn
     }
 }
 
-# 54 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+# 54 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 inline static void HplMsp430Usart1P__Interrupts__rxDone(uint8_t data){
 #line 54
   /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__RawInterrupts__rxDone(data);
 #line 54
 }
 #line 54
-# 378 "../../tos/system/ArbiterP.nc"
+# 378 "../../../tos/system/ArbiterP.nc"
 static inline bool /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceDefaultOwnerInfo__default__inUse(void )
 #line 378
 {
   return FALSE;
 }
 
-# 9 "../../tos/interfaces/ResourceDefaultOwnerInfo.nc"
+# 9 "../../../tos/interfaces/ResourceDefaultOwnerInfo.nc"
 inline static bool /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceDefaultOwnerInfo__inUse(void ){
 #line 9
   unsigned char __nesc_result;
@@ -23132,7 +24381,7 @@ inline static bool /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ResourceD
 #line 9
 }
 #line 9
-# 401 "../../tos/lib/serial/SerialP.nc"
+# 401 "../../../tos/lib/serial/SerialP.nc"
 static inline bool SerialP__valid_rx_proto(uint8_t proto)
 #line 401
 {
@@ -23146,7 +24395,7 @@ static inline bool SerialP__valid_rx_proto(uint8_t proto)
     }
 }
 
-# 203 "../../tos/lib/serial/SerialDispatcherP.nc"
+# 203 "../../../tos/lib/serial/SerialDispatcherP.nc"
 static inline void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__lockCurrentBuffer(void )
 #line 203
 {
@@ -23189,7 +24438,7 @@ static inline error_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__
   return result;
 }
 
-# 62 "../../tos/lib/serial/ReceiveBytePacket.nc"
+# 62 "../../../tos/lib/serial/ReceiveBytePacket.nc"
 inline static error_t SerialP__ReceiveBytePacket__startPacket(void ){
 #line 62
   enum __nesc_unnamed4242 __nesc_result;
@@ -23204,7 +24453,7 @@ inline static error_t SerialP__ReceiveBytePacket__startPacket(void ){
 #line 62
 }
 #line 62
-# 311 "../../tos/lib/serial/SerialP.nc"
+# 311 "../../../tos/lib/serial/SerialP.nc"
 static __inline uint16_t SerialP__rx_current_crc(void )
 #line 311
 {
@@ -23220,14 +24469,14 @@ static __inline uint16_t SerialP__rx_current_crc(void )
   return crc;
 }
 
-# 80 "../../tos/lib/serial/ReceiveBytePacket.nc"
+# 80 "../../../tos/lib/serial/ReceiveBytePacket.nc"
 inline static void SerialP__ReceiveBytePacket__endPacket(error_t result){
 #line 80
   /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__ReceiveBytePacket__endPacket(result);
 #line 80
 }
 #line 80
-# 221 "../../tos/lib/serial/SerialDispatcherP.nc"
+# 221 "../../../tos/lib/serial/SerialDispatcherP.nc"
 static inline void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__receiveBufferSwap(void )
 #line 221
 {
@@ -23235,7 +24484,7 @@ static inline void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__
   /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__receiveBuffer = (uint8_t *)/*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__messagePtrs[/*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__receiveState.which];
 }
 
-# 67 "../../tos/interfaces/TaskBasic.nc"
+# 67 "../../../tos/interfaces/TaskBasic.nc"
 inline static error_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__receiveTask__postTask(void ){
 #line 67
   enum __nesc_unnamed4242 __nesc_result;
@@ -23250,7 +24499,7 @@ inline static error_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__
 #line 67
 }
 #line 67
-# 234 "../../tos/lib/serial/SerialP.nc"
+# 234 "../../../tos/lib/serial/SerialP.nc"
 static __inline bool SerialP__ack_queue_is_full(void )
 #line 234
 {
@@ -23296,21 +24545,21 @@ static __inline void SerialP__ack_queue_push(uint8_t token)
     }
 }
 
-# 67 "../../tos/lib/serial/HdlcTranslateC.nc"
+# 67 "../../../tos/lib/serial/HdlcTranslateC.nc"
 static inline void HdlcTranslateC__SerialFrameComm__resetReceive(void )
 #line 67
 {
   HdlcTranslateC__state.receiveEscape = 0;
 }
 
-# 79 "../../tos/lib/serial/SerialFrameComm.nc"
+# 79 "../../../tos/lib/serial/SerialFrameComm.nc"
 inline static void SerialP__SerialFrameComm__resetReceive(void ){
 #line 79
   HdlcTranslateC__SerialFrameComm__resetReceive();
 #line 79
 }
 #line 79
-# 244 "../../tos/lib/serial/SerialDispatcherP.nc"
+# 244 "../../../tos/lib/serial/SerialDispatcherP.nc"
 static inline void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__ReceiveBytePacket__byteReceived(uint8_t b)
 #line 244
 {
@@ -23345,14 +24594,14 @@ static inline void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__
   }
 }
 
-# 69 "../../tos/lib/serial/ReceiveBytePacket.nc"
+# 69 "../../../tos/lib/serial/ReceiveBytePacket.nc"
 inline static void SerialP__ReceiveBytePacket__byteReceived(uint8_t data){
 #line 69
   /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__ReceiveBytePacket__byteReceived(data);
 #line 69
 }
 #line 69
-# 301 "../../tos/lib/serial/SerialP.nc"
+# 301 "../../../tos/lib/serial/SerialP.nc"
 static __inline uint8_t SerialP__rx_buffer_top(void )
 #line 301
 {
@@ -23388,16 +24637,16 @@ static __inline void SerialP__rx_buffer_push(uint8_t data)
     }
 }
 
-# 242 "../../tos/chips/msp430/usart/Msp430UartP.nc"
+# 242 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
 static inline void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__sendDone(uint8_t id, uint8_t *buf, uint16_t len, error_t error)
 #line 242
 {
 }
 
-# 57 "../../tos/interfaces/UartStream.nc"
-inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__sendDone(uint8_t arg_0x7f540caae920, uint8_t * buf, uint16_t len, error_t error){
+# 57 "../../../tos/interfaces/UartStream.nc"
+inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__sendDone(uint8_t arg_0x7f49d669f920, uint8_t * buf, uint16_t len, error_t error){
 #line 57
-  switch (arg_0x7f540caae920) {
+  switch (arg_0x7f49d669f920) {
 #line 57
     case /*PlatformSerialC.UartC*/Msp430Uart1C__0__CLIENT_ID:
 #line 57
@@ -23407,7 +24656,7 @@ inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__sendDone(ui
 #line 57
     default:
 #line 57
-      /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__sendDone(arg_0x7f540caae920, buf, len, error);
+      /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__default__sendDone(arg_0x7f49d669f920, buf, len, error);
 #line 57
       break;
 #line 57
@@ -23415,21 +24664,21 @@ inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__sendDone(ui
 #line 57
 }
 #line 57
-# 368 "../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
+# 368 "../../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
 static inline void HplMsp430Usart1P__Usart__tx(uint8_t data)
 #line 368
 {
   HplMsp430Usart1P__U1TXBUF = data;
 }
 
-# 220 "../../tos/chips/msp430/usart/HplMsp430Usart.nc"
+# 220 "../../../tos/chips/msp430/usart/HplMsp430Usart.nc"
 inline static void /*Msp430Uart1P.UartP*/Msp430UartP__0__Usart__tx(uint8_t data){
 #line 220
   HplMsp430Usart1P__Usart__tx(data);
 #line 220
 }
 #line 220
-# 164 "../../tos/chips/msp430/usart/Msp430UartP.nc"
+# 164 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
 static inline void /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartInterrupts__txDone(uint8_t id)
 #line 164
 {
@@ -23455,16 +24704,16 @@ static inline void /*Msp430Uart1P.UartP*/Msp430UartP__0__UsartInterrupts__txDone
     }
 }
 
-# 64 "../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
+# 64 "../../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
 static inline void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Interrupts__default__txDone(uint8_t id)
 #line 64
 {
 }
 
-# 49 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
-inline static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Interrupts__txDone(uint8_t arg_0x7f540d476600){
+# 49 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+inline static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Interrupts__txDone(uint8_t arg_0x7f49d705e600){
 #line 49
-  switch (arg_0x7f540d476600) {
+  switch (arg_0x7f49d705e600) {
 #line 49
     case /*PlatformSerialC.UartC.UsartC*/Msp430Usart1C__0__CLIENT_ID:
 #line 49
@@ -23474,7 +24723,7 @@ inline static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Inter
 #line 49
     default:
 #line 49
-      /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Interrupts__default__txDone(arg_0x7f540d476600);
+      /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Interrupts__default__txDone(arg_0x7f49d705e600);
 #line 49
       break;
 #line 49
@@ -23482,7 +24731,7 @@ inline static void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__Inter
 #line 49
 }
 #line 49
-# 49 "../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
+# 49 "../../../tos/chips/msp430/usart/Msp430UsartShareP.nc"
 static inline void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__RawInterrupts__txDone(void )
 #line 49
 {
@@ -23491,14 +24740,14 @@ static inline void /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__RawIn
     }
 }
 
-# 49 "../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
+# 49 "../../../tos/chips/msp430/usart/HplMsp430UsartInterrupts.nc"
 inline static void HplMsp430Usart1P__Interrupts__txDone(void ){
 #line 49
   /*Msp430UsartShare1P.UsartShareP*/Msp430UsartShareP__1__RawInterrupts__txDone();
 #line 49
 }
 #line 49
-# 65 "../../tos/lib/serial/SerialFrameComm.nc"
+# 65 "../../../tos/lib/serial/SerialFrameComm.nc"
 inline static error_t SerialP__SerialFrameComm__putData(uint8_t data){
 #line 65
   enum __nesc_unnamed4242 __nesc_result;
@@ -23513,7 +24762,7 @@ inline static error_t SerialP__SerialFrameComm__putData(uint8_t data){
 #line 65
 }
 #line 65
-# 530 "../../tos/lib/serial/SerialP.nc"
+# 530 "../../../tos/lib/serial/SerialP.nc"
 static inline error_t SerialP__SendBytePacket__completeSend(void )
 #line 530
 {
@@ -23528,7 +24777,7 @@ static inline error_t SerialP__SendBytePacket__completeSend(void )
   return ret;
 }
 
-# 71 "../../tos/lib/serial/SendBytePacket.nc"
+# 71 "../../../tos/lib/serial/SendBytePacket.nc"
 inline static error_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__SendBytePacket__completeSend(void ){
 #line 71
   enum __nesc_unnamed4242 __nesc_result;
@@ -23543,7 +24792,7 @@ inline static error_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__
 #line 71
 }
 #line 71
-# 178 "../../tos/lib/serial/SerialDispatcherP.nc"
+# 178 "../../../tos/lib/serial/SerialDispatcherP.nc"
 static inline uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__SendBytePacket__nextByte(void )
 #line 178
 {
@@ -23566,7 +24815,7 @@ static inline uint8_t /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__
     }
 }
 
-# 81 "../../tos/lib/serial/SendBytePacket.nc"
+# 81 "../../../tos/lib/serial/SendBytePacket.nc"
 inline static uint8_t SerialP__SendBytePacket__nextByte(void ){
 #line 81
   unsigned char __nesc_result;
@@ -23581,7 +24830,7 @@ inline static uint8_t SerialP__SendBytePacket__nextByte(void ){
 #line 81
 }
 #line 81
-# 669 "../../tos/lib/serial/SerialP.nc"
+# 669 "../../../tos/lib/serial/SerialP.nc"
 static inline void SerialP__SerialFrameComm__putDone(void )
 #line 669
 {
@@ -23668,14 +24917,14 @@ static inline void SerialP__SerialFrameComm__putDone(void )
   }
 }
 
-# 100 "../../tos/lib/serial/SerialFrameComm.nc"
+# 100 "../../../tos/lib/serial/SerialFrameComm.nc"
 inline static void HdlcTranslateC__SerialFrameComm__putDone(void ){
 #line 100
   SerialP__SerialFrameComm__putDone();
 #line 100
 }
 #line 100
-# 72 "../../tos/system/RealMainP.nc"
+# 72 "../../../tos/system/RealMainP.nc"
   int main(void )
 #line 72
 {
@@ -23721,7 +24970,7 @@ inline static void HdlcTranslateC__SerialFrameComm__putDone(void ){
   return -1;
 }
 
-# 367 "../../tos/chips/msp430/clock_bcs/Msp430ClockP.nc"
+# 367 "../../../tos/chips/msp430/clock_bcs/Msp430ClockP.nc"
 static void Msp430ClockP__set_dco_calib(uint16_t calib)
 #line 367
 {
@@ -23729,7 +24978,7 @@ static void Msp430ClockP__set_dco_calib(uint16_t calib)
   DCOCTL = calib & 0xff;
 }
 
-# 16 "../../tos/platforms/telosb/MotePlatformC.nc"
+# 16 "../../../tos/platforms/telosb/MotePlatformC.nc"
 static void MotePlatformC__TOSH_FLASH_M25P_DP_bit(bool set)
 #line 16
 {
@@ -23745,7 +24994,43 @@ static void MotePlatformC__TOSH_FLASH_M25P_DP_bit(bool set)
   TOSH_CLR_UCLK0_PIN();
 }
 
-# 202 "../../tos/system/SchedulerBasicP.nc"
+# 95 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+static void /*HplMsp430GeneralIOC.P54*/HplMsp430GeneralIOP__36__IO__set(void )
+#line 95
+{
+#line 95
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 95
+    * (volatile uint8_t * )49U |= 0x01 << 4;
+#line 95
+    __nesc_atomic_end(__nesc_atomic); }
+}
+
+#line 95
+static void /*HplMsp430GeneralIOC.P55*/HplMsp430GeneralIOP__37__IO__set(void )
+#line 95
+{
+#line 95
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 95
+    * (volatile uint8_t * )49U |= 0x01 << 5;
+#line 95
+    __nesc_atomic_end(__nesc_atomic); }
+}
+
+#line 95
+static void /*HplMsp430GeneralIOC.P56*/HplMsp430GeneralIOP__38__IO__set(void )
+#line 95
+{
+#line 95
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 95
+    * (volatile uint8_t * )49U |= 0x01 << 6;
+#line 95
+    __nesc_atomic_end(__nesc_atomic); }
+}
+
+# 202 "../../../tos/system/SchedulerBasicP.nc"
 static bool SchedulerBasicP__Scheduler__runNextTask(void )
 #line 202
 {
@@ -23774,10 +25059,10 @@ static void SchedulerBasicP__TaskBasic__default__runTask(uint8_t id)
 {
 }
 
-# 75 "../../tos/interfaces/TaskBasic.nc"
-static void SchedulerBasicP__TaskBasic__runTask(uint8_t arg_0x7f540e1ace60){
+# 75 "../../../tos/interfaces/TaskBasic.nc"
+static void SchedulerBasicP__TaskBasic__runTask(uint8_t arg_0x7f49d7ddce60){
 #line 75
-  switch (arg_0x7f540e1ace60) {
+  switch (arg_0x7f49d7ddce60) {
 #line 75
     case BaseStationP__uartSendTask:
 #line 75
@@ -23785,9 +25070,9 @@ static void SchedulerBasicP__TaskBasic__runTask(uint8_t arg_0x7f540e1ace60){
 #line 75
       break;
 #line 75
-    case BaseStationP__radioSendTask:
+    case BaseStationP__RadioSendTask:
 #line 75
-      BaseStationP__radioSendTask__runTask();
+      BaseStationP__RadioSendTask__runTask();
 #line 75
       break;
 #line 75
@@ -23905,9 +25190,21 @@ static void SchedulerBasicP__TaskBasic__runTask(uint8_t arg_0x7f540e1ace60){
 #line 75
       break;
 #line 75
+    case /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__CancelTask:
+#line 75
+      /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__CancelTask__runTask();
+#line 75
+      break;
+#line 75
+    case /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__errorTask:
+#line 75
+      /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__errorTask__runTask();
+#line 75
+      break;
+#line 75
     default:
 #line 75
-      SchedulerBasicP__TaskBasic__default__runTask(arg_0x7f540e1ace60);
+      SchedulerBasicP__TaskBasic__default__runTask(arg_0x7f49d7ddce60);
 #line 75
       break;
 #line 75
@@ -23915,50 +25212,40 @@ static void SchedulerBasicP__TaskBasic__runTask(uint8_t arg_0x7f540e1ace60){
 #line 75
 }
 #line 75
-# 88 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-static void /*Msp430Uart1P.UartP*/Msp430UartP__0__ResourceConfigure__configure(uint8_t id)
-#line 88
+# 210 "BaseStationP.nc"
+static void BaseStationP__AMSend__sendDone(message_t *msg, error_t error)
+#line 210
 {
-  const msp430_uart_union_config_t *config = /*Msp430Uart1P.UartP*/Msp430UartP__0__Msp430UartConfigure__getConfig(id);
-
-#line 90
-  /*Msp430Uart1P.UartP*/Msp430UartP__0__m_byte_time = config->uartConfig.ubr / 2;
-  if (!/*Msp430Uart1P.UartP*/Msp430UartP__0__m_byte_time) {
-    /*Msp430Uart1P.UartP*/Msp430UartP__0__m_byte_time = 1;
+  if (error != SUCCESS) {
+    BaseStationP__failBlink();
     }
-#line 93
-  /*Msp430Uart1P.UartP*/Msp430UartP__0__Usart__setModeUart(config);
-  /*Msp430Uart1P.UartP*/Msp430UartP__0__Usart__enableIntr();
+  else {
+#line 214
+    { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+      if (msg == BaseStationP__radioQueue[BaseStationP__radioOut]) 
+        {
+          if (++BaseStationP__radioOut >= BaseStationP__RADIO_QUEUE_LEN) {
+            BaseStationP__radioOut = 0;
+            }
+#line 219
+          if (BaseStationP__radioFull) {
+            BaseStationP__radioFull = FALSE;
+            }
+        }
+#line 222
+      __nesc_atomic_end(__nesc_atomic); }
+    }
+#line 222
+  if (&BaseStationP__pkt == msg) {
+      BaseStationP__busy = FALSE;
+      BaseStationP__setLeds(7);
+      BaseStationP__TimerLeds__startOneShot(100);
+    }
+
+  BaseStationP__RadioSendTask__postTask();
 }
 
-# 237 "../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
-static void HplMsp430Usart1P__Usart__disableSpi(void )
-#line 237
-{
-  /* atomic removed: atomic calls only */
-#line 238
-  {
-    HplMsp430Usart1P__ME2 &= ~0x10;
-    HplMsp430Usart1P__SIMO__selectIOFunc();
-    HplMsp430Usart1P__SOMI__selectIOFunc();
-    HplMsp430Usart1P__UCLK__selectIOFunc();
-  }
-}
-
-#line 197
-static void HplMsp430Usart1P__Usart__disableUart(void )
-#line 197
-{
-  /* atomic removed: atomic calls only */
-#line 198
-  {
-    HplMsp430Usart1P__ME2 &= ~(0x20 | 0x10);
-    HplMsp430Usart1P__UTXD__selectIOFunc();
-    HplMsp430Usart1P__URXD__selectIOFunc();
-  }
-}
-
-# 97 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 97 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static void /*HplMsp430GeneralIOC.P56*/HplMsp430GeneralIOP__38__IO__toggle(void )
 #line 97
 {
@@ -23970,7 +25257,50 @@ static void /*HplMsp430GeneralIOC.P56*/HplMsp430GeneralIOP__38__IO__toggle(void 
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 236 "../../tos/system/SchedulerBasicP.nc"
+# 94 "BaseStationP.nc"
+static void BaseStationP__setLeds(uint16_t val)
+#line 94
+{
+  if (val & 0x01) {
+    BaseStationP__Leds__led0On();
+    }
+  else {
+#line 98
+    BaseStationP__Leds__led0Off();
+    }
+#line 99
+  if (val & 0x02) {
+    BaseStationP__Leds__led1On();
+    }
+  else {
+#line 102
+    BaseStationP__Leds__led1Off();
+    }
+#line 103
+  if (val & 0x04) {
+    BaseStationP__Leds__led2On();
+    }
+  else {
+#line 106
+    BaseStationP__Leds__led2Off();
+    }
+}
+
+# 231 "../../../tos/lib/timer/VirtualizeTimerImplP.nc"
+static void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__startTimer(uint8_t num, uint32_t t0, uint32_t dt, bool isoneshot)
+#line 231
+{
+  /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__Timer_t *timer = &/*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__m_timers[num];
+
+  timer->t0 = t0;
+  timer->dt = dt;
+  timer->isoneshot = isoneshot;
+  timer->isrunning = TRUE;
+  /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__trace_start_timer(num);
+  /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__updateFromTimer__postTask();
+}
+
+# 236 "../../../tos/system/SchedulerBasicP.nc"
 static error_t SchedulerBasicP__TaskBasic__postTask(uint8_t id)
 #line 236
 {
@@ -24011,114 +25341,170 @@ static error_t SchedulerBasicP__TaskBasic__postTask(uint8_t id)
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 338 "../../tos/system/ArbiterP.nc"
-static bool /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Resource__isOwner(uint8_t id)
-#line 338
+# 80 "../../../tos/lib/timer/TransformCounterC.nc"
+static /*CounterMilli32C.Transform*/TransformCounterC__1__to_size_type /*CounterMilli32C.Transform*/TransformCounterC__1__Counter__get(void )
 {
+  /*CounterMilli32C.Transform*/TransformCounterC__1__to_size_type rv = 0;
+
+#line 83
   { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
-#line 339
     {
-      unsigned char __nesc_temp = 
-#line 339
-      /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__resId == id && /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__state == /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__RES_BUSY;
+      /*CounterMilli32C.Transform*/TransformCounterC__1__upper_count_type high = /*CounterMilli32C.Transform*/TransformCounterC__1__m_upper;
+      /*CounterMilli32C.Transform*/TransformCounterC__1__from_size_type low = /*CounterMilli32C.Transform*/TransformCounterC__1__CounterFrom__get();
 
-      {
-#line 339
-        __nesc_atomic_end(__nesc_atomic); 
-#line 339
-        return __nesc_temp;
-      }
-    }
-#line 341
-    __nesc_atomic_end(__nesc_atomic); }
-}
+#line 87
+      if (/*CounterMilli32C.Transform*/TransformCounterC__1__CounterFrom__isOverflowPending()) 
+        {
 
-# 357 "../../tos/lib/serial/SerialP.nc"
-static void SerialP__testOff(void )
-#line 357
-{
-  bool turnOff = FALSE;
 
-  /* atomic removed: atomic calls only */
-#line 359
-  {
-    if (SerialP__txState == SerialP__TXSTATE_INACTIVE && 
-    SerialP__rxState == SerialP__RXSTATE_INACTIVE) {
-        turnOff = TRUE;
-      }
-  }
-  if (turnOff) {
-      SerialP__stopDoneTask__postTask();
-      /* atomic removed: atomic calls only */
-#line 367
-      SerialP__offPending = FALSE;
-    }
-  else {
-      /* atomic removed: atomic calls only */
-#line 370
-      SerialP__offPending = TRUE;
-    }
-}
 
-# 98 "../../tos/lib/serial/HdlcTranslateC.nc"
-static error_t HdlcTranslateC__SerialFrameComm__putDelimiter(void )
-#line 98
-{
-  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
-#line 99
-    {
-      HdlcTranslateC__state.sendEscape = 0;
-      HdlcTranslateC__m_data = HDLC_FLAG_BYTE;
-    }
-#line 102
-    __nesc_atomic_end(__nesc_atomic); }
-  return HdlcTranslateC__UartStream__send(&HdlcTranslateC__m_data, 1);
-}
 
-# 149 "../../tos/chips/msp430/usart/Msp430UartP.nc"
-static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__send(uint8_t id, uint8_t *buf, uint16_t len)
-#line 149
-{
-  if (/*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__isOwner(id) == FALSE) {
-    return FAIL;
-    }
-#line 152
-  if (len == 0) {
-    return FAIL;
-    }
-  else {
-#line 154
-    if (/*Msp430Uart1P.UartP*/Msp430UartP__0__m_tx_buf) {
-      return EBUSY;
-      }
-    }
-#line 156
-  /*Msp430Uart1P.UartP*/Msp430UartP__0__m_tx_buf = buf;
-  /*Msp430Uart1P.UartP*/Msp430UartP__0__m_tx_len = len;
-  /*Msp430Uart1P.UartP*/Msp430UartP__0__m_tx_pos = 0;
-  /*Msp430Uart1P.UartP*/Msp430UartP__0__current_owner = id;
-  /*Msp430Uart1P.UartP*/Msp430UartP__0__Usart__tx(buf[/*Msp430Uart1P.UartP*/Msp430UartP__0__m_tx_pos++]);
-  return SUCCESS;
-}
 
-# 519 "../../tos/lib/serial/SerialP.nc"
-static void SerialP__MaybeScheduleTx(void )
-#line 519
-{
-  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
-#line 520
-    {
-      if (SerialP__txPending == 0) {
-          if (SerialP__RunTx__postTask() == SUCCESS) {
-              SerialP__txPending = 1;
-            }
+
+          high++;
+          low = /*CounterMilli32C.Transform*/TransformCounterC__1__CounterFrom__get();
         }
+      {
+        /*CounterMilli32C.Transform*/TransformCounterC__1__to_size_type high_to = high;
+        /*CounterMilli32C.Transform*/TransformCounterC__1__to_size_type low_to = low >> /*CounterMilli32C.Transform*/TransformCounterC__1__LOW_SHIFT_RIGHT;
+
+#line 101
+        rv = (high_to << /*CounterMilli32C.Transform*/TransformCounterC__1__HIGH_SHIFT_LEFT) | low_to;
+      }
     }
-#line 526
+#line 103
     __nesc_atomic_end(__nesc_atomic); }
+  return rv;
 }
 
-# 60 "../../tos/system/FcfsResourceQueueC.nc"
+# 64 "../../../tos/chips/msp430/timer/Msp430TimerP.nc"
+static uint16_t /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Timer__get(void )
+{
+
+
+
+
+  if (1) {
+      /* atomic removed: atomic calls only */
+#line 71
+      {
+        uint16_t t0;
+        uint16_t t1 = * (volatile uint16_t * )400U;
+
+#line 74
+        do {
+#line 74
+            t0 = t1;
+#line 74
+            t1 = * (volatile uint16_t * )400U;
+          }
+        while (
+#line 74
+        t0 != t1);
+        {
+          unsigned int __nesc_temp = 
+#line 75
+          t1;
+
+#line 75
+          return __nesc_temp;
+        }
+      }
+    }
+  else 
+#line 78
+    {
+      return * (volatile uint16_t * )400U;
+    }
+}
+
+# 178 "../../../tos/system/AMQueueImplP.nc"
+static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__sendDone(uint8_t last, message_t * msg, error_t err)
+#line 178
+{
+  /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__queue[last].msg = (void *)0;
+  /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__tryToSend();
+  /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__sendDone(last, msg, err);
+}
+
+# 139 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+static am_addr_t CC2420ActiveMessageP__AMPacket__destination(message_t *amsg)
+#line 139
+{
+  cc2420_header_t *header = CC2420ActiveMessageP__CC2420PacketBody__getHeader(amsg);
+
+#line 141
+  return __nesc_ntoh_leuint16(header->dest.nxdata);
+}
+
+#line 194
+static uint8_t CC2420ActiveMessageP__Packet__payloadLength(message_t *msg)
+#line 194
+{
+  return __nesc_ntoh_leuint8(CC2420ActiveMessageP__CC2420PacketBody__getHeader(msg)->length.nxdata) - CC2420_SIZE;
+}
+
+#line 87
+static error_t CC2420ActiveMessageP__AMSend__send(am_id_t id, am_addr_t addr, 
+message_t *msg, 
+uint8_t len)
+#line 89
+{
+  unsigned char *__nesc_temp48;
+#line 90
+  cc2420_header_t *header = CC2420ActiveMessageP__CC2420PacketBody__getHeader(msg);
+
+  if (len > CC2420ActiveMessageP__Packet__maxPayloadLength()) {
+      return ESIZE;
+    }
+
+  __nesc_hton_leuint8(header->type.nxdata, id);
+  __nesc_hton_leuint16(header->dest.nxdata, addr);
+  __nesc_hton_leuint16(header->destpan.nxdata, CC2420ActiveMessageP__CC2420Config__getPanAddr());
+  __nesc_hton_leuint16(header->src.nxdata, CC2420ActiveMessageP__AMPacket__address());
+  (__nesc_temp48 = header->fcf.nxdata, __nesc_hton_leuint16(__nesc_temp48, __nesc_ntoh_leuint16(__nesc_temp48) | (((1 << IEEE154_FCF_INTRAPAN) | (
+  IEEE154_ADDR_SHORT << IEEE154_FCF_DEST_ADDR_MODE)) | (
+  IEEE154_ADDR_SHORT << IEEE154_FCF_SRC_ADDR_MODE))));
+  __nesc_hton_leuint8(header->length.nxdata, len + CC2420_SIZE);
+
+  if (CC2420ActiveMessageP__RadioResource__immediateRequest() == SUCCESS) {
+      error_t rc;
+
+#line 107
+      CC2420ActiveMessageP__SendNotifier__aboutToSend(id, addr, msg);
+
+      rc = CC2420ActiveMessageP__SubSend__send(msg, len);
+      if (rc != SUCCESS) {
+          CC2420ActiveMessageP__RadioResource__release();
+        }
+
+      return rc;
+    }
+  else 
+#line 115
+    {
+      CC2420ActiveMessageP__pending_length = len;
+      CC2420ActiveMessageP__pending_message = msg;
+      return CC2420ActiveMessageP__RadioResource__request();
+    }
+}
+
+# 120 "../../../tos/system/ActiveMessageAddressC.nc"
+static am_addr_t ActiveMessageAddressC__amAddress(void )
+#line 120
+{
+  am_addr_t myAddr;
+
+#line 122
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 122
+    myAddr = ActiveMessageAddressC__addr;
+#line 122
+    __nesc_atomic_end(__nesc_atomic); }
+  return myAddr;
+}
+
+# 60 "../../../tos/system/FcfsResourceQueueC.nc"
 static bool /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__FcfsQueue__isEmpty(void )
 #line 60
 {
@@ -24140,22 +25526,7 @@ static bool /*CC2420TinyosNetworkC.FcfsResourceQueueC*/FcfsResourceQueueC__0__Fc
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 74 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-static void CC2420ActiveMessageP__RadioResource__granted(void )
-#line 74
-{
-  uint8_t rc;
-  cc2420_header_t *header = CC2420ActiveMessageP__CC2420PacketBody__getHeader(CC2420ActiveMessageP__pending_message);
-
-  CC2420ActiveMessageP__SendNotifier__aboutToSend(__nesc_ntoh_leuint8(header->type.nxdata), __nesc_ntoh_leuint16(header->dest.nxdata), CC2420ActiveMessageP__pending_message);
-  rc = CC2420ActiveMessageP__SubSend__send(CC2420ActiveMessageP__pending_message, CC2420ActiveMessageP__pending_length);
-  if (rc != SUCCESS) {
-      CC2420ActiveMessageP__RadioResource__release();
-      CC2420ActiveMessageP__AMSend__sendDone(__nesc_ntoh_leuint8(header->type.nxdata), CC2420ActiveMessageP__pending_message, rc);
-    }
-}
-
-# 80 "../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
+# 80 "../../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
 static error_t CC2420TinyosNetworkP__ActiveSend__send(message_t *msg, uint8_t len)
 #line 80
 {
@@ -24164,7 +25535,7 @@ static error_t CC2420TinyosNetworkP__ActiveSend__send(message_t *msg, uint8_t le
   return CC2420TinyosNetworkP__SubSend__send(msg, len);
 }
 
-# 90 "../../tos/chips/cc2420/packet/CC2420PacketP.nc"
+# 90 "../../../tos/chips/cc2420/packet/CC2420PacketP.nc"
 static uint8_t * CC2420PacketP__getNetwork(message_t * msg)
 #line 90
 {
@@ -24178,7 +25549,7 @@ static uint8_t * CC2420PacketP__getNetwork(message_t * msg)
   return (uint8_t *)hdr + offset;
 }
 
-# 96 "../../tos/system/StateImplP.nc"
+# 96 "../../../tos/system/StateImplP.nc"
 static error_t StateImplP__State__requestState(uint8_t id, uint8_t reqState)
 #line 96
 {
@@ -24213,7 +25584,7 @@ static bool StateImplP__State__isState(uint8_t id, uint8_t myState)
   return isState;
 }
 
-# 795 "../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
+# 795 "../../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
 static error_t CC2420TransmitP__acquireSpiResource(void )
 #line 795
 {
@@ -24226,7 +25597,7 @@ static error_t CC2420TransmitP__acquireSpiResource(void )
   return error;
 }
 
-# 126 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+# 126 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
 static error_t CC2420SpiP__Resource__immediateRequest(uint8_t id)
 #line 126
 {
@@ -24269,7 +25640,7 @@ static error_t CC2420SpiP__Resource__immediateRequest(uint8_t id)
   return error;
 }
 
-# 283 "../../tos/system/ArbiterP.nc"
+# 283 "../../../tos/system/ArbiterP.nc"
 static error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefaultOwner__release(void )
 #line 283
 {
@@ -24311,7 +25682,7 @@ static error_t /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ResourceDefau
   return FAIL;
 }
 
-# 251 "../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
+# 251 "../../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
 static void HplMsp430Usart0P__Usart__setModeSpi(const msp430_spi_union_config_t *config)
 #line 251
 {
@@ -24332,7 +25703,7 @@ static void HplMsp430Usart0P__Usart__setModeSpi(const msp430_spi_union_config_t 
   return;
 }
 
-# 107 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+# 107 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
 static error_t CC2420SpiP__Resource__request(uint8_t id)
 #line 107
 {
@@ -24358,7 +25729,7 @@ static error_t CC2420SpiP__Resource__request(uint8_t id)
   return SUCCESS;
 }
 
-# 68 "../../tos/system/FcfsResourceQueueC.nc"
+# 68 "../../../tos/system/FcfsResourceQueueC.nc"
 static resource_client_id_t /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQueueC__1__FcfsQueue__dequeue(void )
 #line 68
 {
@@ -24396,7 +25767,7 @@ static resource_client_id_t /*Msp430UsartShare0P.ArbiterC.Queue*/FcfsResourceQue
   }
 }
 
-# 825 "../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
+# 825 "../../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
 static void CC2420TransmitP__loadTXFIFO(void )
 #line 825
 {
@@ -24426,7 +25797,7 @@ static void CC2420TransmitP__loadTXFIFO(void )
   }
 }
 
-# 96 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 96 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static void /*HplMsp430GeneralIOC.P42*/HplMsp430GeneralIOP__26__IO__clr(void )
 #line 96
 {
@@ -24438,7 +25809,7 @@ static void /*HplMsp430GeneralIOC.P42*/HplMsp430GeneralIOP__26__IO__clr(void )
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 305 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+# 305 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
 static cc2420_status_t CC2420SpiP__Reg__write(uint8_t addr, uint16_t data)
 #line 305
 {
@@ -24468,7 +25839,7 @@ static cc2420_status_t CC2420SpiP__Reg__write(uint8_t addr, uint16_t data)
   return CC2420SpiP__SpiByte__write(data & 0xff);
 }
 
-# 134 "../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
+# 134 "../../../tos/chips/msp430/usart/Msp430SpiNoDmaP.nc"
 static uint8_t /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__SpiByte__write(uint8_t tx)
 #line 134
 {
@@ -24538,118 +25909,199 @@ static void /*Msp430SpiNoDma0P.SpiP*/Msp430SpiNoDmaP__0__continueOp(void )
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 56 "../../tos/interfaces/State.nc"
+# 56 "../../../tos/interfaces/State.nc"
 static void UniqueSendP__State__toIdle(void ){
 #line 56
   StateImplP__State__toIdle(2U);
 #line 56
 }
 #line 56
-# 301 "BaseStationP.nc"
-static void BaseStationP__RadioSend__sendDone(am_id_t id, message_t *msg, error_t error)
-#line 301
+# 88 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+static void /*Msp430Uart1P.UartP*/Msp430UartP__0__ResourceConfigure__configure(uint8_t id)
+#line 88
 {
-  if (error != SUCCESS) {
-    BaseStationP__failBlink();
+  const msp430_uart_union_config_t *config = /*Msp430Uart1P.UartP*/Msp430UartP__0__Msp430UartConfigure__getConfig(id);
+
+#line 90
+  /*Msp430Uart1P.UartP*/Msp430UartP__0__m_byte_time = config->uartConfig.ubr / 2;
+  if (!/*Msp430Uart1P.UartP*/Msp430UartP__0__m_byte_time) {
+    /*Msp430Uart1P.UartP*/Msp430UartP__0__m_byte_time = 1;
+    }
+#line 93
+  /*Msp430Uart1P.UartP*/Msp430UartP__0__Usart__setModeUart(config);
+  /*Msp430Uart1P.UartP*/Msp430UartP__0__Usart__enableIntr();
+}
+
+# 237 "../../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
+static void HplMsp430Usart1P__Usart__disableSpi(void )
+#line 237
+{
+  /* atomic removed: atomic calls only */
+#line 238
+  {
+    HplMsp430Usart1P__ME2 &= ~0x10;
+    HplMsp430Usart1P__SIMO__selectIOFunc();
+    HplMsp430Usart1P__SOMI__selectIOFunc();
+    HplMsp430Usart1P__UCLK__selectIOFunc();
+  }
+}
+
+#line 197
+static void HplMsp430Usart1P__Usart__disableUart(void )
+#line 197
+{
+  /* atomic removed: atomic calls only */
+#line 198
+  {
+    HplMsp430Usart1P__ME2 &= ~(0x20 | 0x10);
+    HplMsp430Usart1P__UTXD__selectIOFunc();
+    HplMsp430Usart1P__URXD__selectIOFunc();
+  }
+}
+
+# 338 "../../../tos/system/ArbiterP.nc"
+static bool /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__Resource__isOwner(uint8_t id)
+#line 338
+{
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 339
+    {
+      unsigned char __nesc_temp = 
+#line 339
+      /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__resId == id && /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__state == /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__RES_BUSY;
+
+      {
+#line 339
+        __nesc_atomic_end(__nesc_atomic); 
+#line 339
+        return __nesc_temp;
+      }
+    }
+#line 341
+    __nesc_atomic_end(__nesc_atomic); }
+}
+
+# 357 "../../../tos/lib/serial/SerialP.nc"
+static void SerialP__testOff(void )
+#line 357
+{
+  bool turnOff = FALSE;
+
+  /* atomic removed: atomic calls only */
+#line 359
+  {
+    if (SerialP__txState == SerialP__TXSTATE_INACTIVE && 
+    SerialP__rxState == SerialP__RXSTATE_INACTIVE) {
+        turnOff = TRUE;
+      }
+  }
+  if (turnOff) {
+      SerialP__stopDoneTask__postTask();
+      /* atomic removed: atomic calls only */
+#line 367
+      SerialP__offPending = FALSE;
     }
   else {
-#line 305
-    { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
-      if (msg == BaseStationP__radioQueue[BaseStationP__radioOut]) 
-        {
-          if (++BaseStationP__radioOut >= BaseStationP__RADIO_QUEUE_LEN) {
-            BaseStationP__radioOut = 0;
-            }
-#line 310
-          if (BaseStationP__radioFull) {
-            BaseStationP__radioFull = FALSE;
-            }
-        }
-#line 313
-      __nesc_atomic_end(__nesc_atomic); }
-    }
-#line 314
-  BaseStationP__radioSendTask__postTask();
-}
-
-# 80 "../../tos/lib/timer/TransformCounterC.nc"
-static /*CounterMilli32C.Transform*/TransformCounterC__1__to_size_type /*CounterMilli32C.Transform*/TransformCounterC__1__Counter__get(void )
-{
-  /*CounterMilli32C.Transform*/TransformCounterC__1__to_size_type rv = 0;
-
-#line 83
-  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
-    {
-      /*CounterMilli32C.Transform*/TransformCounterC__1__upper_count_type high = /*CounterMilli32C.Transform*/TransformCounterC__1__m_upper;
-      /*CounterMilli32C.Transform*/TransformCounterC__1__from_size_type low = /*CounterMilli32C.Transform*/TransformCounterC__1__CounterFrom__get();
-
-#line 87
-      if (/*CounterMilli32C.Transform*/TransformCounterC__1__CounterFrom__isOverflowPending()) 
-        {
-
-
-
-
-
-
-          high++;
-          low = /*CounterMilli32C.Transform*/TransformCounterC__1__CounterFrom__get();
-        }
-      {
-        /*CounterMilli32C.Transform*/TransformCounterC__1__to_size_type high_to = high;
-        /*CounterMilli32C.Transform*/TransformCounterC__1__to_size_type low_to = low >> /*CounterMilli32C.Transform*/TransformCounterC__1__LOW_SHIFT_RIGHT;
-
-#line 101
-        rv = (high_to << /*CounterMilli32C.Transform*/TransformCounterC__1__HIGH_SHIFT_LEFT) | low_to;
-      }
-    }
-#line 103
-    __nesc_atomic_end(__nesc_atomic); }
-  return rv;
-}
-
-# 64 "../../tos/chips/msp430/timer/Msp430TimerP.nc"
-static uint16_t /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Timer__get(void )
-{
-
-
-
-
-  if (1) {
       /* atomic removed: atomic calls only */
-#line 71
-      {
-        uint16_t t0;
-        uint16_t t1 = * (volatile uint16_t * )400U;
-
-#line 74
-        do {
-#line 74
-            t0 = t1;
-#line 74
-            t1 = * (volatile uint16_t * )400U;
-          }
-        while (
-#line 74
-        t0 != t1);
-        {
-          unsigned int __nesc_temp = 
-#line 75
-          t1;
-
-#line 75
-          return __nesc_temp;
-        }
-      }
-    }
-  else 
-#line 78
-    {
-      return * (volatile uint16_t * )400U;
+#line 370
+      SerialP__offPending = TRUE;
     }
 }
 
-# 155 "../../tos/lib/timer/VirtualizeTimerImplP.nc"
+# 98 "../../../tos/lib/serial/HdlcTranslateC.nc"
+static error_t HdlcTranslateC__SerialFrameComm__putDelimiter(void )
+#line 98
+{
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 99
+    {
+      HdlcTranslateC__state.sendEscape = 0;
+      HdlcTranslateC__m_data = HDLC_FLAG_BYTE;
+    }
+#line 102
+    __nesc_atomic_end(__nesc_atomic); }
+  return HdlcTranslateC__UartStream__send(&HdlcTranslateC__m_data, 1);
+}
+
+# 149 "../../../tos/chips/msp430/usart/Msp430UartP.nc"
+static error_t /*Msp430Uart1P.UartP*/Msp430UartP__0__UartStream__send(uint8_t id, uint8_t *buf, uint16_t len)
+#line 149
+{
+  if (/*Msp430Uart1P.UartP*/Msp430UartP__0__UsartResource__isOwner(id) == FALSE) {
+    return FAIL;
+    }
+#line 152
+  if (len == 0) {
+    return FAIL;
+    }
+  else {
+#line 154
+    if (/*Msp430Uart1P.UartP*/Msp430UartP__0__m_tx_buf) {
+      return EBUSY;
+      }
+    }
+#line 156
+  /*Msp430Uart1P.UartP*/Msp430UartP__0__m_tx_buf = buf;
+  /*Msp430Uart1P.UartP*/Msp430UartP__0__m_tx_len = len;
+  /*Msp430Uart1P.UartP*/Msp430UartP__0__m_tx_pos = 0;
+  /*Msp430Uart1P.UartP*/Msp430UartP__0__current_owner = id;
+  /*Msp430Uart1P.UartP*/Msp430UartP__0__Usart__tx(buf[/*Msp430Uart1P.UartP*/Msp430UartP__0__m_tx_pos++]);
+  return SUCCESS;
+}
+
+# 519 "../../../tos/lib/serial/SerialP.nc"
+static void SerialP__MaybeScheduleTx(void )
+#line 519
+{
+  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
+#line 520
+    {
+      if (SerialP__txPending == 0) {
+          if (SerialP__RunTx__postTask() == SUCCESS) {
+              SerialP__txPending = 1;
+            }
+        }
+    }
+#line 526
+    __nesc_atomic_end(__nesc_atomic); }
+}
+
+# 74 "../../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
+static void CC2420ActiveMessageP__RadioResource__granted(void )
+#line 74
+{
+  uint8_t rc;
+  cc2420_header_t *header = CC2420ActiveMessageP__CC2420PacketBody__getHeader(CC2420ActiveMessageP__pending_message);
+
+  CC2420ActiveMessageP__SendNotifier__aboutToSend(__nesc_ntoh_leuint8(header->type.nxdata), __nesc_ntoh_leuint16(header->dest.nxdata), CC2420ActiveMessageP__pending_message);
+  rc = CC2420ActiveMessageP__SubSend__send(CC2420ActiveMessageP__pending_message, CC2420ActiveMessageP__pending_length);
+  if (rc != SUCCESS) {
+      CC2420ActiveMessageP__RadioResource__release();
+      CC2420ActiveMessageP__AMSend__sendDone(__nesc_ntoh_leuint8(header->type.nxdata), CC2420ActiveMessageP__pending_message, rc);
+    }
+}
+
+# 204 "../../../tos/system/AMQueueImplP.nc"
+static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__sendDone(am_id_t id, message_t *msg, error_t err)
+#line 204
+{
+
+
+
+
+
+  if (/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current >= 1) {
+      return;
+    }
+  if (/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__queue[/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current].msg == msg) {
+      /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__sendDone(/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current, msg, err);
+    }
+  else {
+      ;
+    }
+}
+
+# 155 "../../../tos/lib/timer/VirtualizeTimerImplP.nc"
 static void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__fireTimers(uint32_t now)
 #line 155
 {
@@ -24683,7 +26135,32 @@ static void /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__fireT
   /*HilTimerMilliC.VirtualizeTimerC.VT*/VirtualizeTimerImplP__0__updateFromTimer__postTask();
 }
 
-# 147 "../../tos/lib/timer/TransformAlarmC.nc"
+# 94 "../../../tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc"
+static void *CC2420TinyosNetworkP__ActiveSend__getPayload(message_t *msg, uint8_t len)
+#line 94
+{
+  if (len <= CC2420TinyosNetworkP__ActiveSend__maxPayloadLength()) {
+      return msg->data;
+    }
+  else 
+#line 97
+    {
+      return (void *)0;
+    }
+}
+
+# 53 "../../../tos/system/AMQueueEntryP.nc"
+static error_t /*BaseStationC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__0__AMSend__send(am_addr_t dest, 
+message_t *msg, 
+uint8_t len)
+#line 55
+{
+  /*BaseStationC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__0__AMPacket__setDestination(msg, dest);
+  /*BaseStationC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__0__AMPacket__setType(msg, 17);
+  return /*BaseStationC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP__0__Send__send(msg, len);
+}
+
+# 147 "../../../tos/lib/timer/TransformAlarmC.nc"
 static void /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__Alarm__startAt(/*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__to_size_type t0, /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__to_size_type dt)
 {
   { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
@@ -24743,7 +26220,7 @@ static void /*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__set_al
   (/*HilTimerMilliC.AlarmMilli32C.Transform*/TransformAlarmC__1__from_size_type )remaining << 5);
 }
 
-# 302 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
+# 302 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
 static uint16_t CC2420ControlP__CC2420Config__getShortAddr(void )
 #line 302
 {
@@ -24765,76 +26242,7 @@ static uint16_t CC2420ControlP__CC2420Config__getShortAddr(void )
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 139 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-static am_addr_t CC2420ActiveMessageP__AMPacket__destination(message_t *amsg)
-#line 139
-{
-  cc2420_header_t *header = CC2420ActiveMessageP__CC2420PacketBody__getHeader(amsg);
-
-#line 141
-  return __nesc_ntoh_leuint16(header->dest.nxdata);
-}
-
-# 120 "../../tos/system/ActiveMessageAddressC.nc"
-static am_addr_t ActiveMessageAddressC__amAddress(void )
-#line 120
-{
-  am_addr_t myAddr;
-
-#line 122
-  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
-#line 122
-    myAddr = ActiveMessageAddressC__addr;
-#line 122
-    __nesc_atomic_end(__nesc_atomic); }
-  return myAddr;
-}
-
-# 161 "BaseStationP.nc"
-static message_t *BaseStationP__receive(message_t *msg, void *payload, uint8_t len)
-#line 161
-{
-  message_t *ret = msg;
-
-  { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
-#line 164
-    {
-      if (!BaseStationP__uartFull) 
-        {
-          ret = BaseStationP__uartQueue[BaseStationP__uartIn];
-          BaseStationP__uartQueue[BaseStationP__uartIn] = msg;
-
-          BaseStationP__uartIn = (BaseStationP__uartIn + 1) % BaseStationP__UART_QUEUE_LEN;
-
-          if (BaseStationP__uartIn == BaseStationP__uartOut) {
-            BaseStationP__uartFull = TRUE;
-            }
-          if (!BaseStationP__uartBusy) 
-            {
-              BaseStationP__uartSendTask__postTask();
-              BaseStationP__uartBusy = TRUE;
-            }
-        }
-      else {
-        BaseStationP__dropBlink();
-        }
-    }
-#line 184
-    __nesc_atomic_end(__nesc_atomic); }
-  return ret;
-}
-
-# 164 "../../tos/chips/cc2420/CC2420ActiveMessageP.nc"
-static am_id_t CC2420ActiveMessageP__AMPacket__type(message_t *amsg)
-#line 164
-{
-  cc2420_header_t *header = CC2420ActiveMessageP__CC2420PacketBody__getHeader(amsg);
-
-#line 166
-  return __nesc_ntoh_leuint8(header->type.nxdata);
-}
-
-# 769 "../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
+# 769 "../../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
 static void CC2420ReceiveP__waitForNextPacket(void )
 #line 769
 {
@@ -24876,7 +26284,7 @@ static void CC2420ReceiveP__waitForNextPacket(void )
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 149 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+# 149 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
 static error_t CC2420SpiP__Resource__release(uint8_t id)
 #line 149
 {
@@ -24970,7 +26378,7 @@ static error_t CC2420SpiP__attemptRelease(void )
   return EBUSY;
 }
 
-# 233 "../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
+# 233 "../../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
 static void HplMsp430Usart0P__Usart__disableSpi(void )
 #line 233
 {
@@ -24984,7 +26392,7 @@ static void HplMsp430Usart0P__Usart__disableSpi(void )
   }
 }
 
-# 716 "../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
+# 716 "../../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
 static void CC2420ReceiveP__beginReceive(void )
 #line 716
 {
@@ -25014,7 +26422,7 @@ static void CC2420ReceiveP__receive(void )
   CC2420ReceiveP__RXFIFO__beginRead((uint8_t *)CC2420ReceiveP__CC2420PacketBody__getHeader(CC2420ReceiveP__m_p_rx_buf), 1);
 }
 
-# 189 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+# 189 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
 static cc2420_status_t CC2420SpiP__Fifo__beginRead(uint8_t addr, uint8_t *data, 
 uint8_t len)
 #line 190
@@ -25066,7 +26474,7 @@ uint16_t len, error_t error)
     }
 }
 
-# 733 "../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
+# 733 "../../../tos/chips/cc2420/receive/CC2420ReceiveP.nc"
 static void CC2420ReceiveP__flush(void )
 #line 733
 {
@@ -25102,7 +26510,7 @@ static void CC2420ReceiveP__reset_state(void )
   CC2420ReceiveP__m_missed_packets = 0;
 }
 
-# 95 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 95 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static void /*HplMsp430GeneralIOC.P42*/HplMsp430GeneralIOP__26__IO__set(void )
 #line 95
 {
@@ -25114,7 +26522,7 @@ static void /*HplMsp430GeneralIOC.P42*/HplMsp430GeneralIOP__26__IO__set(void )
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 318 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+# 318 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
 static cc2420_status_t CC2420SpiP__Strobe__strobe(uint8_t addr)
 #line 318
 {
@@ -25142,7 +26550,7 @@ static cc2420_status_t CC2420SpiP__Strobe__strobe(uint8_t addr)
   return CC2420SpiP__SpiByte__write(addr);
 }
 
-# 171 "../../tos/chips/cc2420/packet/CC2420PacketP.nc"
+# 171 "../../../tos/chips/cc2420/packet/CC2420PacketP.nc"
 static void CC2420PacketP__PacketTimeStamp32khz__clear(message_t *msg)
 {
   __nesc_hton_int8(CC2420PacketP__CC2420PacketBody__getMetadata(msg)->timesync.nxdata, FALSE);
@@ -25154,7 +26562,7 @@ static void CC2420PacketP__PacketTimeStamp32khz__set(message_t *msg, uint32_t va
   __nesc_hton_uint32(CC2420PacketP__CC2420PacketBody__getMetadata(msg)->timestamp.nxdata, value);
 }
 
-# 850 "../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
+# 850 "../../../tos/chips/cc2420/transmit/CC2420TransmitP.nc"
 static void CC2420TransmitP__signalDone(error_t err)
 #line 850
 {
@@ -25238,7 +26646,7 @@ static void CC2420TransmitP__congestionBackoff(void )
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 69 "../../tos/system/RandomMlcgC.nc"
+# 69 "../../../tos/system/RandomMlcgC.nc"
 static uint32_t RandomMlcgC__Random__rand32(void )
 #line 69
 {
@@ -25266,7 +26674,7 @@ static uint32_t RandomMlcgC__Random__rand32(void )
   return mlcg;
 }
 
-# 147 "../../tos/lib/timer/TransformAlarmC.nc"
+# 147 "../../../tos/lib/timer/TransformAlarmC.nc"
 static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__Alarm__startAt(/*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__to_size_type t0, /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__to_size_type dt)
 {
   { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
@@ -25326,7 +26734,7 @@ static void /*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0_
   (/*AlarmMultiplexC.Alarm.Alarm32khz32C.Transform*/TransformAlarmC__0__from_size_type )remaining << 0);
 }
 
-# 80 "../../tos/lib/timer/TransformCounterC.nc"
+# 80 "../../../tos/lib/timer/TransformCounterC.nc"
 static /*Counter32khz32C.Transform*/TransformCounterC__0__to_size_type /*Counter32khz32C.Transform*/TransformCounterC__0__Counter__get(void )
 {
   /*Counter32khz32C.Transform*/TransformCounterC__0__to_size_type rv = 0;
@@ -25362,7 +26770,7 @@ static /*Counter32khz32C.Transform*/TransformCounterC__0__to_size_type /*Counter
   return rv;
 }
 
-# 479 "../../tos/chips/cc2420/control/CC2420ControlP.nc"
+# 479 "../../../tos/chips/cc2420/control/CC2420ControlP.nc"
 static void CC2420ControlP__writeFsctrl(void )
 #line 479
 {
@@ -25430,7 +26838,7 @@ static void CC2420ControlP__writeId(void )
   CC2420ControlP__IEEEADR__write(0, (uint8_t *)&id, 12);
 }
 
-# 260 "../../tos/chips/cc2420/spi/CC2420SpiP.nc"
+# 260 "../../../tos/chips/cc2420/spi/CC2420SpiP.nc"
 static cc2420_status_t CC2420SpiP__Ram__write(uint16_t addr, uint8_t offset, 
 uint8_t *data, 
 uint8_t len)
@@ -25473,7 +26881,7 @@ uint8_t len)
   return status;
 }
 
-# 96 "../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
+# 96 "../../../tos/chips/msp430/pins/HplMsp430GeneralIOP.nc"
 static void /*HplMsp430GeneralIOC.P46*/HplMsp430GeneralIOP__30__IO__clr(void )
 #line 96
 {
@@ -25497,7 +26905,7 @@ static void /*HplMsp430GeneralIOC.P46*/HplMsp430GeneralIOP__30__IO__set(void )
     __nesc_atomic_end(__nesc_atomic); }
 }
 
-# 56 "../../tos/chips/msp430/timer/GpioCaptureC.nc"
+# 56 "../../../tos/chips/msp430/timer/GpioCaptureC.nc"
 static error_t /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__enableCapture(uint8_t mode)
 #line 56
 {
@@ -25520,7 +26928,31 @@ static error_t /*HplCC2420InterruptsC.CaptureSFDC*/GpioCaptureC__0__enableCaptur
   return SUCCESS;
 }
 
-# 17 "../../tos/chips/ds2411/LocalIeeeEui64P.nc"
+# 81 "../../../tos/chips/cc2420/csma/CC2420CsmaP.nc"
+static error_t CC2420CsmaP__SplitControl__start(void )
+#line 81
+{
+  if (CC2420CsmaP__SplitControlState__requestState(CC2420CsmaP__S_STARTING) == SUCCESS) {
+      CC2420CsmaP__CC2420Power__startVReg();
+      return SUCCESS;
+    }
+  else {
+#line 86
+    if (CC2420CsmaP__SplitControlState__isState(CC2420CsmaP__S_STARTED)) {
+        return EALREADY;
+      }
+    else {
+#line 89
+      if (CC2420CsmaP__SplitControlState__isState(CC2420CsmaP__S_STARTING)) {
+          return SUCCESS;
+        }
+      }
+    }
+#line 93
+  return EBUSY;
+}
+
+# 17 "../../../tos/chips/ds2411/LocalIeeeEui64P.nc"
 static ieee_eui64_t LocalIeeeEui64P__LocalIeeeEui64__getId(void )
 #line 17
 {
@@ -25550,7 +26982,7 @@ static ieee_eui64_t LocalIeeeEui64P__LocalIeeeEui64__getId(void )
   return LocalIeeeEui64P__eui;
 }
 
-# 64 "../../tos/lib/timer/BusyWaitCounterC.nc"
+# 64 "../../../tos/lib/timer/BusyWaitCounterC.nc"
 static void /*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0__BusyWait__wait(/*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0__size_type dt)
 {
   /* atomic removed: atomic calls only */
@@ -25572,7 +27004,7 @@ static void /*BusyWaitMicroC.BusyWaitCounterC*/BusyWaitCounterC__0__BusyWait__wa
   }
 }
 
-# 11 "../../tos/chips/msp430/x1x2/timer/Msp430TimerCommonP.nc"
+# 11 "../../../tos/chips/msp430/x1x2/timer/Msp430TimerCommonP.nc"
 __attribute((wakeup)) __attribute((interrupt(0x000C)))  void sig_TIMERA0_VECTOR(void )
 #line 11
 {
@@ -25580,7 +27012,7 @@ __attribute((wakeup)) __attribute((interrupt(0x000C)))  void sig_TIMERA0_VECTOR(
   Msp430TimerCommonP__VectorTimerA0__fired();
 }
 
-# 160 "../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
+# 160 "../../../tos/chips/msp430/timer/Msp430TimerCapComP.nc"
 static void /*Msp430TimerC.Msp430TimerA0*/Msp430TimerCapComP__0__Event__fired(void )
 #line 160
 {
@@ -25619,7 +27051,7 @@ static void /*Msp430TimerC.Msp430TimerA2*/Msp430TimerCapComP__2__Event__fired(vo
     }
 }
 
-# 12 "../../tos/chips/msp430/x1x2/timer/Msp430TimerCommonP.nc"
+# 12 "../../../tos/chips/msp430/x1x2/timer/Msp430TimerCommonP.nc"
 __attribute((wakeup)) __attribute((interrupt(0x000A)))  void sig_TIMERA1_VECTOR(void )
 #line 12
 {
@@ -25635,16 +27067,16 @@ __attribute((wakeup)) __attribute((interrupt(0x001A)))  void sig_TIMERB0_VECTOR(
   Msp430TimerCommonP__VectorTimerB0__fired();
 }
 
-# 168 "../../tos/chips/msp430/timer/Msp430TimerP.nc"
+# 168 "../../../tos/chips/msp430/timer/Msp430TimerP.nc"
 static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Event__default__fired(uint8_t n)
 #line 168
 {
 }
 
-# 39 "../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
-static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Event__fired(uint8_t arg_0x7f540dad48b0){
+# 39 "../../../tos/chips/msp430/timer/Msp430TimerEvent.nc"
+static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Event__fired(uint8_t arg_0x7f49d76bc8b0){
 #line 39
-  switch (arg_0x7f540dad48b0) {
+  switch (arg_0x7f49d76bc8b0) {
 #line 39
     case 0:
 #line 39
@@ -25696,7 +27128,7 @@ static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Event__fired(uint8_t a
 #line 39
     default:
 #line 39
-      /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Event__default__fired(arg_0x7f540dad48b0);
+      /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Event__default__fired(arg_0x7f49d76bc8b0);
 #line 39
       break;
 #line 39
@@ -25704,7 +27136,7 @@ static void /*Msp430TimerC.Msp430TimerB*/Msp430TimerP__1__Event__fired(uint8_t a
 #line 39
 }
 #line 39
-# 14 "../../tos/chips/msp430/x1x2/timer/Msp430TimerCommonP.nc"
+# 14 "../../../tos/chips/msp430/x1x2/timer/Msp430TimerCommonP.nc"
 __attribute((wakeup)) __attribute((interrupt(0x0018)))  void sig_TIMERB1_VECTOR(void )
 #line 14
 {
@@ -25712,7 +27144,7 @@ __attribute((wakeup)) __attribute((interrupt(0x0018)))  void sig_TIMERB1_VECTOR(
   Msp430TimerCommonP__VectorTimerB1__fired();
 }
 
-# 78 "../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
+# 78 "../../../tos/chips/msp430/x1x2/pins/HplMsp430InterruptP.nc"
 __attribute((wakeup)) __attribute((interrupt(0x0008)))  void sig_PORT1_VECTOR(void )
 #line 78
 {
@@ -25871,7 +27303,7 @@ __attribute((wakeup)) __attribute((interrupt(0x0002)))  void sig_PORT2_VECTOR(vo
     }
 }
 
-# 82 "../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
+# 82 "../../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
 __attribute((wakeup)) __attribute((interrupt(0x0012)))  void sig_USART0RX_VECTOR(void )
 #line 82
 {
@@ -25881,7 +27313,7 @@ __attribute((wakeup)) __attribute((interrupt(0x0012)))  void sig_USART0RX_VECTOR
   HplMsp430Usart0P__Interrupts__rxDone(temp);
 }
 
-# 307 "../../tos/system/ArbiterP.nc"
+# 307 "../../../tos/system/ArbiterP.nc"
 static bool /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ArbiterInfo__inUse(void )
 #line 307
 {
@@ -25909,7 +27341,7 @@ static bool /*Msp430UsartShare0P.ArbiterC.Arbiter*/ArbiterP__0__ArbiterInfo__inU
   }
 }
 
-# 87 "../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
+# 87 "../../../tos/chips/msp430/usart/HplMsp430Usart0P.nc"
 __attribute((wakeup)) __attribute((interrupt(0x0010)))  void sig_USART0TX_VECTOR(void )
 #line 87
 {
@@ -25922,7 +27354,7 @@ __attribute((wakeup)) __attribute((interrupt(0x0010)))  void sig_USART0TX_VECTOR
     }
 }
 
-# 82 "../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
+# 82 "../../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
 __attribute((wakeup)) __attribute((interrupt(0x0006)))  void sig_USART1RX_VECTOR(void )
 #line 82
 {
@@ -25932,7 +27364,7 @@ __attribute((wakeup)) __attribute((interrupt(0x0006)))  void sig_USART1RX_VECTOR
   HplMsp430Usart1P__Interrupts__rxDone(temp);
 }
 
-# 307 "../../tos/system/ArbiterP.nc"
+# 307 "../../../tos/system/ArbiterP.nc"
 static bool /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ArbiterInfo__inUse(void )
 #line 307
 {
@@ -25960,7 +27392,7 @@ static bool /*Msp430UsartShare1P.ArbiterC.Arbiter*/ArbiterP__1__ArbiterInfo__inU
   }
 }
 
-# 412 "../../tos/lib/serial/SerialP.nc"
+# 412 "../../../tos/lib/serial/SerialP.nc"
 static void SerialP__rx_state_machine(bool isDelimeter, uint8_t data)
 #line 412
 {
@@ -26070,7 +27502,7 @@ static void SerialP__rx_state_machine(bool isDelimeter, uint8_t data)
   done: ;
 }
 
-# 91 "../../tos/system/crc.h"
+# 91 "../../../tos/system/crc.h"
 static uint16_t crcByte(uint16_t crc, uint8_t b)
 #line 91
 {
@@ -26082,7 +27514,7 @@ static uint16_t crcByte(uint16_t crc, uint8_t b)
   return crc;
 }
 
-# 296 "../../tos/lib/serial/SerialDispatcherP.nc"
+# 296 "../../../tos/lib/serial/SerialDispatcherP.nc"
 static void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__ReceiveBytePacket__endPacket(error_t result)
 #line 296
 {
@@ -26113,14 +27545,14 @@ static void /*SerialDispatcherC.SerialDispatcherP*/SerialDispatcherP__0__Receive
     }
 }
 
-# 87 "../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
+# 87 "../../../tos/chips/msp430/usart/HplMsp430Usart1P.nc"
 __attribute((wakeup)) __attribute((interrupt(0x0004)))  void sig_USART1TX_VECTOR(void )
 #line 87
 {
   HplMsp430Usart1P__Interrupts__txDone();
 }
 
-# 118 "../../tos/lib/serial/HdlcTranslateC.nc"
+# 118 "../../../tos/lib/serial/HdlcTranslateC.nc"
 static void HdlcTranslateC__UartStream__sendDone(uint8_t *buf, uint16_t len, 
 error_t error)
 #line 119
