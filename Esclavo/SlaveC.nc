@@ -12,7 +12,7 @@ module SlaveC {
     uses interface Timer<TMilli> as TimerMiSlot;
     uses interface Timer<TMilli> as TimerLeds;
 	uses interface Timer<TMilli> as TimerDormir;
-    uses interface Timer<TMilli> as TimerComienzaDormir;
+    //uses interface Timer<TMilli> as TimerComienzaDormir;
     uses interface Packet;
     uses interface AMPacket;
     uses interface AMSend;
@@ -30,8 +30,8 @@ implementation {
 	uint8_t id_Tx = 0;
     //uint8_t idSlave = 55;
 	
-    uint16_t arrayRSSI_Actual[NUM_MAX_NODOS];
-    uint16_t arrayRSSI_Pasado[NUM_MAX_NODOS];
+    uint16_t arrayRSSI_Actual[NUM_MAX_NODOS +1];
+    uint16_t arrayRSSI_Pasado[NUM_MAX_NODOS +1];
 
     uint8_t idSlot;
     float tiempoEspera = 0;
@@ -74,17 +74,6 @@ implementation {
             call Leds.led2Off();
     }
 	
-	void setDelay(float t){
-		call TimerDormir.startOneShot(t);
-		espera = TRUE;
-		while(espera){
-            //setLeds(2);
-		}
-        setLeds(1); //LED 1 cuando despierta
-        call TimerLeds.startOneShot(TIMER_ON_LEDS);
-	}
-
-
     uint16_t getRssi (message_t *msg){
         return (uint16_t) call CC2420Packet.getRssi(msg);
     }
@@ -110,33 +99,14 @@ implementation {
         setLeds(0);
     }
    
-    /*void igualarArray(uint16_t *array1, uint16_t *array2, int tamanoArray) {
-        memcpy(array1, array2, tamanoArray * sizeof(uint16_t));
-    }
-    */
-
-    /*
-    void igualarArray(uint16_t arreglo1[], uint16_t arreglo2[], int tamano) {
-        for (i = 0; i < tamano; i++) {
-            arreglo1[i] = arreglo2[i];
-        }
-    }
-    */
-
+/*
     event void TimerComienzaDormir.fired(){
         for(i=0;i<NUM_MAX_NODOS;i++){
             arrayRSSI_Pasado[i] = arrayRSSI_Actual [i];
         }
         
-        //igualarArray(uint16_t *arrayRSSI_Pasado, uint16_t *arrayRSSI_Actual, NUM_MAX_NODOS);
-        
-            /*  
-                ESTA QUITADO YA QUE NOS METE EN UN BUCLE WHILE INFINITO
-                NUNCA LLEGA A EXPIRAR EL TEMPORIZADOR [TimerDormir.startOneShot(t)]
-                QUE SE LLAMA EN LA FUNCIÓN setDelay(tiempo)
-        */
-        //setDelay(tiempoDormir);
     }
+    */
 
     event void TimerMiSlot.fired() {
         if (call AMSend.send(AM_BROADCAST_ADDR,
@@ -178,11 +148,14 @@ implementation {
     event message_t* Receive.receive(message_t* msg, void* payload, uint8_t len){
            
         if (len == sizeof(TDMAmsg)) {
-           
-
+                    
             TDMAmsg* TDMAmsg_rx = (TDMAmsg*)payload;
 
-            
+            for(i=0;i<=NUM_MAX_NODOS;i++){
+                arrayRSSI_Pasado[i] = arrayRSSI_Actual [i];
+            }
+
+            arrayRSSI_Actual[0] = getRssi((message_t*)TDMAmsg_rx);
 
             setLeds(2); //LED 2: COMPRUEBA RECEPCION TDMA FROM MASTER
             call TimerLeds.startOneShot(TIMER_ON_LEDS);
@@ -217,7 +190,7 @@ implementation {
                 respuestaPkt_tx->idM = idMaster;
 				              
                 // ENVIO RSSI DEL PASADO CICLO
-                for(i=0; i<NUM_MAX_NODOS; i++){
+                for(i=0; i<=NUM_MAX_NODOS; i++){
                     respuestaPkt_tx->rssi[i] = arrayRSSI_Pasado[i];
                     
                 }
@@ -231,14 +204,14 @@ implementation {
 			
             // Actualizacion de los array de RSSI al final de la trama TDMA completa
             // (CUANDO FUNCIONE) Dormir y ahorrar energía con setDelay(tiempo)
-            call TimerComienzaDormir.startOneShot(tiempoTrama + tiempoGuarda);
+            // call TimerComienzaDormir.startOneShot(tiempoTrama + tiempoGuarda);
             
          } else if (len == sizeof(RespuestaMsg)){
 
             // Recibimos las respuestas de todos los demás nodos y actualizamos nuestro RSSI con ellos
             RespuestaMsg* RespuestaMsg_rx = (RespuestaMsg*)payload;
 
-            rssi = (RespuestaMsg_rx->idS) -1 ;
+            rssi = (RespuestaMsg_rx->idS);
             arrayRSSI_Actual[rssi] = getRssi((message_t*)RespuestaMsg_rx);
 
          }

@@ -8,7 +8,7 @@
 #define HUMEDAD 1
 #define ILUMINANCIA 2
 
-#define NUM_MAX_NODOS 3
+#define NUM_MAX_NODOS 4
 
 
 enum {
@@ -56,7 +56,7 @@ typedef nx_struct TDMAmsg{
 typedef nx_struct RespuestaMsg{
   nx_uint8_t idM;
   nx_uint8_t idS;
-  nx_uint16_t rssi[NUM_MAX_NODOS];
+  nx_uint16_t rssi[NUM_MAX_NODOS+1];
 
 }RespuestaMsg;
 
