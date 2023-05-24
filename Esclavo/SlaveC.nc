@@ -22,8 +22,7 @@ module SlaveC {
 }
 
 implementation {
-    // CAMBIAR EL VALOR POR EL DEL ID DESEADO
-    uint8_t id = 1; // 👈
+    uint8_t id = 1;
     
     uint16_t rssi=1;
     uint8_t idMaster = 0;
@@ -89,12 +88,6 @@ implementation {
 
     event void AMControl.stopDone(error_t err) {}
 
-
-
-    /* DEFINICION TEMPORIZADORES */
-
-    //event void TimerMaster.fired() {}
-
     event void TimerLeds.fired(){
         setLeds(0);
     }
@@ -113,18 +106,6 @@ implementation {
             &pkt, sizeof(RespuestaMsg)) == SUCCESS) {
                 busy = TRUE;
             }
-
-    /* SIRVEN PARA COMPROBAR TDMA
-        if(id == 1){
-            setLeds(1);
-        } else if (id == 2){
-            setLeds(2);
-        } else if(id == 3){
-            setLeds(4);
-        }
-        //setLeds(2);
-        call TimerLeds.startOneShot(200);
-    */
     }
 	
 	event void TimerDormir.fired(){
