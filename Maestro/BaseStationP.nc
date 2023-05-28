@@ -310,8 +310,13 @@ implementation
         if (!uartFull)
         {
           ret = uartQueue[uartIn];
-          uartQueue[uartIn] = msg;
-
+          
+          //La idea es mandar la tabla de rssi por SERIAL
+          //Despues mandar la tabla de alarmas por SERIAL también
+          for (i = 0; i < 1; i++)
+            uartQueue[uartIn] = rssi_dbm;
+            uartQueue[uartIn+1] = alarma;
+          
           uartIn = (uartIn + 1) % UART_QUEUE_LEN;
         
           if (uartIn == uartOut)
