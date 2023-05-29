@@ -8,11 +8,9 @@
 module SlaveC {
     uses interface Boot;
     uses interface Leds;
-    //uses interface Timer<TMilli> as TimerMaster;
     uses interface Timer<TMilli> as TimerMiSlot;
     uses interface Timer<TMilli> as TimerLeds;
 	uses interface Timer<TMilli> as TimerDormir;
-    //uses interface Timer<TMilli> as TimerComienzaDormir;
     uses interface Packet;
     uses interface AMPacket;
     uses interface AMSend;
@@ -22,36 +20,31 @@ module SlaveC {
 }
 
 implementation {
-    uint8_t id = 1;
     
-    uint16_t rssi=1;
-    uint8_t idMaster = 0;
-	uint8_t id_Tx = 0;
-    //uint8_t idSlave = 55;
-	
-    uint16_t arrayRSSI_Actual[NUM_MAX_NODOS +1];
-    uint16_t arrayRSSI_Pasado[NUM_MAX_NODOS +1];
+    uint8_t id = 1; // Variable que guarda el id del esclavo
+    uint8_t idMaster = 0; // variable que guarda el id del maestro 
+    uint8_t idSlot; //Variable que indica el slot donde te toca transmitir	
+    uint8_t i = 0; //Variable que se usa para recorrer los bucles for
+    
+    uint16_t id_rssi=1; //variable que nos indica en donde se tiene que guardar en la tabla rssi la medida obtenida
+    uint16_t arrayRSSI_Actual[NUM_MAX_NODOS +1]; //Tabla donde se guarda el rssi actual es NUM_MAX_NODO = 4 + 1 por el maestro
+    uint16_t arrayRSSI_Pasado[NUM_MAX_NODOS +1]; //Tabla donde se guarda el rssi pasado que se envia al maestro es NUM_MAX_NODO = 4 + 1 por el maestro
+    uint8_t arrayNodos[NUM_MAX_NODOS]; //Tabla que almacena donde va cada nodo en el TDMA
 
-    uint8_t idSlot;
-    float tiempoEspera = 0;
-	float tiempoDormir = 0;
-    uint16_t tiempoTrama = 0;
-    uint16_t tiempoGuarda = 10;
+    float tiempoEspera = 0; //Variable que almacena el tiempo de espera para Tx
+    uint16_t tiempoTrama = 0; //Variable que almacena el tiempo que dura una trama
+    uint16_t tiempoGuarda = 10; //Tiempo de guardia para dar un margen 
+
     bool busy = FALSE;
+
+    //Variables de paquetes 
     message_t pkt;
     RespuestaMsg* respuestaPkt_tx;
-    uint8_t i = 0;
-	bool espera = FALSE;
-    bool PRUEBA = FALSE;
-    
-    
     
 
-    nx_uint8_t arrayNodos[NUM_MAX_NODOS];
 
 
-
-
+    //funcion para el manejo de los leds
     void setLeds(uint16_t val) {
         if (val & 0x01)
             {call Leds.led0On();
@@ -72,13 +65,16 @@ implementation {
         else
             call Leds.led2Off();
     }
-	
+
+	//funcion para obtener el rssi
     uint16_t getRssi (message_t *msg){
         return (uint16_t) call CC2420Packet.getRssi(msg);
     }
 
+    //funcion de inicio 
     event void Boot.booted() {
         id = TOS_NODE_ID; // PARA QUE FUNCIONE HAY QUE COMPILARLO CON "make telosb install,id" (sin espacios entre la coma)
+        //bucle para inicializar los arrays a 0
         for(i=0; i<NUM_MAX_NODOS; i++){
             arrayRSSI_Actual[i]=0;
             arrayRSSI_Pasado[i]=0;
@@ -88,55 +84,37 @@ implementation {
 
     event void AMControl.stopDone(error_t err) {}
 
+    //Fin del timer de los leds
     event void TimerLeds.fired(){
         setLeds(0);
     }
-   
-/*
-    event void TimerComienzaDormir.fired(){
-        for(i=0;i<NUM_MAX_NODOS;i++){
-            arrayRSSI_Pasado[i] = arrayRSSI_Actual [i];
-        }
-        
-    }
-    */
-
+    //Fin del timer para enviar en el slot correspondiente
     event void TimerMiSlot.fired() {
-        if (call AMSend.send(AM_BROADCAST_ADDR,
-            &pkt, sizeof(RespuestaMsg)) == SUCCESS) {
+        if (call AMSend.send(AM_BROADCAST_ADDR, &pkt, sizeof(RespuestaMsg)) == SUCCESS) {
                 busy = TRUE;
             }
     }
 	
-	event void TimerDormir.fired(){
-		espera = FALSE;
-    }
-	
     event void AMControl.startDone(error_t err) {}
-
 
     event void AMSend.sendDone(message_t* msg, error_t err) {
         if (&pkt == msg) {
-        busy = FALSE;
-        }
-
-        
+            busy = FALSE;
+        }   
     }
 
-
-
-
+    //Evento de cuando recibimos un mensaje 
     event message_t* Receive.receive(message_t* msg, void* payload, uint8_t len){
-           
-        if (len == sizeof(TDMAmsg)) {
+        
+        if (len == sizeof(TDMAmsg)) { //comprobamos si la longitud del mensaje es TDMA_msg
                     
             TDMAmsg* TDMAmsg_rx = (TDMAmsg*)payload;
 
-            for(i=0;i<=NUM_MAX_NODOS;i++){
+            for(i=0;i<=NUM_MAX_NODOS;i++){      //Rellenamos la tabla pasado con los valores de rssi de la anterior interacion 
                 arrayRSSI_Pasado[i] = arrayRSSI_Actual [i];
             }
 
-            arrayRSSI_Actual[0] = getRssi((message_t*)TDMAmsg_rx);
+            arrayRSSI_Actual[0] = getRssi(msg); //obtenemos el valor del rssi del mensaje TDMA y lo guardamos en la posicion 0
 
             setLeds(2); //LED 2: COMPRUEBA RECEPCION TDMA FROM MASTER
             call TimerLeds.startOneShot(TIMER_ON_LEDS);
@@ -157,7 +135,6 @@ implementation {
             //2º configuro los timers
            
             tiempoEspera = (TDMAmsg_rx->tiempoNodo) * idSlot;
-            tiempoDormir = (TDMAmsg_rx->periodo - tiempoGuarda)-(TDMAmsg_rx->tiempoTrama + tiempoGuarda);
             tiempoTrama = (TDMAmsg_rx -> tiempoTrama);
 			
 
@@ -182,18 +159,13 @@ implementation {
             setLeds(4); // LED 3: he mandado el RSSI del pasado ciclo
             call TimerLeds.startOneShot(TIMER_ON_LEDS); //Apago los leds
             
-			
-            // Actualizacion de los array de RSSI al final de la trama TDMA completa
-            // (CUANDO FUNCIONE) Dormir y ahorrar energía con setDelay(tiempo)
-            // call TimerComienzaDormir.startOneShot(tiempoTrama + tiempoGuarda);
-            
          } else if (len == sizeof(RespuestaMsg)){
 
             // Recibimos las respuestas de todos los demás nodos y actualizamos nuestro RSSI con ellos
             RespuestaMsg* RespuestaMsg_rx = (RespuestaMsg*)payload;
 
-            rssi = (RespuestaMsg_rx->idS);
-            arrayRSSI_Actual[rssi] = getRssi((message_t*)RespuestaMsg_rx);
+            id_rssi = (RespuestaMsg_rx->idS);
+            arrayRSSI_Actual[id_rssi] = getRssi(msg);
 
          }
         return msg;
