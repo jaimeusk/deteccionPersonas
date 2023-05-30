@@ -13,7 +13,7 @@ implementation {
     components SlaveC as App;
     components new TimerMilliC() as TimerMiSlot;
     components new TimerMilliC() as TimerLeds;
-	components new TimerMilliC() as TimerDormir;
+	//components new TimerMilliC() as TimerDormir;
     components CC2420ActiveMessageC;
     
     components ActiveMessageC;
@@ -27,7 +27,7 @@ implementation {
     App.Leds -> LedsC;
     App.TimerMiSlot -> TimerMiSlot;
     App.TimerLeds -> TimerLeds;
-	App.TimerDormir -> TimerDormir;
+	//App.TimerDormir -> TimerDormir;
     App.Packet -> AMSenderC;
     App.AMPacket -> AMSenderC;
     App.AMControl -> ActiveMessageC;

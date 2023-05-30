@@ -238,7 +238,7 @@ implementation
       RespuestaMsg* rcvPkt = (RespuestaMsg*)payload;
       int id = rcvPkt->idS;
       int count_strikes = 0;
-      uint16_t rssi_temp;
+      uint8_t rssi_temp;
       int16_t sum_rssi;
       int16_t rssi_medio;
 

@@ -10,7 +10,7 @@ module SlaveC {
     uses interface Leds;
     uses interface Timer<TMilli> as TimerMiSlot;
     uses interface Timer<TMilli> as TimerLeds;
-	uses interface Timer<TMilli> as TimerDormir;
+	//uses interface Timer<TMilli> as TimerDormir;
     uses interface Packet;
     uses interface AMPacket;
     uses interface AMSend;
