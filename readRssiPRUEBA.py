@@ -23,8 +23,8 @@
 import serial
 
 
-NUM_MAX_FILAS = 4
-NUM_MAX_COLUMNAS = 4
+NUM_MAX_FILAS = 1
+NUM_MAX_COLUMNAS = 2
 index = 0
 
 tablaRssi = [[NUM_MAX_FILAS], [NUM_MAX_COLUMNAS]]
@@ -44,7 +44,7 @@ while True:
 
 ##Supuestamente recibire una tabla 4x4 con medidas rssi de 16 bits, es decir, recibire 16x16 = 256 bits = 32 Bytes
 ##Los primeros 32 Bytes contendran los valores rssi de la tabla rssi
-    
+        print("TAM TABLA RSSI ["+ str(len(tablaRssi))+ "]["+str(len(tablaRssi[0])) +"]")
     ############# ASI OBTENGO tablaRSSI DEL PUERTO SERIAL ##################
         for i in range (NUM_MAX_FILAS):
             for j in range(NUM_MAX_COLUMNAS): 
@@ -53,7 +53,9 @@ while True:
                 ##Combino ambos bytes para obtener el valor del rssi
                 rssi = r
                 #rssi = ord(r[0])<<8 | ord(r[1])
-                tablaRssi [i][j] = rssi
+                #int.from_bytes(VARIABLE QUE CONTIENE LOS BYTES, LITTLE/BIG-ENDIAN, CON/SIN SIGNO)
+                print("TablaRSSI["+str(i)+"]["+str(j)+"]")
+                tablaRssi [i][j] = int.from_bytes(rssi,byteorder='big',signed=True)
                 
     ###OTRA FORMA QUE NO SE SI SERIA CORRECTA
         # for i in range (4):
@@ -88,19 +90,19 @@ while True:
         
         # Imprimir encabezado de columnas
         for i in range(NUM_MAX_COLUMNAS):
-            if i == (NUM_MAX_COLUMNAS - 1):
-                print(" BASE ST |", end='')
-            print("| ID = {}".format(i + 1), end='')
+            #if i == (NUM_MAX_COLUMNAS - 1):
+            #    print(" BASE ST |")
+            print("| ID = {}".format(i + 1),end='')
             
 
-        print("\n")
+        print("\n",end='')
         print("--------+--------+--------+--------+---------+")
 
         # Imprimir filas
         for i in range(NUM_MAX_COLUMNAS):
         # IMPRIMO LA FILA
-            if i == (NUM_MAX_COLUMNAS - 1):
-                print(" BASE ST |", end='')
+            #if i == (NUM_MAX_COLUMNAS - 1):
+            #    print(" BASE ST |")
             print("| ID = {}".format(i + 1),end='')
 
         # Imprimir valores de celdas DE ESA FILA
@@ -110,8 +112,8 @@ while True:
         #        else:
         #            print("| {} ".format(tablaRssi[i][j]))
 
-            print("| {} ".format(tablaRssi[i][j])) # BORRAR ESTA LINEA CUANDO TERMINE EL DEBUGUEO
-            print("\n")  # PASO A LA PROX FILA
+            print("| {} ".format(tablaRssi[i][j]),end='') # BORRAR ESTA LINEA CUANDO TERMINE EL DEBUGUEO
+            print("\n",end='')  # PASO A LA PROX FILA
 
         print("--------+--------+--------+--------+---------+")
 

@@ -11,6 +11,7 @@
 #include "Serial.h"
 #include "Master.h"
 
+
 module BaseStationP @safe() {
   uses {
     interface Boot;
@@ -42,7 +43,8 @@ implementation
   // #    VARIABLES GLOBALES    #
   // ############################
   enum {
-    UART_QUEUE_LEN = (16+16*NUM_MAX_NODOS),
+    UART_QUEUE_LEN = (16+16*NUM_MAX_NODOS), //Esta longitud sería válida unicamente
+    //UART_QUEUE_LEN = ((16*(NUM_MAX_NODOS+1)) + 8*(NUM_MAX_NODOS+1)), //LONGITUD PARA LOS 16 bits del RSSI + 8 BITS de los booleanos de las alarmas (SE EXCEDE DE RAM)
     RADIO_QUEUE_LEN = (16+16*NUM_MAX_NODOS),
   };
 
@@ -56,10 +58,12 @@ implementation
   uint16_t node_id_master;
   
 
+  /* VARIABLES USADAS PARA LA ESCRITURA EN EL PUERTO SERIE */
   message_t  uartQueueBufs[UART_QUEUE_LEN];
   message_t  * ONE_NOK uartQueue[UART_QUEUE_LEN];
   uint8_t    uartIn, uartOut;
   bool       uartBusy, uartFull;
+  
 
   message_t  radioQueueBufs[RADIO_QUEUE_LEN];
   message_t  * ONE_NOK radioQueue[RADIO_QUEUE_LEN];
@@ -68,6 +72,24 @@ implementation
 
   uint8_t count = 0;
   uint8_t tmpLen;
+
+
+  /* VARIABLES DE PRUEBA PARA ENVIAR POR PUERTO SERIE */
+  int16_t rssi_prueba[NUM_MAX_NODOS][NUM_MAX_NODOS] = {
+        { -60, -70, -80, -90 },
+        { -75, -65, -85, -95 },
+        { -90, -85, -75, -65 },
+        { -10, -20, -30, -40}};
+  bool alarma_prueba [NUM_MAX_NODOS][NUM_MAX_NODOS] = {
+        {TRUE, FALSE, FALSE, TRUE},
+        {FALSE, FALSE, FALSE, FALSE},
+        {FALSE, TRUE, TRUE, FALSE},
+        {TRUE, TRUE, TRUE, TRUE}};
+  
+  
+  int16_t prueba = 13;
+  int8_t prueba2 = 25;
+  
 
   // ########## TDMA ############
   uint16_t counter;
@@ -314,8 +336,31 @@ implementation
           //La idea es mandar la tabla de rssi por SERIAL
           //Despues mandar la tabla de alarmas por SERIAL también
           for (i = 0; i < 1; i++)
+            
+            /* CONTENIDO ORIGINAL SIN MODIFICAR
             uartQueue[uartIn] = rssi_dbm;
             uartQueue[uartIn+1] = alarma;
+            */
+
+            /* CONTENIDO PARA PROBAR CON ARRAYS QUE ESTÁN CONFORMADOS
+            BIEN CON TOTAL SEGURIDAD (Aunque rssi_dbm y alarma tb parecen estarlo)
+            uartQueue[uartIn] = rssi_prueba;
+            uartQueue[uartIn+1] = alarma_prueba;
+            */
+            
+            uartQueue[uartIn] = prueba;
+            uartQueue[uartIn+1] = prueba2;
+            
+            /*
+            for(i=0; i<1;i++){
+              for(j=0;j<=1;j++){
+                uartIn = uartIn + 16*j;
+                uartQueue[uartIn] = rssi_prueba[i][j];
+              }
+            }
+            */
+            
+            //uartQueue[uartIn+1] = prueba2;
           
           uartIn = (uartIn + 1) % UART_QUEUE_LEN;
         

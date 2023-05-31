@@ -1,11 +1,11 @@
 <tos_image>
   <ident>
-    <uidhash>7FED0A05L</uidhash>
     <username>root</username>
+    <deluge_support>no</deluge_support>
+    <timestamp>64763A0BL</timestamp>
+    <uidhash>3C972F6EL</uidhash>
     <appname>SlaveAppC</appname>
     <hostname>SurfaceJaime</hostname>
-    <timestamp>64748118L</timestamp>
-    <deluge_support>no</deluge_support>
     <userhash>72F2A085L</userhash>
     <platform>telosb</platform>
   </ident>
