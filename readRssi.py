@@ -22,15 +22,18 @@
 import serial
 
 
-NUM_MAX_FILAS = 4;
-NUM_MAX_COLUMNAS = 4;
+NUM_MAX_FILAS = 4
+NUM_MAX_COLUMNAS = 4
 index = 0
 
 tablaRssi = [[NUM_MAX_FILAS], [NUM_MAX_COLUMNAS]]
 tablaAlarmas = [[NUM_MAX_FILAS], [NUM_MAX_COLUMNAS]]
 
-##if len(sys.argv) > 2: exit()
-s = serial.Serial(port='/dev/ttyUSB0', baudrate=115200)
+
+
+
+s = serial.Serial(port= '/dev/ttyUSB0', baudrate=115200)
+s.open()
 
 while True:
 # 	while True:
@@ -51,17 +54,17 @@ while True:
                 tablaRssi [i][j] = rssi
                 
     ###OTRA FORMA QUE NO SE SI SERIA CORRECTA
-        for i in range (4):
-            for j in range(4): 
-                ##Leo los bytes de 2 en 2 porque cada 2B tengo un rssi
-                index = 0
-                r = s.read(32)
-                ##Combino ambos bytes para obtener el valor del rssi
-                rssi = ord(r[index])<<8 | ord(r[index + 1])
-                tablaRssi [i][j] = rssi
+        # for i in range (4):
+        #     for j in range(4): 
+        #         ##Leo los bytes de 2 en 2 porque cada 2B tengo un rssi
+        #         index = 0
+        #         r = s.read(32)
+        #         ##Combino ambos bytes para obtener el valor del rssi
+        #         rssi = ord(r[index])<<8 | ord(r[index + 1])
+        #         tablaRssi [i][j] = rssi
 
-                ##Asi ire cogiendo las posic 0-1, 2-3, 3-4 de la variable r que contiene los 32B
-                index += 2
+        #         ##Asi ire cogiendo las posic 0-1, 2-3, 3-4 de la variable r que contiene los 32B
+        #         index += 2
                 
                 
                 
