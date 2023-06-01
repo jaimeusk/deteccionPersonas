@@ -1,8 +1,9 @@
-#ifndef MASTER_H
-#define MASTER_H
 
-// Variable para definir el maximo numero de nodos permitidos en el TDMA (incluyendo al BaseStation)
-// No tienen que estar todos necesariamente
+#ifndef TEST_SERIAL_H
+#define TEST_SERIAL_H
+
+// MACRO PARA DEFINIR MAXIMO NUMERO DE NODOS PERMITIDOS EN EL TDMA
+// No tienen que existir todos necesariamente.
 #define NUM_MAX_NODOS 4
 
 
@@ -16,6 +17,12 @@ enum {
   ALARMA_STRIKES = 3,
   AM_TEST_SERIAL_MSG = 0x89, //Se utiliza para el envío de datos a través del puerto serie
 };
+
+// Estructura de datos para envío de datos al puerto serie
+typedef nx_struct test_serial_msg {
+  nx_uint16_t idNodo;
+  nx_int16_t rssi_prueba[NUM_MAX_NODOS];
+} test_serial_msg_t;
 
 
 /*
@@ -60,13 +67,4 @@ typedef nx_struct RespuestaMsg{
 }RespuestaMsg;
 
 
-// Estructura de datos para el envío de datos al puerto serie
-typedef nx_struct test_serial_msg {
-  nx_uint16_t idNodo;
-  nx_int16_t rssi_prueba[NUM_MAX_NODOS]; //No puede ser array multidimensional, errores.
-} test_serial_msg_t;
-
 #endif
-
-
-

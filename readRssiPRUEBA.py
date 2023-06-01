@@ -23,7 +23,7 @@
 import serial
 
 
-NUM_MAX_FILAS = 1
+NUM_MAX_FILAS = 2
 NUM_MAX_COLUMNAS = 2
 index = 0
 
@@ -54,8 +54,9 @@ while True:
                 rssi = r
                 #rssi = ord(r[0])<<8 | ord(r[1])
                 #int.from_bytes(VARIABLE QUE CONTIENE LOS BYTES, LITTLE/BIG-ENDIAN, CON/SIN SIGNO)
-                print("TablaRSSI["+str(i)+"]["+str(j)+"]")
+               
                 tablaRssi [i][j] = int.from_bytes(rssi,byteorder='big',signed=True)
+                print("TablaRSSI["+str(i)+"]["+str(j)+"] = " + str(tablaRssi[i][j]))
                 
     ###OTRA FORMA QUE NO SE SI SERIA CORRECTA
         # for i in range (4):
