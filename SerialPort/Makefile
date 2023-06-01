@@ -1,4 +1,6 @@
 COMPONENT=TestSerialAppC
+
+
 TOSMAKE_PRE_EXE_DEPS += TestSerial.class
 TOSMAKE_CLEAN_EXTRA = *.class TestSerialMsg.java
 

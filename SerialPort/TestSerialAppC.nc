@@ -63,16 +63,30 @@
 configuration TestSerialAppC {}
 implementation {
   components TestSerialC as App, LedsC, MainC;
-  components SerialActiveMessageC as AM;
-  components new TimerMilliC();
+  components ActiveMessageC as Radio, SerialActiveMessageC as AM;
 
+  components new TimerMilliC() as TimerIniTDMA;
+  components new TimerMilliC() as TimerApagaLeds;
+  components new TimerMilliC() as TimerFinTDMA;
+
+
+  /* NECESITAMOS UN AM SENDER Y RECEIVER MAS
+      1 PARA PUERTO SERIE
+      1 PARA RADIO
+  */
+
+
+  /* NOMBRE EN IMPLEMENTACION  -> NOMBRE AQUI (LOCAL)*/
   App.Boot -> MainC.Boot;
   App.Control -> AM;
   App.Receive -> AM.Receive[AM_TEST_SERIAL_MSG];
   App.AMSend -> AM.AMSend[AM_TEST_SERIAL_MSG];
   App.Leds -> LedsC;
-  App.MilliTimer -> TimerMilliC;
+  App.TimerIniTDMA -> TimerIniTDMA;
+  App.TimerApagaLeds -> TimerApagaLeds;
+  App.TimerFinTDMA -> TimerFinTDMA;
   App.Packet -> AM;
+
 }
 
 

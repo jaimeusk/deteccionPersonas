@@ -9,7 +9,7 @@
 
 enum {
   AM_BLINKTORADIO = 17,
-  TIMER_PERIODO_COMPLETO = 1000,    // Tiempo total entre el comienzo de dos tramas consecutivas
+  TIMER_PERIODO_COMPLETO = 2000,    // Tiempo total entre el comienzo de dos tramas consecutivas
   TIMER_PERIODO_TRAMA = 300,        // Tiempo desde el comienzo de una trama hasta el final de su TDMA
   TIMER_PERIODO_NODO = TIMER_PERIODO_TRAMA/NUM_MAX_NODOS, // Tiempo que tiene cada nodo para transmitir en el TDMA 
   TIMER_ON_LEDS = TIMER_PERIODO_TRAMA/(3),

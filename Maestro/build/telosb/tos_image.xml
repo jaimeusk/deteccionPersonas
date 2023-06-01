@@ -1,13 +1,13 @@
 <tos_image>
   <ident>
-    <appname>BaseStationC</appname>
-    <userhash>72F2A085L</userhash>
     <platform>telosb</platform>
-    <timestamp>6477C901L</timestamp>
-    <uidhash>D849881FL</uidhash>
-    <hostname>SurfaceJaime</hostname>
     <deluge_support>no</deluge_support>
+    <appname>BaseStationC</appname>
     <username>root</username>
+    <uidhash>C6BC8D00L</uidhash>
+    <timestamp>6478E604L</timestamp>
+    <hostname>SurfaceJaime</hostname>
+    <userhash>72F2A085L</userhash>
   </ident>
   <image format="ihex">
 :104000005542200135D0085A82453C3831400039AC

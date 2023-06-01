@@ -76,10 +76,12 @@ public class TestSerial implements MessageListener {
 
   public void messageReceived(int to, Message message) {
     TestSerialMsg msg = (TestSerialMsg)message;
+    /*
     System.out.print("ID= " + msg.get_counter());
     for(int i = 0; i< msg.get_rssi_prueba().length ;i++)
-    System.out.print(" | " + msg.getElement_rssi_prueba(i));
+      System.out.print(" | " + msg.getElement_rssi_prueba(i));
     System.out.println("--------+--------+--------+--------+---------+")
+    */
   }
   
   private static void usage() {
