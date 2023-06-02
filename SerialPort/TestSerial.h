@@ -16,11 +16,16 @@ enum {
   PERIODO_CALIBRACION = 15,
   ALARMA_STRIKES = 3,
   AM_TEST_SERIAL_MSG = 0x89, //Se utiliza para el envío de datos a través del puerto serie
+  TAM_ARRAY = (NUM_MAX_NODOS+1)*(NUM_MAX_NODOS*1),
 };
 
 // Estructura de datos para envío de datos al puerto serie
 typedef nx_struct test_serial_msg {
-  nx_uint16_t idNodo;
+  // HAY UN LÍMITE DE TAMAÑO DEL ARRAY (Experimentalmente)
+  // rssi_prueba[14]  -> FUNCIONA
+  // rssi_prueba[15]  -> NO FUNCIONA
+  // rssi_prueba[TAM_ARRAY]  --> IDEA ORIGINAL PARA MENSAJE
+  nx_uint8_t idNodo;
   nx_int16_t rssi_prueba[NUM_MAX_NODOS];
 } test_serial_msg_t;
 

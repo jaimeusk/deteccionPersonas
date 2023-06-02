@@ -82,34 +82,18 @@ public class TestSerial implements MessageListener {
 
   public void messageReceived(int to, Message message) {
     TestSerialMsg msg = (TestSerialMsg)message;
+
+    /* IMPRIMIMOS LA FILA (1 FILA POR MENSAJE RECIBIDO) */
     
-    System.out.print("| ID= " + msg.get_idNodo() + "  ");
-    //System.out.print("| ID= " + msg.get_counter() + "  ");    
-    
-    for(int i = 0; i< msg.get_rssi_prueba().length ;i++)
+    System.out.print("| ID= " + msg.get_idNodo() + "  ");    
+    for(int i = 0; i< msg.get_rssi_prueba().length ;i++){
       System.out.print("|  " + msg.getElement_rssi_prueba(i)+ "   ");
-    
+    }    
     System.out.println("|");
 
 
-    /* NO FUNCIONAN ARRAYS MULTIDIMENSIONALES
+    /* IMPRIMIMOS EL PIE DE LA FILA DE MANERA DINÁMICA */
     
-    System.out.print("| ID= " + msg.get_idNodo() + "  ");
-    //System.out.print("| ID= " + msg.get_counter() + "  ");    
-   
-    int numNodos = msg.numElements_rssi_prueba(1);
-    int numNodos2 = msg.numElements_rssi_prueba(2);
-    short rssi[][] = msg.get_rssi_prueba();
-    
-    for(int i=0;i<numNodos;i++){
-      for(int j = 0; j< numNodos2 ;j++){
-        System.out.print("|  " + rssi[i][j]+ "   ");
-    }
-      System.out.println("|");
-    } 
-    */
-    
-    /* Imprimimos pie de tabla dinámico, se adapta al numero de nodos */
     System.out.print("+");
     for(int i=0; i <= msg.get_rssi_prueba().length ;i++){
       System.out.print("--------+");

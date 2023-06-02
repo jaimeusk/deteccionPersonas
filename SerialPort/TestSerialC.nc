@@ -86,7 +86,7 @@ implementation {
 
   
   /* Variables para distintas utilidades */
-  uint8_t i,j, min_idx;
+  uint8_t i,j,z, min_idx;
   
 
 
@@ -105,6 +105,7 @@ implementation {
         { -75, -65, -85, -95 },
         { -90, -85, -75, -65 },
         { -10, -20, -30, -40}};
+
 
   bool alarma_prueba [NUM_MAX_NODOS][NUM_MAX_NODOS] = {
         {TRUE, FALSE, FALSE, TRUE},
@@ -266,8 +267,9 @@ implementation {
       return;
     }
     else {
-      //test_serial_msg_t* rcmA[NUM_MAX_NODOS];
       
+      
+      for(i=0; i<NUM_MAX_NODOS; i++){  
         
         test_serial_msg_t* rcm = (test_serial_msg_t*)call Packet.getPayload(&packet, sizeof(test_serial_msg_t));
         
@@ -281,16 +283,21 @@ implementation {
           return;
         }
 
-        for(i=0; i<NUM_MAX_NODOS; i++){
-          rcm->idNodo = i;
+        
+          
+          rcm->idNodo = i;      
           for(j=0; j<NUM_MAX_NODOS; j++){
-            rcm->rssi_prueba[j] = rssi_prueba[i][j];
-          }
-        }
+            rcm->rssi_prueba[i] = rssi_prueba[i][j];
+          }         
+        
+        
+        /* REALIZA UN ENVIO POR CADA ITERACIÓN (No funciona, solo se recibe el último) */
         setLeds(7);
         if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(test_serial_msg_t)) == SUCCESS) {
           locked = TRUE;
         }
+
+      }
 
       
       
@@ -304,7 +311,7 @@ implementation {
   event message_t* Receive.receive(message_t* msg, 
 				   void* payload, uint8_t len) {
     
-    message_t *ret = msg;
+    message_t *ret = msg; // Creo que se puede borrar??? (Jaime)
 
     if(len==sizeof(RespuestaMsg)){
       
