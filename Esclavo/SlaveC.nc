@@ -157,8 +157,9 @@ implementation {
                 
                 //Llamamos a los timers para enviar la información al master y mandamos a dormir a los nodos.
                 call TimerMiSlot.startOneShot(tiempoEspera); // Espera tu slot para realizar el envío de datos.
-                //setLeds(4); // LED 3: he mandado el RSSI del pasado ciclo
-                //call TimerLeds.startOneShot(TIMER_ON_LEDS); //Apago los leds
+                setLeds(4); //LED 3: he mandado el RSSI del pasado ciclo
+                call TimerLeds.startOneShot(TIMER_ON_LEDS);
+
             }
          } else if (len == sizeof(RespuestaMsg)){
 

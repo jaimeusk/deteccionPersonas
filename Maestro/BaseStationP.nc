@@ -43,16 +43,15 @@ implementation
   // #    VARIABLES GLOBALES    #
   // ############################
   enum {
-    UART_QUEUE_LEN = (16+16*(NUM_MAX_NODOS+1)), //Esta longitud sería válida unicamente
-    //UART_QUEUE_LEN = ((16*((NUM_MAX_NODOS+1)+1)) + 8*((NUM_MAX_NODOS+1)+1)), //LONGITUD PARA LOS 16 bits del RSSI + 8 BITS de los booleanos de las alarmas (SE EXCEDE DE RAM)
-    RADIO_QUEUE_LEN = (16+16*(NUM_MAX_NODOS+1)),
+    UART_QUEUE_LEN = (16+16*NUM_MAX_NODOS), //Esta longitud sería válida unicamente
+    RADIO_QUEUE_LEN = (16+16*NUM_MAX_NODOS),
   };
 
-  int16_t rssi_dbm [(NUM_MAX_NODOS+1)][(NUM_MAX_NODOS+1)]; // No es lo mismo que rssi_historico porque puede almacenar un valor que haya hecho saltar una alarma
-  bool strikes [(NUM_MAX_NODOS+1)][(NUM_MAX_NODOS+1)][PERIODO_CALIBRACION];
-  int16_t rssi_historico [(NUM_MAX_NODOS+1)][(NUM_MAX_NODOS+1)][PERIODO_CALIBRACION];
-  bool alarma [(NUM_MAX_NODOS+1)][(NUM_MAX_NODOS+1)]; // Enlace entre dos nodos que ha saltado la alarma
-  int posicion_medida[(NUM_MAX_NODOS+1)];
+  int16_t rssi_dbm [NUM_MAX_NODOS][NUM_MAX_NODOS]; // No es lo mismo que rssi_historico porque puede almacenar un valor que haya hecho saltar una alarma
+  bool strikes [NUM_MAX_NODOS][NUM_MAX_NODOS][PERIODO_CALIBRACION];
+  int16_t rssi_historico [NUM_MAX_NODOS][NUM_MAX_NODOS][PERIODO_CALIBRACION];
+  bool alarma [NUM_MAX_NODOS][NUM_MAX_NODOS]; // Enlace entre dos nodos que ha saltado la alarma
+  int posicion_medida[NUM_MAX_NODOS];
   bool calibrado = FALSE; // Indicará si se han tomado las primeras medida de calibración
   
   uint16_t node_id_master;
@@ -75,12 +74,12 @@ implementation
 
 
   /* VARIABLES DE PRUEBA PARA ENVIAR POR PUERTO SERIE */
-  int16_t rssi_prueba[(NUM_MAX_NODOS+1)][(NUM_MAX_NODOS+1)] = {
+  int16_t rssi_prueba[NUM_MAX_NODOS][NUM_MAX_NODOS] = {
         { -60, -70, -80, -90 },
         { -75, -65, -85, -95 },
         { -90, -85, -75, -65 },
         { -10, -20, -30, -40}};
-  bool alarma_prueba [(NUM_MAX_NODOS+1)][(NUM_MAX_NODOS+1)] = {
+  bool alarma_prueba [NUM_MAX_NODOS][NUM_MAX_NODOS] = {
         {TRUE, FALSE, FALSE, TRUE},
         {FALSE, FALSE, FALSE, FALSE},
         {FALSE, TRUE, TRUE, FALSE},
@@ -99,7 +98,6 @@ implementation
   // Ahora mismo es un ejemplo, los nodos esclavos son 1,2 y 3.
   // En el futuro tendremos que obtenerlos dinamicamente.
   int ids[3] = {1,2,3};
-  int orden[3] = {0,0,0};
   int i, j, min_idx;
 
   // ############################
@@ -133,7 +131,7 @@ implementation
       *xp = *yp;
       *yp = temp;
   }
-
+/*
   void dropBlink() {
     call Leds.led2Toggle();
   }
@@ -141,7 +139,7 @@ implementation
   void failBlink() {
     call Leds.led2Toggle();
   }
-
+*/
   // ############################
   // #          EVENTOS         #
   // ############################
@@ -150,7 +148,7 @@ implementation
   event void Boot.booted() {
     node_id_master = TOS_NODE_ID;
 
-    for (i = 0; i<(NUM_MAX_NODOS+1); i++)
+    for (i = 0; i<NUM_MAX_NODOS; i++)
       posicion_medida[i] = 0;
 
     for (i = 0; i < UART_QUEUE_LEN; i++)
@@ -213,7 +211,7 @@ implementation
       //El orden en el que pedimos las cosas a los nodos no es relevante.
       //tdma->idS = ids;
       
-      for (i=0; i<NUM_MAX_NODOS; i++){
+      for (i=0; i<(NUM_MAX_NODOS-1); i++){
         tdma->idS[i] = ids[i];
       }
 
@@ -233,7 +231,8 @@ implementation
 
   event void AMSend.sendDone(message_t* msg, error_t error) {
     if (error != SUCCESS)
-      {//failBlink();
+      {
+
       }
     else
       atomic
@@ -246,8 +245,8 @@ implementation
       }
     if (&pkt == msg) {
       busy = FALSE;
-      setLeds(7);
-      call TimerLeds.startOneShot(TIMER_ON_LEDS); //Breve parpadeo 3 leds-->TDMA ENVIADO
+      setLeds(1);
+      call TimerLeds.startOneShot(TIMER_ON_LEDS); //Led 1 --> TDMA ENVIADO
     }
     
     post RadioSendTask();
@@ -267,11 +266,13 @@ implementation
         uint8_t rssi_temp;
         int16_t sum_rssi;
         int16_t rssi_medio;
+        setLeds(2);
+        call TimerLeds.startOneShot(TIMER_ON_LEDS); //Led 1 --> TDMA ENVIADO
 
         if ((rcvPkt -> idS == 1 || rcvPkt -> idS == 2 || rcvPkt -> idS == 3)  &&
                   rcvPkt -> idM == node_id_master){
           // Introducimos el valor del los rssi medidos 
-          for (i = 0; i<(NUM_MAX_NODOS+1); i++){
+          for (i = 0; i<NUM_MAX_NODOS; i++){
             rssi_temp = rcvPkt->rssi[i];
             if (rssi_temp>= 128)
                 rssi_dbm[id-1][i] = rssi_temp - 45 - 256;
@@ -324,6 +325,7 @@ implementation
           {
             ret = uartQueue[uartIn];
             
+            /* <- Provisional
             //La idea es mandar la tabla de rssi por SERIAL
             //Despues mandar la tabla de alarmas por SERIAL también
             for (i = 0; i < 1; i++)
@@ -339,8 +341,8 @@ implementation
               uartQueue[uartIn+1] = alarma_prueba;
               */
               
-              uartQueue[uartIn] = prueba;
-              uartQueue[uartIn+1] = prueba2;
+              //uartQueue[uartIn] = prueba;
+              //uartQueue[uartIn+1] = prueba2;
               
               /*
               for(i=0; i<1;i++){
@@ -354,7 +356,7 @@ implementation
               //uartQueue[uartIn+1] = prueba2;
             
             uartIn = (uartIn + 1) % UART_QUEUE_LEN;
-          
+            
             if (uartIn == uartOut)
               uartFull = TRUE;
 
@@ -394,8 +396,8 @@ implementation
     call UartAMPacket.setSource(msg, src);
     call UartAMPacket.setGroup(msg, grp);
 
-    if (call UartSend.send[id](addr, uartQueue[uartOut], len) == SUCCESS)
-      call Leds.led1Toggle();
+    if (call UartSend.send[id](addr, uartQueue[uartOut], len) == SUCCESS){}
+      //call Leds.led1Toggle();
     else
       {
         //failBlink();
