@@ -218,9 +218,44 @@ implementation {
   }
 
   event void TimerFinTDMA.fired(){
-    setLeds(0);
+        /* GENERAMOS PAQUETE rcm PARA PUERTO SERIE */
+    if (locked) {
+      return;
+    }
+    else { 
+     
+      test_serial_msg_t* rcm = (test_serial_msg_t*)call Packet.getPayload(&packet, sizeof(test_serial_msg_t));
+        
+      if (rcm == NULL) {          
+        setLeds(1);
+          
+        return;
+      }
+          
+      if (call Packet.maxPayloadLength() < sizeof(test_serial_msg_t)) {
+        setLeds(2);
+        return;
+      }
+      
+      rcm->idNodo = z;      
+       for(j=0; j<NUM_MAX_NODOS; j++){
+          rcm->rssi_prueba[j] = rssi_prueba[i][j];
+          /* REALIZA UN ENVIO POR CADA ITERACIÓN (No funciona, solo se recibe el último) */
+         setLeds(7);
+        }
+        if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(test_serial_msg_t)) == SUCCESS) {
+          locked = TRUE;
+        }
+      z++;
+      if(z != NUM_MAX_NODOS){
+        call TimerFinTDMA.startOneShot(TIMER_PERIODO_NODO); 
+        setLeds(0);
+      }
+      else{
+        z = 0;
+      }
+    }
   }
-
 
 
 
@@ -262,46 +297,7 @@ implementation {
 
     }
 
-    /* GENERAMOS PAQUETE rcm PARA PUERTO SERIE */
-    if (locked) {
-      return;
-    }
-    else {
-      
-      
-      for(i=0; i<NUM_MAX_NODOS; i++){  
-        
-        test_serial_msg_t* rcm = (test_serial_msg_t*)call Packet.getPayload(&packet, sizeof(test_serial_msg_t));
-        
-        if (rcm == NULL) {
-          setLeds(1);
-          return;
-        }
-          
-        if (call Packet.maxPayloadLength() < sizeof(test_serial_msg_t)) {
-          setLeds(2);
-          return;
-        }
 
-        
-          
-          rcm->idNodo = i;      
-          for(j=0; j<NUM_MAX_NODOS; j++){
-            rcm->rssi_prueba[i] = rssi_prueba[i][j];
-          }         
-        
-        
-        /* REALIZA UN ENVIO POR CADA ITERACIÓN (No funciona, solo se recibe el último) */
-        setLeds(7);
-        if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(test_serial_msg_t)) == SUCCESS) {
-          locked = TRUE;
-        }
-
-      }
-
-      
-      
-    }
   }
 
 
