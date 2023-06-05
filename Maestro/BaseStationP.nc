@@ -47,11 +47,11 @@ implementation
     RADIO_QUEUE_LEN = (16+16*NUM_MAX_NODOS),
   };
 
-  int16_t rssi_dbm [NUM_MAX_NODOS][NUM_MAX_NODOS]; // No es lo mismo que rssi_historico porque puede almacenar un valor que haya hecho saltar una alarma
-  bool strikes [NUM_MAX_NODOS][NUM_MAX_NODOS][PERIODO_CALIBRACION];
-  int16_t rssi_historico [NUM_MAX_NODOS][NUM_MAX_NODOS][PERIODO_CALIBRACION];
-  bool alarma [NUM_MAX_NODOS][NUM_MAX_NODOS]; // Enlace entre dos nodos que ha saltado la alarma
-  int posicion_medida[NUM_MAX_NODOS];
+  int16_t rssi_dbm [NUM_MAX_NODOS-1][NUM_MAX_NODOS]; // No es lo mismo que rssi_historico porque puede almacenar un valor que haya hecho saltar una alarma
+  bool strikes [NUM_MAX_NODOS-1][NUM_MAX_NODOS][PERIODO_CALIBRACION];
+  int16_t rssi_historico [NUM_MAX_NODOS-1][NUM_MAX_NODOS][PERIODO_CALIBRACION];
+  bool alarma [NUM_MAX_NODOS-1][NUM_MAX_NODOS]; // Enlace entre dos nodos que ha saltado la alarma
+  int posicion_medida[NUM_MAX_NODOS-1];
   bool calibrado = FALSE; // Indicará si se han tomado las primeras medida de calibración
   
   uint16_t node_id_master;
@@ -82,24 +82,7 @@ implementation
   bool       radioBusy, radioFull;
 
   uint8_t count = 0;
-  uint8_t tmpLen;
-
-
-  /* VARIABLES DE PRUEBA PARA ENVIAR POR PUERTO SERIE */
-  int16_t rssi_prueba[NUM_MAX_NODOS][NUM_MAX_NODOS] = {
-        { -60, -70, -80, -90 },
-        { -75, -65, -85, -95 },
-        { -90, -85, -75, -65 },
-        { -10, -20, -30, -40}};
-  bool alarma_prueba [NUM_MAX_NODOS][NUM_MAX_NODOS] = {
-        {TRUE, FALSE, FALSE, TRUE},
-        {FALSE, FALSE, FALSE, FALSE},
-        {FALSE, TRUE, TRUE, FALSE},
-        {TRUE, TRUE, TRUE, TRUE}};
-  
-  
-  int16_t prueba = 13;
-  int8_t prueba2 = 25;
+  uint8_t tmpLen;  
   
 
   // ########## TDMA ############
@@ -143,15 +126,7 @@ implementation
       *xp = *yp;
       *yp = temp;
   }
-/*
-  void dropBlink() {
-    call Leds.led2Toggle();
-  }
 
-  void failBlink() {
-    call Leds.led2Toggle();
-  }
-*/
   // ############################
   // #          EVENTOS         #
   // ############################
@@ -206,6 +181,8 @@ implementation
   event void TimerLeds.fired(){
     setLeds(0);
   }
+
+
 
   event void TimerTramaTDMA.fired() {
     if (!busy) {
@@ -269,6 +246,9 @@ implementation
 						    uint8_t len) {
     
     message_t *ret = msg;
+    message_t* msg_send;
+    uint8_t i = 0;
+
     // Tratamos los mensajes de respuesta
     if (len == sizeof(RespuestaMsg)){
       RespuestaMsg* rcvPkt = (RespuestaMsg*)payload;
@@ -331,55 +311,50 @@ implementation
           }
         }
       
-        // Aquí se imprime el contenido del mensaje
+        // Aquí se envía por el puerto serie. 
+        // Enviamos un mensaje con la tabla de RSSI medidos y otro con la tabla alarmas.
         atomic {
-          if (!uartFull)
-          {
-            ret = uartQueue[uartIn];
-            uartQueue[uartIn] = msg;
-            
-            /* <- Provisional
-            //La idea es mandar la tabla de rssi por SERIAL
-            //Despues mandar la tabla de alarmas por SERIAL también
-            for (i = 0; i < 1; i++)
-              
-              /* CONTENIDO ORIGINAL SIN MODIFICAR
-              uartQueue[uartIn] = rssi_dbm;
-              uartQueue[uartIn+1] = alarma;
-              */
-
-              /* CONTENIDO PARA PROBAR CON ARRAYS QUE ESTÁN CONFORMADOS
-              BIEN CON TOTAL SEGURIDAD (Aunque rssi_dbm y alarma tb parecen estarlo)
-              uartQueue[uartIn] = rssi_prueba;
-              uartQueue[uartIn+1] = alarma_prueba;
-              */
-              
-             
-              //uartQueue[uartIn+1] = prueba2;
-              
-              /*
-              for(i=0; i<1;i++){
-                for(j=0;j<=1;j++){
-                  uartIn = uartIn + 16*j;
-                  uartQueue[uartIn] = rssi_prueba[i][j];
+          for (i=0;i<2;i++){
+            RespuestaMsg* msgSerial = (RespuestaMsg*)(call Packet.getPayload(&pkt, sizeof(RespuestaMsg)));
+            msgSerial -> idM = rcvPkt -> idM;
+            msgSerial -> idS = rcvPkt -> idS;
+            switch(i){
+              case 1: // RSSI
+                msgSerial -> tipoMsg = msg_RSSI;
+                for (j=0; j<(NUM_MAX_NODOS); j++){
+                  msgSerial -> rssi[j] = rssi_dbm[rcvPkt -> idS - 1][j];
                 }
-              }
-              */
+                break;
+              case 0: // Alarmas
+                msgSerial -> tipoMsg = msg_ALRM;
+                for (j=0; j<(NUM_MAX_NODOS); j++){
+                  if (alarma[rcvPkt -> idS - 1][j])
+                    msgSerial -> rssi[j] = 1;
+                  else
+                    msgSerial -> rssi[j] = 1;
+                }
+                break;
+            }
+
+            while(uartFull){}
+            if (!uartFull){
               
-              //uartQueue[uartIn+1] = prueba2;
-            
-            uartIn = (uartIn + 1) % UART_QUEUE_LEN;
-            
-            if (uartIn == uartOut)
-              uartFull = TRUE;
+              ret = uartQueue[uartIn];
+              memcpy(msg->data, msgSerial, sizeof(RespuestaMsg));
+              uartQueue[uartIn] = msg;
+              
+              uartIn = (uartIn + 1) % UART_QUEUE_LEN;
+              
+              if (uartIn == uartOut)
+                uartFull = TRUE;
 
-            if (!uartBusy)
-              {
-                post uartSendTask();
-                uartBusy = TRUE;
-              }
+              if (!uartBusy)
+                {
+                  post uartSendTask();
+                  uartBusy = TRUE;
+                }
+            }
           }
-
         }
 
       }
@@ -411,10 +386,8 @@ implementation
     call UartAMPacket.setGroup(msg, grp);
 
     if (call UartSend.send[id](addr, uartQueue[uartOut], len) == SUCCESS){}
-      //call Leds.led1Toggle();
     else
       {
-        //failBlink();
         post uartSendTask();
       }
   }

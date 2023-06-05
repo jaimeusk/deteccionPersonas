@@ -1,1 +1,4 @@
 *_backup
+.venv
+TestSerial
+SerialPort

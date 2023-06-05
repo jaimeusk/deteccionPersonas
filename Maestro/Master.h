@@ -8,6 +8,8 @@
 //Tipos de mensaje
 #define msg_TDMA 0
 #define msg_RESP 1
+#define msg_RSSI 2
+#define msg_ALRM 3
 
 
 enum {

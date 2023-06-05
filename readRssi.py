@@ -1,132 +1,108 @@
-# coding=utf-8
-
-################################################################################
-#####                             readRssi.py                              #####
-#####                           Amando Antoñano                            #####
-#####                Redes de Sensores y Sistemas Autonomos                #####
-#####                        Universidad de Sevilla                        #####
-################################################################################
-
-### Script para leer del puerto serie mensajes con una tabla con rssi entre nodos y otra tabla alarmas
-### - 8 bits para valor boolean TRUE o FALSE
-### - 16 bits para medida de RSSI
-
-##La idea es que tenga este formato
-##                                      | ID = 1 | ID = 2 | ID = 3 | BASE ST |
-##                              --------+--------+--------+--------+---------+ 
-##                              ID = 1  |  RSSI  |  RSSI  |  RSSI  |  RSSI   |
-##                              ID = 2  |  RSSI  |  RSSI  |  RSSI  |  RSSI   |
-##                              ID = 3  |  RSSI  |  RSSI  |  RSSI  |  RSSI   |
-##                              BASE ST |  RSSI  |  RSSI  |  RSSI  |  RSSI   |
-##                              --------+--------+--------+--------+---------+ 
-## SI EN LA TABLA ALARMAS HAY UN TRUE EN tablaAlarma[I][J] EL VALOR CORRESPONDIENTE EN tablaRssi [i][j] de RSSI aparecerá en rojo
-
 import serial
+from colorama import Fore
+from os import system
+import struct
+
+#   [Constantes]
+NUM_MAX_NODOS:int   = 4
+MSG_RSSI:int        = 2
+MSG_ALRM:int        = 3
+
+#   [Variables]
+tablaRssi:list      = [[0.0]*NUM_MAX_NODOS for j in range(NUM_MAX_NODOS-1)]
+tablaAlarmas:list   = [[None]*NUM_MAX_NODOS for j in range(NUM_MAX_NODOS-1)] # Realmente no la utilizamos, pero aquí está por si acaso...
+tablaColores:list   = [[Fore.RESET]*NUM_MAX_NODOS for j in range(NUM_MAX_NODOS-1)]
 
 
-NUM_MAX_FILAS = 4
-NUM_MAX_COLUMNAS = 4
-index = 0
-
-
-##Antes definidas de otra forma pero me decian al ejecutarse los for de abajo que los indices se salian
-##Asi que busque y encontre esta sugerencia
-tablaRssi = [[0] * NUM_MAX_COLUMNAS for _ in range(NUM_MAX_FILAS)]
-tablaAlarmas = [[0] * NUM_MAX_COLUMNAS for _ in range(NUM_MAX_FILAS)]
-
-
-
-#hay que mirar que USBx es con motelist
 s = serial.Serial(port= '/dev/ttyUSB0', baudrate=115200)
 
+#   [Funciones]
+def espera_preambulo() -> None:
+    """
+    Función que leerá el puerto serie hasta que se reciba la secuencia de bytes 
+    '\x00\xff\xff\x00', en cuyo caso lerá 4 bytes más antes de salir del bucle.
+    """
+    secuencia:list[int]=[1,1,1,1]
+    contador:int=0
 
-while True:
-# 	while True:
-# 		if not ord(s.read()) == 0x22: continue
-# 		if not ord(s.read()) == 0x01: continue
-# 		break
+    while True:
+        secuencia[contador]=ord(s.read(1))
+        if (    secuencia == [0,255,255,0] or 
+                secuencia == [0,0,255,255] or 
+                secuencia == [255,0,0,255] or 
+                secuencia == [255,255,0,0]):
+            break # Hemos recibido la secuencia que esperábamos
+        contador += 1
+        if contador > 3: contador = 0
+    s.read(4)
 
-##Supuestamente recibire una tabla 4x4 con medidas rssi de 16 bits, es decir, recibire 16x16 = 256 bits = 32 Bytes
-##Los primeros 32 Bytes contendran los valores rssi de la tabla rssi
-    
-    ############# ASI OBTENGO tablaRSSI DEL PUERTO SERIAL ##################
 
-        for i in range (4):
-            for j in range(4): 
-                ##Leo los bytes de 2 en 2 porque cada 2B tengo un rssi
-                r = s.read(2)
-                ##Combino ambos bytes para obtener el valor del rssi
-                rssi = (r[0]<<8) | r[1]
-                tablaRssi [i][j] = rssi
+
+
+#   [Script Principal]
+while True:   
+    # Formato del mensaje:
+    #   00 FF FF 00 AA BB CC DD TM IM IS XXXX YYYY ZZZZ KKKK -> TOTAL: 19 Bytes
+    #   ↳[--Preámbulo--(8B)--]↲  |  |  | [2B] [2B] [2B] [2B]
+    #            Tipo de mensaje ↲  |  |   |    |    |    ↳ Medida [3]
+    #                    Id Maestro ↲  |   |    |    ↳ Medida [2]
+    #                          Id Nodo ↲   |    ↳ Medida [1]
+    #                                      ↳ Medida [Base Station]
+
+    espera_preambulo()
+    tipo_msg:int = ord(s.read(1))
+    if tipo_msg == MSG_RSSI:
+        id_nodo:int
+        for i in range(10):
+            if i == 0:
+                s.read(1) # Es el ID del maestro, no lo vamos a usar
+            elif i == 1:
+                id_nodo=ord(s.read(1))
+            elif i==2 or i==4 or i==6 or i == 8:
+                tablaRssi[id_nodo-1][int((i-2)/2)]=(struct.unpack("<h",s.read(2))[0]/100)
+
+
+    elif tipo_msg == MSG_ALRM:
+        id_nodo:int
+        for i in range(10):
+            if i == 0:
+                s.read(1) # Es el ID del maestro, no lo vamos a usar
+            elif i == 1:
+                id_nodo=ord(s.read(1))
+            elif i == 3 or i == 5 or i == 7 or i == 9:
+                tablaAlarmas[id_nodo-1][int((i-3)/2)] = False
+                tablaColores[id_nodo-1][int((i-3)/2)] = Fore.RESET
+                if ord(s.read(1)) == 1:
+                    tablaAlarmas[id_nodo-1][int((i-3)/2)] = True
+                    tablaColores[id_nodo-1][int((i-3)/2)] = Fore.RED
                 
-    ###OTRA FORMA QUE NO SE SI SERIA CORRECTA
-        # for i in range (4):
-        #     for j in range(4): 
-        #         ##Leo los bytes de 2 en 2 porque cada 2B tengo un rssi
-        #         index = 0
-        #         r = s.read(32)
-        #         ##Combino ambos bytes para obtener el valor del rssi
-        #         rssi = ord(r[index])<<8 | ord(r[index + 1])
-        #         tablaRssi [i][j] = rssi
-
-        #         ##Asi ire cogiendo las posic 0-1, 2-3, 3-4 de la variable r que contiene los 32B
-        #         index += 2
-                
-                
-                
-    ###Para la proxima tabla que me llega es distinto porque los valores TRUE y false valen 8 bits
-    ###Por lo que tendre 8b x 16 celdas = 128 bits = 16 bytes
-                
-    ############# ASI OBTENGO tablaAlarmas DEL PUERTO SERIAL ################## 
-
-        for i in range (4):
-            for j in range(4): 
-                ##Leo los bytes de 2 en 2 porque cada boolean vale 8 bits pero lo recibo en 16 bits 
-                r = s.read(2)
-                ##Combino el valor de ambos bytes para obtener el boolean
-                alarma = (r[0]<<8) | r[1]
-                tablaAlarmas [i][j] = alarma
-
-        
-        
-        
-        ###########################
-        ####IMPRIMO TABLA FINAL ###
-        ###########################
-        
-
-        # Imprimir encabezado de columnas, hay 4 y compruebo que la ult tenga BASE ST
-        for i in range(NUM_MAX_COLUMNAS):
-            if i == (NUM_MAX_COLUMNAS - 1):
-                print(" BASE ST |")
-            print("| ID = {}".format(i + 1))
-
-            
-
-        print("\n")
-        print("--------+--------+--------+--------+---------+")
-
-        # Imprimir filas
-        for i in range(NUM_MAX_COLUMNAS):
-        # IMPRIMO LA FILA
-            if i == (NUM_MAX_COLUMNAS - 1):
-
-                print(" BASE ST |")
-            print("| ID = {}".format(i + 1))
-
-
-        # Imprimir valores de celdas DE ESA FILA
-            for j in range(NUM_MAX_FILAS):
-                if tablaAlarmas[i][j] == True:
-                    ###No es seguro que aplique el color rojo porquqe depende de la terminal y su config
-                    print("| \033[31m{}\033[0m".format(tablaRssi[i][j]))  # Impresión en color rojo
                 else:
-                    print("| {} ".format(tablaRssi[i][j]))
+                    tablaColores[id_nodo-1][int((i-3)/2)] = Fore.MAGENTA
+            else:
+                s.read(1)
 
-            print("\n")  # PASO A LA PROX FILA
+        
+    ###########################
+    ####IMPRIMO TABLA FINAL ###
+    ###########################
 
-        print("--------+--------+--------+--------+---------+")
+    system("clear")
+    print(f"""
+        |  BASE ST |  ID = 1  |  ID = 2  |  ID = 3  |
+--------+----------+----------+----------+----------+ 
+ID = 1  | {tablaColores[0][0]}{tablaRssi[0][0]:^+8.3f}{Fore.RESET} |     -    | {tablaColores[0][2]}{tablaRssi[0][2]:^+8.3f}{Fore.RESET} | {tablaColores[0][3]}{tablaRssi[0][3]:^+8.3f}{Fore.RESET} |
+ID = 2  | {tablaColores[1][0]}{tablaRssi[1][0]:^+8.3f}{Fore.RESET} | {tablaColores[1][1]}{tablaRssi[1][1]:^+8.3f}{Fore.RESET} |     -    | {tablaColores[1][3]}{tablaRssi[1][3]:^+8.3f}{Fore.RESET} |
+ID = 3  | {tablaColores[2][0]}{tablaRssi[2][0]:^+8.3f}{Fore.RESET} | {tablaColores[2][1]}{tablaRssi[2][1]:^+8.3f}{Fore.RESET} | {tablaColores[2][2]}{tablaRssi[2][2]:^+8.3f}{Fore.RESET} |     -    |
+--------+----------+----------+----------+----------+
+Nota: Todas las medidas están expresadas en {Fore.BLUE}dBm{Fore.RESET}.""")
 
-
-s.close()
-
+    print(f"""DEBUG:
+    Nodo 1:
+        tablaRssi = {tablaRssi[0][0]}, {tablaRssi[0][1]}, {tablaRssi[0][2]}, {tablaRssi[0][3]}
+        tablaAlarmas = {tablaAlarmas[0][0]}, {tablaAlarmas[0][1]}, {tablaAlarmas[0][2]}, {tablaAlarmas[0][3]}    
+    Nodo 2:
+        tablaRssi = {tablaRssi[1][0]}, {tablaRssi[1][1]}, {tablaRssi[1][2]}, {tablaRssi[1][3]}
+        tablaAlarmas = {tablaAlarmas[1][0]}, {tablaAlarmas[1][1]}, {tablaAlarmas[1][2]}, {tablaAlarmas[1][3]}  
+    Nodo 3:
+        tablaRssi = {tablaRssi[2][0]}, {tablaRssi[2][1]}, {tablaRssi[2][2]}, {tablaRssi[2][3]}
+        tablaAlarmas = {tablaAlarmas[2][0]}, {tablaAlarmas[2][1]}, {tablaAlarmas[2][2]}, {tablaAlarmas[2][3]}""")

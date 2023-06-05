@@ -161,14 +161,16 @@ implementation {
                 call TimerLeds.startOneShot(TIMER_ON_LEDS);
 
             }
-         } else if (len == sizeof(RespuestaMsg)){
+         } 
+         if (len == sizeof(RespuestaMsg)){
 
             // Recibimos las respuestas de todos los demás nodos y actualizamos nuestro RSSI con ellos
             RespuestaMsg* RespuestaMsg_rx = (RespuestaMsg*)payload;
+            if(RespuestaMsg_rx->tipoMsg==msg_RESP){
 
-            id_rssi = (RespuestaMsg_rx->idS);
-            arrayRSSI_Actual[id_rssi] = getRssi(msg);
-
+                id_rssi = (RespuestaMsg_rx->idS);
+                arrayRSSI_Actual[id_rssi] = getRssi(msg);
+            }
          }
         return msg;
 
