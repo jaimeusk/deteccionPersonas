@@ -1,3 +1,5 @@
+# coding=utf-8
+
 ################################################################################
 #####                             readRssi.py                              #####
 #####                           Amando Antoñano                            #####
@@ -26,6 +28,7 @@ NUM_MAX_FILAS = 4
 NUM_MAX_COLUMNAS = 4
 index = 0
 
+
 ##Antes definidas de otra forma pero me decian al ejecutarse los for de abajo que los indices se salian
 ##Asi que busque y encontre esta sugerencia
 tablaRssi = [[0] * NUM_MAX_COLUMNAS for _ in range(NUM_MAX_FILAS)]
@@ -47,6 +50,7 @@ while True:
 ##Los primeros 32 Bytes contendran los valores rssi de la tabla rssi
     
     ############# ASI OBTENGO tablaRSSI DEL PUERTO SERIAL ##################
+
         for i in range (4):
             for j in range(4): 
                 ##Leo los bytes de 2 en 2 porque cada 2B tengo un rssi
@@ -74,6 +78,7 @@ while True:
     ###Por lo que tendre 8b x 16 celdas = 128 bits = 16 bytes
                 
     ############# ASI OBTENGO tablaAlarmas DEL PUERTO SERIAL ################## 
+
         for i in range (4):
             for j in range(4): 
                 ##Leo los bytes de 2 en 2 porque cada boolean vale 8 bits pero lo recibo en 16 bits 
@@ -81,6 +86,7 @@ while True:
                 ##Combino el valor de ambos bytes para obtener el boolean
                 alarma = (r[0]<<8) | r[1]
                 tablaAlarmas [i][j] = alarma
+
         
         
         
@@ -88,11 +94,13 @@ while True:
         ####IMPRIMO TABLA FINAL ###
         ###########################
         
+
         # Imprimir encabezado de columnas, hay 4 y compruebo que la ult tenga BASE ST
         for i in range(NUM_MAX_COLUMNAS):
             if i == (NUM_MAX_COLUMNAS - 1):
                 print(" BASE ST |")
             print("| ID = {}".format(i + 1))
+
             
 
         print("\n")
@@ -102,6 +110,7 @@ while True:
         for i in range(NUM_MAX_COLUMNAS):
         # IMPRIMO LA FILA
             if i == (NUM_MAX_COLUMNAS - 1):
+
                 print(" BASE ST |")
             print("| ID = {}".format(i + 1))
 
@@ -118,4 +127,6 @@ while True:
 
         print("--------+--------+--------+--------+---------+")
 
+
 s.close()
+

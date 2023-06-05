@@ -3,19 +3,16 @@
 #ifndef SLAVE_H
 #define SLAVE_H
 
+#define NUM_MAX_NODOS 4 //Tiene en cuenta el MAESTRO
 
-#define TEMPERATURA 0
-#define HUMEDAD 1
-#define ILUMINANCIA 2
-
-#define NUM_MAX_NODOS 4
+//Tipos de mensaje
+#define msg_TDMA 0
+#define msg_RESP 1
 
 
 enum {
   AM_SLAVE = 17,
-  TIMER_PERIODO_COMPLETO = 1000,
-  TIMER_PERIODO_TRAMA = 300,
-  TIMER_ON_LEDS = TIMER_PERIODO_TRAMA
+  TIMER_ON_LEDS = 750
 };
 
 
@@ -45,8 +42,9 @@ ESQUEMA EJEMPLO TDMA PARA ACLARAR TIEMPOS:
 
 */
 typedef nx_struct TDMAmsg{
+  nx_uint8_t tipoMsg;
   nx_uint8_t idM;
-  nx_uint8_t idS[NUM_MAX_NODOS];
+  nx_uint8_t idS[NUM_MAX_NODOS-1];
   nx_uint16_t periodo;
   nx_uint16_t tiempoTrama;
   nx_uint16_t tiempoNodo;
@@ -54,9 +52,10 @@ typedef nx_struct TDMAmsg{
 
 
 typedef nx_struct RespuestaMsg{
+  nx_uint8_t tipoMsg;
   nx_uint8_t idM;
   nx_uint8_t idS;
-  nx_uint16_t rssi[NUM_MAX_NODOS+1];
+  nx_uint16_t rssi[NUM_MAX_NODOS];
 
 }RespuestaMsg;
 

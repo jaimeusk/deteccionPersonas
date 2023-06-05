@@ -11,6 +11,7 @@
 #include "Serial.h"
 #include "Master.h"
 
+
 module BaseStationP @safe() {
   uses {
     interface Boot;
@@ -42,7 +43,7 @@ implementation
   // #    VARIABLES GLOBALES    #
   // ############################
   enum {
-    UART_QUEUE_LEN = (16+16*NUM_MAX_NODOS),
+    UART_QUEUE_LEN = (16+16*NUM_MAX_NODOS), //Esta longitud sería válida unicamente
     RADIO_QUEUE_LEN = (16+16*NUM_MAX_NODOS),
   };
 
@@ -68,10 +69,12 @@ implementation
         {FALSE, TRUE, TRUE, FALSE},
         {TRUE, TRUE, TRUE, TRUE}};
 
+  /* VARIABLES USADAS PARA LA ESCRITURA EN EL PUERTO SERIE */
   message_t  uartQueueBufs[UART_QUEUE_LEN];
   message_t  * ONE_NOK uartQueue[UART_QUEUE_LEN];
   uint16_t    uartIn, uartOut;
   bool       uartBusy, uartFull;
+  
 
   message_t  radioQueueBufs[RADIO_QUEUE_LEN];
   message_t  * ONE_NOK radioQueue[RADIO_QUEUE_LEN];
@@ -81,6 +84,24 @@ implementation
   uint8_t count = 0;
   uint8_t tmpLen;
 
+
+  /* VARIABLES DE PRUEBA PARA ENVIAR POR PUERTO SERIE */
+  int16_t rssi_prueba[NUM_MAX_NODOS][NUM_MAX_NODOS] = {
+        { -60, -70, -80, -90 },
+        { -75, -65, -85, -95 },
+        { -90, -85, -75, -65 },
+        { -10, -20, -30, -40}};
+  bool alarma_prueba [NUM_MAX_NODOS][NUM_MAX_NODOS] = {
+        {TRUE, FALSE, FALSE, TRUE},
+        {FALSE, FALSE, FALSE, FALSE},
+        {FALSE, TRUE, TRUE, FALSE},
+        {TRUE, TRUE, TRUE, TRUE}};
+  
+  
+  int16_t prueba = 13;
+  int8_t prueba2 = 25;
+  
+
   // ########## TDMA ############
   uint16_t counter;
   message_t pkt;
@@ -89,7 +110,6 @@ implementation
   // Ahora mismo es un ejemplo, los nodos esclavos son 1,2 y 3.
   // En el futuro tendremos que obtenerlos dinamicamente.
   int ids[3] = {1,2,3};
-  int orden[3] = {0,0,0};
   int i, j, min_idx;
 
   // ############################
@@ -123,7 +143,7 @@ implementation
       *xp = *yp;
       *yp = temp;
   }
-
+/*
   void dropBlink() {
     call Leds.led2Toggle();
   }
@@ -131,7 +151,7 @@ implementation
   void failBlink() {
     call Leds.led2Toggle();
   }
-
+*/
   // ############################
   // #          EVENTOS         #
   // ############################
@@ -198,15 +218,17 @@ implementation
       
       // Rellenamos el mensaje tdma antes de enviarlo
       tdma->idM = node_id_master;
+      tdma->tipoMsg = msg_TDMA;
 
       //El orden en el que pedimos las cosas a los nodos no es relevante.
       //tdma->idS = ids;
       
-      for (i=0; i<NUM_MAX_NODOS; i++){
+      for (i=0; i<(NUM_MAX_NODOS-1); i++){
         tdma->idS[i] = ids[i];
       }
 
       tdma->tiempoTrama = TIMER_PERIODO_TRAMA;
+      tdma->tiempoNodo = TIMER_PERIODO_NODO;
       tdma->periodo = TIMER_PERIODO_COMPLETO;
       
       
@@ -221,7 +243,9 @@ implementation
 
   event void AMSend.sendDone(message_t* msg, error_t error) {
     if (error != SUCCESS)
-      failBlink();
+      {
+
+      }
     else
       atomic
     if (msg == radioQueue[radioOut])
@@ -233,8 +257,8 @@ implementation
       }
     if (&pkt == msg) {
       busy = FALSE;
-      setLeds(7);
-      call TimerLeds.startOneShot(100); //Breve parpadeo 3 leds-->TDMA ENVIADO
+      setLeds(1);
+      call TimerLeds.startOneShot(TIMER_ON_LEDS); //Led 1 --> TDMA ENVIADO
     }
     
     post RadioSendTask();
@@ -248,113 +272,116 @@ implementation
     // Tratamos los mensajes de respuesta
     if (len == sizeof(RespuestaMsg)){
       RespuestaMsg* rcvPkt = (RespuestaMsg*)payload;
-      int id = rcvPkt->idS;
-      int count_strikes = 0;
-      uint16_t rssi_temp;
-      int16_t sum_rssi;
-      int16_t rssi_medio;
+      if (rcvPkt->tipoMsg == msg_RESP){ // Comprobamos que, efectivamente, sea un mensaje de respuesta
+        int id = rcvPkt->idS;
+        int count_strikes = 0;
+        uint8_t rssi_temp;
+        int16_t sum_rssi;
+        int16_t rssi_medio;
+        setLeds(2);
+        call TimerLeds.startOneShot(TIMER_ON_LEDS); //Led 1 --> TDMA ENVIADO
 
-      // Debugueo con LEDs
-      //call TimerLeds.startOneShot(1000);
-      if ((rcvPkt -> idS == 1 || rcvPkt -> idS == 2 || rcvPkt -> idS == 3)  &&
-                rcvPkt -> idM == node_id_master){
-        if(rcvPkt -> idS == 1){
-          setLeds(1);
-        } else if (rcvPkt -> idS == 2){
-          setLeds(2);
-        } else if (rcvPkt -> idS == 3){
-          setLeds(4);
-        call TimerLeds.startOneShot(TIMER_ON_LEDS);
-      }
+        if ((rcvPkt -> idS == 1 || rcvPkt -> idS == 2 || rcvPkt -> idS == 3)  &&
+                  rcvPkt -> idM == node_id_master){
+          // Introducimos el valor del los rssi medidos 
+          for (i = 0; i<NUM_MAX_NODOS; i++){
+            rssi_temp = rcvPkt->rssi[i];
+            if (rssi_temp>= 128)
+                rssi_dbm[id-1][i] = rssi_temp - 45 - 256;
+            else
+                rssi_dbm[id-1][i] = rssi_temp - 45;
+            
 
-      // Introducimos el valor del los rssi medidos 
-      for (i = 0; i<NUM_MAX_NODOS; i++){
-        rssi_temp = rcvPkt->rssi[i];
-        if (rssi_temp>= 128)
-            rssi_dbm[id-1][i] = rssi_temp - 45 - 256;
-        else
-            rssi_dbm[id-1][i] = rssi_temp - 45;
-        
-
-        if (!calibrado){
-          //Añadimos la medida a rssi_histórico y un False a Strikes
-          rssi_historico[id-1][i][posicion_medida[id-1]] = rssi_dbm[id-1][i];
-          strikes[id-1][i][posicion_medida[id-1]] = FALSE;
-          alarma[id-1][i] = FALSE;
-        }else{
-          sum_rssi = 0;
-          for(j = 0;j<(PERIODO_CALIBRACION-1);j++){
-            sum_rssi += rssi_historico[id-1][i][j];
+            if (!calibrado){
+              //Añadimos la medida a rssi_histórico y un False a Strikes
+              rssi_historico[id-1][i][posicion_medida[id-1]] = rssi_dbm[id-1][i];
+              strikes[id-1][i][posicion_medida[id-1]] = FALSE;
+              alarma[id-1][i] = FALSE;
+            }else{
+              sum_rssi = 0;
+              for(j = 0;j<(PERIODO_CALIBRACION-1);j++){
+                sum_rssi += rssi_historico[id-1][i][j];
+              }
+              rssi_medio = sum_rssi/PERIODO_CALIBRACION;
+              if(rssi_dbm[id-1][i]<(0.8*rssi_medio)||rssi_dbm[id-1][i]>(1.2*rssi_medio)){
+                // Añadimos rssi_medio a rssi_histórico y un True a Strikes
+                rssi_historico[id-1][i][posicion_medida[id-1]] = rssi_medio;
+                strikes[id-1][i][posicion_medida[id-1]]=TRUE;
+              }else{
+                // Añadimos la medida a rssi_histórico y un False a Strikes
+                rssi_historico[id-1][i][posicion_medida[id-1]] = rssi_dbm[id-1][i];
+                strikes[id-1][i][posicion_medida[id-1]]=FALSE;
+              }
+              // Comprobamos si hay más de (ALARMA_STRIKES) alarmas en Strikes
+              count_strikes = 0;
+              for(j = 0; j<PERIODO_CALIBRACION; j++)
+                if (strikes[id-1][i][j])
+                  count_strikes++;
+              if (count_strikes >= ALARMA_STRIKES)
+                alarma[id-1][i] = TRUE;
+              else
+                alarma[id-1][i] = FALSE;
+            }
           }
-          rssi_medio = sum_rssi/PERIODO_CALIBRACION;
-          if(rssi_dbm[id-1][i]<(0.8*rssi_medio)||rssi_dbm[id-1][i]>(1.2*rssi_medio)){
-            // Añadimos rssi_medio a rssi_histórico y un True a Strikes
-            rssi_historico[id-1][i][posicion_medida[id-1]] = rssi_medio;
-            strikes[id-1][i][posicion_medida[id-1]]=TRUE;
-          }else{
-            // Añadimos la medida a rssi_histórico y un False a Strikes
-            rssi_historico[id-1][i][posicion_medida[id-1]] = rssi_dbm[id-1][i];
-            strikes[id-1][i][posicion_medida[id-1]]=FALSE;
+          //Aumentamos el valor de "posicion_medida" y, si es mayor de PERIODO_CALIBRACION, lo reseteamos
+          posicion_medida[id-1]++;
+          if (posicion_medida[id-1] >= PERIODO_CALIBRACION){
+            posicion_medida[id-1] = 0;
+            calibrado = TRUE;
           }
-          // Comprobamos si hay más de (ALARMA_STRIKES) alarmas en Strikes
-          count_strikes = 0;
-          for(j = 0; j<PERIODO_CALIBRACION; j++)
-            if (strikes[id-1][i][j])
-              count_strikes++;
-          if (count_strikes >= ALARMA_STRIKES)
-            alarma[id-1][i] = TRUE;
-          else
-            alarma[id-1][i] = FALSE;
-        }
-
-        }
-        //Aumentamos el valor de "posicion_medida" y, si es mayor de PERIODO_CALIBRACION, lo reseteamos
-        posicion_medida[id-1]++;
-        if (posicion_medida[id-1] >= PERIODO_CALIBRACION){
-          posicion_medida[id-1] = 0;
-          calibrado = TRUE;
         }
       
-      }
+        // Aquí se imprime el contenido del mensaje
+        atomic {
+          if (!uartFull)
+          {
+            ret = uartQueue[uartIn];
+            uartQueue[uartIn] = msg;
+            
+            /* <- Provisional
+            //La idea es mandar la tabla de rssi por SERIAL
+            //Despues mandar la tabla de alarmas por SERIAL también
+            for (i = 0; i < 1; i++)
+              
+              /* CONTENIDO ORIGINAL SIN MODIFICAR
+              uartQueue[uartIn] = rssi_dbm;
+              uartQueue[uartIn+1] = alarma;
+              */
 
-      // Aquí se imprime el contenido del mensaje
-      atomic {
-        if (!uartFull)
-        {
-          ret = uartQueue[uartIn];
-          
-          //La idea es mandar la tabla de rssi por SERIAL
-          //Despues mandar la tabla de alarmas por SERIAL también
-          for (i = 0; i < 4; i++){
-            for (int j = 0; j <4; j++){
-              uartQueue[uartIn] = rssi_prueba [i][j];
-              uartIn = (uartIn + 1) % UART_QUEUE_LEN;
-            }
-          } 
-         
-          for (i = 0; i < 4; i++){
-            for (int j = 0; j <4; j++){
-              uartQueue[uartIn] = alarma_prueba[i][j];
-              uartIn = (uartIn + 1) % UART_QUEUE_LEN;
-            }
+              /* CONTENIDO PARA PROBAR CON ARRAYS QUE ESTÁN CONFORMADOS
+              BIEN CON TOTAL SEGURIDAD (Aunque rssi_dbm y alarma tb parecen estarlo)
+              uartQueue[uartIn] = rssi_prueba;
+              uartQueue[uartIn+1] = alarma_prueba;
+              */
+              
+             
+              //uartQueue[uartIn+1] = prueba2;
+              
+              /*
+              for(i=0; i<1;i++){
+                for(j=0;j<=1;j++){
+                  uartIn = uartIn + 16*j;
+                  uartQueue[uartIn] = rssi_prueba[i][j];
+                }
+              }
+              */
+              
+              //uartQueue[uartIn+1] = prueba2;
+            
+            uartIn = (uartIn + 1) % UART_QUEUE_LEN;
+            
+            if (uartIn == uartOut)
+              uartFull = TRUE;
+
+            if (!uartBusy)
+              {
+                post uartSendTask();
+                uartBusy = TRUE;
+              }
           }
 
-          
-        
-          if (uartIn == uartOut)
-            uartFull = TRUE;
-
-          if (!uartBusy)
-            {
-              post uartSendTask();
-              uartBusy = TRUE;
-            }
-          uartIn = 0;
         }
-        else
-          dropBlink();
 
-        
       }
     }
     return ret;
@@ -383,18 +410,18 @@ implementation
     call UartAMPacket.setSource(msg, src);
     call UartAMPacket.setGroup(msg, grp);
 
-    if (call UartSend.send[id](addr, uartQueue[uartOut], len) == SUCCESS)
-      call Leds.led1Toggle();
+    if (call UartSend.send[id](addr, uartQueue[uartOut], len) == SUCCESS){}
+      //call Leds.led1Toggle();
     else
       {
-        failBlink();
+        //failBlink();
         post uartSendTask();
       }
   }
 
   event void UartSend.sendDone[am_id_t id](message_t* msg, error_t error) {
-    if (error != SUCCESS)
-      failBlink();
+    if (error != SUCCESS){}
+      //failBlink();
     else
       atomic
     if (msg == uartQueue[uartOut])
@@ -430,8 +457,7 @@ implementation
             radioBusy = TRUE;
           }
       }
-      else
-        dropBlink();
+
 
     if (reflectToken) {
       //call UartTokenReceive.ReflectToken(Token);
@@ -463,10 +489,11 @@ implementation
     call AMPacket.setSource(msg, source);
     
     if (call AMSend.send(addr, msg, len) == SUCCESS)
-      call Leds.led0Toggle();
+      {//call Leds.led0Toggle();
+      }
     else
       {
-        failBlink();
+        //failBlink();
         post RadioSendTask();
       }
   }
