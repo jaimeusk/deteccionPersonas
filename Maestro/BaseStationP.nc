@@ -58,7 +58,7 @@ implementation
 
   message_t  uartQueueBufs[UART_QUEUE_LEN];
   message_t  * ONE_NOK uartQueue[UART_QUEUE_LEN];
-  uint8_t    uartIn, uartOut;
+  uint16_t    uartIn, uartOut;
   bool       uartBusy, uartFull;
 
   message_t  radioQueueBufs[RADIO_QUEUE_LEN];
@@ -313,11 +313,21 @@ implementation
           
           //La idea es mandar la tabla de rssi por SERIAL
           //Despues mandar la tabla de alarmas por SERIAL también
-          for (i = 0; i < 1; i++)
-            uartQueue[uartIn] = rssi_dbm;
-            uartQueue[uartIn+1] = alarma;
+          for (i = 0; i < 4; i++){
+            for (int j = 0; j <4; j++){
+              uartQueue[uartIn] = rssi_dbm [i][j];
+              uartIn = (uartIn + 1) % UART_QUEUE_LEN;
+            }
+          } 
+         
+          for (i = 0; i < 4; i++){
+            for (int j = 0; j <4; j++){
+              uartQueue[uartIn] = alarma[i][j];
+              uartIn = (uartIn + 1) % UART_QUEUE_LEN;
+            }
+          }
+
           
-          uartIn = (uartIn + 1) % UART_QUEUE_LEN;
         
           if (uartIn == uartOut)
             uartFull = TRUE;
@@ -327,9 +337,12 @@ implementation
               post uartSendTask();
               uartBusy = TRUE;
             }
+          uartIn = 0;
         }
         else
           dropBlink();
+
+        
       }
     }
     return ret;
