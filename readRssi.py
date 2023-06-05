@@ -7,12 +7,20 @@ import struct
 NUM_MAX_NODOS:int   = 4
 MSG_RSSI:int        = 2
 MSG_ALRM:int        = 3
+MAX_STRIKES:int     = 3
+T_CALIBRACION:int   = 15
+TOLERANCIA:float    = 0.5
 
 #   [Variables]
+# Nota: al inicializar las tablas de esta forma, una tabla de tamaño x[4][3][2] se inicializaría con [[["x"]*2 for j in range(3)] for i in range(4)]
 tablaRssi:list      = [[0.0]*NUM_MAX_NODOS for j in range(NUM_MAX_NODOS-1)]
-tablaAlarmas:list   = [[None]*NUM_MAX_NODOS for j in range(NUM_MAX_NODOS-1)] # Realmente no la utilizamos, pero aquí está por si acaso...
-tablaColores:list   = [[Fore.RESET]*NUM_MAX_NODOS for j in range(NUM_MAX_NODOS-1)]
+tablaAlarmas:list   = [[Fore.RESET]*NUM_MAX_NODOS for j in range(NUM_MAX_NODOS-1)]
 
+strikes:list        = [[[False]*T_CALIBRACION for j in range(NUM_MAX_NODOS)]for i in range(NUM_MAX_NODOS-1)] # Array NUM_MAX_NODOS x NUM_MAX_NODOS-1 (HxV)
+rssi_historico:list = [[[None]*T_CALIBRACION for j in range(NUM_MAX_NODOS)]for i in range(NUM_MAX_NODOS-1)]
+calibrado:list      = [False]*(NUM_MAX_NODOS-1)
+posicion_medida:list= [0]*(NUM_MAX_NODOS-1)
+rssi_medio:list     = [[0.0]*NUM_MAX_NODOS for j in range(NUM_MAX_NODOS-1)]
 
 s = serial.Serial(port= '/dev/ttyUSB0', baudrate=115200)
 
@@ -60,49 +68,75 @@ while True:
                 id_nodo=ord(s.read(1))
             elif i==2 or i==4 or i==6 or i == 8:
                 tablaRssi[id_nodo-1][int((i-2)/2)]=(struct.unpack("<h",s.read(2))[0]/100)
-
-
-    elif tipo_msg == MSG_ALRM:
-        id_nodo:int
-        for i in range(10):
-            if i == 0:
-                s.read(1) # Es el ID del maestro, no lo vamos a usar
-            elif i == 1:
-                id_nodo=ord(s.read(1))
-            elif i == 3 or i == 5 or i == 7 or i == 9:
-                tablaAlarmas[id_nodo-1][int((i-3)/2)] = False
-                tablaColores[id_nodo-1][int((i-3)/2)] = Fore.RESET
-                if ord(s.read(1)) == 1:
-                    tablaAlarmas[id_nodo-1][int((i-3)/2)] = True
-                    tablaColores[id_nodo-1][int((i-3)/2)] = Fore.RED
-                
-                else:
-                    tablaColores[id_nodo-1][int((i-3)/2)] = Fore.MAGENTA
-            else:
-                s.read(1)
-
         
-    ###########################
-    ####IMPRIMO TABLA FINAL ###
-    ###########################
+        for i in range(NUM_MAX_NODOS):
+            if not calibrado[id_nodo-1]:
+                rssi_historico[id_nodo-1][i][posicion_medida[id_nodo-1]]=tablaRssi[id_nodo-1][i]
+                strikes[id_nodo-1][i][posicion_medida[id_nodo-1]] = False
+                tablaAlarmas[id_nodo-1][i] = Fore.RESET
+            else:
+                sum_rssi:float = 0.0
+                for j in range(T_CALIBRACION):
+                    sum_rssi += rssi_historico[id_nodo-1][i][j]
+                rssi_medio[id_nodo-1][i] = sum_rssi/T_CALIBRACION
 
+                if(     abs(tablaRssi[id_nodo-1][i])<abs((1-TOLERANCIA)*rssi_medio[id_nodo-1][i]) or 
+                        abs(tablaRssi[id_nodo-1][i])>abs((1+TOLERANCIA)*rssi_medio[id_nodo-1][i])):
+                    # Añadimos rssi_medio al histórico y un True a Strikes
+                    rssi_historico[id_nodo-1][i][posicion_medida[id_nodo-1]] = rssi_medio[id_nodo-1][i]
+                    strikes[id_nodo-1][i][posicion_medida[id_nodo-1]] = True
+                else:
+                    # Añadimos la medida a rssi_histórico y un False a Strikes
+                    rssi_historico[id_nodo-1][i][posicion_medida[id_nodo-1]] = tablaRssi[id_nodo-1][i]
+                    strikes[id_nodo-1][i][posicion_medida[id_nodo-1]] = False
+                
+                # Comprobamos si hay más de (ALARMA_STRIKES) alarmas en Strikes
+                count_strikes:int = 0
+                for j in range(T_CALIBRACION):
+                    if strikes[id_nodo-1][i][j]:
+                        count_strikes += 1
+                if count_strikes >= MAX_STRIKES:
+                    tablaAlarmas[id_nodo-1][i] = Fore.RED
+                else:
+                    tablaAlarmas[id_nodo-1][i] = Fore.RESET
+        # Aumentamos el valor de "posicion_medida" y, si es mayor de PERIODO_CALIBRACION, lo reseteamos
+        posicion_medida[id_nodo-1]+=1
+        if posicion_medida[id_nodo-1] >= T_CALIBRACION:
+            posicion_medida[id_nodo-1] = 0
+            calibrado[id_nodo-1] = True
+
+    #   [Tabla]
     system("clear")
     print(f"""
         |  BASE ST |  ID = 1  |  ID = 2  |  ID = 3  |
 --------+----------+----------+----------+----------+ 
-ID = 1  | {tablaColores[0][0]}{tablaRssi[0][0]:^+8.3f}{Fore.RESET} |     -    | {tablaColores[0][2]}{tablaRssi[0][2]:^+8.3f}{Fore.RESET} | {tablaColores[0][3]}{tablaRssi[0][3]:^+8.3f}{Fore.RESET} |
-ID = 2  | {tablaColores[1][0]}{tablaRssi[1][0]:^+8.3f}{Fore.RESET} | {tablaColores[1][1]}{tablaRssi[1][1]:^+8.3f}{Fore.RESET} |     -    | {tablaColores[1][3]}{tablaRssi[1][3]:^+8.3f}{Fore.RESET} |
-ID = 3  | {tablaColores[2][0]}{tablaRssi[2][0]:^+8.3f}{Fore.RESET} | {tablaColores[2][1]}{tablaRssi[2][1]:^+8.3f}{Fore.RESET} | {tablaColores[2][2]}{tablaRssi[2][2]:^+8.3f}{Fore.RESET} |     -    |
+ID = 1  | {tablaAlarmas[0][0]}{tablaRssi[0][0]:^+8.3f}{Fore.RESET} |     -    | {tablaAlarmas[0][2]}{tablaRssi[0][2]:^+8.3f}{Fore.RESET} | {tablaAlarmas[0][3]}{tablaRssi[0][3]:^+8.3f}{Fore.RESET} |
+ID = 2  | {tablaAlarmas[1][0]}{tablaRssi[1][0]:^+8.3f}{Fore.RESET} | {tablaAlarmas[1][1]}{tablaRssi[1][1]:^+8.3f}{Fore.RESET} |     -    | {tablaAlarmas[1][3]}{tablaRssi[1][3]:^+8.3f}{Fore.RESET} |
+ID = 3  | {tablaAlarmas[2][0]}{tablaRssi[2][0]:^+8.3f}{Fore.RESET} | {tablaAlarmas[2][1]}{tablaRssi[2][1]:^+8.3f}{Fore.RESET} | {tablaAlarmas[2][2]}{tablaRssi[2][2]:^+8.3f}{Fore.RESET} |     -    |
 --------+----------+----------+----------+----------+
 Nota: Todas las medidas están expresadas en {Fore.BLUE}dBm{Fore.RESET}.""")
+    
+    print(f"calibrado: ",end="")
+    for i in calibrado:
+        if i:
+            print(f"{Fore.GREEN}True{Fore.RESET} ",end="")
+        else:
+            print(f"{Fore.RED}False{Fore.RESET} ",end="")
+    print(f"\n",end="")
+    print(f"Tolerancia: {TOLERANCIA*100}%")
+    for id in range(NUM_MAX_NODOS-1):
+        if calibrado[id]:
+            print(f"\t Rango de valores medios nodo {id}: ")
+            for i in range(NUM_MAX_NODOS):
+                if i==0:
+                    print(f"\t\t[{id}, BaseST]: ", end="")
+                elif i-1==id:
+                    pass
+                else:
+                    print(f"\t\t[{id}, {i-1}]:      ", end="")
+                
+                if i-1 != id:
+                    print(f"{(1-TOLERANCIA)*rssi_medio[id][i]:.3f} ~ {(1+TOLERANCIA)*rssi_medio[id][i]:.3f}")
 
-    print(f"""DEBUG:
-    Nodo 1:
-        tablaRssi = {tablaRssi[0][0]}, {tablaRssi[0][1]}, {tablaRssi[0][2]}, {tablaRssi[0][3]}
-        tablaAlarmas = {tablaAlarmas[0][0]}, {tablaAlarmas[0][1]}, {tablaAlarmas[0][2]}, {tablaAlarmas[0][3]}    
-    Nodo 2:
-        tablaRssi = {tablaRssi[1][0]}, {tablaRssi[1][1]}, {tablaRssi[1][2]}, {tablaRssi[1][3]}
-        tablaAlarmas = {tablaAlarmas[1][0]}, {tablaAlarmas[1][1]}, {tablaAlarmas[1][2]}, {tablaAlarmas[1][3]}  
-    Nodo 3:
-        tablaRssi = {tablaRssi[2][0]}, {tablaRssi[2][1]}, {tablaRssi[2][2]}, {tablaRssi[2][3]}
-        tablaAlarmas = {tablaAlarmas[2][0]}, {tablaAlarmas[2][1]}, {tablaAlarmas[2][2]}, {tablaAlarmas[2][3]}""")
+    #for i in rssi_historico: 
+    #    print(f"{i}\n")
