@@ -76,8 +76,9 @@ while True:
     ############# ASI OBTENGO tablaAlarmas DEL PUERTO SERIAL ################## 
         for i in range (4):
             for j in range(4): 
-                ##Leo los bytes de 1 en 1 porque cada boolean vale 8 bits
+                ##Leo los bytes de 2 en 2 porque cada boolean vale 8 bits pero lo recibo en 16 bits 
                 r = s.read(2)
+                ##Combino el valor de ambos bytes para obtener el boolean
                 alarma = (r[0]<<8) | r[1]
                 tablaAlarmas [i][j] = alarma
         
