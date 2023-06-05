@@ -55,6 +55,18 @@ implementation
   
   uint16_t node_id_master;
   
+  int16_t rssi_prueba[NUM_MAX_NODOS][NUM_MAX_NODOS] = {
+        { -60, -70, -80, -90 },
+        { -75, -65, -85, -95 },
+        { -90, -85, -75, -65 },
+        { -10, -20, -30, -40}};
+
+
+  bool alarma_prueba [NUM_MAX_NODOS][NUM_MAX_NODOS] = {
+        {TRUE, FALSE, FALSE, TRUE},
+        {FALSE, FALSE, FALSE, FALSE},
+        {FALSE, TRUE, TRUE, FALSE},
+        {TRUE, TRUE, TRUE, TRUE}};
 
   message_t  uartQueueBufs[UART_QUEUE_LEN];
   message_t  * ONE_NOK uartQueue[UART_QUEUE_LEN];
@@ -315,14 +327,14 @@ implementation
           //Despues mandar la tabla de alarmas por SERIAL también
           for (i = 0; i < 4; i++){
             for (int j = 0; j <4; j++){
-              uartQueue[uartIn] = rssi_dbm [i][j];
+              uartQueue[uartIn] = rssi_prueba [i][j];
               uartIn = (uartIn + 1) % UART_QUEUE_LEN;
             }
           } 
          
           for (i = 0; i < 4; i++){
             for (int j = 0; j <4; j++){
-              uartQueue[uartIn] = alarma[i][j];
+              uartQueue[uartIn] = alarma_prueba[i][j];
               uartIn = (uartIn + 1) % UART_QUEUE_LEN;
             }
           }
