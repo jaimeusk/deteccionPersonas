@@ -26,14 +26,16 @@ NUM_MAX_FILAS = 4
 NUM_MAX_COLUMNAS = 4
 index = 0
 
-tablaRssi = [[NUM_MAX_FILAS], [NUM_MAX_COLUMNAS]]
-tablaAlarmas = [[NUM_MAX_FILAS], [NUM_MAX_COLUMNAS]]
+##Antes definidas de otra forma pero me decian al ejecutarse los for de abajo que los indices se salian
+##Asi que busque y encontre esta sugerencia
+tablaRssi = [[0] * NUM_MAX_COLUMNAS for _ in range(NUM_MAX_FILAS)]
+tablaAlarmas = [[0] * NUM_MAX_COLUMNAS for _ in range(NUM_MAX_FILAS)]
 
 
 
-
+#hay que mirar que USBx es con motelist
 s = serial.Serial(port= '/dev/ttyUSB0', baudrate=115200)
-s.open()
+
 
 while True:
 # 	while True:
@@ -50,7 +52,7 @@ while True:
                 ##Leo los bytes de 2 en 2 porque cada 2B tengo un rssi
                 r = s.read(2)
                 ##Combino ambos bytes para obtener el valor del rssi
-                rssi = ord(r[0])<<8 | ord(r[1])
+                rssi = (r[0]<<8) | r[1]
                 tablaRssi [i][j] = rssi
                 
     ###OTRA FORMA QUE NO SE SI SERIA CORRECTA
@@ -76,7 +78,7 @@ while True:
             for j in range(4): 
                 ##Leo los bytes de 1 en 1 porque cada boolean vale 8 bits
                 r = s.read(2)
-                alarma = ord(r[0])<<8 | ord(r[1])
+                alarma = (r[0]<<8) | r[1]
                 tablaAlarmas [i][j] = alarma
         
         
@@ -85,7 +87,7 @@ while True:
         ####IMPRIMO TABLA FINAL ###
         ###########################
         
-        # Imprimir encabezado de columnas
+        # Imprimir encabezado de columnas, hay 4 y compruebo que la ult tenga BASE ST
         for i in range(NUM_MAX_COLUMNAS):
             if i == (NUM_MAX_COLUMNAS - 1):
                 print(" BASE ST |")
@@ -106,6 +108,7 @@ while True:
         # Imprimir valores de celdas DE ESA FILA
             for j in range(NUM_MAX_FILAS):
                 if tablaAlarmas[i][j] == True:
+                    ###No es seguro que aplique el color rojo porquqe depende de la terminal y su config
                     print("| \033[31m{}\033[0m".format(tablaRssi[i][j]))  # Impresión en color rojo
                 else:
                     print("| {} ".format(tablaRssi[i][j]))
