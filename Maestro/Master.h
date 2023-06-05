@@ -66,6 +66,7 @@ typedef nx_struct RespuestaMsg{
 }RespuestaMsg;
 
 
+
 // Estructura de datos para el envío de datos al puerto serie
 typedef nx_struct test_serial_msg {
   nx_uint16_t idNodo;

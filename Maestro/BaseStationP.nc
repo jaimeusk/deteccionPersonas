@@ -324,6 +324,7 @@ implementation
           if (!uartFull)
           {
             ret = uartQueue[uartIn];
+            uartQueue[uartIn] = msg;
             
             /* <- Provisional
             //La idea es mandar la tabla de rssi por SERIAL
@@ -341,7 +342,7 @@ implementation
               uartQueue[uartIn+1] = alarma_prueba;
               */
               
-              //uartQueue[uartIn] = prueba;
+             
               //uartQueue[uartIn+1] = prueba2;
               
               /*
