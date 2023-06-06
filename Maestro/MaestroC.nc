@@ -1,7 +1,7 @@
-// $Id: BaseStationP.nc,v 1.12 2010-06-29 22:07:14 scipio Exp $
+// $Id: Maestro.nc,v 1.12 2010-06-29 22:07:14 scipio Exp $
   
 /* 
- * BaseStationP bridges packets between a serial channel and the radio.
+ * Maestro bridges packets between a serial channel and the radio.
  * Messages moving from serial to radio will be tagged with the group
  * ID compiled into the BaseStation, and messages moving from radio to
  * serial will be filtered by that same group id.
@@ -12,7 +12,7 @@
 #include "Master.h"
 
 
-module BaseStationP @safe() {
+module MaestroC @safe() {
   uses {
     interface Boot;
     interface SplitControl as SerialControl;

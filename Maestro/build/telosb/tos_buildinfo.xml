@@ -3,6 +3,6 @@
   <telosb-ram>36</telosb-ram>
   <flash>18744</flash>
   <telosb-flash>18744</telosb-flash>
-  <stack>9816</stack>
-  <telosb-stack>9816</telosb-stack>
+  <stack>9818</stack>
+  <telosb-stack>9818</telosb-stack>
 </metrics>

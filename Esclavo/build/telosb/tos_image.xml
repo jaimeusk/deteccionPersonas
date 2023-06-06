@@ -1,13 +1,13 @@
 <tos_image>
   <ident>
-    <deluge_support>no</deluge_support>
-    <timestamp>647F6B38L</timestamp>
-    <hostname>SurfaceJaime</hostname>
-    <platform>telosb</platform>
-    <userhash>72F2A085L</userhash>
-    <username>root</username>
-    <uidhash>BDB26DB7L</uidhash>
     <appname>SlaveAppC</appname>
+    <platform>telosb</platform>
+    <username>root</username>
+    <userhash>72F2A085L</userhash>
+    <uidhash>CB13903CL</uidhash>
+    <deluge_support>no</deluge_support>
+    <timestamp>647FA39EL</timestamp>
+    <hostname>SurfaceJaime</hostname>
   </ident>
   <image format="ihex">
 :104000005542200135D0085A8245A6123140003968

@@ -1,7 +1,7 @@
 #ifndef MASTER_H
 #define MASTER_H
 
-// Variable para definir el maximo numero de nodos permitidos en el TDMA (sin incluir al BaseStation)
+// Variable para definir el maximo numero de nodos permitidos en el TDMA (sin incluir al Maestro)
 // No tienen que estar todos necesariamente
 #define NUM_MAX_NODOS 4 //Tiene en cuenta el MAESTRO
 
