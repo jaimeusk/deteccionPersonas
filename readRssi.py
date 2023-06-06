@@ -9,7 +9,7 @@ MSG_RSSI:int        = 2
 MSG_ALRM:int        = 3
 MAX_STRIKES:int     = 3
 T_CALIBRACION:int   = 15
-TOLERANCIA:float    = 0.5
+TOLERANCIA:float    = 0.05
 
 #   [Variables]
 # Nota: al inicializar las tablas de esta forma, una tabla de tamaño x[4][3][2] se inicializaría con [[["x"]*2 for j in range(3)] for i in range(4)]
@@ -105,18 +105,43 @@ while True:
             posicion_medida[id_nodo-1] = 0
             calibrado[id_nodo-1] = True
 
-    #   [Tabla]
-    system("clear")
-    print(f"""
-        |  BASE ST |  ID = 1  |  ID = 2  |  ID = 3  |
---------+----------+----------+----------+----------+ 
-ID = 1  | {tablaAlarmas[0][0]}{tablaRssi[0][0]:^+8.3f}{Fore.RESET} |     -    | {tablaAlarmas[0][2]}{tablaRssi[0][2]:^+8.3f}{Fore.RESET} | {tablaAlarmas[0][3]}{tablaRssi[0][3]:^+8.3f}{Fore.RESET} |
-ID = 2  | {tablaAlarmas[1][0]}{tablaRssi[1][0]:^+8.3f}{Fore.RESET} | {tablaAlarmas[1][1]}{tablaRssi[1][1]:^+8.3f}{Fore.RESET} |     -    | {tablaAlarmas[1][3]}{tablaRssi[1][3]:^+8.3f}{Fore.RESET} |
-ID = 3  | {tablaAlarmas[2][0]}{tablaRssi[2][0]:^+8.3f}{Fore.RESET} | {tablaAlarmas[2][1]}{tablaRssi[2][1]:^+8.3f}{Fore.RESET} | {tablaAlarmas[2][2]}{tablaRssi[2][2]:^+8.3f}{Fore.RESET} |     -    |
---------+----------+----------+----------+----------+
-Nota: Todas las medidas están expresadas en {Fore.BLUE}dBm{Fore.RESET}.""")
     
-    print(f"calibrado: ",end="")
+    #   [Tabla dinámica, se adapta a NUM_MAX_NODOS]
+    system("clear")
+    
+    #   Cabecera tabla dinamica
+    print("        |  BASE ST |",end="")
+    for i in range(NUM_MAX_NODOS-1):
+        print(f"  ID = {i+1}  |", end="")
+    print("")
+
+    print("--------+",end="")
+    for i in range(NUM_MAX_NODOS):
+        print("----------+",end="")
+    print("")
+
+    #   Imprimimos fila a fila
+    for i in range(1,NUM_MAX_NODOS):
+        print(f"ID = {i}  |",end="")
+
+        #   Imprimimos columna a columna
+        for j in range(NUM_MAX_NODOS):
+            if(i == j):
+                print("     -    |",end="")
+            else:
+                print(f" {tablaAlarmas[i-1][j]}{tablaRssi[i-1][j]:^+8.3f}{Fore.RESET} |",end="")
+        print("")
+
+    #   Imprimimos pie de tabla
+    print("--------+",end="")
+    for i in range(NUM_MAX_NODOS):
+        print("----------+",end="")
+    print("")
+
+    print(f"Nota: Todas las medidas están expresadas en {Fore.BLUE}dBm{Fore.RESET}.")
+    
+    
+    print(f"Calibrado: ",end="")
     for i in calibrado:
         if i:
             print(f"{Fore.GREEN}True{Fore.RESET} ",end="")
@@ -124,19 +149,20 @@ Nota: Todas las medidas están expresadas en {Fore.BLUE}dBm{Fore.RESET}.""")
             print(f"{Fore.RED}False{Fore.RESET} ",end="")
     print(f"\n",end="")
     print(f"Tolerancia: {TOLERANCIA*100}%")
+    
     for id in range(NUM_MAX_NODOS-1):
         if calibrado[id]:
-            print(f"\t Rango de valores medios nodo {id}: ")
+            print(f"\t Rango de valores medios nodo {id+1}: ")
             for i in range(NUM_MAX_NODOS):
                 if i==0:
-                    print(f"\t\t[{id}, BaseST]: ", end="")
+                    print(f"\t\t[{id+1}, BaseST]: ", end="")
                 elif i-1==id:
                     pass
                 else:
-                    print(f"\t\t[{id}, {i-1}]:      ", end="")
+                    print(f"\t\t[{id+1}, {i}]:      ", end="")
                 
                 if i-1 != id:
-                    print(f"{(1-TOLERANCIA)*rssi_medio[id][i]:.3f} ~ {(1+TOLERANCIA)*rssi_medio[id][i]:.3f}")
+                    print(f"{(1+TOLERANCIA)*rssi_medio[id][i]:.3f} ~ {(1-TOLERANCIA)*rssi_medio[id][i]:.3f}")
 
     #for i in rssi_historico: 
     #    print(f"{i}\n")

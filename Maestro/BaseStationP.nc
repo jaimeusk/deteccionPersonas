@@ -55,19 +55,6 @@ implementation
   bool calibrado = FALSE; // Indicará si se han tomado las primeras medida de calibración
   
   uint16_t node_id_master;
-  
-  int16_t rssi_prueba[NUM_MAX_NODOS][NUM_MAX_NODOS] = {
-        { -60, -70, -80, -90 },
-        { -75, -65, -85, -95 },
-        { -90, -85, -75, -65 },
-        { -10, -20, -30, -40}};
-
-
-  bool alarma_prueba [NUM_MAX_NODOS][NUM_MAX_NODOS] = {
-        {TRUE, FALSE, FALSE, TRUE},
-        {FALSE, FALSE, FALSE, FALSE},
-        {FALSE, TRUE, TRUE, FALSE},
-        {TRUE, TRUE, TRUE, TRUE}};
 
   /* VARIABLES USADAS PARA LA ESCRITURA EN EL PUERTO SERIE */
   message_t  uartQueueBufs[UART_QUEUE_LEN];
